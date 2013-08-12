@@ -6,7 +6,7 @@ CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is 
 
 The only external dependency is OpenSSL (used for Bignum, ECC and RIPEMD160). Today OpenSSL source is stored in this repo and is built with update_openssl.sh script. OpenSSL binaries are OSX-only and committed in the repo. This is far from perfect and binary does not support iOS architectures. This will be fixed in the future.
 
-Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
+Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now a part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
 
 How To
 ------
