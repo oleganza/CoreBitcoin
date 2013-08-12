@@ -37,6 +37,7 @@ Bounties
 --------
 
 - 1 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s. OpenSSL should be bundled inside. [@oleganza]
+- 0.2 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
 
 To add your own bounty, add a line here (or edit an existing one), make a pull request and donate to the address below. Your donation will be reserved for that bounty only. I will contact you to check if the implementation is acceptable before paying out.
 
