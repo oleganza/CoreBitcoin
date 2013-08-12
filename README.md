@@ -2,22 +2,22 @@
 CoreBitcoin
 ===========
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it's complete, it will let you create an application that acts as a full Bitcoin node. Today, you can encode/decode addresses, apply various hash functions, sign and verify messages and parse some data structures. Transaction support is incomplete.
+CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages and parse some data structures. Transaction support is still incomplete.
 
 The only external dependency is OpenSSL (used for Bignum, ECC and RIPEMD160). Today OpenSSL source is stored in this repo and is built with update_openssl.sh script. OpenSSL binaries are OSX-only and committed in the repo. This is far from perfect and binary does not support iOS architectures. This will be fixed in the future.
 
-Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some quirks of OpenSSL are now part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
+Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
 
 How To
 ------
 
 Clone this repo and make sure you can run "UnitTests" target. It is a simple command-line app that runs a bunch of asserts. If nothing fails, the program silently exits.
 
-If it works well, add this repo as a submodule to your project. Then add all source files, openssl headers and libcrypto.a and libssl.a. 
+If it works well, add this repo as a submodule to your project. Then add all source files, OpenSSL headers, libcrypto.a and libssl.a. 
 
 In your project settings, add `$(SRCROOT)/CoreBitcoin/openssl/include` to "Headers Search Paths" and `$(SRCROOT)/CoreBitcoin/openssl/lib` in "Library Search Paths".
 
-If you'd like to help me building self-contained CoreBitcoin.framework, there is a bounty for that.
+If this sounds cumbersome, there is a bounty for creating a CoreBitcoin.framework to simplify integration process.
 
 
 TODO
@@ -56,15 +56,15 @@ Twitter: [@oleganza](http://twitter.com/oleganza)
 Donate
 ------
 
-Please send your donations here: 1Ec2aXPDBqvSi6iLepA3Vz1j5Cxtc2fwj8.
+Please send your donations here: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG.
 
 All funds will be used only for bounties to fix stuff. Every withdrawal from this address will be documented.
 
-If you want to donate for a specific bounty, feel free to let me know. The amount will be reserved for that bounty and listed in the list of bounties.
+You can also donate for a specific bounty. The amount will be reserved for that bounty and listed above.
 
 
 License
 -------
 
-Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. You don't need to advertise CoreBitcoin in your app, but please consider donating money for development.
+Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. It is not MIT License because no one reads your legalese anyway and it only adds burden. Instead, you are encouraged to donate money for development.
 
