@@ -10,6 +10,11 @@
 // input which makes the script execute with success.
 @interface BTCTransactionOutput : NSObject
 
+// Creates an output with a standard script redeeming to an address (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG).
+// Also supports P2SH addresses.
+// Address is a Base58-encoded.
++ (instancetype) outputWithValue:(BTCSatoshi)value address:(NSString*)address;
+
 // Serialized binary form of the output (payload)
 @property(nonatomic, readonly) NSData* data;
 
@@ -19,10 +24,10 @@
 // Script defining redemption rules for this output (aka scriptPubKey or pk_script)
 @property(nonatomic) BTCScript* script;
 
-// Parses tx input from a data buffer.
+// Parses tx output from a data buffer.
 - (id) initWithData:(NSData*)data;
 
-// Read tx input from the stream.
+// Read tx output from the stream.
 - (id) initWithStream:(NSInputStream*)stream;
 
 // Constructs transaction output from a dictionary representation

@@ -10,6 +10,14 @@
 
 @implementation BTCTransactionOutput
 
++ (instancetype) outputWithValue:(BTCSatoshi)value address:(NSString*)address
+{
+    BTCTransactionOutput* output = [[BTCTransactionOutput alloc] init];
+    output.value = value;
+    output.script = [BTCScript scriptWithAddress:address];
+    return output;
+}
+
 - (id) init
 {
     if (self = [super init])
