@@ -77,23 +77,11 @@
 {
     NSMutableData* payload = [NSMutableData data];
     
-    // TODO
-    
     [payload appendBytes:&_value length:sizeof(_value)];
     
-//    buf =  [ @value ].pack("Q")
-//    buf << Protocol.pack_var_int(@pk_script_length)
-//    buf << @pk_script if @pk_script_length > 0
-//    buf
-    
-//    [payload appendData:_previousHash];
-//    [payload appendBytes:&_previousIndex length:4];
-//    
-//    NSData* scriptData = _signatureScript.data;
-//    [payload appendData:[BTCProtocolSerialization dataForVarInt:scriptData.length]];
-//    [payload appendData:scriptData];
-//    
-//    [payload appendBytes:&_sequence length:4];
+    NSData* scriptData = _script.data ?: [NSData data];
+    [payload appendData:[BTCProtocolSerialization dataForVarInt:scriptData.length]];
+    [payload appendData:scriptData];
     
     return payload;
 }
@@ -123,7 +111,7 @@
     return @{
              @"value": [NSString stringWithFormat:@"%lld.%@", _value / BTCCoin, [[NSString stringWithFormat:@"%lld", _value % BTCCoin] stringByPaddingToLength:8 withString:@"0" startingAtIndex:0]],
              @"scriptPubKey": _script.string ?: @"",
-    };
+             };
 }
 
 
@@ -152,24 +140,14 @@
     if (!stream) return NO;
     if (stream.streamStatus == NSStreamStatusClosed) return NO;
     if (stream.streamStatus == NSStreamStatusNotOpen) return NO;
-
-    // TODO
     
-//    // Read previousHash
-//    uint8_t hash[BTCTxHashLength] = {0};
-//    if ([stream read:(uint8_t*)hash maxLength:sizeof(hash)] != sizeof(hash)) return NO;
-//    _previousHash = [NSData dataWithBytes:hash length:sizeof(hash)];
-//    
-//    // Read previousIndex
-//    if ([stream read:(uint8_t*)(&_previousIndex) maxLength:sizeof(_previousIndex)] != sizeof(_previousIndex)) return NO;
-//    
-//    // Read signature script
-//    NSData* signatureScriptData = [BTCProtocolSerialization readVarStringFromStream:stream];
-//    if (!signatureScriptData) return NO;
-//    _signatureScript = [[BTCScript alloc] initWithData:signatureScriptData];
-//    
-//    // Read sequence
-//    if ([stream read:(uint8_t*)(&_sequence) maxLength:sizeof(_sequence)] != sizeof(_sequence)) return NO;
+    // Read value
+    if ([stream read:(uint8_t*)(&_value) maxLength:sizeof(_value)] != sizeof(_value)) return NO;
+    
+    // Read script
+    NSData* scriptData = [BTCProtocolSerialization readVarStringFromStream:stream];
+    if (!scriptData) return NO;
+    _script = [[BTCScript alloc] initWithData:scriptData];
     
     return YES;
 }

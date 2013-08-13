@@ -4,6 +4,10 @@
 #import "BTCUnitsAndLimits.h"
 
 @class BTCScript;
+
+// Transaction output is a value with rules attached in form of a script.
+// To spend money one need to choose a transaction output and provide an appropriate
+// input which makes the script execute with success.
 @interface BTCTransactionOutput : NSObject
 
 // Serialized binary form of the output (payload)
