@@ -3,7 +3,7 @@
 #import <Foundation/Foundation.h>
 
 // Script consists of opcodes ("operation codes") and raw binary data.
-typedef NS_ENUM(unsigned char, BTCOpCode)
+typedef NS_ENUM(unsigned char, BTCOpcode)
 {
     // 1. Operators pushing data on stack.
     
@@ -14,11 +14,14 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     // Any opcode with value < PUSHDATA1 is a length of the string to be pushed on the stack.
     // So opcode 0x01 is followed by 1 byte of data, 0x09 by 9 bytes and so on up to 0x4B (75 bytes)
     
+    // PUSHDATA<N> opcode is followed by N-byte length of the string that follows.
     OP_PUSHDATA1 = 0x4c, // followed by a 1-byte length of the string to push (allows pushing 0..255 bytes).
     OP_PUSHDATA2 = 0x4d, // followed by a 2-byte length of the string to push (allows pushing 0..65535 bytes).
     OP_PUSHDATA4 = 0x4e, // followed by a 4-byte length of the string to push (allows pushing 0..4294967295 bytes).
-    OP_1NEGATE = 0x4f, // pushes -1 number on the stack
-    OP_RESERVED = 0x50,
+    OP_1NEGATE = 0x4f,   // pushes -1 number on the stack
+    OP_RESERVED = 0x50,  // Not assigned. If executed, transaction is invalid.
+    
+    // OP_<N> pushes number <N> on the stack
     OP_1 = 0x51,
     OP_TRUE=OP_1,
     OP_2 = 0x52,
@@ -39,20 +42,20 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     
     // 2. Control flow operators
     
-    OP_NOP = 0x61,
-    OP_VER = 0x62,
-    OP_IF = 0x63,
-    OP_NOTIF = 0x64,
-    OP_VERIF = 0x65,
-    OP_VERNOTIF = 0x66,
-    OP_ELSE = 0x67,
-    OP_ENDIF = 0x68,
-    OP_VERIFY = 0x69,
-    OP_RETURN = 0x6a,
+    OP_NOP = 0x61,      // Does nothing
+    OP_VER = 0x62,      // Not assigned. If executed, transaction is invalid.
+    OP_IF = 0x63,       // If the top stack value is not 0, the statements are executed. The top stack value is removed.
+    OP_NOTIF = 0x64,    // If the top stack value is 0, the statements are executed. The top stack value is removed.
+    OP_VERIF = 0x65,    // Not assigned. If executed, transaction is invalid.
+    OP_VERNOTIF = 0x66, // Not assigned. If executed, transaction is invalid.
+    OP_ELSE = 0x67,     // Executes code if the previous OP_IF or OP_NOTIF was not executed.
+    OP_ENDIF = 0x68,    // Finishes if/else block
+    OP_VERIFY = 0x69,   // Removes item from the stack if it's not 0x0 or 0x80 (negative zero). Otherwise, marks script as invalid.
+    OP_RETURN = 0x6a,   // Marks transaction as invalid.
     
     // Stack ops
-    OP_TOALTSTACK = 0x6b,
-    OP_FROMALTSTACK = 0x6c,
+    OP_TOALTSTACK = 0x6b,   // Moves item from the stack to altstack
+    OP_FROMALTSTACK = 0x6c, // Moves item from the altstack to stack
     OP_2DROP = 0x6d,
     OP_2DUP = 0x6e,
     OP_3DUP = 0x6f,
@@ -72,39 +75,41 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     OP_TUCK = 0x7d,
     
     // Splice ops
-    OP_CAT = 0x7e,
-    OP_SUBSTR = 0x7f,
-    OP_LEFT = 0x80,
-    OP_RIGHT = 0x81,
+    OP_CAT = 0x7e,    // Disabled opcode. If executed, transaction is invalid.
+    OP_SUBSTR = 0x7f, // Disabled opcode. If executed, transaction is invalid.
+    OP_LEFT = 0x80,   // Disabled opcode. If executed, transaction is invalid.
+    OP_RIGHT = 0x81,  // Disabled opcode. If executed, transaction is invalid.
     OP_SIZE = 0x82,
     
     // Bit logic
-    OP_INVERT = 0x83,
-    OP_AND = 0x84,
-    OP_OR = 0x85,
-    OP_XOR = 0x86,
-    OP_EQUAL = 0x87,
-    OP_EQUALVERIFY = 0x88,
-    OP_RESERVED1 = 0x89,
-    OP_RESERVED2 = 0x8a,
+    OP_INVERT = 0x83, // Disabled opcode. If executed, transaction is invalid.
+    OP_AND = 0x84,    // Disabled opcode. If executed, transaction is invalid.
+    OP_OR = 0x85,     // Disabled opcode. If executed, transaction is invalid.
+    OP_XOR = 0x86,    // Disabled opcode. If executed, transaction is invalid.
+    
+    OP_EQUAL = 0x87,        // Last two items are removed from the stack and compared. Result (true or false) is pushed to the stack.
+    OP_EQUALVERIFY = 0x88,  // Same as OP_EQUAL, but removes the result from the stack if it's true or marks script as invalid.
+    
+    OP_RESERVED1 = 0x89, // Disabled opcode. If executed, transaction is invalid.
+    OP_RESERVED2 = 0x8a, // Disabled opcode. If executed, transaction is invalid.
     
     // Numeric
-    OP_1ADD = 0x8b,
-    OP_1SUB = 0x8c,
-    OP_2MUL = 0x8d,
-    OP_2DIV = 0x8e,
-    OP_NEGATE = 0x8f,
-    OP_ABS = 0x90,
-    OP_NOT = 0x91,
-    OP_0NOTEQUAL = 0x92,
+    OP_1ADD = 0x8b,  // adds 1 to last item, pops it from stack and pushes result.
+    OP_1SUB = 0x8c,  // substracts 1 to last item, pops it from stack and pushes result.
+    OP_2MUL = 0x8d,  // Disabled opcode. If executed, transaction is invalid.
+    OP_2DIV = 0x8e,  // Disabled opcode. If executed, transaction is invalid.
+    OP_NEGATE = 0x8f,     // negates the number, pops it from stack and pushes result.
+    OP_ABS = 0x90,        // replaces number with its absolute value
+    OP_NOT = 0x91,        // replaces number with True if it's zero, False otherwise.
+    OP_0NOTEQUAL = 0x92,  // replaces number with True if it's not zero, False otherwise.
     
-    OP_ADD = 0x93,
-    OP_SUB = 0x94,
-    OP_MUL = 0x95,
-    OP_DIV = 0x96,
-    OP_MOD = 0x97,
-    OP_LSHIFT = 0x98,
-    OP_RSHIFT = 0x99,
+    OP_ADD = 0x93,  // (x y -- x+y)
+    OP_SUB = 0x94,  // (x y -- x-y)
+    OP_MUL = 0x95,  // Disabled opcode. If executed, transaction is invalid.
+    OP_DIV = 0x96,  // Disabled opcode. If executed, transaction is invalid.
+    OP_MOD = 0x97,  // Disabled opcode. If executed, transaction is invalid.
+    OP_LSHIFT = 0x98,  // Disabled opcode. If executed, transaction is invalid.
+    OP_RSHIFT = 0x99,  // Disabled opcode. If executed, transaction is invalid.
     
     OP_BOOLAND = 0x9a,
     OP_BOOLOR = 0x9b,
@@ -126,7 +131,7 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     OP_SHA256 = 0xa8,
     OP_HASH160 = 0xa9,
     OP_HASH256 = 0xaa,
-    OP_CODESEPARATOR = 0xab,
+    OP_CODESEPARATOR = 0xab, // This opcode rarely used because it's useless.
     OP_CHECKSIG = 0xac,
     OP_CHECKSIGVERIFY = 0xad,
     OP_CHECKMULTISIG = 0xae,
@@ -149,9 +154,9 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
 
 typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 {
-    SIGHASH_ALL = 1,
-    SIGHASH_NONE = 2,
-    SIGHASH_SINGLE = 3,
+    SIGHASH_ALL          = 1,
+    SIGHASH_NONE         = 2,
+    SIGHASH_SINGLE       = 3,
     SIGHASH_ANYONECANPAY = 0x80,
 };
 
@@ -161,6 +166,12 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // Standard script redeeming to a pubkey hash (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG)
 // or a P2SH address. Address is encoded in Base58.
 + (instancetype) scriptWithAddress:(NSString*)address;
+
+// Returns name for opcode or @"OP_UNKNOWN" for unknown opcode.
++ (NSString*) nameForOpcode:(BTCOpcode)opcode;
+
+// Returns opcode integer for a given name. Returns OP_INVALIDOPCODE for unknown name.
++ (BTCOpcode) opcodeForName:(NSString*)opcodeName;
 
 - (id) initWithData:(NSData*)data;
 

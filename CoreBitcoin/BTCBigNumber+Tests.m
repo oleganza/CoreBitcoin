@@ -1,6 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCBigNumber+Tests.h"
+#import "NSData+BTC.h"
 
 @implementation BTCBigNumber (Tests)
 
@@ -30,6 +31,29 @@
         NSAssert([@"deadf00ddeadbeef" isEqualToString:bn2.hexString], @"converting to and from data should give the same result");
     }
     
+    
+    // Negative zero
+    {
+        BTCBigNumber* zeroBN = [BTCBigNumber zero];
+        BTCBigNumber* negativeZeroBN = [[BTCBigNumber alloc] initWithData:[[NSData alloc] initWithHexString:@"80"]];
+        BTCBigNumber* zeroWithEmptyDataBN = [[BTCBigNumber alloc] initWithData:[NSData data]];
+        
+        //NSLog(@"negativeZeroBN.data = %@", negativeZeroBN.data);
+        
+        NSAssert(zeroBN, @"must exist");
+        NSAssert(negativeZeroBN, @"must exist");
+        NSAssert(zeroWithEmptyDataBN, @"must exist");
+        
+        //NSLog(@"negative zero: %lld", [negativeZeroBN int64value]);
+        
+        NSAssert([[[zeroBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        NSAssert([[[negativeZeroBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        NSAssert([[[zeroWithEmptyDataBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        
+        // In BitcoinQT script.cpp, there is check (bn != bnZero).
+        // It covers negative zero alright because "bn" is created in a way that discards the sign.
+        NSAssert(![zeroBN isEqual:negativeZeroBN], @"zero should != negative zero");
+    }
     
     // Experiments:
 
