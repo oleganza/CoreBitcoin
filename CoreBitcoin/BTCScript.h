@@ -2,25 +2,22 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(unsigned char, BTCSignatureHashType)
-{
-    SIGHASH_ALL = 1,
-    SIGHASH_NONE = 2,
-    SIGHASH_SINGLE = 3,
-    SIGHASH_ANYONECANPAY = 0x80,
-};
-
+// Script consists of opcodes ("operation codes") and raw binary data.
 typedef NS_ENUM(unsigned char, BTCOpCode)
 {
-    // Push value
+    // 1. Operators pushing data on stack.
+    
+    // Push 1 byte 0x00 on the stack
     OP_0 = 0x00,
     OP_FALSE = OP_0,
     
-    // Any op with value < PUSHDATA1 is a length of the string to push on the stack.
-    OP_PUSHDATA1 = 0x4c, // followed by a 1-byte length of the string to push (0..255 bytes).
-    OP_PUSHDATA2 = 0x4d, // followed by a 2-byte length of the string to push (0..65535 bytes).
-    OP_PUSHDATA4 = 0x4e, // followed by a 4-byte length of the string to push (0..4294967295 bytes).
-    OP_1NEGATE = 0x4f,
+    // Any opcode with value < PUSHDATA1 is a length of the string to be pushed on the stack.
+    // So opcode 0x01 is followed by 1 byte of data, 0x09 by 9 bytes and so on up to 0x4B (75 bytes)
+    
+    OP_PUSHDATA1 = 0x4c, // followed by a 1-byte length of the string to push (allows pushing 0..255 bytes).
+    OP_PUSHDATA2 = 0x4d, // followed by a 2-byte length of the string to push (allows pushing 0..65535 bytes).
+    OP_PUSHDATA4 = 0x4e, // followed by a 4-byte length of the string to push (allows pushing 0..4294967295 bytes).
+    OP_1NEGATE = 0x4f, // pushes -1 number on the stack
     OP_RESERVED = 0x50,
     OP_1 = 0x51,
     OP_TRUE=OP_1,
@@ -40,7 +37,8 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     OP_15 = 0x5f,
     OP_16 = 0x60,
     
-    // Control
+    // 2. Control flow operators
+    
     OP_NOP = 0x61,
     OP_VER = 0x62,
     OP_IF = 0x63,
@@ -148,6 +146,15 @@ typedef NS_ENUM(unsigned char, BTCOpCode)
     
     OP_INVALIDOPCODE = 0xff,
 };
+
+typedef NS_ENUM(unsigned char, BTCSignatureHashType)
+{
+    SIGHASH_ALL = 1,
+    SIGHASH_NONE = 2,
+    SIGHASH_SINGLE = 3,
+    SIGHASH_ANYONECANPAY = 0x80,
+};
+
 
 @interface BTCScript : NSObject
 
