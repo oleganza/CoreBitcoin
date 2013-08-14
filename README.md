@@ -4,9 +4,9 @@ CoreBitcoin
 
 CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages and parse some data structures. Transaction support is still incomplete.
 
-The only external dependency is OpenSSL (used for Bignum, ECC and RIPEMD160). Today OpenSSL source is stored in this repo and is built with update_openssl.sh script. OpenSSL binaries are OSX-only and committed in the repo. This is far from perfect and binary does not support iOS architectures. This will be fixed in the future.
+Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug and should be investigated.
 
-Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now a part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
+Whenever counterintuitive things happen, I try to provide an accurate documentation to at least explain that we are aware of it (even if don't always know why it was done that way). If you read the source and lack documentation for some weird code, please add a "WTF?" comment right there and send me a pull request. Or create an issue on Github.
 
 How To
 ------
@@ -31,6 +31,14 @@ TODO
 - Unit tests for transaction parsing/serialization.
 - Modern unit test suite.
 - Security analysis. Do we use truly random numbers? Do we sign things correctly? Do we have buffer overflows? And so on.
+
+
+OpenSSL
+-------
+
+The only external dependency is OpenSSL (used for Bignum, ECC and RIPEMD160). OpenSSL source is stored in this repo and is built with update_openssl.sh script. OpenSSL binaries are OSX-only and committed in the repo. This is far from perfect and binary does not support iOS architectures. This will be fixed in the future.
+
+Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now a part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
 
 
 Bounties

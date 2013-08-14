@@ -23,7 +23,7 @@
 {
     if (self = [super init])
     {
-        // TODO: parse string and convert to a binary code.
+        _scriptData = [self parseString:string ?: @""];
     }
     return self;
 }
@@ -35,10 +35,48 @@
 
 - (id) string
 {
-    // TODO
+    // TODO: serialize
     return nil;
 }
 
+- (NSData*) parseString:(NSString*)string
+{
+    // TODO: parse
+    return nil;
+}
+
+
+- (BOOL) isStandard
+{
+    return [self isHash160Script]
+        || [self isPayToScriptHashScript]
+        || [self isPublicKeyScript]
+        || [self isStandardMultisignatureScript];
+}
+
+- (BOOL) isPublicKeyScript
+{
+    // TODO
+    return NO;
+}
+
+- (BOOL) isHash160Script
+{
+    // TODO
+    return NO;
+}
+
+- (BOOL) isPayToScriptHashScript
+{
+    // TODO
+    return NO;
+}
+
+- (BOOL) isStandardMultisignatureScript
+{
+    // TODO
+    return NO;
+}
 
 
 

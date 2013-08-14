@@ -4,7 +4,7 @@
 
 @class BTCScript;
 
-// Transaction input represents a reference to another transaction's output.
+// Transaction input (aka "txin") represents a reference to another transaction's output.
 // Reference is defined by tx hash + tx output index.
 // Signature script is used to prove ownership of the corresponding tx output.
 // Sequence is used to require different signatures when tx is updated. It is only relevant when tx lockTime > 0.
