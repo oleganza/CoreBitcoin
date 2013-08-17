@@ -2,6 +2,7 @@
 
 #import "BTCTransactionOutput.h"
 #import "BTCScript.h"
+#import "BTCAddress.h"
 #import "BTCProtocolSerialization.h"
 
 @interface BTCTransactionOutput ()
@@ -10,11 +11,11 @@
 
 @implementation BTCTransactionOutput
 
-+ (instancetype) outputWithValue:(BTCSatoshi)value address:(NSString*)address
++ (instancetype) outputWithValue:(BTCSatoshi)value address:(BTCAddress*)address
 {
     BTCTransactionOutput* output = [[BTCTransactionOutput alloc] init];
     output.value = value;
-    output.script = [BTCScript scriptWithAddress:address];
+    output.script = [[BTCScript alloc] initWithAddress:address];
     return output;
 }
 

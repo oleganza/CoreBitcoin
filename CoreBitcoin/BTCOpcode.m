@@ -143,3 +143,24 @@ BTCOpcode BTCOpcodeForName(NSString* opcodeName)
     if (!number) return OP_INVALIDOPCODE;
     return [number unsignedCharValue];
 }
+
+// Returns OP_1NEGATE, OP_0 .. OP_16 for ints from -1 to 16.
+// Returns OP_INVALIDOPCODE for other ints.
+BTCOpcode BTCOpcodeForSmallInteger(NSInteger smallInteger)
+{
+    if (smallInteger == 0) return OP_0;
+    if (smallInteger == -1) return OP_1NEGATE;
+    if (smallInteger >= 1 && smallInteger <= 16) return (OP_1 + (smallInteger - 1));
+    return OP_INVALIDOPCODE;
+}
+
+// Converts opcode OP_<N> or OP_1NEGATE to an integer value.
+// If incorrect opcode is given, NSIntegerMax is returned.
+NSInteger BTCSmallIntegerFromOpcode(BTCOpcode opcode)
+{
+    if (opcode == OP_0) return 0;
+    if (opcode == OP_1NEGATE) return -1;
+    if (opcode >= OP_1 && opcode <= OP_16) return (int)opcode - (int)(OP_1 - 1);
+    return NSIntegerMax;
+}
+

@@ -1,10 +1,4 @@
-//
-//  BTCScriptMachine.h
-//  CoreBitcoin
-//
-//  Created by Oleg Andreev on 8/13/13.
-//  Copyright (c) 2013 Oleg Andreev. All rights reserved.
-//
+// Oleg Andreev <oleganza@gmail.com>
 
 #import <Foundation/Foundation.h>
 

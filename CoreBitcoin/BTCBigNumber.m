@@ -79,12 +79,14 @@
 }
 - (id) initWithData:(NSData*)data
 {
+    if (!data) return nil;
     if (self = [self init]) self.data = data;
     return self;
 }
 
 - (id) initWithString:(NSString*)string base:(NSUInteger)base
 {
+    if (!string) return nil;
     if (self = [self init]) [self setString:string base:base];
     return self;
 }

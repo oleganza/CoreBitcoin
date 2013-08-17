@@ -232,5 +232,4 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 
 
-
 @end

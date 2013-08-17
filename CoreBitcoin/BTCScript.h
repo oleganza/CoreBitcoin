@@ -36,12 +36,27 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
     SIGHASH_ANYONECANPAY = 0x80,
 };
 
+@class BTCAddress;
 @interface BTCScript : NSObject
 
+// Initialized an empty script.
+- (id) init;
+
+// Inits with binary data. If data is empty or nil, empty script is initialized.
 - (id) initWithData:(NSData*)data;
 
 // Initializes script with space-separated hex-encoded commands and data.
 - (id) initWithString:(NSString*)string;
+
+// Standard script redeeming to a pubkey hash (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG)
+// or a P2SH address.
+- (id) initWithAddress:(BTCAddress*)address;
+
+// Initializes a multisignature script "OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG"
+// N must be >= M, M and N should be from 1 to 16.
+// If you need a more customized transaction with OP_CHECKMULTISIG, create it using other methods.
+- (id) initWithPublicKeys:(NSArray*)publicKeys signaturesRequired:(NSUInteger)signaturesRequired;
+
 
 // Binary representation
 - (NSData*) data;
@@ -57,6 +72,8 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 
 // Returns YES if the script is "<pubkey> OP_CHECKSIG".
 // This is old-style script mostly replaced by a more compact "Hash160" one.
+// It is used for "send to IP" transactions. You connect to an IP address, receive
+// a pubkey and send money to this key. However, this method is almost never used for security reasons.
 - (BOOL) isPublicKeyScript;
 
 // Returns YES if the script is "OP_DUP OP_HASH160 <20-byte hash> OP_EQUALVERIFY OP_CHECKSIG"
@@ -69,19 +86,25 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // P2SH base58-encoded addresses start with "3" (e.g. "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8").
 - (BOOL) isPayToScriptHashScript; // aka P2SH
 
-// Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" where N is 3 or less.
-// Scripts with up to 3 signatures are considered standard, but you can create more complex ones.
+// Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" where N is up to 3.
+// Scripts with up to 3 signatures are considered standard and relayed quickly, but you can create more complex ones.
 - (BOOL) isStandardMultisignatureScript;
 
-// Standard script redeeming to a pubkey hash (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG)
-// or a P2SH address. Address is encoded in Base58.
-+ (instancetype) scriptWithAddress:(NSString*)address;
+// Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" with any valid N or M.
+- (BOOL) isMultisignatureScript;
+
+
 
 // Used by BitcoinQT within OP_CHECKSIG to not relay transactions with non-canonical form of signature or a public key.
 // Normally, signatures and pubkeys are encoded in a canonical form and majority of the transactions are good.
 // Unfortunately, sometimes OpenSSL segfaults on some garbage data in place of a signature or a pubkey.
 // Read more on that here: https://bitcointalk.org/index.php?topic=8392.80
-+ (BOOL) isCanonicalSignature:(NSData*)data;
-+ (BOOL) isCanonicalPublicKey:(NSData*)data;
+
+// Note: non-canonical pubkey could still be valid for EC internals of OpenSSL and thus accepted by Bitcoin nodes.
++ (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut;
+
+// Checks if the script signature is canonical.
+// The signature is assumed to include hash type (see BTCSignatureHashType).
++ (BOOL) isCanonicalSignature:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut;
 
 @end
