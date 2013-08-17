@@ -28,19 +28,19 @@
     else if (size == 0xfd)
     {
         if (dataLength < 3) return 0;
-        if (valueOut) *valueOut = ((unsigned short*)((uint8_t*)data.bytes+1))[0];
+        if (valueOut) *valueOut = CFSwapInt16LittleToHost(((uint16_t*)((uint8_t*)data.bytes+1))[0]);
         return 3;
     }
     else if (size == 0xfe)
     {
         if (dataLength < 5) return 0;
-        if (valueOut) *valueOut = ((unsigned int*)((uint8_t*)data.bytes+1))[0];
+        if (valueOut) *valueOut = CFSwapInt32LittleToHost(((uint32_t*)((uint8_t*)data.bytes+1))[0]);
         return 5;
     }
     else
     {
         if (dataLength < 9) return 0;
-        if (valueOut) *valueOut = ((uint64_t*)((uint8_t*)data.bytes+1))[0];
+        if (valueOut) *valueOut = CFSwapInt64LittleToHost(((uint64_t*)((uint8_t*)data.bytes+1))[0]);
         return 9;
     }
     return 0;
@@ -68,18 +68,18 @@
     }
     else if (size == 0xfd)
     {
-        unsigned short value = 0;
+        uint16_t value = 0;
         NSInteger readSize = [stream read:(uint8_t*)&value maxLength:sizeof(value)];
         if (readSize < sizeof(value)) return 0;
-        if (valueOut) *valueOut = value;
+        if (valueOut) *valueOut = CFSwapInt16LittleToHost(value);
         return 1 + sizeof(value);
     }
     else if (size == 0xfe)
     {
-        unsigned int value = 0;
+        uint32_t value = 0;
         NSInteger readSize = [stream read:(uint8_t*)&value maxLength:sizeof(value)];
         if (readSize < sizeof(value)) return 0;
-        if (valueOut) *valueOut = value;
+        if (valueOut) *valueOut = CFSwapInt32LittleToHost(value);
         return 1 + sizeof(value);
     }
     else
@@ -87,7 +87,7 @@
         uint64_t value = 0;
         NSInteger readSize = [stream read:(uint8_t*)&value maxLength:sizeof(value)];
         if (readSize < sizeof(value)) return 0;
-        if (valueOut) *valueOut = value;
+        if (valueOut) *valueOut = CFSwapInt64LittleToHost(value);
         return 1 + sizeof(value);
     }
 }
@@ -128,7 +128,7 @@
     else if (value <= 0xffff)
     {
         unsigned char size = 0xfd;
-        unsigned short compactValue = value;
+        uint16_t compactValue = CFSwapInt16HostToLittle((uint16_t)value);
         NSMutableData* data = [NSMutableData dataWithLength:1 + sizeof(compactValue)];
         [data replaceBytesInRange:NSMakeRange(0, 1) withBytes:&size];
         [data replaceBytesInRange:NSMakeRange(1, sizeof(compactValue)) withBytes:&compactValue];
@@ -137,7 +137,7 @@
     else if (value <= 0xffffffffUL)
     {
         unsigned char size = 0xfe;
-        unsigned int compactValue = (unsigned int)value;
+        uint32_t compactValue = CFSwapInt32HostToLittle((uint32_t)value);
         NSMutableData* data = [NSMutableData dataWithLength:1 + sizeof(compactValue)];
         [data replaceBytesInRange:NSMakeRange(0, 1) withBytes:&size];
         [data replaceBytesInRange:NSMakeRange(1, sizeof(compactValue)) withBytes:&compactValue];
@@ -146,7 +146,7 @@
     else
     {
         unsigned char size = 0xff;
-        uint64_t compactValue = value;
+        uint64_t compactValue = CFSwapInt64HostToLittle(value);
         NSMutableData* data = [NSMutableData dataWithLength:1 + sizeof(compactValue)];
         [data replaceBytesInRange:NSMakeRange(0, 1) withBytes:&size];
         [data replaceBytesInRange:NSMakeRange(1, sizeof(compactValue)) withBytes:&compactValue];
