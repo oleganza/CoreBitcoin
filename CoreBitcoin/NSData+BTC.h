@@ -20,7 +20,7 @@ void BTCSecureClearCString(char *s);
 - (id) initWithHexCString:(const char*)hexCString;
 
 // Returns a copy of data with reversed byte order.
-// This is useful in Bitcoin: things get reversed here and there for no reason.
+// This is useful in Bitcoin: things get reversed here and there all the time.
 - (NSData*) reversedData;
 // Returns a reversed mutable copy so you wouldn't need to make another mutable copy from -reversedData
 - (NSMutableData*) reversedMutableData;
@@ -35,9 +35,7 @@ void BTCSecureClearCString(char *s);
 - (NSString*) hexString;
 - (NSString*) hexUppercaseString;
 
-// Encrypts/decrypts data using the key. IV is null (you should use random or salted key).
-+ (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key;
-+ (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key;
+// Encrypts/decrypts data using the key.
 + (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector;
 + (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector;
 
