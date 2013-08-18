@@ -32,6 +32,12 @@ static const int COINBASE_MATURITY = 100;
 // Threshold for -[BTCTransaction lockTime]: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC (max block number is in year ≈11521)
 
+// P2SH BIP16 didn't become active until Apr 1 2012. All txs before this timestamp should not be verified with P2SH rule.
+static const uint32_t BTC_BIP16_TIMESTAMP = 1333238400;
+
+// Scripts longer than 10000 bytes are invalid.
+static const NSUInteger BTC_SCRIPT_MAX_SIZE = 10000;
+
 
 // Soft Rules (can bend these without becoming incompatible with everyone)
 
