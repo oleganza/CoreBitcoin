@@ -50,13 +50,18 @@ typedef NS_ENUM(unsigned char, BTCOpcode)
     
     OP_NOP      = 0x61, // Does nothing
     OP_VER      = 0x62, // Not assigned. If executed, transaction is invalid.
+    
+    // BitcoinQT executes all operators from OP_IF to OP_ENDIF even inside "non-executed" branch (to keep track of nesting).
+    // Since OP_VERIF and OP_VERNOTIF are not assigned, even inside a non-executed branch they will fall in "default:" switch case
+    // and cause the script to fail. Some other ops like OP_VER can be present inside non-executed branch because they'll be skipped.
     OP_IF       = 0x63, // If the top stack value is not 0, the statements are executed. The top stack value is removed.
     OP_NOTIF    = 0x64, // If the top stack value is 0, the statements are executed. The top stack value is removed.
-    OP_VERIF    = 0x65, // Not assigned. If executed, transaction is invalid.
-    OP_VERNOTIF = 0x66, // Not assigned. If executed, transaction is invalid.
+    OP_VERIF    = 0x65, // Not assigned. Script is invalid with that opcode (even if inside non-executed branch).
+    OP_VERNOTIF = 0x66, // Not assigned. Script is invalid with that opcode (even if inside non-executed branch).
     OP_ELSE     = 0x67, // Executes code if the previous OP_IF or OP_NOTIF was not executed.
     OP_ENDIF    = 0x68, // Finishes if/else block
-    OP_VERIFY   = 0x69, // Removes item from the stack if it's not 0x0 or 0x80 (negative zero). Otherwise, marks script as invalid.
+    
+    OP_VERIFY   = 0x69, // Removes item from the stack if it's not 0x00 or 0x80 (negative zero). Otherwise, marks script as invalid.
     OP_RETURN   = 0x6a, // Marks transaction as invalid.
     
     // Stack ops
