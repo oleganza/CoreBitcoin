@@ -43,9 +43,12 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 - (id) init;
 
 // Inits with binary data. If data is empty or nil, empty script is initialized.
+// If data is invalid script (e.g. a length prefix is not followed by matching amount of data), nil is returned.
 - (id) initWithData:(NSData*)data;
 
 // Initializes script with space-separated hex-encoded commands and data.
+// If script is invalid, nil is returned.
+// Note: the string may be ambigious. You are safe if it does not have 3..5-byte data or integers.
 - (id) initWithString:(NSString*)string;
 
 // Standard script redeeming to a pubkey hash (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG)
@@ -62,6 +65,10 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 - (NSData*) data;
 
 // Space-separated hex-encoded commands and data.
+// Small integers (data fitting in 4 bytes) incuding OP_<N> are represented with decimal digits.
+// Other opcodes are represented with their names.
+// Other data is hex-encoded.
+// This representation is inherently ambiguous, so don't use it for anything serious.
 - (NSString*) string;
 
 // Returns YES if the script is considered standard and can be relayed and mined normally by enough nodes.

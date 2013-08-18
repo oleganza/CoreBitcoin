@@ -18,7 +18,7 @@ typedef NS_ENUM(unsigned char, BTCOpcode)
     OP_FALSE = OP_0,
     
     // Any opcode with value < PUSHDATA1 is a length of the string to be pushed on the stack.
-    // So opcode 0x01 is followed by 1 byte of data, 0x09 by 9 bytes and so on up to 0x4B (75 bytes)
+    // So opcode 0x01 is followed by 1 byte of data, 0x09 by 9 bytes and so on up to 0x4b (75 bytes)
     
     // PUSHDATA<N> opcode is followed by N-byte length of the string that follows.
     OP_PUSHDATA1 = 0x4c, // followed by a 1-byte length of the string to push (allows pushing 0..255 bytes).

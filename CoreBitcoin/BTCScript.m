@@ -4,12 +4,13 @@
 #import "BTCAddress.h"
 #import "BTCBigNumber.h"
 #import "BTCErrors.h"
+#import "NSData+BTC.h"
 
 @interface BTCScript ()
 @end
 
 @implementation BTCScript {
-    // An array of NSData objects (pushing data) and NSNumber objects (with opcodes)
+    // An array of NSData objects (pushing data) or NSNumber objects (containing opcodes)
     NSArray* _chunks;
     
     // Cached serialized representations for -data and -string methods.
@@ -36,6 +37,7 @@
     if (self = [super init])
     {
         _chunks = [self parseData:data ?: [NSData data]];
+        if (!_chunks) return nil;
     }
     return self;
 }
@@ -45,6 +47,7 @@
     if (self = [super init])
     {
         _chunks = [self parseString:string ?: @""];
+        if (!_chunks) return nil;
     }
     return self;
 }
@@ -134,7 +137,53 @@
 {
     if (!_data)
     {
-        // TODO: serialize in binary
+        NSMutableData* buffer = [NSMutableData data];
+        for (id chunk in _chunks)
+        {
+            if ([chunk isKindOfClass:[NSNumber class]])
+            {
+                BTCOpcode opcode = [chunk unsignedCharValue];
+                [buffer appendBytes:&opcode length:sizeof(opcode)];
+            }
+            else if ([chunk isKindOfClass:[NSData class]])
+            {
+                NSData* data = chunk;
+                
+                // First append the length. If it's smaller than OP_PUSHDATA1, the opcode is the length itself.
+                if (data.length < OP_PUSHDATA1)
+                {
+                    unsigned char len = data.length;
+                    [buffer appendBytes:&len length:sizeof(len)];
+                }
+                else if (data.length <= 0xff)
+                {
+                    unsigned char pushdata1 = OP_PUSHDATA1;
+                    unsigned char len = data.length;
+                    [buffer appendBytes:&pushdata1 length:sizeof(pushdata1)];
+                    [buffer appendBytes:&len length:sizeof(len)];
+                }
+                else if (data.length <= 0xffff)
+                {
+                    unsigned char pushdata2 = OP_PUSHDATA2;
+                    uint16_t len = data.length;
+                    len = CFSwapInt16HostToLittle(len);
+                    [buffer appendBytes:&pushdata2 length:sizeof(pushdata2)];
+                    [buffer appendBytes:&len length:sizeof(len)];
+                }
+                else
+                {
+                    unsigned char pushdata4 = OP_PUSHDATA4;
+                    uint32_t len = (uint32_t)data.length;
+                    len = CFSwapInt32HostToLittle(len);
+                    [buffer appendBytes:&pushdata4 length:sizeof(pushdata4)];
+                    [buffer appendBytes:&len length:sizeof(len)];
+                }
+                
+                // Now append the actual data.
+                [buffer appendData:data];
+            }
+        }
+        _data = buffer;
     }
     return _data;
 }
@@ -143,21 +192,150 @@
 {
     if (!_string)
     {
-        // TODO: serialize
+        NSMutableString* buffer = [NSMutableString string];
+        
+        for (id chunk in _chunks)
+        {
+            if ([chunk isKindOfClass:[NSNumber class]])
+            {
+                BTCOpcode opcode = [chunk unsignedCharValue];
+                
+                // Some other guys (BitcoinQT, bitcoin-ruby) encode "small enough" integers in decimal numbers and do that differently.
+                // BitcoinQT encodes as a decimal number any data less than 4 bytes.
+                // bitcoin-ruby encodes 2..16 as decimals, 0 and -1 as opcode names and the rest is in hex.
+                // Now no matter which encoding you use, it will can be parsed incorrectly.
+                // Also: pushdata operations are typically encoded in a raw data which can be encoded in binary differently.
+                // This means, you'll never be able to parse a sane-looking script into only one binary.
+                // So forget about relying on parsing this thing exactly. Typically, we either have very small numbers (0..16),
+                // or very big numbers (hashes and pubkeys).
+                if (opcode == OP_0)
+                {
+                    [buffer appendString:@"0 "];
+                }
+                else if (opcode == OP_1NEGATE)
+                {
+                    [buffer appendString:@"-1 "];
+                }
+                else if (opcode >= OP_1 && opcode <= OP_16)
+                {
+                    [buffer appendFormat:@"%ul ", ((int)opcode + 1 - (int)OP_1)];
+                }
+                else
+                {
+                    [buffer appendFormat:@"%@ ", BTCNameForOpcode(opcode)];
+                }
+            }
+            else if ([chunk isKindOfClass:[NSData class]])
+            {
+                NSData* data = chunk;
+                if (data.length <= 4)
+                {
+                    // Act as BitcoinQT: small enough data is encoded as decimal integer.
+                    // This still creates ambiguity in between 4- and 5-byte values, but we typically don't
+                    // see them anywhere.
+                    BTCBigNumber* bignum = [[BTCBigNumber alloc] initWithData:data];
+                    [buffer appendFormat:@"%d ", bignum.int32value];
+                }
+                else
+                {
+                    [buffer appendFormat:@"%@ ", data.hexString];
+                }
+            }
+        }
+        
+        _string = [buffer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     return _string;
 }
 
 - (NSArray*) parseData:(NSData*)data
 {
-    // TODO: parse
-    return @[];
+    if (data.length == 0) return @[];
+    
+    NSMutableArray* chunks = [NSMutableArray array];
+    
+    int i = 0;
+    int length = data.length;
+    int endi = length - 1;
+    const uint8_t* bytes = [data bytes];
+    
+    while (i < length)
+    {
+        BTCOpcode opcode = bytes[i]; i++;
+        
+        // Push data operations.
+        if (opcode > 0 && opcode <= OP_PUSHDATA4)
+        {
+            uint32_t dataLength = 0;
+            if (opcode < OP_PUSHDATA1)
+            {
+                dataLength = opcode;
+            }
+            else if (opcode == OP_PUSHDATA1)
+            {
+                if (endi - i < 1) return nil;
+                dataLength = *(bytes + i); i++;
+            }
+            else if (opcode == OP_PUSHDATA2)
+            {
+                if (endi - i < 2) return nil;
+                memcpy(&dataLength, bytes + i, 2);
+                i += 2;
+            }
+            else if (opcode == OP_PUSHDATA4)
+            {
+                if (endi - i < 4) return nil;
+                memcpy(&dataLength, bytes + i, 4);
+                i += 4;
+            }
+            
+            if (endi - i < 0 || (unsigned int)(endi - i) < dataLength)
+                return nil;
+            
+            [chunks addObject:[data subdataWithRange:NSMakeRange(i, dataLength)]];
+            i += dataLength;
+        }
+        else
+        {
+            // Any opcode: simply add to the chunks list.
+            [chunks addObject:@(opcode)];
+        }
+    }
+    return chunks;
 }
 
 - (NSArray*) parseString:(NSString*)string
 {
-    // TODO: parse
-    return @[];
+    if (string.length == 0) return @[];
+    
+    NSMutableArray* chunks = [NSMutableArray array];
+    
+    NSArray* tokens = [string componentsSeparatedByString:@" "];
+    
+    NSRegularExpression* decimalNumberRegexp = [NSRegularExpression regularExpressionWithPattern:@"[0-9]+"
+                                                                                         options:0
+                                                                                           error:NULL];
+    
+    for (NSString* token in tokens)
+    {
+        if ([token isEqualToString:@""]) continue;
+        
+        BTCOpcode opcode = BTCNameForOpcode(token);
+        
+        // Valid opcode - immediately to the chunks
+        if (opcode != OP_INVALIDOPCODE)
+        {
+            [chunks addObject:@(opcode)];
+        }
+        else
+        {
+            // TODO.
+            //if ([decimalNumberRegexp matchesInString:<#(NSString *)#> options:<#(NSMatchingOptions)#> range:<#(NSRange)#>])
+        }
+        
+    }
+    
+    return chunks;
 }
 
 
@@ -211,6 +389,8 @@
     return _multisigSignaturesRequired > 0;
 }
 
+// If typical multisig tx is detected, sets two ivars:
+// _multisigSignaturesRequired, _multisigPublicKeys.
 - (void) detectMultisigScript
 {
     // multisig script must have at least 4 ops ("OP_1 <pubkey> OP_1 OP_CHECKMULTISIG")
