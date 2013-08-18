@@ -193,7 +193,7 @@
 
 
 
-#pragma mark - Stack Utilitites
+#pragma mark - Stack Utilities
 
 // 0 is the first item in stack, 1 is the second.
 // -1 is the last item, -2 is the pre-last item.
