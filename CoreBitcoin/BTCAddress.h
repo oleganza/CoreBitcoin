@@ -39,6 +39,9 @@
 // Standard pulic key address (19FGfswVqxNubJbh1NW8A4t51T9x9RDVWQ)
 @interface BTCPublicKeyAddress : BTCAddress
 @end
+@interface BTCPublicKeyAddressTestnet : BTCPublicKeyAddress
+@end
+
 
 // Private key in Base58 format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC...)
 @interface BTCPrivateKeyAddress : BTCAddress
@@ -46,7 +49,11 @@
 // that derived pubkey must be compressed (as this affects  the pubkey address).
 @property(nonatomic, getter = isCompressed) BOOL compressed;
 @end
+@interface BTCPrivateKeyAddressTestnet : BTCPrivateKeyAddress
+@end
 
 // P2SH address (e.g. 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8)
 @interface BTCScriptHashAddress : BTCAddress
+@end
+@interface BTCScriptHashAddressTestnet : BTCScriptHashAddress
 @end

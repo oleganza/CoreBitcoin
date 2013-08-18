@@ -6,16 +6,12 @@
 
 enum
 {
-    // TODO: Instead of using a compile-time switch macro, allow parsing testnet addresses as well as mainnet addresses.
-#ifndef TESTNET
-    BTCPublicKeyAddressVersion  = 0,
-    BTCPrivateKeyAddressVersion = 128,
-    BTCScriptHashAddressVersion = 5,
-#else
-    BTCPublicKeyAddressVersion  = 111,
-    BTCPrivateKeyAddressVersion = 239,
-    BTCScriptHashAddressVersion = 196,
-#endif
+    BTCPublicKeyAddressVersion         = 0,
+    BTCPrivateKeyAddressVersion        = 128,
+    BTCScriptHashAddressVersion        = 5,
+    BTCPublicKeyAddressVersionTestnet  = 111,
+    BTCPrivateKeyAddressVersionTestnet = 239,
+    BTCScriptHashAddressVersionTestnet = 196,
 };
 
 @interface BTCAddress ()
@@ -76,6 +72,18 @@ enum
     else if (version == BTCScriptHashAddressVersion)
     {
         address = [BTCScriptHashAddress addressWithComposedData:composedData cstring:cstring];
+    }
+    else if (version == BTCPublicKeyAddressVersionTestnet)
+    {
+        address = [BTCPublicKeyAddressTestnet addressWithComposedData:composedData cstring:cstring];
+    }
+    else if (version == BTCPrivateKeyAddressVersionTestnet)
+    {
+        address = [BTCPrivateKeyAddressTestnet addressWithComposedData:composedData cstring:cstring];
+    }
+    else if (version == BTCScriptHashAddressVersionTestnet)
+    {
+        address = [BTCScriptHashAddressTestnet addressWithComposedData:composedData cstring:cstring];
     }
     else
     {
@@ -173,15 +181,26 @@ enum
 {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPublicKeyAddressLength];
     char* buf = data.mutableBytes;
-    buf[0] = (unsigned char)BTCPublicKeyAddressVersion;
+    buf[0] = [self versionByte];
     memcpy(buf + 1, self.data.mutableBytes, BTCPublicKeyAddressLength);
     return data;
 }
 
+- (unsigned char) versionByte
+{
+    return BTCPublicKeyAddressVersion;
+}
 
 @end
 
+@implementation BTCPublicKeyAddressTestnet
 
+- (unsigned char) versionByte
+{
+    return BTCPublicKeyAddressVersionTestnet;
+}
+
+@end
 
 
 
@@ -248,7 +267,7 @@ enum
 {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPrivateKeyAddressLength + (_compressed ? 1 : 0)];
     char* buf = data.mutableBytes;
-    buf[0] = (unsigned char)BTCPrivateKeyAddressVersion;
+    buf[0] = [self versionByte];
     memcpy(buf + 1, self.data.mutableBytes, BTCPrivateKeyAddressLength);
     if (_compressed)
     {
@@ -258,9 +277,21 @@ enum
     return data;
 }
 
+- (unsigned char) versionByte
+{
+    return BTCPrivateKeyAddressVersion;
+}
+
 @end
 
+@implementation BTCPrivateKeyAddressTestnet
 
+- (unsigned char) versionByte
+{
+    return BTCPrivateKeyAddressVersionTestnet;
+}
+
+@end
 
 
 
@@ -304,9 +335,23 @@ enum
 {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCScriptHashAddressLength];
     char* buf = data.mutableBytes;
-    buf[0] = (unsigned char)BTCScriptHashAddressVersion;
+    buf[0] = [self versionByte];
     memcpy(buf + 1, self.data.mutableBytes, BTCScriptHashAddressLength);
     return data;
+}
+
+- (unsigned char) versionByte
+{
+    return BTCScriptHashAddressVersion;
+}
+
+@end
+
+@implementation BTCScriptHashAddressTestnet
+
+- (unsigned char) versionByte
+{
+    return BTCScriptHashAddressVersionTestnet;
 }
 
 @end
