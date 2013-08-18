@@ -3,7 +3,7 @@
 #import <Foundation/Foundation.h>
 
 // Bitcoin-flavoured big number wrapping OpenSSL BIGNUM.
-@interface BTCBigNumber : NSObject
+@interface BTCBigNumber : NSObject <NSCopying>
 
 @property(nonatomic) uint32_t compact; // compact representation used for the difficulty target
 @property(nonatomic) uint32_t uint32value;

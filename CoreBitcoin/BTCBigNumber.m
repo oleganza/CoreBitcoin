@@ -108,7 +108,7 @@
 
 
 
-- (id) copy
+- (id) copyWithZone:(NSZone *)zone
 {
     BTCBigNumber* to = [[BTCBigNumber alloc] init];
     if (BN_copy(&(to->_bignum), &_bignum))
