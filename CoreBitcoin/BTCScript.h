@@ -37,7 +37,7 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 };
 
 @class BTCAddress;
-@interface BTCScript : NSObject
+@interface BTCScript : NSObject<NSCopying>
 
 // Initialized an empty script.
 - (id) init;
@@ -87,7 +87,7 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // This is the most popular type that is used to pay to "addresses" (e.g. 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG).
 - (BOOL) isHash160Script;
 
-// Returns YES if the script is "... OP_HASH160 <20-byte hash> OP_EQUAL"
+// Returns YES if the script is "OP_HASH160 <20-byte hash> OP_EQUAL"
 // This is later added script type that allows sender not to worry about complex redemption scripts (and not pay tx fees).
 // Recipient must provide a serialized script which matches the hash to redeem the output.
 // P2SH base58-encoded addresses start with "3" (e.g. "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8").
@@ -99,6 +99,43 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 
 // Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" with any valid N or M.
 - (BOOL) isMultisignatureScript;
+
+// Returns YES if the script consists of pushdata operations only.
+- (BOOL) isPushOnly;
+
+// Enumerates all available operations.
+//   opIndex - index of the current operation: 0..(N-1) where N is number of ops.
+//   opcode - an opcode or OP_INVALIDOPCODE if pushdata is not nil.
+//   pushdata - data to push. If the operation is OP_PUSHDATA<1,2,4> or OP_<N>, then this will contain data to push (opcode will be OP_INVALIDOPCODE and should be ignored)
+//   stop - if set to YES, stops iterating.
+- (void) enumerateOperations:(void(^)(NSUInteger opIndex, BTCOpcode opcode, NSData* pushdata, BOOL* stop))block;
+
+
+
+
+#pragma mark - Modification API
+
+
+// Adds an opcode to the script.
+- (void) appendOpcode:(BTCOpcode)opcode;
+
+// Adds arbitrary data to the script. nil does nothing, empty data is allowed.
+- (void) appendData:(NSData*)data;
+
+// Adds opcodes and data from another script.
+// If script is nil, does nothing.
+- (void) appendScript:(BTCScript*)otherScript;
+
+// Returns a sub-script from the specified index (inclusively).
+// Raises an exception if index is accessed out of bounds.
+// Returns an empty subscript if the index is of the last op.
+- (BTCScript*) subScriptFromIndex:(NSUInteger)index;
+
+// Returns a sub-script to the specified index (exclusively).
+// Raises an exception if index is accessed out of bounds.
+// Returns an empty subscript if the index is 0.
+- (BTCScript*) subScriptToIndex:(NSUInteger)index;
+
 
 
 
@@ -113,5 +150,8 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // Checks if the script signature is canonical.
 // The signature is assumed to include hash type (see BTCSignatureHashType).
 + (BOOL) isCanonicalSignature:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut;
+
+
+
 
 @end

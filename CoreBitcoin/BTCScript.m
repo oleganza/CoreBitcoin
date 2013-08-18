@@ -333,6 +333,11 @@
         }
         else
         {
+            // If there is a string of decimal numbers of 1..10 bytes, read it as a decimal integer.
+            // This cannot ever be accurate because bigger data chunk may be encoded in hex into the same token.
+            // Keeping this in mind, I just read 10 bytes and don't care if it overflows int32.
+            // Numbers close to maximum cannot be reliably parsed anyway. Thankfully, this parser is not used in the protocol
+            // and transactions with such numbers normally do not happen.
             if ([decimalNumberRegexp numberOfMatchesInString:token options:0 range:NSMakeRange(0, token.length)] > 0
                 && token.length <= 10)
             {
@@ -401,6 +406,17 @@
         && [self opcodeAtIndex:2] == OP_EQUAL;
 }
 
+// Returns YES if the script ends with P2SH check.
+// Not used in CoreBitcoin. Similar code is used in bitcoin-ruby. I don't know if we'll ever need it.
+- (BOOL) endsWithPayToScriptHash
+{
+    if (_chunks.count < 3) return NO;
+    
+    return [self opcodeAtIndex:-3] == OP_HASH160
+        && [self pushdataAtIndex:-2].length == 20
+        && [self opcodeAtIndex:-1] == OP_EQUAL;
+}
+
 - (BOOL) isStandardMultisignatureScript
 {
     if (![self isMultisignatureScript]) return NO;
@@ -449,6 +465,109 @@
     _multisigSignaturesRequired = m;
     _multisigPublicKeys = list;
 }
+
+- (BOOL) isPushOnly
+{
+    for (id chunk in _chunks)
+    {
+        if ([chunk isKindOfClass:[NSNumber class]])
+        {
+            BTCOpcode opcode = [chunk unsignedCharValue];
+            if (opcode > OP_16) return NO;
+        }
+        else
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+
+- (void) enumerateOperations:(void(^)(NSUInteger opIndex, BTCOpcode opcode, NSData* pushdata, BOOL* stop))block
+{
+    if (!block) return;
+    
+    NSUInteger opIndex = 0;
+    for (id chunk in _chunks)
+    {
+        if ([chunk isKindOfClass:[NSNumber class]])
+        {
+            BTCOpcode opcode = [chunk unsignedCharValue];
+            BOOL stop = NO;
+            block(opIndex, opcode, nil, &stop);
+            if (stop) return;
+        }
+        else if ([chunk isKindOfClass:[NSData class]])
+        {
+            NSData* data = chunk;
+            BOOL stop = NO;
+            block(opIndex, OP_INVALIDOPCODE, data, &stop);
+            if (stop) return;
+        }
+        opIndex++;
+    }
+}
+
+
+
+
+#pragma mark - Modification
+
+
+
+- (void) invalidatedSerialization
+{
+    _data = nil;
+    _string = nil;
+    _multisigSignaturesRequired = 0;
+    _multisigPublicKeys = nil;
+}
+
+- (void) appendOpcode:(BTCOpcode)opcode
+{
+    _chunks = [_chunks ?: @[] arrayByAddingObject:@(opcode)];
+    [self invalidatedSerialization];
+}
+
+- (void) appendData:(NSData*)data
+{
+    if (!data) return;
+    _chunks = [_chunks ?: @[] arrayByAddingObject:data];
+    [self invalidatedSerialization];
+}
+
+- (void) appendScript:(BTCScript*)otherScript
+{
+    if (!otherScript) return;
+    
+    _chunks = [_chunks ?: @[] arrayByAddingObjectsFromArray:otherScript->_chunks];
+    
+    [self invalidatedSerialization];
+}
+
+- (BTCScript*) subScriptFromIndex:(NSUInteger)index
+{
+    BTCScript* script = [[BTCScript alloc] init];
+    script->_chunks = [_chunks subarrayWithRange:NSMakeRange(index, _chunks.count - index)];
+    return script;
+}
+
+- (BTCScript*) subScriptToIndex:(NSUInteger)index
+{
+    BTCScript* script = [[BTCScript alloc] init];
+    script->_chunks = [_chunks subarrayWithRange:NSMakeRange(0, index)];
+    return script;
+}
+
+- (id) copyWithZone:(NSZone *)zone
+{
+    BTCScript* script = [[BTCScript alloc] init];
+    script->_chunks = [_chunks copy];
+    return script;
+}
+
+
 
 
 
