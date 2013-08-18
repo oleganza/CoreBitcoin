@@ -312,7 +312,11 @@
     
     NSArray* tokens = [string componentsSeparatedByString:@" "];
     
-    NSRegularExpression* decimalNumberRegexp = [NSRegularExpression regularExpressionWithPattern:@"[0-9]+"
+    NSRegularExpression* decimalNumberRegexp = [NSRegularExpression regularExpressionWithPattern:@"^-?[0-9]+$"
+                                                                                         options:0
+                                                                                           error:NULL];
+    
+    NSRegularExpression* hexDataRegexp = [NSRegularExpression regularExpressionWithPattern:@"^[0-9a-fA-F]+$"
                                                                                          options:0
                                                                                            error:NULL];
     
@@ -322,17 +326,40 @@
         
         BTCOpcode opcode = BTCNameForOpcode(token);
         
-        // Valid opcode - immediately to the chunks
+        // Valid opcode - put as is.
         if (opcode != OP_INVALIDOPCODE)
         {
             [chunks addObject:@(opcode)];
         }
         else
         {
-            // TODO.
-            //if ([decimalNumberRegexp matchesInString:<#(NSString *)#> options:<#(NSMatchingOptions)#> range:<#(NSRange)#>])
+            if ([decimalNumberRegexp numberOfMatchesInString:token options:0 range:NSMakeRange(0, token.length)] > 0
+                && token.length <= 10)
+            {
+                NSInteger integer = [token integerValue];
+                BTCOpcode opcode = BTCOpcodeForSmallInteger(integer);
+                if (opcode != OP_INVALIDOPCODE)
+                {
+                    [chunks addObject:@(opcode)];
+                }
+                else
+                {
+                    BTCBigNumber* bignum = [[BTCBigNumber alloc] initWithInt64:integer];
+                    [chunks addObject:bignum.data];
+                }
+            }
+            else if ([hexDataRegexp numberOfMatchesInString:token options:0 range:NSMakeRange(0, token.length)] > 0)
+            {
+                NSData* data = [[NSData alloc] initWithHexString:token];
+                if (!data) return nil;
+                [chunks addObject:data];
+            }
+            else
+            {
+                // Unrecognized token or invalid number, or invalid hex string.
+                return nil;
+            }
         }
-        
     }
     
     return chunks;
