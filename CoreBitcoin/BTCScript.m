@@ -255,7 +255,7 @@
     NSMutableArray* chunks = [NSMutableArray array];
     
     int i = 0;
-    int length = data.length;
+    int length = (int)data.length;
     int endi = length - 1;
     const uint8_t* bytes = [data bytes];
     
@@ -324,7 +324,7 @@
     {
         if ([token isEqualToString:@""]) continue;
         
-        BTCOpcode opcode = BTCNameForOpcode(token);
+        BTCOpcode opcode = BTCOpcodeForName(token);
         
         // Valid opcode - put as is.
         if (opcode != OP_INVALIDOPCODE)
