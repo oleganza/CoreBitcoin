@@ -4,7 +4,7 @@
 #import "BTCAddress.h"
 #import "BTCBigNumber.h"
 #import "BTCErrors.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 
 @interface BTCScript ()
 @end
@@ -358,7 +358,7 @@
             }
             else if ([hexDataRegexp numberOfMatchesInString:token options:0 range:NSMakeRange(0, token.length)] > 0)
             {
-                NSData* data = [[NSData alloc] initWithHexString:token];
+                NSData* data = BTCDataWithHexString(token);
                 if (!data) return nil;
                 [chunks addObject:data];
             }

@@ -3,7 +3,7 @@
 #import "BTCTransactionInput.h"
 #import "BTCScript.h"
 #import "BTCProtocolSerialization.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 
 @interface BTCTransactionInput ()
 @property(nonatomic, readwrite) NSData* data;
@@ -55,13 +55,13 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if (self = [self init])
     {
         NSString* prevHashString = (dictionary[@"prev_out"] ?: @{})[@"hash"];
-        if (prevHashString) _previousHash = [[[NSData alloc] initWithHexString:prevHashString] reversedData];
+        if (prevHashString) _previousHash = BTCReversedData(BTCDataWithHexString(prevHashString));
         NSNumber* prevIndexNumber = (dictionary[@"prev_out"] ?: @{})[@"n"];
         if (prevIndexNumber) _previousIndex = prevIndexNumber.unsignedIntValue;
         
         if (dictionary[@"coinbase"])
         {
-            _signatureScript = [[BTCScript alloc] initWithData:[[NSData alloc] initWithHexString:dictionary[@"coinbase"]]];
+            _signatureScript = [[BTCScript alloc] initWithData:BTCDataWithHexString(dictionary[@"coinbase"])];
         }
         else
         {
@@ -76,7 +76,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
             {
                 if (scriptSig[@"hex"])
                 {
-                    _signatureScript = [[BTCScript alloc] initWithData:[[NSData alloc] initWithHexString:scriptSig[@"hex"]]];
+                    _signatureScript = [[BTCScript alloc] initWithData:BTCDataWithHexString(scriptSig[@"hex"])];
                 }
                 else if (scriptSig[@"asm"])
                 {
@@ -160,7 +160,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     dict[@"prev_out"] = @{
-                        @"hash": _previousHash.reversedData.hexString, // transaction hashes are reversed
+                        @"hash": BTCReversedData(_previousHash).hexString, // transaction hashes are reversed
                         @"n": @(_previousIndex),
                         };
     

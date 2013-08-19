@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCEllipticCurveKey.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
@@ -108,7 +108,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     
     if (!ECDSA_sign(0, (unsigned char*)hash.bytes, (int)hash.length, signature.mutableBytes, &sigSize, _key))
     {
-        [signature clear];
+        BTCDataClear(signature);
         return nil;
     }
     [signature setLength:sigSize];

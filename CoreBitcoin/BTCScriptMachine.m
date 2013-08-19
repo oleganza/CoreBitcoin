@@ -9,7 +9,7 @@
 #import "BTCBigNumber.h"
 #import "BTCErrors.h"
 #import "BTCUnitsAndLimits.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 
 @interface BTCScriptMachine ()
 @end

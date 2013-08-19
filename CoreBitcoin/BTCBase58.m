@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCBase58.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 #import <openssl/bn.h>
 
 static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -77,7 +77,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     NSMutableData* bndata = [NSMutableData dataWithLength:bnsize];
     BN_bn2mpi(&bn, bndata.mutableBytes);
     [bndata replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
-    [bndata reverse];
+    BTCDataReverse(bndata);
     
     // Trim off sign byte if present
     bnsize = bndata.length;
@@ -100,7 +100,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     [result replaceBytesInRange:NSMakeRange(0, bnsize) withBytes:bndata.bytes length:bnsize];
     
     // Convert little endian data to big endian
-    [result reverse];
+    BTCDataReverse(result);
     
     finish();
     
@@ -163,15 +163,17 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     
     // Convert big endian data to little endian.
     // Extra zero at the end make sure bignum will interpret as a positive number.
-    NSMutableData* tmp = [self reversedMutableData];
+    NSMutableData* tmp = BTCReversedMutableData(self);
     tmp.length += 1;
     
     // Convert little endian data to bignum
     {
         NSUInteger size = tmp.length;
         NSMutableData* mdata = [tmp mutableCopy];
+        
         // Reverse to convert to OpenSSL bignum endianess
-        [mdata reverse];
+        BTCDataReverse(mdata);
+        
         // BIGNUM's byte stream format expects 4 bytes of
         // big endian size data info at the front
         [mdata replaceBytesInRange:NSMakeRange(0, 0) withBytes:"\0\0\0\0" length:4];
@@ -210,13 +212,13 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     }
     
     // Convert little endian std::string to big endian
-    [stringData reverse];
+    BTCDataReverse(stringData);
     
     [stringData appendBytes:"" length:1];
     
     char* r = malloc(stringData.length);
     memcpy(r, stringData.bytes, stringData.length);
-    [stringData clear];
+    BTCDataClear(stringData);
     return r;
 }
 
@@ -228,7 +230,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     NSData* checksum = [data doubleSHA256];
     [data appendBytes:checksum.bytes length:4];
     char* result = [data base58CString];
-    [data clear];
+    BTCDataClear(data);
     return result;
 }
 

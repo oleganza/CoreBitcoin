@@ -4,7 +4,7 @@
 #import "BTCTransactionInput.h"
 #import "BTCTransactionOutput.h"
 #import "BTCProtocolSerialization.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 
 @interface BTCTransaction ()
 @property(nonatomic, readwrite) NSData* transactionHash;
@@ -136,7 +136,7 @@
 {
     if (!_displayTransactionHash)
     {
-        _displayTransactionHash = self.transactionHash.reversedData.hexString;
+        _displayTransactionHash = BTCReversedData(self.transactionHash).hexString;
     }
     return _displayTransactionHash;
 }

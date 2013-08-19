@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCBigNumber+Tests.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 
 @implementation BTCBigNumber (Tests)
 
@@ -35,7 +35,7 @@
     // Negative zero
     {
         BTCBigNumber* zeroBN = [BTCBigNumber zero];
-        BTCBigNumber* negativeZeroBN = [[BTCBigNumber alloc] initWithData:[[NSData alloc] initWithHexString:@"80"]];
+        BTCBigNumber* negativeZeroBN = [[BTCBigNumber alloc] initWithData:BTCDataWithHexString(@"80")];
         BTCBigNumber* zeroWithEmptyDataBN = [[BTCBigNumber alloc] initWithData:[NSData data]];
         
         //NSLog(@"negativeZeroBN.data = %@", negativeZeroBN.data);

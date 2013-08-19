@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCBigNumber.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 #import <openssl/bn.h>
 
 #define BTCBigNumberCompare(a, b) (BN_cmp(&(a->_bignum), &(b->_bignum)))
@@ -521,7 +521,7 @@
     NSMutableData* data = [NSMutableData dataWithLength:size];
     BN_bn2mpi(&_bignum, data.mutableBytes);
     [data replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
-    [data reverse];
+    BTCDataReverse(data);
     return data;
 }
 
@@ -530,7 +530,7 @@
     NSUInteger size = data.length;
     NSMutableData* mdata = [data mutableCopy];
     // Reverse to convert to OpenSSL bignum endianess
-    [mdata reverse];
+    BTCDataReverse(mdata);
     // BIGNUM's byte stream format expects 4 bytes of
     // big endian size data info at the front
     [mdata replaceBytesInRange:NSMakeRange(0, 0) withBytes:"\0\0\0\0" length:4];

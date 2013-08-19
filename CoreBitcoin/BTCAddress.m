@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCAddress.h"
-#import "NSData+BTC.h"
+#import "BTCData.h"
 #import "BTCBase58.h"
 
 enum
@@ -92,7 +92,7 @@ enum
     }
     
     // Securely erase decoded address data
-    [composedData clear];
+    BTCDataClear(composedData);
     
     return address;
 }
@@ -126,7 +126,7 @@ enum
     {
         NSMutableData* data = [self dataForBase58Encoding];
         _cstring = [data base58CheckCString];
-        [data clear];
+        BTCDataClear(data);
     }
     return _cstring;
 }
@@ -141,7 +141,7 @@ enum
 - (void) clear
 {
     BTCSecureClearCString(_cstring);
-    [_data clear];
+    BTCDataClear(_data);
 }
 
 @end

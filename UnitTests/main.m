@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #import "BTCBigNumber+Tests.h"
-#import "NSData+BTC_Tests.h"
+#import "BTCData+Tests.h"
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
 
