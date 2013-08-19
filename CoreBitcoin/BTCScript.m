@@ -188,7 +188,7 @@
     return _data;
 }
 
-- (id) string
+- (NSString*) string
 {
     if (!_string)
     {
