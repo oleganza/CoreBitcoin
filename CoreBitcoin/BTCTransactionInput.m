@@ -65,7 +65,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
         }
         else
         {
-            // BitcoinQT RPC creates {"asm": ..., "hex": ...} dictionary for this key instead of an ASM-like string like bitcoin-ruby and bitcoin-jq.
+            // BitcoinQT RPC creates {"asm": ..., "hex": ...} dictionary for this key instead of an ASM-like string like bitcoin-ruby and bitcoinjs.
             id scriptSig = dictionary[@"scriptSig"];
             
             if ([scriptSig isKindOfClass:[NSString class]])
