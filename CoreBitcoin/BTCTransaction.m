@@ -297,7 +297,7 @@
 
 + (void) setMinimumFee:(BTCSatoshi)fee
 {
-    fee = MIN(fee, MAX_MONEY);
+    fee = MIN(fee, BTC_MAX_MONEY);
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:fee] forKey:@"BTCTransactionMinimumFee"];
 }
 
@@ -311,7 +311,7 @@
 
 + (void) setMinimumRelayFee:(BTCSatoshi)fee
 {
-    fee = MIN(fee, MAX_MONEY);
+    fee = MIN(fee, BTC_MAX_MONEY);
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:fee] forKey:@"BTCTransactionMinimumRelayFee"];
 }
 
@@ -373,14 +373,14 @@
     }
     
     // Raise the price as the block approaches full
-    if (baseBlockSize != 1 && newBlockSize >= MAX_BLOCK_SIZE_GEN/2)
+    if (baseBlockSize != 1 && newBlockSize >= BTC_MAX_BLOCK_SIZE_GEN/2)
     {
-        if (newBlockSize >= MAX_BLOCK_SIZE_GEN)
-            return MAX_MONEY;
-        minFee *= MAX_BLOCK_SIZE_GEN / (MAX_BLOCK_SIZE_GEN - newBlockSize);
+        if (newBlockSize >= BTC_MAX_BLOCK_SIZE_GEN)
+            return BTC_MAX_MONEY;
+        minFee *= BTC_MAX_BLOCK_SIZE_GEN / (BTC_MAX_BLOCK_SIZE_GEN - newBlockSize);
     }
     
-    if (minFee < 0 || minFee > MAX_MONEY) minFee = MAX_MONEY;
+    if (minFee < 0 || minFee > BTC_MAX_MONEY) minFee = BTC_MAX_MONEY;
     
     return minFee;
 }

@@ -5,6 +5,7 @@
 void *BTCSecureMemset(void *v, int c, size_t n);
 void BTCSecureClearCString(char *s);
 
+// TODO: rewrite all of these into functions to avoid issues with losing category methods during linking.
 @interface NSData (BTC)
 
 // Init with securely random byte string from /dev/random
