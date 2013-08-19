@@ -183,6 +183,12 @@
         return NO;
     }
     
+    if (script.data.length > BTC_SCRIPT_MAX_SIZE)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Script binary is too long.", @"")}];
+        return NO;
+    }
+
     // TODO
     
     return NO;
