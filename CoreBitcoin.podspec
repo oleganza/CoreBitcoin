@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/knickmack/CoreBitcoin.git", :branch => "feature-podspec", :tag => "0.0.1" }
   s.source_files  = 'CoreBitcoin', 'openssl/include/openssl/*.h'
   s.libraries = 'libcrypto', 'libssl'
+  s.requires_arc = true
   s.xcconfig = {
     'HEADER_SEARCH_PATHS' => '$(SRCROOT)/CoreBitcoin/openssl/include',
     'LIBRARY_SEARCH_PATHS' => '$(SRCROOT)/CoreBitcoin/openssl/lib'
