@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.license      = 'WTFPL'
   s.author       = { "Oleg Andreev" => "oleganza@gmail.com" }
   s.platform     = :osx, '10.8'
-  s.source       = { :git => "https://github.com/knickmack/CoreBitcoin.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/knickmack/CoreBitcoin.git", :branch => "feature-podspec", :tag => "0.0.1" }
   s.source_files  = 'CoreBitcoin'
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
