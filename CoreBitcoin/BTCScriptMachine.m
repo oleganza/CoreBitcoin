@@ -15,6 +15,10 @@
 @end
 
 // We try to match BitcoinQT code as close as possible to avoid subtle incompatibilities.
+// The design might not look optimal to everyone, but I prefer to match the behaviour first, then document it well,
+// then refactor it with even more documentation for every subtle decision.
+// Think of an independent auditor who has to read several sources to check if they are compatible in every little
+// decision they make. Proper documentation and cross-references will help this guy a lot.
 @implementation BTCScriptMachine {
     
     // Stack contains NSData objects that are interpreted as numbers, bignums, booleans or raw data when needed.
@@ -23,8 +27,11 @@
     // Used in ALTSTACK ops.
     NSMutableArray* _altStack;
     
-    // Holds array of @YES and @NO values to keep track of nested OP_IF and OP_ELSE.
+    // Holds an array of @YES and @NO values to keep track of if/else branches.
     NSMutableArray* _conditionStack;
+    
+    // Keeps number of executed operations to check for limit.
+    NSInteger _opCount;
 }
 
 - (id) init
@@ -43,6 +50,7 @@
     _stack = [NSMutableArray array];
     _altStack = [NSMutableArray array];
     _conditionStack = [NSMutableArray array];
+    _opCount = 0;
 }
 
 - (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex
@@ -189,11 +197,131 @@
         return NO;
     }
 
-    // TODO
+    __block BOOL opFailed = NO;
+    [script enumerateOperations:^(NSUInteger opIndex, BTCOpcode opcode, NSData *pushdata, BOOL *stop) {
+        
+        if (![self executeOpcode:opcode data:pushdata error:errorOut])
+        {
+            opFailed = YES;
+            *stop = YES;
+        }
+    }];
     
-    return NO;
+    if (opFailed)
+    {
+        // Error is already set by executeOpcode, return immediately.
+        return NO;
+    }
+    
+    if (_conditionStack.count > 0)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Condition branches unbalanced.", @"")}];
+        return NO;
+    }
+    
+    return YES;
 }
 
+
+- (BOOL) executeOpcode:(BTCOpcode)opcode data:(NSData*)pushdata error:(NSError**)errorOut
+{
+    BOOL shouldExecute = ([_conditionStack indexOfObject:@NO] == NSNotFound);
+    
+    if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Pushdata chunk size is too big.", @"")}];
+        return NO;
+    }
+    
+    if (opcode > OP_16 && ++_opCount > 201)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")}];
+        return NO;
+    }
+    
+    // Disabled opcodes
+    
+    if (opcode == OP_CAT ||
+        opcode == OP_SUBSTR ||
+        opcode == OP_LEFT ||
+        opcode == OP_RIGHT ||
+        opcode == OP_INVERT ||
+        opcode == OP_AND ||
+        opcode == OP_OR ||
+        opcode == OP_XOR ||
+        opcode == OP_2MUL ||
+        opcode == OP_2DIV ||
+        opcode == OP_MUL ||
+        opcode == OP_DIV ||
+        opcode == OP_MOD ||
+        opcode == OP_LSHIFT ||
+        opcode == OP_RSHIFT)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Attempt to execute a disabled opcode.", @"")}];
+        return NO;
+    }
+    
+    if (shouldExecute && pushdata)
+    {
+        [_stack addObject:pushdata];
+    }
+    else if (shouldExecute || (OP_IF <= opcode && opcode <= OP_ENDIF))
+    {
+        switch (opcode)
+        {
+            //
+            // Push value
+            //
+            case OP_1NEGATE:
+            case OP_1:
+            case OP_2:
+            case OP_3:
+            case OP_4:
+            case OP_5:
+            case OP_6:
+            case OP_7:
+            case OP_8:
+            case OP_9:
+            case OP_10:
+            case OP_11:
+            case OP_12:
+            case OP_13:
+            case OP_14:
+            case OP_15:
+            case OP_16:
+            {
+                // ( -- value)
+                BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:(int)opcode - (int)(OP_1 - 1)];
+                [_stack addObject:bn.data];
+            }
+            break;
+                
+                
+            //
+            // Control
+            //
+            case OP_NOP:
+            case OP_NOP1: case OP_NOP2: case OP_NOP3: case OP_NOP4: case OP_NOP5:
+            case OP_NOP6: case OP_NOP7: case OP_NOP8: case OP_NOP9: case OP_NOP10:
+            break;
+            
+                
+            
+            // TODO: more operations
+                
+                
+            default:
+                return NO;
+        }
+    }
+    
+    if (_stack.count + _altStack.count > 1000)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 

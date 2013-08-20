@@ -38,6 +38,8 @@ static const uint32_t BTC_BIP16_TIMESTAMP = 1333238400;
 // Scripts longer than 10000 bytes are invalid.
 static const NSUInteger BTC_SCRIPT_MAX_SIZE = 10000;
 
+// Maximum number of bytes per "pushdata" operation
+static const NSUInteger BTC_MAX_SCRIPT_ELEMENT_SIZE = 520; // bytes
 
 // Soft Rules (can bend these without becoming incompatible with everyone)
 
