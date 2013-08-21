@@ -27,10 +27,15 @@ TODO
 - Universal CoreBitcoin.framework bundle with OpenSSL inside.
 - Full transaction support.
 - Full blockchain support.
+- BitcoinQT wallet reader
+- Blockchain.info wallet reader
 - Unit tests for EC sign/verify.
 - Unit tests for transaction parsing/serialization.
 - Modern unit test suite.
 - Security analysis. Do we use truly random numbers? Do we sign things correctly? Do we have buffer overflows? And so on.
+- Glossary for "scriptPubKey", "scriptSig", "tx", "txout", "txin", "Hash160", "utxo", "dust", "difficulty", "target" etc.
+- Example of creating a transaction given some txouts.
+- Example of verifying a transaction.
 
 
 OpenSSL

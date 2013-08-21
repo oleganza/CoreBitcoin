@@ -13,7 +13,6 @@
 
 // Creates an output with a standard script redeeming to an address (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG).
 // Also supports P2SH addresses.
-// Address is a Base58-encoded.
 + (instancetype) outputWithValue:(BTCSatoshi)value address:(BTCAddress*)address;
 
 // Serialized binary form of the output (payload)

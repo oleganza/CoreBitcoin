@@ -10,9 +10,9 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 @class BTCScript;
 @class BTCTransaction;
 
-// Machine contains a stack and knows how to evaluate and verify the script.
+// ScriptMachine is a stack machine (like Forth) that evaluates a predicate
+// returning a bool indicating valid or not. There are no loops.
 // You can -copy a machine which will copy all the parameters and the stack state.
-// Default stack is empty array.
 @interface BTCScriptMachine : NSObject <NSCopying>
 
 // "To" transaction that is signed by an inputScript.
