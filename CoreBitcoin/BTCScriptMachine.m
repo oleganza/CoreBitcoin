@@ -12,6 +12,15 @@
 #import "BTCData.h"
 
 @interface BTCScriptMachine ()
+
+// Constants
+@property(nonatomic) NSData* blobFalse;
+@property(nonatomic) NSData* blobZero;
+@property(nonatomic) NSData* blobTrue;
+@property(nonatomic) BTCBigNumber* bigNumberZero;
+@property(nonatomic) BTCBigNumber* bigNumberOne;
+@property(nonatomic) BTCBigNumber* bigNumberFalse;
+@property(nonatomic) BTCBigNumber* bigNumberTrue;
 @end
 
 // We try to match BitcoinQT code as close as possible to avoid subtle incompatibilities.
@@ -38,6 +47,17 @@
 {
     if (self = [super init])
     {
+        // Constants used in script execution.
+        _blobFalse = [NSData data];
+        _blobZero = _blobFalse;
+        uint8_t one = 1;
+        _blobTrue = [NSData dataWithBytes:(void*)&one length:1];
+        
+        _bigNumberZero = [[BTCBigNumber alloc] initWithInt32:0];
+        _bigNumberOne = [[BTCBigNumber alloc] initWithInt32:1];
+        _bigNumberFalse = _bigNumberZero;
+        _bigNumberTrue = _bigNumberOne;
+
         _inputIndex = 0xFFFFFFFF;
         _blockTimestamp = (uint32_t)[[NSDate date] timeIntervalSince1970];
         [self resetStack];
@@ -324,7 +344,7 @@
                     {
                         value = !value;
                     }
-                    [self removeAtIndex:-1];
+                    [self popFromStack];
                 }
                 [_conditionStack addObject:@(value)];
             }
@@ -369,7 +389,7 @@
                 BOOL value = [self boolAtIndex:-1];
                 if (value)
                 {
-                    [self removeAtIndex:-1];
+                    [self popFromStack];
                 }
                 else
                 {
@@ -398,7 +418,7 @@
                     return NO;
                 }
                 [_altStack addObject:[self dataAtIndex:-1]];
-                [self removeAtIndex:-1];
+                [self popFromStack];
             }
             break;
                 
@@ -422,8 +442,8 @@
                     if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:2];
                     return NO;
                 }
-                [self removeAtIndex:-1];
-                [self removeAtIndex:-1];
+                [self popFromStack];
+                [self popFromStack];
             }
             break;
                 
@@ -537,7 +557,7 @@
                     if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:1];
                     return NO;
                 }
-                [self removeAtIndex:-1];
+                [self popFromStack];
             }
             break;
                 
@@ -592,8 +612,8 @@
                 
                 // Top item is a number of items to roll over.
                 // Take it and pop it from the stack.
-                int32_t n = [[self bignumberAtIndex:-1] int32value];
-                [self removeAtIndex:-1];
+                int32_t n = [[self bigNumberAtIndex:-1] int32value];
+                [self popFromStack];
                 
                 if (n < 0 || n >= _stack.count)
                 {
@@ -663,6 +683,84 @@
             }
             break;
 
+
+            //
+            // Bitwise logic
+            //
+            case OP_EQUAL:
+            case OP_EQUALVERIFY:
+                //case OP_NOTEQUAL: // use OP_NUMNOTEQUAL
+            {
+                // (x1 x2 - bool)
+                if (_stack.count < 2)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:2];
+                    return NO;
+                }
+                NSData* x1 = [self dataAtIndex:-2];
+                NSData* x2 = [self dataAtIndex:-1];
+                BOOL equal = [x1 isEqual:x2];
+                
+                // OP_NOTEQUAL is disabled because it would be too easy to say
+                // something like n != 1 and have some wiseguy pass in 1 with extra
+                // zero bytes after it (numerically, 0x01 == 0x0001 == 0x000001)
+                //if (opcode == OP_NOTEQUAL)
+                //    equal = !equal;
+                
+                [self popFromStack];
+                [self popFromStack];
+                
+                [_stack addObject:equal ? _blobTrue : _blobFalse];
+                
+                if (opcode == OP_EQUALVERIFY)
+                {
+                    if (equal)
+                    {
+                        [self popFromStack];
+                    }
+                    else
+                    {
+                        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"OP_EQUALVERIFY failed.", @"")}];
+                        return NO;
+                    }
+                }
+            }
+            break;
+                
+            //
+            // Numeric
+            //
+            case OP_1ADD:
+            case OP_1SUB:
+            case OP_NEGATE:
+            case OP_ABS:
+            case OP_NOT:
+            case OP_0NOTEQUAL:
+            {
+                // (in -- out)
+                if (_stack.count < 1)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:1];
+                    return NO;
+                }
+                
+                BTCMutableBigNumber* bn = [[self bigNumberAtIndex:-1] mutableCopy];
+                
+                switch (opcode)
+                {
+                    case OP_1ADD:       [bn add:_bigNumberOne]; break;
+                    case OP_1SUB:       [bn subtract:_bigNumberOne]; break;
+                    case OP_NEGATE:     [bn multiply:[[BTCBigNumber alloc] initWithInt32:-1]]; break;
+                    case OP_ABS:        if ([bn less:_bigNumberZero]) [bn multiply:[BTCBigNumber negativeOne]]; break;
+                    case OP_NOT:        bn.uint32value = (uint32_t)[bn isEqual:_bigNumberZero]; break;
+                    case OP_0NOTEQUAL:  bn.uint32value = (uint32_t)(![bn isEqual:_bigNumberZero]); break;
+                    default:            NSAssert(0, @"Invalid opcode"); break;
+                }
+                [self popFromStack];
+                [_stack addObject:bn.data];
+            }
+            break;
+
             
             // TODO: more operations
                 
@@ -712,7 +810,7 @@
 }
 
 // Returns bignum from pushdata or nil.
-- (BTCBigNumber*) bignumberAtIndex:(NSInteger)index
+- (BTCBigNumber*) bigNumberAtIndex:(NSInteger)index
 {
     NSData* data = [self dataAtIndex:index];
     if (!data) return nil;
@@ -760,5 +858,26 @@
     [_stack removeObjectAtIndex:BTCNormalizeIndex(_stack, index)];
 }
 
+// -1 means last item
+- (void) popFromStack
+{
+    [_stack removeObjectAtIndex:BTCNormalizeIndex(_stack, -1)];
+}
+
+- (NSData*) trueBlob
+{
+    uint8_t one = 1;
+    return [NSData dataWithBytes:(void*)&one length:1];
+}
+
+- (NSData*) falseBlob
+{
+    return [NSData data];
+}
+
+- (NSData*) zeroBlob
+{
+    return [NSData data];
+}
 
 @end

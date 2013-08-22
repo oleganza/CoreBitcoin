@@ -7,7 +7,11 @@
 #define BTCBigNumberCompare(a, b) (BN_cmp(&(a->_bignum), &(b->_bignum)))
 
 @implementation BTCBigNumber {
+    @package
     BIGNUM _bignum;
+    
+    // Used as a guard in case a private setter is called on immutable instance.
+    BOOL _immutable;
 }
 
 @dynamic compact;
@@ -19,17 +23,35 @@
 @dynamic hexString;
 @dynamic decimalString;
 
-+ (id) zero
++ (instancetype) zero
 {
-    BTCBigNumber* bn = [[self alloc] init];
-    BN_zero(&(bn->_bignum));
+    static BTCBigNumber* bn = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bn = [[self alloc] init];
+        BN_zero(&(bn->_bignum));
+    });
     return bn;
 }
 
-+ (id) one
++ (instancetype) one
 {
-    BTCBigNumber* bn = [[self alloc] init];
-    BN_one(&(bn->_bignum));
+    static BTCBigNumber* bn = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bn = [[self alloc] init];
+        BN_one(&(bn->_bignum));
+    });
+    return bn;
+}
+
++ (instancetype) negativeOne
+{
+    static BTCBigNumber* bn = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bn = [[self alloc] initWithInt32:-1];
+    });
     return bn;
 }
 
@@ -52,35 +74,49 @@
     BN_clear(&_bignum);
 }
 
+- (void) throwIfImmutable
+{
+    if (_immutable) {
+        @throw [NSException exceptionWithName:@"Immutable BTCBigNumber is modified" reason:@"" userInfo:nil];
+    }
+}
+
+// Since we use private setters in the init* methods,
 - (id) initWithCompact:(uint32_t)value
 {
     if (self = [self init]) self.compact = value;
+    _immutable = YES;
     return self;
 }
 - (id) initWithUInt32:(uint32_t)value
 {
     if (self = [self init]) self.uint32value = value;
+    _immutable = YES;
     return self;
 }
 - (id) initWithInt32:(int32_t)value
 {
     if (self = [self init]) self.int32value = value;
+    _immutable = YES;
     return self;
 }
 - (id) initWithUInt64:(uint64_t)value
 {
     if (self = [self init]) self.uint64value = value;
+    _immutable = YES;
     return self;
 }
 - (id) initWithInt64:(int64_t)value
 {
     if (self = [self init]) self.int64value = value;
+    _immutable = YES;
     return self;
 }
 - (id) initWithData:(NSData*)data
 {
     if (!data) return nil;
     if (self = [self init]) self.data = data;
+    _immutable = YES;
     return self;
 }
 
@@ -88,6 +124,7 @@
 {
     if (!string) return nil;
     if (self = [self init]) [self setString:string base:base];
+    _immutable = YES;
     return self;
 }
 
@@ -108,7 +145,17 @@
 
 
 
-- (id) copyWithZone:(NSZone *)zone
+- (BTCBigNumber*) copy
+{
+    return [self copyWithZone:nil];
+}
+
+- (BTCMutableBigNumber*) mutableCopy
+{
+    return [self mutableCopyWithZone:nil];
+}
+
+- (BTCBigNumber*) copyWithZone:(NSZone *)zone
 {
     BTCBigNumber* to = [[BTCBigNumber alloc] init];
     if (BN_copy(&(to->_bignum), &_bignum))
@@ -117,6 +164,17 @@
     }
     return nil;
 }
+
+- (BTCMutableBigNumber*) mutableCopyWithZone:(NSZone *)zone
+{
+    BTCMutableBigNumber* to = [[BTCMutableBigNumber alloc] init];
+    if (BN_copy(&(to->_bignum), &_bignum))
+    {
+        return to;
+    }
+    return nil;
+}
+
 
 - (BOOL) isEqual:(BTCBigNumber*)other
 {
@@ -136,7 +194,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<BTCBigNumber:0x%p 0x%@>", self, [self stringInBase:16]];
+    return [NSString stringWithFormat:@"<%@:0x%p 0x%@>", [self class], self, [self stringInBase:16]];
 }
 
 - (BOOL) less:(BTCBigNumber *)other           { return BTCBigNumberCompare(self, other) <  0; }
@@ -158,6 +216,7 @@
 
 - (void) setHexString:(NSString *)hexString
 {
+    [self throwIfImmutable];
     [self setString:hexString base:16];
 }
 
@@ -168,11 +227,13 @@
 
 - (void) setDecimalString:(NSString *)decimalString
 {
+    [self throwIfImmutable];
     [self setString:decimalString base:10];
 }
 
 - (void) setString:(NSString*)string base:(NSUInteger)base
 {
+    [self throwIfImmutable];
     if (base > 36 || base < 2) return;
     
     BN_set_word(&_bignum, 0);
@@ -381,6 +442,7 @@
 
 - (void) setCompact:(uint32_t)value
 {
+    [self throwIfImmutable];
     unsigned int size = value >> 24;
     bool isNegative   = (value & 0x00800000) != 0;
     unsigned int word = value & 0x007fffff;
@@ -404,6 +466,7 @@
 
 - (void) setUint32value:(uint32_t)value
 {
+    [self throwIfImmutable];
     BN_set_word(&_bignum, value);
 }
 
@@ -428,6 +491,7 @@
 
 - (void) setInt32value:(int32_t)value
 {
+    [self throwIfImmutable];
     if (value >= 0)
     {
         self.uint32value = value;
@@ -450,11 +514,13 @@
 
 - (void) setUint64value:(uint64_t)value
 {
+    [self throwIfImmutable];
     [self setUint64valuePrivate:value negative:NO];
 }
 
 - (void) setInt64value:(int64_t)value
 {
+    [self throwIfImmutable];
     bool isNegative;
     uint64_t uintValue;
     if (value < 0)
@@ -527,6 +593,7 @@
 
 - (void) setData:(NSData *)data
 {
+    [self throwIfImmutable];
     NSUInteger size = data.length;
     NSMutableData* mdata = [data mutableCopy];
     // Reverse to convert to OpenSSL bignum endianess
@@ -543,6 +610,65 @@
     BN_mpi2bn(bytes, (int)mdata.length, &_bignum);
 }
 
+
+// Divides receiver by another bignum.
+// Returns an array of two new BTCBigNumber instances: @[ quotient, remainder ]
+- (NSArray*) divmod:(BTCBigNumber*)other
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BTCBigNumber* r = [BTCBigNumber new];
+    BTCBigNumber* m = [BTCBigNumber new];
+    BN_div(&(r->_bignum), &(m->_bignum), &(self->_bignum), &(other->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return @[r, m];
+}
+
+
+#pragma mark - Util
+
+
+
+- (void) withContext:(void(^)(BN_CTX* pctx))block
+{
+    BN_CTX* pctx = BN_CTX_new();
+    block(pctx);
+    BN_CTX_free(pctx);
+}
+
+
+
+@end
+
+
+
+
+@implementation BTCMutableBigNumber
+
+
++ (instancetype) zero
+{
+    return [[BTCBigNumber zero] mutableCopy];
+}
+
++ (instancetype) one
+{
+    return [[BTCBigNumber one] mutableCopy];
+}
+
++ (instancetype) negativeOne
+{
+    return [[BTCBigNumber negativeOne] mutableCopy];
+}
+
+// We are mutable, disable checks.
+- (void) throwIfImmutable
+{
+}
+
+- (void) setString:(NSString*)string base:(NSUInteger)base
+{
+    [super setString:string base:base];
+}
 
 
 #pragma mark - Operations
@@ -594,7 +720,7 @@
 {
     // Note: BN_rshift segfaults on 64-bit if 2^shift is greater than the number
     //   if built on ubuntu 9.04 or 9.10, probably depends on version of OpenSSL
-    BTCBigNumber* a = [BTCBigNumber one];
+    BTCMutableBigNumber* a = [BTCMutableBigNumber one];
     [a lshift:shift];
     if (BN_cmp(&(a->_bignum), &(self->_bignum)) > 0)
     {
@@ -607,31 +733,7 @@
 }
 
 
-// Divides receiver by another bignum.
-// Returns an array of two new BTCBigNumber instances: @[ quotient, remainder ]
-- (NSArray*) divmod:(BTCBigNumber*)other
-{
-    BN_CTX* pctx = BN_CTX_new();
-    BTCBigNumber* r = [BTCBigNumber new];
-    BTCBigNumber* m = [BTCBigNumber new];
-    BN_div(&(r->_bignum), &(m->_bignum), &(self->_bignum), &(other->_bignum), pctx);
-    BN_CTX_free(pctx);
-    return @[r, m];
-}
-
-
-#pragma mark - Util
-
-
-
-- (void) withContext:(void(^)(BN_CTX* pctx))block
-{
-    BN_CTX* pctx = BN_CTX_new();
-    block(pctx);
-    BN_CTX_free(pctx);
-}
-
-
 
 @end
+
 

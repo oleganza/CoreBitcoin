@@ -46,9 +46,9 @@
         
         //NSLog(@"negative zero: %lld", [negativeZeroBN int64value]);
         
-        NSAssert([[[zeroBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
-        NSAssert([[[negativeZeroBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
-        NSAssert([[[zeroWithEmptyDataBN copy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        NSAssert([[[zeroBN mutableCopy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        NSAssert([[[negativeZeroBN mutableCopy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
+        NSAssert([[[zeroWithEmptyDataBN mutableCopy] add:[[BTCBigNumber alloc] initWithInt32:1]] isEqual:[BTCBigNumber one]], @"0 + 1 == 1");
         
         // In BitcoinQT script.cpp, there is check (bn != bnZero).
         // It covers negative zero alright because "bn" is created in a way that discards the sign.
