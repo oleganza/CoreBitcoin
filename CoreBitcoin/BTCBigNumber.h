@@ -53,6 +53,13 @@
 //void set_hash(hash_digest load_hash);
 //hash_digest hash() const;
 
+// Returns MIN(self, other)
+- (BTCBigNumber*) min:(BTCBigNumber*)other;
+
+// Returns MAX(self, other)
+- (BTCBigNumber*) max:(BTCBigNumber*)other;
+
+
 - (BOOL) less:(BTCBigNumber*)other;
 - (BOOL) lessOrEqual:(BTCBigNumber*)other;
 - (BOOL) greater:(BTCBigNumber*)other;

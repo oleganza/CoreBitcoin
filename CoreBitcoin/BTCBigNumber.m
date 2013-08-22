@@ -197,10 +197,27 @@
     return [NSString stringWithFormat:@"<%@:0x%p 0x%@>", [self class], self, [self stringInBase:16]];
 }
 
+
+
+
+#pragma mark - Comparison
+
+
+- (BTCBigNumber*) min:(BTCBigNumber*)other
+{
+    return (BTCBigNumberCompare(self, other) <= 0) ? self : other;
+}
+
+- (BTCBigNumber*) max:(BTCBigNumber*)other
+{
+    return (BTCBigNumberCompare(self, other) >= 0) ? self : other;
+}
+
 - (BOOL) less:(BTCBigNumber *)other           { return BTCBigNumberCompare(self, other) <  0; }
 - (BOOL) lessOrEqual:(BTCBigNumber *)other    { return BTCBigNumberCompare(self, other) <= 0; }
 - (BOOL) greater:(BTCBigNumber *)other        { return BTCBigNumberCompare(self, other) >  0; }
 - (BOOL) greaterOrEqual:(BTCBigNumber *)other { return BTCBigNumberCompare(self, other) >= 0; }
+
 
 
 

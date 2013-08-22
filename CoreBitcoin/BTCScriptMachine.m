@@ -744,7 +744,7 @@
                     return NO;
                 }
                 
-                BTCMutableBigNumber* bn = [[self bigNumberAtIndex:-1] mutableCopy];
+                BTCMutableBigNumber* bn = [self bigNumberAtIndex:-1];
                 
                 switch (opcode)
                 {
@@ -761,6 +761,97 @@
             }
             break;
 
+            case OP_ADD:
+            case OP_SUB:
+            case OP_BOOLAND:
+            case OP_BOOLOR:
+            case OP_NUMEQUAL:
+            case OP_NUMEQUALVERIFY:
+            case OP_NUMNOTEQUAL:
+            case OP_LESSTHAN:
+            case OP_GREATERTHAN:
+            case OP_LESSTHANOREQUAL:
+            case OP_GREATERTHANOREQUAL:
+            case OP_MIN:
+            case OP_MAX:
+            {
+                // (x1 x2 -- out)
+                if (_stack.count < 2)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:2];
+                    return NO;
+                }
+                
+                BTCMutableBigNumber* bn1 = [self bigNumberAtIndex:-2];
+                BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-1];
+                BTCMutableBigNumber* bn = nil;
+                
+                switch (opcode)
+                {
+                    case OP_ADD:
+                        bn = [bn1 add:bn2];
+                        break;
+                        
+                    case OP_SUB:
+                        bn = [bn1 subtract:bn2];
+                        break;
+                        
+                    case OP_BOOLAND:             bn = [[BTCMutableBigNumber alloc] initWithInt32:![bn1 isEqual:_bigNumberZero] && ![bn2 isEqual:_bigNumberZero]]; break;
+                    case OP_BOOLOR:              bn = [[BTCMutableBigNumber alloc] initWithInt32:![bn1 isEqual:_bigNumberZero] || ![bn2 isEqual:_bigNumberZero]]; break;
+                    case OP_NUMEQUAL:            bn = [[BTCMutableBigNumber alloc] initWithInt32: [bn1 isEqual:bn2]]; break;
+                    case OP_NUMEQUALVERIFY:      bn = [[BTCMutableBigNumber alloc] initWithInt32: [bn1 isEqual:bn2]]; break;
+                    case OP_NUMNOTEQUAL:         bn = [[BTCMutableBigNumber alloc] initWithInt32:![bn1 isEqual:bn2]]; break;
+                    case OP_LESSTHAN:            bn = [[BTCMutableBigNumber alloc] initWithInt32:[bn1 less:bn2]]; break;
+                    case OP_GREATERTHAN:         bn = [[BTCMutableBigNumber alloc] initWithInt32:[bn1 greater:bn2]]; break;
+                    case OP_LESSTHANOREQUAL:     bn = [[BTCMutableBigNumber alloc] initWithInt32:[bn1 lessOrEqual:bn2]]; break;
+                    case OP_GREATERTHANOREQUAL:  bn = [[BTCMutableBigNumber alloc] initWithInt32:[bn1 greaterOrEqual:bn2]]; break;
+                    case OP_MIN:                 bn = [[bn1 min:bn2] mutableCopy]; break;
+                    case OP_MAX:                 bn = [[bn1 max:bn2] mutableCopy]; break;
+                    default:                     NSAssert(0, @"Invalid opcode"); break;
+                }
+                
+                [self popFromStack];
+                [self popFromStack];
+                [_stack addObject:bn.data];
+                
+                if (opcode == OP_NUMEQUALVERIFY)
+                {
+                    if ([self boolAtIndex:-1])
+                    {
+                        [self popFromStack];
+                    }
+                    else
+                    {
+                        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"OP_NUMEQUALVERIFY failed.", @"")}];
+                        return NO;
+                    }
+                }
+            }
+            break;
+                
+            case OP_WITHIN:
+            {
+                // (x min max -- out)
+                if (_stack.count < 3)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:3];
+                    return NO;
+                }
+                
+                BTCMutableBigNumber* bn1 = [self bigNumberAtIndex:-3];
+                BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-2];
+                BTCMutableBigNumber* bn3 = [self bigNumberAtIndex:-1];
+                
+                BOOL value = ([bn2 lessOrEqual:bn1] && [bn1 less:bn3]);
+                
+                [self popFromStack];
+                [self popFromStack];
+                [self popFromStack];
+                
+                [_stack addObject:(value ? _bigNumberTrue : _bigNumberFalse).data];
+            }
+            break;
+            
             
             // TODO: more operations
                 
@@ -810,7 +901,7 @@
 }
 
 // Returns bignum from pushdata or nil.
-- (BTCBigNumber*) bigNumberAtIndex:(NSInteger)index
+- (BTCMutableBigNumber*) bigNumberAtIndex:(NSInteger)index
 {
     NSData* data = [self dataAtIndex:index];
     if (!data) return nil;
@@ -824,7 +915,7 @@
     // Get rid of extra leading zeros like BitcoinQT does:
     // CBigNum(CBigNum(vch).getvch());
     // FIXME: It's a cargo cult here. I haven't checked myself when do these extra zeros appear and whether they really go away. [Oleg]
-    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithData:[[BTCBigNumber alloc] initWithData:data].data];
+    BTCMutableBigNumber* bn = [[BTCMutableBigNumber alloc] initWithData:[[BTCBigNumber alloc] initWithData:data].data];
     return bn;
 }
 
