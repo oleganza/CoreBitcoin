@@ -1,8 +1,8 @@
 
-CoreBitcoin
-===========
+CoreBitcoin v0.0
+================
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages and parse some data structures. Transaction support is still incomplete.
+CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages, parse some transactions and scripts, and detect common transaction types. Support for blocks and script evaluation is still in progress.
 
 Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug and should be investigated.
 
@@ -27,8 +27,8 @@ TODO
 - Universal CoreBitcoin.framework bundle with OpenSSL inside.
 - Full transaction support.
 - Full blockchain support.
-- BitcoinQT wallet reader
-- Blockchain.info wallet reader
+- BitcoinQT wallet reader.
+- Blockchain.info wallet reader.
 - Unit tests for EC sign/verify.
 - Unit tests for transaction parsing/serialization.
 - Modern unit test suite.
