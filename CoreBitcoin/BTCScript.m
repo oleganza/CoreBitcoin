@@ -11,7 +11,7 @@
 
 @implementation BTCScript {
     // An array of NSData objects (pushing data) or NSNumber objects (containing opcodes)
-    NSArray* _chunks;
+    NSMutableArray* _chunks;
     
     // Cached serialized representations for -data and -string methods.
     NSData* _data;
@@ -27,7 +27,7 @@
 {
     if (self = [super init])
     {
-        _chunks = @[];
+        _chunks = [NSMutableArray array];
     }
     return self;
 }
@@ -251,9 +251,9 @@
     return _string;
 }
 
-- (NSArray*) parseData:(NSData*)data
+- (NSMutableArray*) parseData:(NSData*)data
 {
-    if (data.length == 0) return @[];
+    if (data.length == 0) return [NSMutableArray array];
     
     NSMutableArray* chunks = [NSMutableArray array];
     
@@ -307,9 +307,9 @@
     return chunks;
 }
 
-- (NSArray*) parseString:(NSString*)string
+- (NSMutableArray*) parseString:(NSString*)string
 {
-    if (string.length == 0) return @[];
+    if (string.length == 0) return [NSMutableArray array];
     
     NSMutableArray* chunks = [NSMutableArray array];
     
@@ -529,14 +529,14 @@
 
 - (void) appendOpcode:(BTCOpcode)opcode
 {
-    _chunks = [_chunks ?: @[] arrayByAddingObject:@(opcode)];
+    [_chunks addObject:@(opcode)];
     [self invalidatedSerialization];
 }
 
 - (void) appendData:(NSData*)data
 {
     if (!data) return;
-    _chunks = [_chunks ?: @[] arrayByAddingObject:data];
+    [_chunks addObject:data];
     [self invalidatedSerialization];
 }
 
@@ -544,7 +544,7 @@
 {
     if (!otherScript) return;
     
-    _chunks = [_chunks ?: @[] arrayByAddingObjectsFromArray:otherScript->_chunks];
+    [_chunks addObjectsFromArray:otherScript->_chunks];
     
     [self invalidatedSerialization];
 }
@@ -552,22 +552,33 @@
 - (BTCScript*) subScriptFromIndex:(NSUInteger)index
 {
     BTCScript* script = [[BTCScript alloc] init];
-    script->_chunks = [_chunks subarrayWithRange:NSMakeRange(index, _chunks.count - index)];
+    script->_chunks = [[_chunks subarrayWithRange:NSMakeRange(index, _chunks.count - index)] mutableCopy];
     return script;
 }
 
 - (BTCScript*) subScriptToIndex:(NSUInteger)index
 {
     BTCScript* script = [[BTCScript alloc] init];
-    script->_chunks = [_chunks subarrayWithRange:NSMakeRange(0, index)];
+    script->_chunks = [[_chunks subarrayWithRange:NSMakeRange(0, index)] mutableCopy];
     return script;
 }
 
 - (id) copyWithZone:(NSZone *)zone
 {
     BTCScript* script = [[BTCScript alloc] init];
-    script->_chunks = [_chunks copy];
+    script->_chunks = [_chunks mutableCopy];
     return script;
+}
+
+- (void) deleteOccurrencesOfData:(NSData*)data
+{
+    if (!data) return;
+    [_chunks removeObject:data];
+}
+
+- (void) deleteOccurrencesOfOpcode:(BTCOpcode)opcode
+{
+    [_chunks removeObject:@(opcode)];
 }
 
 

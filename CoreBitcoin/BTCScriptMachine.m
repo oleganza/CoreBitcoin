@@ -929,12 +929,12 @@
             
             case OP_CODESEPARATOR:
             {
-                // Code separator is almost never used and no one knows why it could be useful.
-                // When checking signature, we use a special hash of transaction.
-                // This hash should be computed after the most recent OP_CODESEPARATOR before current OP_CHECKSIG (or OP_CHECKMULTISIG).
+                // Code separator is almost never used and no one knows why it could be useful. Maybe it's Satoshi's design mistake.
+                // It affects how OP_CHECKSIG and OP_CHECKMULTISIG compute the hash of transaction for verifying the signature.
+                // That hash should be computed after the most recent OP_CODESEPARATOR before current OP_CHECKSIG (or OP_CHECKMULTISIG).
                 // Notice how we remember the index of OP_CODESEPARATOR itself, not the position after it.
                 // Bitcoind will extract subscript *including* this codeseparator. But all codeseparators will be stripped out eventually
-                // when we compute a hash of transaction.
+                // when we compute a hash of transaction. Just to keep ourselves close to bitcoind for extra asfety, we'll do the same here.
                 _lastCodeSeparatorIndex = opcodeIndex;
             }
             break;
@@ -950,32 +950,54 @@
                     return NO;
                 }
                 
-//                NSData* signature = [self dataAtIndex:-2];
-//                NSData* pubkey = [self dataAtIndex:-1];
-//                
-//                // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
-//                BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
+                NSData* signature = [self dataAtIndex:-2];
+                NSData* pubkey = [self dataAtIndex:-1];
+                
+                // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
+                BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
 
-//                // Drop the signature, since there's no way for a signature to sign itself
-//                scriptCode.FindAndDelete(CScript(vchSig));
-//                
-//                bool fSuccess = IsCanonicalSignature(vchSig, flags) && IsCanonicalPubKey(vchPubKey, flags) &&
-//                CheckSig(vchSig, vchPubKey, scriptCode, txTo, nIn, nHashType, flags);
-//                
-//                popstack(stack);
-//                popstack(stack);
-//                stack.push_back(fSuccess ? vchTrue : vchFalse);
-//                if (opcode == OP_CHECKSIGVERIFY)
-//                {
-//                    if (fSuccess)
-//                        popstack(stack);
-//                    else
-//                        return false;
-//                }
+                // Drop the signature, since there's no way for a signature to sign itself
+                [subscript deleteOccurrencesOfData:signature];
+
+                NSError* sigerror = nil;
+                BOOL failed = NO;
+                if (_verificationFlags & BTCScriptVerificationStrictEncoding)
+                {
+                    if (![BTCScript isCanonicalPublicKey:pubkey error:&sigerror])
+                    {
+                        failed = YES;
+                    }
+                    if (!failed && ![BTCScript isCanonicalSignature:signature
+                                                        verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                              error:&sigerror])
+                    {
+                        failed = YES;
+                    }
+                }
+                
+                BOOL success = !failed && [self checkSignature:signature publicKey:pubkey subscript:subscript error:&sigerror];
+                
+                [self popFromStack];
+                [self popFromStack];
+                
+                [_stack addObject:success ? _blobTrue : _blobFalse];
+                
+                if (opcode == OP_CHECKSIGVERIFY)
+                {
+                    if (success)
+                    {
+                        [self popFromStack];
+                    }
+                    else
+                    {
+                        if (sigerror && errorOut) *errorOut = sigerror;
+                        return NO;
+                    }
+                }
             }
             break;
                 
-                
+            
             // TODO: more operations
                 
                 
@@ -992,6 +1014,14 @@
     
     return YES;
 }
+
+- (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkey subscript:(BTCScript*)subscript error:(NSError**)errorOut
+{
+    // TODO
+    
+    return NO;
+}
+
 
 - (NSError*) errorOpcode:(BTCOpcode)opcode requiresItemsOnStack:(NSUInteger)items
 {

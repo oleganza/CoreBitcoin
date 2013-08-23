@@ -136,8 +136,11 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // Returns an empty subscript if the index is 0.
 - (BTCScript*) subScriptToIndex:(NSUInteger)index;
 
+// Removes pushdata chunks containing the specified data.
+- (void) deleteOccurrencesOfData:(NSData*)data;
 
-
+// Removes chunks with an opcode.
+- (void) deleteOccurrencesOfOpcode:(BTCOpcode)opcode;
 
 // Used by BitcoinQT within OP_CHECKSIG to not relay transactions with non-canonical form of signature or a public key.
 // Normally, signatures and pubkeys are encoded in a canonical form and majority of the transactions are good.
