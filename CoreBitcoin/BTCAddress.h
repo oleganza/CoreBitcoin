@@ -46,7 +46,7 @@
 // Private key in Base58 format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC...)
 @interface BTCPrivateKeyAddress : BTCAddress
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
-// that derived pubkey must be compressed (as this affects  the pubkey address).
+// that derived pubkey must be compressed (as this affects the address derived from pubkey).
 @property(nonatomic, getter = isCompressed) BOOL compressed;
 @end
 @interface BTCPrivateKeyAddressTestnet : BTCPrivateKeyAddress
