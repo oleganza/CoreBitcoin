@@ -39,11 +39,23 @@
     // Holds an array of @YES and @NO values to keep track of if/else branches.
     NSMutableArray* _conditionStack;
     
-    // Keeps number of executed operations to check for limit.
-    NSInteger _opCount;
+    // Currently executed script.
+    BTCScript* _script;
+    
+    // Current opcode.
+    BTCOpcode _opcode;
+    
+    // Current payload for any "push data" operation.
+    NSData* _pushdata;
+    
+    // Current opcode index in _script.
+    NSUInteger _opIndex;
     
     // Index of last OP_CODESEPARATOR
     NSUInteger _lastCodeSeparatorIndex;
+    
+    // Keeps number of executed operations to check for limit.
+    NSInteger _opCount;
 }
 
 - (id) init
@@ -73,7 +85,6 @@
     _stack = [NSMutableArray array];
     _altStack = [NSMutableArray array];
     _conditionStack = [NSMutableArray array];
-    _opCount = 0;
 }
 
 - (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex
@@ -220,12 +231,21 @@
         return NO;
     }
     
+    _script = script;
+    _opIndex = 0;
+    _opcode = 0;
+    _pushdata = nil;
     _lastCodeSeparatorIndex = 0;
+    _opCount = 0;
     
     __block BOOL opFailed = NO;
     [script enumerateOperations:^(NSUInteger opIndex, BTCOpcode opcode, NSData *pushdata, BOOL *stop) {
         
-        if (![self executeOpcode:opcode data:pushdata opcodeIndex:opIndex error:errorOut])
+        _opIndex = opIndex;
+        _opcode = opcode;
+        _pushdata = pushdata;
+        
+        if (![self executeOpcodeError:errorOut])
         {
             opFailed = YES;
             *stop = YES;
@@ -248,8 +268,12 @@
 }
 
 
-- (BOOL) executeOpcode:(BTCOpcode)opcode data:(NSData*)pushdata opcodeIndex:(NSUInteger)opcodeIndex error:(NSError**)errorOut
+- (BOOL) executeOpcodeError:(NSError**)errorOut
 {
+    NSUInteger opcodeIndex = _opIndex;
+    BTCOpcode opcode = _opcode;
+    NSData* pushdata = _pushdata;
+    
     if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Pushdata chunk size is too big.", @"")}];
@@ -916,6 +940,42 @@
             break;
 
             
+            case OP_CHECKSIG:
+            case OP_CHECKSIGVERIFY:
+            {
+                // (sig pubkey -- bool)
+                if (_stack.count < 2)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:2];
+                    return NO;
+                }
+                
+//                NSData* signature = [self dataAtIndex:-2];
+//                NSData* pubkey = [self dataAtIndex:-1];
+//                
+//                // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
+//                BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
+
+//                // Drop the signature, since there's no way for a signature to sign itself
+//                scriptCode.FindAndDelete(CScript(vchSig));
+//                
+//                bool fSuccess = IsCanonicalSignature(vchSig, flags) && IsCanonicalPubKey(vchPubKey, flags) &&
+//                CheckSig(vchSig, vchPubKey, scriptCode, txTo, nIn, nHashType, flags);
+//                
+//                popstack(stack);
+//                popstack(stack);
+//                stack.push_back(fSuccess ? vchTrue : vchFalse);
+//                if (opcode == OP_CHECKSIGVERIFY)
+//                {
+//                    if (fSuccess)
+//                        popstack(stack);
+//                    else
+//                        return false;
+//                }
+            }
+            break;
+                
+                
             // TODO: more operations
                 
                 
@@ -1016,22 +1076,6 @@
 - (void) popFromStack
 {
     [_stack removeObjectAtIndex:BTCNormalizeIndex(_stack, -1)];
-}
-
-- (NSData*) trueBlob
-{
-    uint8_t one = 1;
-    return [NSData dataWithBytes:(void*)&one length:1];
-}
-
-- (NSData*) falseBlob
-{
-    return [NSData data];
-}
-
-- (NSData*) zeroBlob
-{
-    return [NSData data];
 }
 
 @end
