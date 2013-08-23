@@ -41,6 +41,9 @@
     
     // Keeps number of executed operations to check for limit.
     NSInteger _opCount;
+    
+    // Index of last OP_CODESEPARATOR
+    NSUInteger _lastCodeSeparatorIndex;
 }
 
 - (id) init
@@ -168,7 +171,7 @@
             return NO;
         }
         
-        // Instantiate the script from the last data.
+        // Instantiate the script from the last data on the stack.
         BTCScript* providedScript = [[BTCScript alloc] initWithData:[stackForP2SH lastObject]];
         
         // Remove it from the stack.
@@ -216,11 +219,13 @@
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Script binary is too long.", @"")}];
         return NO;
     }
-
+    
+    _lastCodeSeparatorIndex = 0;
+    
     __block BOOL opFailed = NO;
     [script enumerateOperations:^(NSUInteger opIndex, BTCOpcode opcode, NSData *pushdata, BOOL *stop) {
         
-        if (![self executeOpcode:opcode data:pushdata error:errorOut])
+        if (![self executeOpcode:opcode data:pushdata opcodeIndex:opIndex error:errorOut])
         {
             opFailed = YES;
             *stop = YES;
@@ -243,7 +248,7 @@
 }
 
 
-- (BOOL) executeOpcode:(BTCOpcode)opcode data:(NSData*)pushdata error:(NSError**)errorOut
+- (BOOL) executeOpcode:(BTCOpcode)opcode data:(NSData*)pushdata opcodeIndex:(NSUInteger)opcodeIndex error:(NSError**)errorOut
 {
     if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE)
     {
@@ -896,7 +901,21 @@
                 [_stack addObject:hash];
             }
             break;
-                
+            
+            
+            case OP_CODESEPARATOR:
+            {
+                // Code separator is almost never used and no one knows why it could be useful.
+                // When checking signature, we use a special hash of transaction.
+                // This hash should be computed after the most recent OP_CODESEPARATOR before current OP_CHECKSIG (or OP_CHECKMULTISIG).
+                // Notice how we remember the index of OP_CODESEPARATOR itself, not the position after it.
+                // Bitcoind will extract subscript *including* this codeseparator. But all codeseparators will be stripped out eventually
+                // when we compute a hash of transaction.
+                _lastCodeSeparatorIndex = opcodeIndex;
+            }
+            break;
+
+            
             // TODO: more operations
                 
                 
