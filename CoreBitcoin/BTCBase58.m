@@ -115,7 +115,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     {
         return nil;
     }
-    NSData* hash = [[result subdataWithRange:NSMakeRange(0, length - 4)] doubleSHA256];
+    NSData* hash = BTCHash256([result subdataWithRange:NSMakeRange(0, length - 4)]);
     
     // Last 4 bytes should be equal first 4 bytes of the hash.
     if (memcmp(hash.bytes, result.bytes + length - 4, 4) != 0)
@@ -132,15 +132,6 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
 @implementation NSData (Base58)
 
 
-//+ (char*) base58CStringForBytes:(const void*)bytes length:(NSUInteger)length
-//{
-//    
-//}
-//
-//+ (char*) base58CheckCStringForBytes:(const void*)bytes length:(NSUInteger)length
-//{
-//    
-//}
 
 // String in Base58 without checksum
 - (char*) base58CString
@@ -227,7 +218,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
 {
     // add 4-byte hash check to the end
     NSMutableData* data = [self mutableCopy];
-    NSData* checksum = [data doubleSHA256];
+    NSData* checksum = BTCHash256(data);
     [data appendBytes:checksum.bytes length:4];
     char* result = [data base58CString];
     BTCDataClear(data);

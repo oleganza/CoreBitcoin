@@ -1,4 +1,4 @@
-#import "BTCData.h"
+#import "NSData+BTCData.h"
 #import "BTCAddress+Tests.h"
 
 @implementation BTCAddress (Tests)

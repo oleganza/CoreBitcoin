@@ -30,6 +30,7 @@
 		20B9646C17BACFAA008161BB /* BTCScriptMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B9646B17BACFAA008161BB /* BTCScriptMachine.m */; };
 		20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B9646E17BADECE008161BB /* BTCOpcode.m */; };
 		20C3F16917BFDCF8009DB89C /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C3F16817BFDCF8009DB89C /* libSystem.dylib */; };
+		20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01117C73181003B6987 /* NSData+BTCData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -92,6 +93,10 @@
 		20B9646E17BADECE008161BB /* BTCOpcode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCOpcode.m; sourceTree = "<group>"; };
 		20C3F16817BFDCF8009DB89C /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		20D2802517B8FE00004A462B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		20E1E01017C73181003B6987 /* NSData+BTCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+BTCData.h"; sourceTree = "<group>"; };
+		20E1E01117C73181003B6987 /* NSData+BTCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BTCData.m"; sourceTree = "<group>"; };
+		20E1E01317C735EE003B6987 /* NS+BTCBase58.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS+BTCBase58.h"; sourceTree = "<group>"; };
+		20E1E01417C735EE003B6987 /* NS+BTCBase58.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS+BTCBase58.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +183,8 @@
 				2084DD8317B8FF76005AC9E6 /* BTCData+Tests.m */,
 				2084DD8417B8FF76005AC9E6 /* BTCData.h */,
 				2084DD8517B8FF76005AC9E6 /* BTCData.m */,
+				20E1E01017C73181003B6987 /* NSData+BTCData.h */,
+				20E1E01117C73181003B6987 /* NSData+BTCData.m */,
 				20B66C8517BFE4F9007128CE /* BTCErrors.h */,
 				20B66C8617BFE4F9007128CE /* BTCErrors.m */,
 				2084DD6917B8FF76005AC9E6 /* BTCAddress.h */,
@@ -186,6 +193,8 @@
 				2084DD6C17B8FF76005AC9E6 /* BTCAddress+Tests.m */,
 				2084DD6D17B8FF76005AC9E6 /* BTCBase58.h */,
 				2084DD6E17B8FF76005AC9E6 /* BTCBase58.m */,
+				20E1E01317C735EE003B6987 /* NS+BTCBase58.h */,
+				20E1E01417C735EE003B6987 /* NS+BTCBase58.m */,
 				2084DD6F17B8FF76005AC9E6 /* BTCBigNumber.h */,
 				2084DD7017B8FF76005AC9E6 /* BTCBigNumber.m */,
 				2084DD7117B8FF76005AC9E6 /* BTCBigNumber+Tests.h */,
@@ -279,6 +288,7 @@
 				2084DD9117B8FF76005AC9E6 /* BTCTransactionOutput.m in Sources */,
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,
 				2084DD9317B8FF76005AC9E6 /* BTCData.m in Sources */,
+				20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */,
 				20B9646C17BACFAA008161BB /* BTCScriptMachine.m in Sources */,
 				20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */,
 			);

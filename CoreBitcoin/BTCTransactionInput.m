@@ -160,13 +160,13 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     dict[@"prev_out"] = @{
-                        @"hash": BTCReversedData(_previousHash).hexString, // transaction hashes are reversed
+                        @"hash": BTCHexStringFromData(BTCReversedData(_previousHash)), // transaction hashes are reversed
                         @"n": @(_previousIndex),
                         };
     
     if ([self isCoinbase])
     {
-        dict[@"coinbase"] = _signatureScript.data.hexString;
+        dict[@"coinbase"] = BTCHexStringFromData(_signatureScript.data);
     }
     else
     {

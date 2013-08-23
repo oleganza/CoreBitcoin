@@ -241,7 +241,7 @@
                 }
                 else
                 {
-                    [buffer appendFormat:@"%@ ", data.hexString];
+                    [buffer appendFormat:@"%@ ", BTCHexStringFromData(data)];
                 }
             }
         }

@@ -127,7 +127,7 @@
 {
     if (!_transactionHash)
     {
-        _transactionHash = self.data.doubleSHA256;
+        _transactionHash = BTCHash256(self.data);
     }
     return _transactionHash;
 }
@@ -136,7 +136,7 @@
 {
     if (!_displayTransactionHash)
     {
-        _displayTransactionHash = BTCReversedData(self.transactionHash).hexString;
+        _displayTransactionHash = BTCHexStringFromData(BTCReversedData(self.transactionHash));
     }
     return _displayTransactionHash;
 }

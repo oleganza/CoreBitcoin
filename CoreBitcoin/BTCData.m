@@ -2,7 +2,9 @@
 
 #import "BTCData.h"
 #import <CommonCrypto/CommonCrypto.h>
+#if BTCDataRequiresOpenSSL
 #include <openssl/ripemd.h>
+#endif
 
 // This is designed to be not optimized out by compiler like memset
 void *BTCSecureMemset(void *v, unsigned char c, size_t n)
@@ -159,147 +161,82 @@ void BTCDataClear(NSMutableData* self)
     [self resetBytesInRange:NSMakeRange(0, self.length)];
 }
 
-
-
-@implementation NSData (BTC)
-
-+ (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector
+NSData* BTCSHA1(NSData* data)
 {
-    return [self cryptData:data key:key iv:initializationVector operation:kCCEncrypt];
+    if (!data) return nil;
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    CC_SHA1([data bytes], (CC_LONG)[data length], digest);
+    return [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
 }
 
-+ (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector
+NSData* BTCSHA256(NSData* data)
 {
-    return [self cryptData:data key:key iv:initializationVector operation:kCCDecrypt];
-}
-
-
-+ (NSMutableData*) cryptData:(NSData*)data key:(NSData*)key iv:(NSData*)iv operation:(CCOperation)operation
-{
-    if (!data || !key) return nil;
-    
-    int blockSize = kCCBlockSizeAES128;
-    int encryptedDataCapacity = (int)(data.length / blockSize + 1) * blockSize;
-    NSMutableData* encryptedData = [[NSMutableData alloc] initWithLength:encryptedDataCapacity];
-    
-    // Treat empty IV as nil
-    if (iv.length == 0)
-    {
-        iv = nil;
-    }
-    
-    // If IV is supplied, validate it.
-    if (iv)
-    {
-        if (iv.length == blockSize)
-        {
-            // perfect.
-        }
-        else if (iv.length > blockSize)
-        {
-            // IV is bigger than the block size. CCCrypt will take only the first 16 bytes.
-        }
-        else
-        {
-            // IV is smaller than needed. This should not happen. It's better to crash than to leak something.
-            @throw [NSException exceptionWithName:@"NSData+BTC IV is invalid"
-                                           reason:[NSString stringWithFormat:@"Invalid size of IV: %d", (int)iv.length]
-                                         userInfo:nil];
-        }
-    }
-    
-    size_t dataOutMoved = 0;
-    CCCryptorStatus cryptstatus = CCCrypt(
-      operation,                   // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
-      kCCAlgorithmAES128,          // CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */
-      kCCOptionPKCS7Padding,       // CCOptions options,      /* kCCOptionPKCS7Padding, etc. */
-      key.bytes,                   // const void *key,
-      key.length,                  // size_t keyLength,
-      iv ? iv.bytes : NULL,        // const void *iv,         /* optional initialization vector */
-      data.bytes,                  // const void *dataIn,     /* optional per op and alg */
-      data.length,                 // size_t dataInLength,
-      encryptedData.mutableBytes,  // void *dataOut,          /* data RETURNED here */
-      encryptedData.length,        // size_t dataOutAvailable,
-      &dataOutMoved                // size_t *dataOutMoved
-    );
-    
-    if (cryptstatus == kCCSuccess)
-    {
-        // Resize the result key to the correct size.
-        encryptedData.length = dataOutMoved;
-        return encryptedData;
-    }
-    else
-    {
-        //kCCSuccess          = 0,
-        //kCCParamError       = -4300,
-        //kCCBufferTooSmall   = -4301,
-        //kCCMemoryFailure    = -4302,
-        //kCCAlignmentError   = -4303,
-        //kCCDecodeError      = -4304,
-        //kCCUnimplemented    = -4305,
-        //kCCOverflow         = -4306
-        @throw [NSException exceptionWithName:@"NSData+BTC CCCrypt failed"
-                                       reason:[NSString stringWithFormat:@"error: %d", cryptstatus] userInfo:nil];
-        return nil;
-    }
-}
-
-- (NSData*) SHA256
-{
+    if (!data) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256([self bytes], (CC_LONG)[self length], digest);
+    CC_SHA256([data bytes], (CC_LONG)[data length], digest);
     return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
-- (NSData*) doubleSHA256
+NSData* BTCHash256(NSData* data)
 {
+    if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256([self bytes], (CC_LONG)[self length], digest1);
+    CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
     return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
 }
 
-- (NSData*) SHA256RIPEMD160
+#if BTCDataRequiresOpenSSL
+
+NSData* BTCRIPEMD160(NSData* data)
 {
+    if (!data) return nil;
+    unsigned char digest[RIPEMD160_DIGEST_LENGTH];
+    RIPEMD160([data bytes], (size_t)[data length], digest);
+    return [NSData dataWithBytes:digest length:RIPEMD160_DIGEST_LENGTH];
+}
+
+NSData* BTCHash160(NSData* data)
+{
+    if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[RIPEMD160_DIGEST_LENGTH];
-    CC_SHA256([self bytes], (CC_LONG)[self length], digest1);
+    CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     RIPEMD160(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
     return [NSData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
 }
 
-- (NSData*) RIPEMD160
-{
-    unsigned char digest[RIPEMD160_DIGEST_LENGTH];
-    RIPEMD160([self bytes], (size_t)[self length], digest);
-    return [NSData dataWithBytes:digest length:RIPEMD160_DIGEST_LENGTH];
-}
+#endif
 
-- (NSString*) hexString
-{
-    return [self hexStringWithFormat:"%02x"];
-}
 
-- (NSString*) hexUppercaseString
-{
-    return [self hexStringWithFormat:"%02X"];
-}
 
-- (NSString*) hexStringWithFormat:(const char*)format
+NSString* BTCHexStringFromDataWithFormat(NSData* data, const char* format)
 {
-    if (self.length == 0) return @"";
+    if (!data) return nil;
     
-    NSUInteger length = self.length;
-    NSMutableData* data = [NSMutableData dataWithLength:length * 2];
-    char *dest = data.mutableBytes;
-    unsigned const char *src = self.bytes;
+    NSUInteger length = data.length;
+    if (length == 0) return @"";
+    
+    NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
+    char *dest = resultdata.mutableBytes;
+    unsigned const char *src = data.bytes;
     for (int i = 0; i < length; ++i)
     {
         sprintf(dest + i*2, format, (unsigned int)(src[i]));
     }
-    return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
 }
 
-@end
+NSString* BTCHexStringFromData(NSData* data)
+{
+    return BTCHexStringFromDataWithFormat(data, "%02x");
+}
+
+NSString* BTCUppercaseHexStringFromData(NSData* data)
+{
+    return BTCHexStringFromDataWithFormat(data, "%02X");
+}
+
+
+

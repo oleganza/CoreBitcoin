@@ -1,6 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCData.h"
+#import "NSData+BTCData.h"
 #import "BTCBase58.h"
 #import "BTCData+Tests.h"
 
@@ -19,13 +20,13 @@
               isEqual:@"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"], @"Test vector");
     NSAssert([BTCDataWithUTF8String("hello").SHA256.SHA256.hexString
               isEqual:@"9595c9df90075148eb06860365df33584b75bff782a510c6cd4883a419833d50"], @"Test vector");
-    NSAssert([BTCDataWithUTF8String("hello").doubleSHA256.hexString
+    NSAssert([BTCDataWithUTF8String("hello").BTCHash256.hexString
               isEqual:@"9595c9df90075148eb06860365df33584b75bff782a510c6cd4883a419833d50"], @"Test vector");
 
     NSAssert([BTCDataWithUTF8String("hello").SHA256.RIPEMD160.hexString
               isEqual:@"b6a9c8c230722b7c748331a8b450f05566dc7d0f"], @"Test vector");
 
-    NSAssert([BTCDataWithUTF8String("hello").SHA256RIPEMD160.hexString
+    NSAssert([BTCDataWithUTF8String("hello").BTCHash160.hexString
               isEqual:@"b6a9c8c230722b7c748331a8b450f05566dc7d0f"], @"Test vector");
 
     NSAssert([BTCDataWithHexString(@"deadBEEF") isEqualToData:[NSData dataWithBytes:"\xde\xad\xBE\xEF" length:4]], @"Init data with hex string");

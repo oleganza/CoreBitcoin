@@ -852,7 +852,51 @@
             }
             break;
             
-            
+                
+            //
+            // Crypto
+            //
+            case OP_RIPEMD160:
+            case OP_SHA1:
+            case OP_SHA256:
+            case OP_HASH160:
+            case OP_HASH256:
+            {
+                // (in -- hash)
+                if (_stack.count < 1)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:1];
+                    return NO;
+                }
+                
+                NSData* data = [self dataAtIndex:-1];
+                NSData* hash = nil;
+                
+                if (opcode == OP_RIPEMD160)
+                {
+                    hash = BTCRIPEMD160(data);
+                }
+                else if (opcode == OP_SHA1)
+                {
+                    hash = BTCSHA1(data);
+                }
+                else if (opcode == OP_SHA256)
+                {
+                    hash = BTCSHA256(data);
+                }
+                else if (opcode == OP_HASH160)
+                {
+                    hash = BTCHash160(data);
+                }
+                else if (opcode == OP_HASH256)
+                {
+                    hash = BTCHash256(data);
+                }
+                [self popFromStack];
+                [_stack addObject:hash];
+            }
+            break;
+                
             // TODO: more operations
                 
                 
