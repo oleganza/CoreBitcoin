@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-// Change to 0 to disable code that requires OpenSSL (if you need some of these routines in your own project)
+// Change to 0 to disable code that requires OpenSSL (if you need some of these routines in your own project and you don't need OpenSSL)
 #define BTCDataRequiresOpenSSL 1
 
 // Securely overwrites memory buffer with a specified character.
