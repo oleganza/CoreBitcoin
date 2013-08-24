@@ -15,7 +15,8 @@ static const BTCSatoshi BTCCoin = 100000000;
 static const BTCSatoshi BTCCent = 1000000;
 
 
-// Network Rules (changing these either way will result in incompatibility with other nodes)
+
+// Network Rules (changing these will result in incompatibility with other nodes)
 
 // The maximum allowed size for a serialized block, in bytes
 static const unsigned int BTC_MAX_BLOCK_SIZE = 1000000;
@@ -36,10 +37,17 @@ static const unsigned int BTC_LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:5
 static const uint32_t BTC_BIP16_TIMESTAMP = 1333238400;
 
 // Scripts longer than 10000 bytes are invalid.
-static const NSUInteger BTC_SCRIPT_MAX_SIZE = 10000;
+static const NSUInteger BTC_MAX_SCRIPT_SIZE = 10000;
 
 // Maximum number of bytes per "pushdata" operation
 static const NSUInteger BTC_MAX_SCRIPT_ELEMENT_SIZE = 520; // bytes
+
+// Number of public keys allowed for OP_CHECKMULTISIG
+static const NSUInteger BTC_MAX_KEYS_FOR_CHECKMULTISIG = 20;
+
+// Maximum number of operations allowed per script (excluding pushdata operations and OP_<N>)
+// Multisig op additionally increases count by a number of pubkeys.
+static const NSUInteger BTC_MAX_OPS_PER_SCRIPT = 201;
 
 // Soft Rules (can bend these without becoming incompatible with everyone)
 

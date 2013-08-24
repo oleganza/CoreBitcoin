@@ -36,7 +36,7 @@
 {
     if (self = [super init])
     {
-        // It's important to keep around original data to correctly identify the size of the script for BTC_SCRIPT_MAX_SIZE check
+        // It's important to keep around original data to correctly identify the size of the script for BTC_MAX_SCRIPT_SIZE check
         // and to correctly calculate hash for the signature because in BitcoinQT scripts are not re-serialized/canonicalized.
         _data = data ?: [NSData data];
         _chunks = [self parseData:_data];

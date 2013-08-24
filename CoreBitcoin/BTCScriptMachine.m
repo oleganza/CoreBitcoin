@@ -225,7 +225,7 @@
         return NO;
     }
     
-    if (script.data.length > BTC_SCRIPT_MAX_SIZE)
+    if (script.data.length > BTC_MAX_SCRIPT_SIZE)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Script binary is too long.", @"")}];
         return NO;
@@ -280,7 +280,7 @@
         return NO;
     }
     
-    if (opcode > OP_16 && ++_opCount > 201)
+    if (opcode > OP_16 && ++_opCount > BTC_MAX_OPS_PER_SCRIPT)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")}];
         return NO;
@@ -956,7 +956,16 @@
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
 
-                // Drop the signature, since there's no way for a signature to sign itself
+                // Drop the signature, since there's no way for a signature to sign itself.
+                // Normally we neither have signatures in the output scripts, nor checksig ops in the input scripts.
+                // In early days of Bitcoin (before July 2010) input and output scripts were concatenated and executed as one,
+                // so this cleanup could make sense. But the concatenation was done with OP_CODESEPARATOR in the middle,
+                // so dropping sigs still didn't make much sense - output script was still hashes separately from signatures in the input one.
+                // There could have been some use case if one could put a signature
+                // right in the output script. E.g. to provably time-lock the funds.
+                // But the second tx must contain a valid hash to its parent while
+                // the parent must contain a signed hash of its child. This creates an unsolvable cycle.
+                // See https://bitcointalk.org/index.php?topic=278992.0 for more info.
                 [subscript deleteOccurrencesOfData:signature];
 
                 NSError* sigerror = nil;
@@ -996,13 +1005,167 @@
                 }
             }
             break;
-                
             
-            // TODO: more operations
+            
+            case OP_CHECKMULTISIG:
+            case OP_CHECKMULTISIGVERIFY:
+            {
+                // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
                 
+                int i = 1;
+                if (_stack.count < i)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:i];
+                    return NO;
+                }
+                
+                int32_t keysCount = [self bigNumberAtIndex:-i].int32value;
+                if (keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG)
+                {
+                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                                  code:BTCErrorScriptError
+                                                              userInfo:@{NSLocalizedDescriptionKey:
+                                    [NSString stringWithFormat:NSLocalizedString(@"Invalid number of keys for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]}];
+                    return NO;
+                }
+                
+                _opCount += keysCount;
+                
+                if (_opCount > BTC_MAX_OPS_PER_SCRIPT)
+                {
+                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")}];
+                    return NO;
+                }
+                
+                // An index of the first key
+                int ikey = ++i;
+                
+                i += keysCount;
+                
+                if (_stack.count < i)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:i];
+                    return NO;
+                }
+                
+                // Read the required number of signatures.
+                int sigsCount = [self bigNumberAtIndex:-i].int32value;
+                if (sigsCount < 0 || sigsCount > keysCount)
+                {
+                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                                  code:BTCErrorScriptError
+                                                              userInfo:@{NSLocalizedDescriptionKey:
+                                                                             [NSString stringWithFormat:NSLocalizedString(@"Invalid number of signatures for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]}];
+                    return NO;
+                }
+                
+                // The index of the first signature
+                int isig = ++i;
+                
+                i += sigsCount;
+                
+                if (_stack.count < i)
+                {
+                    if (errorOut) *errorOut = [self errorOpcode:opcode requiresItemsOnStack:i];
+                    return NO;
+                }
+                
+                // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
+                BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
+                
+                // Drop the signatures, since there's no way for a signature to sign itself.
+                // Essentially this is noop because signatures are never present in scripts.
+                // See also a comment to a similar code in OP_CHECKSIG.
+                for (int k = 0; k < sigsCount; k++)
+                {
+                    NSData* sig = [self dataAtIndex: - isig - k];
+                    [subscript deleteOccurrencesOfData:sig];
+                }
+                
+                BOOL success = YES;
+                NSError* firstsigerror = nil;
+
+                // Signatures must come in the same order as their keys.
+                while (success && sigsCount > 0)
+                {
+                    NSData* signature = [self dataAtIndex:-isig];
+                    NSData* pubkey = [self dataAtIndex:-ikey];
+                    
+                    BOOL validMatch = YES;
+                    NSError* sigerror = nil;
+                    if (_verificationFlags & BTCScriptVerificationStrictEncoding)
+                    {
+                        if (![BTCScript isCanonicalPublicKey:pubkey error:&sigerror])
+                        {
+                            validMatch = NO;
+                        }
+                        if (validMatch && ![BTCScript isCanonicalSignature:signature
+                                                            verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                                  error:&sigerror])
+                        {
+                            validMatch = NO;
+                        }
+                    }
+                    if (validMatch)
+                    {
+                        validMatch = [self checkSignature:signature publicKey:pubkey subscript:subscript error:&sigerror];
+                    }
+                    
+                    if (validMatch)
+                    {
+                        isig++;
+                        sigsCount--;
+                    }
+                    else
+                    {
+                        if (!firstsigerror) firstsigerror = sigerror;
+                    }
+                    ikey++;
+                    keysCount--;
+                    
+                    // If there are more signatures left than keys left,
+                    // then too many signatures have failed
+                    if (sigsCount > keysCount)
+                    {
+                        success = NO;
+                    }
+                }
+                
+                // Remove all signatures, counts and pubkeys from stack.
+                while (i-- > 0)
+                {
+                    [self popFromStack];
+                }
+                
+                [_stack addObject:success ? _blobTrue : _blobFalse];
+                
+                if (opcode == OP_CHECKMULTISIGVERIFY)
+                {
+                    if (success)
+                    {
+                        [self popFromStack];
+                    }
+                    else
+                    {
+                        if (firstsigerror && errorOut) *errorOut =
+                            [NSError errorWithDomain:BTCErrorDomain
+                                                code:BTCErrorScriptError
+                                            userInfo:@{
+                                                       NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Multisignature transaction failed. %@", @""), [firstsigerror localizedDescription]],
+                                                       NSUnderlyingErrorKey: firstsigerror
+                                                       }];
+                        return NO;
+                    }
+                }
+            }
+            break;
+
                 
             default:
-                if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Unknown opcode %d (%@).", @""), opcode, BTCNameForOpcode(opcode)]}];
+                if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                              code:BTCErrorScriptError
+                                                          userInfo:@{
+                                                    NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Unknown opcode %d (%@).", @""), opcode, BTCNameForOpcode(opcode)]}];
                 return NO;
         }
     }
@@ -1017,7 +1180,8 @@
 
 - (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkey subscript:(BTCScript*)subscript error:(NSError**)errorOut
 {
-    // TODO
+    
+    // TODO:
     
     return NO;
 }
