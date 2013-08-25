@@ -371,7 +371,7 @@
                 {
                     if (_stack.count < 1)
                     {
-                        if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                        if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                         return NO;
                     }
                     value = [self boolAtIndex:-1];
@@ -417,7 +417,7 @@
                 // (false -- false) and return
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
 
@@ -449,7 +449,7 @@
             {
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 [_altStack addObject:[self dataAtIndex:-1]];
@@ -474,7 +474,7 @@
                 // (x1 x2 -- )
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 [self popFromStack];
@@ -487,7 +487,7 @@
                 // (x1 x2 -- x1 x2 x1 x2)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 NSData* data1 = [self dataAtIndex:-2];
@@ -502,7 +502,7 @@
                 // (x1 x2 x3 -- x1 x2 x3 x1 x2 x3)
                 if (_stack.count < 3)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:3];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
                 NSData* data1 = [self dataAtIndex:-3];
@@ -519,7 +519,7 @@
                 // (x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2)
                 if (_stack.count < 4)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:4];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:4];
                     return NO;
                 }
                 NSData* data1 = [self dataAtIndex:-4];
@@ -534,7 +534,7 @@
                 // (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
                 if (_stack.count < 6)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:6];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:6];
                     return NO;
                 }
                 NSData* data1 = [self dataAtIndex:-6];
@@ -550,7 +550,7 @@
                 // (x1 x2 x3 x4 -- x3 x4 x1 x2)
                 if (_stack.count < 4)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:4];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:4];
                     return NO;
                 }
                 
@@ -565,7 +565,7 @@
                 // (0 -- 0)
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex:-1];
@@ -589,7 +589,7 @@
                 // (x -- )
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 [self popFromStack];
@@ -601,7 +601,7 @@
                 // (x -- x x)
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex:-1];
@@ -614,7 +614,7 @@
                 // (x1 x2 -- x2)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 [_stack removeObjectAtIndex:_stack.count - 2];
@@ -626,7 +626,7 @@
                 // (x1 x2 -- x1 x2 x1)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex:-2];
@@ -641,7 +641,7 @@
                 // roll: (xn ... x2 x1 x0 n --    ... x2 x1 x0 xn)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 
@@ -671,7 +671,7 @@
                 //  x2 x3 x1  after second swap
                 if (_stack.count < 3)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:3];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
                 [self swapDataAtIndex:-3 withIndex:-2];
@@ -684,7 +684,7 @@
                 // (x1 x2 -- x2 x1)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 [self swapDataAtIndex:-2 withIndex:-1];
@@ -696,7 +696,7 @@
                 // (x1 x2 -- x2 x1 x2)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex:-1];
@@ -710,7 +710,7 @@
                 // (in -- in size)
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt64:[self dataAtIndex:-1].length];
@@ -729,7 +729,7 @@
                 // (x1 x2 - bool)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 NSData* x1 = [self dataAtIndex:-2];
@@ -775,7 +775,7 @@
                 // (in -- out)
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 
@@ -813,7 +813,7 @@
                 // (x1 x2 -- out)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 
@@ -869,7 +869,7 @@
                 // (x min max -- out)
                 if (_stack.count < 3)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:3];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
                 
@@ -900,7 +900,7 @@
                 // (in -- hash)
                 if (_stack.count < 1)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:1];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 
@@ -952,7 +952,7 @@
                 // (sig pubkey -- bool)
                 if (_stack.count < 2)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:2];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
                 
@@ -1022,7 +1022,7 @@
                 int i = 1;
                 if (_stack.count < i)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:i];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
                 
@@ -1048,7 +1048,7 @@
                 
                 if (_stack.count < i)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:i];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
                 
@@ -1067,7 +1067,7 @@
                 
                 if (_stack.count < i)
                 {
-                    if (errorOut) *errorOut = [self errorOpcodeRequiresItemsOnStack:i];
+                    if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
                 
@@ -1349,7 +1349,7 @@
                                       NSUnderlyingErrorKey: underlyingError}];
 }
 
-- (NSError*) errorOpcodeRequiresItemsOnStack:(NSUInteger)items
+- (NSError*) scriptErrorOpcodeRequiresItemsOnStack:(NSUInteger)items
 {
     if (items == 1)
     {
