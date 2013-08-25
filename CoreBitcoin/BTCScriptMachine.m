@@ -158,14 +158,14 @@
     // We need to have something on stack
     if (_stack.count == 0)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Stack is empty after script execution.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Stack is empty after script execution.", @"")];
         return NO;
     }
     
     // The last value must be YES.
     if ([self boolAtIndex:-1] == NO)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Last item on the stack is boolean NO.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Last item on the stack is boolean NO.", @"")];
         return NO;
     }
     
@@ -175,7 +175,7 @@
         // BitcoinQT: scriptSig must be literals-only
         if (![inputScript isPushOnly])
         {
-            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Input script for P2SH spending must be literals-only.", @"")}];
+            if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Input script for P2SH spending must be literals-only.", @"")];
             return NO;
         }
         
@@ -206,14 +206,14 @@
         // We need to have something on stack
         if (_stack.count == 0)
         {
-            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Stack is empty after script execution.", @"")}];
+            if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Stack is empty after script execution.", @"")];
             return NO;
         }
         
         // The last value must be YES.
         if ([self boolAtIndex:-1] == NO)
         {
-            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Last item on the stack is boolean NO.", @"")}];
+            if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Last item on the stack is boolean NO.", @"")];
             return NO;
         }
     }
@@ -233,7 +233,7 @@
     
     if (script.data.length > BTC_MAX_SCRIPT_SIZE)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Script binary is too long.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Script binary is too long.", @"")];
         return NO;
     }
     
@@ -266,7 +266,7 @@
     
     if (_conditionStack.count > 0)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Condition branches unbalanced.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Condition branches not balanced.", @"")];
         return NO;
     }
     
@@ -282,13 +282,13 @@
     
     if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Pushdata chunk size is too big.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Pushdata chunk size is too big.", @"")];
         return NO;
     }
     
     if (opcode > OP_16 && ++_opCount > BTC_MAX_OPS_PER_SCRIPT)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")];
         return NO;
     }
     
@@ -310,7 +310,7 @@
         opcode == OP_LSHIFT ||
         opcode == OP_RSHIFT)
     {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Attempt to execute a disabled opcode.", @"")}];
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Attempt to execute a disabled opcode.", @"")];
         return NO;
     }
     
@@ -389,7 +389,7 @@
             {
                 if (_conditionStack.count == 0)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ELSE.", @"")}];
+                    if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ELSE.", @"")];
                     return NO;
                 }
                 
@@ -404,7 +404,7 @@
             {
                 if (_conditionStack.count == 0)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ENDIF.", @"")}];
+                    if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ENDIF.", @"")];
                     return NO;
                 }
                 [_conditionStack removeObjectAtIndex:_conditionStack.count - 1];
@@ -428,7 +428,7 @@
                 }
                 else
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"OP_VERIFY failed.", @"")}];
+                    if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_VERIFY failed.", @"")];
                     return NO;
                 }
             }
@@ -436,7 +436,7 @@
                 
             case OP_RETURN:
             {
-                if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"OP_RETURN executed.", @"")}];
+                if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_RETURN executed.", @"")];
                 return NO;
             }
             break;
@@ -461,7 +461,7 @@
             {
                 if (_altStack.count < 1)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d items on altstack", @""), BTCNameForOpcode(opcode), 1]}];
+                    if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"%@ requires one item on altstack", @""), BTCNameForOpcode(opcode)]];
                     return NO;
                 }
                 [_stack addObject:_altStack[_altStack.count - 1]];
@@ -652,7 +652,7 @@
                 
                 if (n < 0 || n >= _stack.count)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Invalid number of items for %@: %d.", @""), BTCNameForOpcode(opcode), n]}];
+                    if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of items for %@: %d.", @""), BTCNameForOpcode(opcode), n]];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex: -n - 1];
@@ -755,7 +755,7 @@
                     }
                     else
                     {
-                        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"OP_EQUALVERIFY failed.", @"")}];
+                        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_EQUALVERIFY failed.", @"")];
                         return NO;
                     }
                 }
@@ -857,7 +857,7 @@
                     }
                     else
                     {
-                        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"OP_NUMEQUALVERIFY failed.", @"")}];
+                        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_NUMEQUALVERIFY failed.", @"")];
                         return NO;
                     }
                 }
@@ -1411,7 +1411,7 @@
     {
         if (bytes[i] != 0)
         {
-            // Can be negative zero
+            // Can be negative zero, also counts as NO
             if (i == (len - 1) && bytes[i] == 0x80)
             {
                 return NO;
