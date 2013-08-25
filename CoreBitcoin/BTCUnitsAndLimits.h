@@ -1,7 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
-#ifndef BitcoinWallet_BTCUnits_h
-#define BitcoinWallet_BTCUnits_h
+#ifndef CoreBitcoin_BTCUnits_h
+#define CoreBitcoin_BTCUnits_h
 
 // The smallest unit in Bitcoin is 1 satoshi.
 // Satoshis are 64-bit signed integers.

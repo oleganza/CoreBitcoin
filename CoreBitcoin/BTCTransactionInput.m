@@ -97,6 +97,17 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     return self;
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+    BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
+    txin.previousHash = [self.previousHash copy];
+    txin.previousIndex = self.previousIndex;
+    txin.signatureScript = [self.signatureScript copy];
+    txin.sequence = self.sequence;
+    txin.data = [self.data copy];
+    return txin;
+}
+
 - (NSData*) data
 {
     if (!_data)

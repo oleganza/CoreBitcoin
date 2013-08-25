@@ -7,7 +7,7 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 
 @class BTCTransactionInput;
 @class BTCTransactionOutput;
-@interface BTCTransaction : NSObject
+@interface BTCTransaction : NSObject<NSCopying>
 
 // Raw transaction hash SHA256(SHA256(payload))
 @property(nonatomic, readonly) NSData* transactionHash;

@@ -6,6 +6,7 @@
 #import "BTCTransaction.h"
 #import "BTCTransactionInput.h"
 #import "BTCTransactionOutput.h"
+#import "BTCEllipticCurveKey.h"
 #import "BTCBigNumber.h"
 #import "BTCErrors.h"
 #import "BTCUnitsAndLimits.h"
@@ -135,6 +136,7 @@
     // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
     if (![self runScript:inputScript error:errorOut])
     {
+        // errorOut is set by runScript
         return NO;
     }
     
@@ -146,6 +148,7 @@
     // Second step: run output script to see that the input satisfies all conditions laid in the output script.
     if (![self runScript:outputScript error:errorOut])
     {
+        // errorOut is set by runScript
         return NO;
     }
     
@@ -951,7 +954,7 @@
                 }
                 
                 NSData* signature = [self dataAtIndex:-2];
-                NSData* pubkey = [self dataAtIndex:-1];
+                NSData* pubkeyData = [self dataAtIndex:-1];
                 
                 // Subset of script starting at the most recent OP_CODESEPARATOR (inclusive)
                 BTCScript* subscript = [_script subScriptFromIndex:_lastCodeSeparatorIndex];
@@ -972,7 +975,7 @@
                 BOOL failed = NO;
                 if (_verificationFlags & BTCScriptVerificationStrictEncoding)
                 {
-                    if (![BTCScript isCanonicalPublicKey:pubkey error:&sigerror])
+                    if (![BTCScript isCanonicalPublicKey:pubkeyData error:&sigerror])
                     {
                         failed = YES;
                     }
@@ -984,7 +987,7 @@
                     }
                 }
                 
-                BOOL success = !failed && [self checkSignature:signature publicKey:pubkey subscript:subscript error:&sigerror];
+                BOOL success = !failed && [self checkSignature:signature publicKey:pubkeyData subscript:subscript error:&sigerror];
                 
                 [self popFromStack];
                 [self popFromStack];
@@ -999,7 +1002,8 @@
                     }
                     else
                     {
-                        if (sigerror && errorOut) *errorOut = sigerror;
+                        if (sigerror && errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Signature check failed. %@", @""),
+                                                                                 [sigerror localizedDescription]] underlyingError:sigerror];
                         return NO;
                     }
                 }
@@ -1022,10 +1026,7 @@
                 int32_t keysCount = [self bigNumberAtIndex:-i].int32value;
                 if (keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
-                                                                  code:BTCErrorScriptError
-                                                              userInfo:@{NSLocalizedDescriptionKey:
-                                    [NSString stringWithFormat:NSLocalizedString(@"Invalid number of keys for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]}];
+                    if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of keys for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
                     return NO;
                 }
                 
@@ -1033,7 +1034,7 @@
                 
                 if (_opCount > BTC_MAX_OPS_PER_SCRIPT)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")}];
+                    if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Exceeded allowed number of operations per script.", @"")];
                     return NO;
                 }
                 
@@ -1052,10 +1053,7 @@
                 int sigsCount = [self bigNumberAtIndex:-i].int32value;
                 if (sigsCount < 0 || sigsCount > keysCount)
                 {
-                    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
-                                                                  code:BTCErrorScriptError
-                                                              userInfo:@{NSLocalizedDescriptionKey:
-                                                                             [NSString stringWithFormat:NSLocalizedString(@"Invalid number of signatures for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]}];
+                    if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of signatures for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
                     return NO;
                 }
                 
@@ -1089,13 +1087,13 @@
                 while (success && sigsCount > 0)
                 {
                     NSData* signature = [self dataAtIndex:-isig];
-                    NSData* pubkey = [self dataAtIndex:-ikey];
+                    NSData* pubkeyData = [self dataAtIndex:-ikey];
                     
                     BOOL validMatch = YES;
                     NSError* sigerror = nil;
                     if (_verificationFlags & BTCScriptVerificationStrictEncoding)
                     {
-                        if (![BTCScript isCanonicalPublicKey:pubkey error:&sigerror])
+                        if (![BTCScript isCanonicalPublicKey:pubkeyData error:&sigerror])
                         {
                             validMatch = NO;
                         }
@@ -1108,7 +1106,7 @@
                     }
                     if (validMatch)
                     {
-                        validMatch = [self checkSignature:signature publicKey:pubkey subscript:subscript error:&sigerror];
+                        validMatch = [self checkSignature:signature publicKey:pubkeyData subscript:subscript error:&sigerror];
                     }
                     
                     if (validMatch)
@@ -1148,12 +1146,8 @@
                     else
                     {
                         if (firstsigerror && errorOut) *errorOut =
-                            [NSError errorWithDomain:BTCErrorDomain
-                                                code:BTCErrorScriptError
-                                            userInfo:@{
-                                                       NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Multisignature transaction failed. %@", @""), [firstsigerror localizedDescription]],
-                                                       NSUnderlyingErrorKey: firstsigerror
-                                                       }];
+                            [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Multisignature check failed. %@", @""),
+                                               [firstsigerror localizedDescription]] underlyingError:firstsigerror];
                         return NO;
                     }
                 }
@@ -1162,10 +1156,7 @@
 
                 
             default:
-                if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
-                                                              code:BTCErrorScriptError
-                                                          userInfo:@{
-                                                    NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Unknown opcode %d (%@).", @""), opcode, BTCNameForOpcode(opcode)]}];
+                if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Unknown opcode %d (%@).", @""), opcode, BTCNameForOpcode(opcode)]];
                 return NO;
         }
     }
@@ -1178,14 +1169,83 @@
     return YES;
 }
 
-- (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkey subscript:(BTCScript*)subscript error:(NSError**)errorOut
+
+
+
+- (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkeyData subscript:(BTCScript*)subscript error:(NSError**)errorOut
 {
+    BTCEllipticCurveKey* pubkey = [[BTCEllipticCurveKey alloc] initWithPublicKey:pubkeyData];
     
-    // TODO:
+    if (!pubkey)
+    {
+        if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Public key is not valid: %@.", @""),
+                                                     BTCHexStringFromData(pubkeyData)]];
+        return NO;
+    }
     
-    return NO;
+    // Hash type is one byte tacked on to the end of the signature
+    
+    if (signature.length == 0)
+    {
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Signature is empty.", @"")];
+        return NO;
+    }
+    
+    // Extract hash type from the last byte of the signature.
+    BTCSignatureHashType hashType = ((unsigned char*)signature.bytes)[signature.length - 1];
+    
+    // Strip that last byte to have a pure signature.
+    signature = [signature subdataWithRange:NSMakeRange(0, signature.length - 1)];
+    
+    NSData* sighash = [self signatureHashForScript:subscript hashType:hashType];
+    
+    if (![pubkey isValidSignature:signature hash:sighash])
+    {
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Signature is not valid.", @"")];
+        return NO;
+    }
+    
+    return YES;
 }
 
+
+
+// To compute a signature of transaction, we need its hash.
+// The hash is computed by doing certain modifications
+// to the transaction based on hashType.
+- (NSData*) signatureHashForScript:(BTCScript*)subscript hashType:(BTCSignatureHashType)hashType
+{
+    
+    // TODO
+    return nil;
+    
+}
+
+
+
+
+
+#pragma mark - Error Helpers
+
+
+
+
+- (NSError*) scriptError:(NSString*)localizedString
+{
+    return [NSError errorWithDomain:BTCErrorDomain
+                               code:BTCErrorScriptError
+                           userInfo:@{NSLocalizedDescriptionKey: localizedString}];
+}
+
+- (NSError*) scriptError:(NSString*)localizedString underlyingError:(NSError*)underlyingError
+{
+    if (!underlyingError) return [self scriptError:localizedString];
+    
+    return [NSError errorWithDomain:BTCErrorDomain
+                               code:BTCErrorScriptError
+                           userInfo:@{NSLocalizedDescriptionKey: localizedString,
+                                      NSUnderlyingErrorKey: underlyingError}];
+}
 
 - (NSError*) errorOpcode:(BTCOpcode)opcode requiresItemsOnStack:(NSUInteger)items
 {

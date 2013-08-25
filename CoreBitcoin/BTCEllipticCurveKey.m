@@ -35,6 +35,12 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return success;
 }
 
+@interface BTCEllipticCurveKey ()
+@property(nonatomic, readwrite) NSData* publicKey;
+@property(nonatomic, readwrite) NSData* privateKey; // 279-byte private key with secret and all parameters.
+@property(nonatomic, readwrite) NSData* secretKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1 curve.
+@end
+
 @implementation BTCEllipticCurveKey {
     EC_KEY* _key;
 }
@@ -63,6 +69,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
     if (self = [super init])
     {
+        if (![self isValidPubKey:publicKey]) return nil;
         self.publicKey = publicKey;
     }
     return self;
@@ -89,6 +96,8 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash
 {
+    if (hash.length == 0 || signature.length == 0) return NO;
+    
     // -1 = error, 0 = bad sig, 1 = good
     if (ECDSA_verify(0, (unsigned char*)hash.bytes,      (int)hash.length,
                         (unsigned char*)signature.bytes, (int)signature.length,
@@ -97,7 +106,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
         return NO;
     }
     
-    return true;
+    return YES;
 }
 
 // Returns a signature data for a 256-bit hash using private key.
@@ -230,6 +239,24 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p>", self];
 }
 
+
+- (NSUInteger) lengthOfPubKey:(NSData*)data
+{
+    if (data.length == 0) return 0;
+    
+    unsigned char header = ((const unsigned char*)data.bytes)[0];
+    if (header == 2 || header == 3)
+        return 33;
+    if (header == 4 || header == 6 || header == 7)
+        return 65;
+    return 0;
+}
+
+- (BOOL) isValidPubKey:(NSData*)data
+{
+    NSUInteger length = data.length;
+    return length > 0 && [self lengthOfPubKey:data] == length;
+}
 
 
 @end

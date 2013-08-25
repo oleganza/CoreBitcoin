@@ -8,7 +8,7 @@
 // Reference is defined by tx hash + tx output index.
 // Signature script is used to prove ownership of the corresponding tx output.
 // Sequence is used to require different signatures when tx is updated. It is only relevant when tx lockTime > 0.
-@interface BTCTransactionInput : NSObject
+@interface BTCTransactionInput : NSObject <NSCopying>
 
 // Hash of the previous transaction.
 @property(nonatomic) NSData* previousHash;

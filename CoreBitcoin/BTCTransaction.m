@@ -118,6 +118,19 @@
     }
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+    BTCTransaction* tx = [[BTCTransaction alloc] init];
+    tx.transactionHash = self.transactionHash;
+    tx.displayTransactionHash = self.displayTransactionHash;
+    tx.inputs = [self.inputs copy];
+    tx.outputs = [self.outputs copy];
+    tx.data = [self.data copy];
+    tx.version = self.version;
+    tx.lockTime = self.lockTime;
+    return tx;
+}
+
 
 
 #pragma mark - Properties

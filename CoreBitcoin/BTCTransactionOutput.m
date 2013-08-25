@@ -73,6 +73,15 @@
     return self;
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+    BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
+    txout.data = [self.data copy];
+    txout.value = self.value;
+    txout.script = [self.script copy];
+    return txout;
+}
+
 - (NSData*) data
 {
     if (!_data)

@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 
 // A timestamp of the current block. Default is current timestamp.
 // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
-// If not specified, defaults to current timestamp thus using all currently enabled rules.
+// If not specified, defaults to current timestamp thus using the latest protocol rules.
 @property(nonatomic) uint32_t blockTimestamp;
 
 // Flags affecting verification. Default is the most liberal verification.
