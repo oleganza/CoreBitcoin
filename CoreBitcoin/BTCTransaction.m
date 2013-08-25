@@ -231,6 +231,18 @@
     [self invalidatePayload];
 }
 
+- (void) removeAllInputs
+{
+    _inputs = @[];
+    [self invalidatePayload];
+}
+
+- (void) removeAllOutputs
+{
+    _outputs = @[];
+    [self invalidatePayload];
+}
+
 - (BOOL) isCoinbase
 {
     // Coinbase transaction has one input and it must be coinbase.

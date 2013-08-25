@@ -49,6 +49,12 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 // Adds output script
 - (void) addOutput:(BTCTransactionOutput*)output;
 
+// Replaces inputs with an empty array.
+- (void) removeAllInputs;
+
+// Replaces outputs with an empty array.
+- (void) removeAllOutputs;
+
 // Returns YES if this txin generates new coins.
 - (BOOL) isCoinbase;
 
