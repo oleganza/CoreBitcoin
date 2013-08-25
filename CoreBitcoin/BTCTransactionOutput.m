@@ -128,6 +128,7 @@
 {
     return @{
              @"value": [NSString stringWithFormat:@"%lld.%@", _value / BTCCoin, [[NSString stringWithFormat:@"%lld", _value % BTCCoin] stringByPaddingToLength:8 withString:@"0" startingAtIndex:0]],
+             // TODO: like in BTCTransactionInput, have an option to put both "asm" and "hex" representations of the script.
              @"scriptPubKey": _script.string ?: @"",
              };
 }

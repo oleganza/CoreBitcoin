@@ -91,6 +91,9 @@
 - (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex
 {
     if (!tx) return nil;
+    // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
+    // So even though it returns 1 from SignatureHash() function when checking for this condition,
+    // it never actually happens. So we too will not check for it when calculating a hash.
     if (inputIndex >= tx.inputs.count) return nil;
     if (self = [self init])
     {
@@ -1197,7 +1200,13 @@
     // Strip that last byte to have a pure signature.
     signature = [signature subdataWithRange:NSMakeRange(0, signature.length - 1)];
     
-    NSData* sighash = [self signatureHashForScript:subscript hashType:hashType];
+    NSData* sighash = [self signatureHashForScript:subscript hashType:hashType error:errorOut];
+    
+    if (!sighash)
+    {
+        // errorOut is set already.
+        return NO;
+    }
     
     if (![pubkey isValidSignature:signature hash:sighash])
     {
@@ -1210,13 +1219,37 @@
 
 
 
-// To compute a signature of transaction, we need its hash.
-// The hash is computed by doing certain modifications
-// to the transaction based on hashType.
-- (NSData*) signatureHashForScript:(BTCScript*)subscript hashType:(BTCSignatureHashType)hashType
+// To compute a transaction signature, we need its hash.
+// The hash is computed by doing certain modifications to the transaction based on hashType,
+// then serializing it and hashing the resulting data.
+- (NSData*) signatureHashForScript:(BTCScript*)subscript hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut
 {
+    // Create a temporary copy of the transaction to apply modifications to it.
+    // 
+    BTCTransaction* tx = [_transaction copy];
     
-    // TODO
+    // We may have a scriptmachine instantiated without a transaction (for testing),
+    // but it should not use signature checks then.
+    if (!tx || _inputIndex == 0xFFFFFFFF)
+    {
+        if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Transaction and valid input index must be provided for signature verification.", @"")];
+        return nil;
+    }
+    
+    // Note: BitcoinQT returns a 256-bit little-endian number 1 in such case, but it does not matter
+    // because it would crash before that in CScriptCheck::operator()(). We normally won't enter this condition
+    // if transaction is instantiated with initWithTransaction:inputIndex:, but if it was just -init-ed, it's better to check.
+    if (_inputIndex >= tx.inputs.count)
+    {
+        if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:
+                                                     NSLocalizedString(@"Input index is out of bounds for transaction: %d >= %d.", @""),
+                                                     (int)_inputIndex, (int)tx.inputs.count]];
+        return nil;
+    }
+    
+    
+    
+    
     return nil;
     
 }
