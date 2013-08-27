@@ -24,7 +24,7 @@ TODO
 ----
 
 - Universal OpenSSL libraries. Or as a part of a build process.
-- Universal CoreBitcoin.framework bundle with OpenSSL inside.
+- Universal CoreBitcoin.framework bundled with OpenSSL inside.
 - Full transaction support.
 - Full blockchain support.
 - BitcoinQT wallet reader.
