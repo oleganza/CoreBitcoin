@@ -54,7 +54,7 @@ enum
 // Returns nil for unsupported addresses.
 + (id) addressWithBase58CString:(const char*)cstring
 {
-    NSMutableData* composedData = [NSMutableData dataFromBase58CheckCString:cstring];
+    NSMutableData* composedData = BTCDataFromBase58CheckCString(cstring);
     if (!composedData) return nil;
     if (composedData.length < 2) return nil;
     
@@ -125,7 +125,7 @@ enum
     if (!_cstring)
     {
         NSMutableData* data = [self dataForBase58Encoding];
-        _cstring = [data base58CheckCString];
+        _cstring = BTCBase58CheckCStringWithData(data);
         BTCDataClear(data);
     }
     return _cstring;

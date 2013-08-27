@@ -16,45 +16,28 @@
 // - Double-clicking selects the whole number as one word if it's all alphanumeric.
 
 
-// TODO: use NS+BTCBase58.h instead for categories and change this API to be function-based.
+// See NS+BTCBase58.h for easy to use categories.
 
-
-@interface NSString (Base58)
-
-// Returns data for Base58 string without checksum
+// Returns data for a Base58 string without checksum
 // Data is mutable so you can clear sensitive information as soon as possible.
-- (NSMutableData*) dataFromBase58;
+NSMutableData* BTCDataFromBase58(NSString* string);
+NSMutableData* BTCDataFromBase58CString(const char* cstring);
 
-// Returns data for Base58 string with checksum
-- (NSMutableData*) dataFromBase58Check;
-
-@end
-
-@interface NSMutableData (Base58)
-
-// Returns data for Base58 string without checksum
-// Data is mutable so you can clear sensitive information as soon as possible.
-+ (NSMutableData*) dataFromBase58CString:(const char*)cstring;
-
-// Returns data for Base58 string with checksum
-+ (NSMutableData*) dataFromBase58CheckCString:(const char*)cstring;
-
-@end
-
-@interface NSData (Base58)
+// Returns data for a Base58 string with checksum
+NSMutableData* BTCDataFromBase58Check(NSString* string);
+NSMutableData* BTCDataFromBase58CheckCString(const char* cstring);
 
 // String in Base58 without checksum, you need to free it yourself.
 // It's mutable so you can clear it securely yourself.
-- (char*) base58CString;
+char* BTCBase58CStringWithData(NSData* data);
+
+// Same as above, but returns an immutable autoreleased string. Suitable for non-sensitive data.
+NSString* BTCBase58StringWithData(NSData* data);
 
 // String in Base58 with checksum, you need to free it yourself.
 // It's mutable so you can clear it securely yourself.
-- (char*) base58CheckCString;
+char* BTCBase58CheckCStringWithData(NSData* data);
 
-// String in Base58 without checksum
-- (NSString*) base58String;
+// Same as above, but returns an immutable autoreleased string. Suitable for non-sensitive data.
+NSString* BTCBase58CheckStringWithData(NSData* data);
 
-// String in Base58 with checksum
-- (NSString*) base58CheckString;
-
-@end

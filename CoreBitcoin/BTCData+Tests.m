@@ -3,6 +3,7 @@
 #import "BTCData.h"
 #import "NSData+BTCData.h"
 #import "BTCBase58.h"
+#import "NS+BTCBase58.h"
 #import "BTCData+Tests.h"
 
 @implementation NSData (BTC_Tests)

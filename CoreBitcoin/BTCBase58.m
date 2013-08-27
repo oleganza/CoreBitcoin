@@ -6,20 +6,17 @@
 
 static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-@implementation NSString (Base58)
-- (NSMutableData*) dataFromBase58
+NSMutableData* BTCDataFromBase58(NSString* string)
 {
-    return [NSMutableData dataFromBase58CString:[self cStringUsingEncoding:NSASCIIStringEncoding]];
+    return BTCDataFromBase58CString([string cStringUsingEncoding:NSASCIIStringEncoding]);
 }
-- (NSMutableData*) dataFromBase58Check
+
+NSMutableData* BTCDataFromBase58Check(NSString* string)
 {
-    return [NSMutableData dataFromBase58CheckCString:[self cStringUsingEncoding:NSASCIIStringEncoding]];
+    return BTCDataFromBase58CheckCString([string cStringUsingEncoding:NSASCIIStringEncoding]);
 }
-@end
 
-@implementation NSMutableData (Base58)
-
-+ (NSMutableData*) dataFromBase58CString:(const char *)cstring
+NSMutableData* BTCDataFromBase58CString(const char* cstring)
 {
     NSMutableData* result = nil;
     
@@ -107,9 +104,9 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     return result;
 }
 
-+ (NSMutableData*) dataFromBase58CheckCString:(const char *)cstring
+NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
 {
-    NSMutableData* result = [self dataFromBase58CString:cstring];
+    NSMutableData* result = BTCDataFromBase58CString(cstring);
     size_t length = result.length;
     if (length < 4)
     {
@@ -126,15 +123,8 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     return result;
 }
 
-@end
 
-
-@implementation NSData (Base58)
-
-
-
-// String in Base58 without checksum
-- (char*) base58CString
+char* BTCBase58CStringWithData(NSData* data)
 {
     BN_CTX* pctx = BN_CTX_new();
     __block BIGNUM bn58; BN_init(&bn58); BN_set_word(&bn58, 58);
@@ -154,7 +144,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     
     // Convert big endian data to little endian.
     // Extra zero at the end make sure bignum will interpret as a positive number.
-    NSMutableData* tmp = BTCReversedMutableData(self);
+    NSMutableData* tmp = BTCReversedMutableData(data);
     tmp.length += 1;
     
     // Convert little endian data to bignum
@@ -179,7 +169,7 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     
     // Expected size increase from base58 conversion is approximately 137%
     // use 138% to be safe
-    NSMutableData* stringData = [NSMutableData dataWithCapacity:self.length*138/100 + 1];
+    NSMutableData* stringData = [NSMutableData dataWithCapacity:data.length*138/100 + 1];
     
     while (BN_cmp(&bn, &bn0) > 0)
     {
@@ -194,9 +184,9 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
     }
     finish();
     
-    // Leading zeroes encoded as base58 ones
-    const unsigned char* pbegin = self.bytes;
-    const unsigned char* pend = self.bytes + self.length;
+    // Leading zeroes encoded as base58 ones ("1")
+    const unsigned char* pbegin = data.bytes;
+    const unsigned char* pend = data.bytes + data.length;
     for (const unsigned char* p = pbegin; p < pend && *p == 0; p++)
     {
         [stringData appendBytes:BTCBase58Alphabet + 0 length:1];
@@ -214,40 +204,35 @@ static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefg
 }
 
 // String in Base58 with checksum
-- (char*) base58CheckCString
+char* BTCBase58CheckCStringWithData(NSData* immutabledata)
 {
     // add 4-byte hash check to the end
-    NSMutableData* data = [self mutableCopy];
+    NSMutableData* data = [immutabledata mutableCopy];
     NSData* checksum = BTCHash256(data);
     [data appendBytes:checksum.bytes length:4];
-    char* result = [data base58CString];
+    char* result = BTCBase58CStringWithData(data);
     BTCDataClear(data);
     return result;
 }
 
-// String in Base58 without checksum
-- (NSString*) base58String
+NSString* BTCBase58StringWithData(NSData* data)
 {
-    char* s = [self base58CString];
+    char* s = BTCBase58CStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
     BTCSecureClearCString(s);
     free(s);
     return r;
 }
 
-// String in Base58 with checksum
-- (NSString*) base58CheckString
+
+NSString* BTCBase58CheckStringWithData(NSData* data)
 {
-    char* s = [self base58CheckCString];
+    char* s = BTCBase58CheckCStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
     BTCSecureClearCString(s);
     free(s);
     return r;
-
 }
-
-@end
-
 
 
 
