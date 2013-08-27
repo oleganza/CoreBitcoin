@@ -4,14 +4,17 @@
 #import "BTCData+Tests.h"
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
+#import "BTCEllipticCurveKey+Tests.h"
 
 int main(int argc, const char * argv[])
 {
-    @autoreleasepool {
+    @autoreleasepool
+    {
         [NSData runAllTests];
         [BTCBigNumber runAllTests];
         [BTCAddress runAllTests];
         [BTCProtocolSerialization runAllTests];
+        [BTCEllipticCurveKey runAllTests];
         NSLog(@"All tests passed.");
     }
     return 0;
