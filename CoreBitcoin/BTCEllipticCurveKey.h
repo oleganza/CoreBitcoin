@@ -13,14 +13,14 @@
 // You can use -isValidSignature:hash:
 - (id) initWithPublicKey:(NSData*)publicKey;
 
-// Instantiates a key with either a private key (279 bytes) or a secret (32 bytes).
-// Usually secret parameter is used and private key is derived from it on the fly because other parameters are predefined.
-- (id) initWithPrivateKey:(NSData*)privateKey;
+// Instantiates a key with either a DER private key (279 bytes) or a secret parameter (32 bytes).
+// Usually only secret parameter is used and private key is derived from it on the fly because other parameters are known (curve secp256k1).
+- (id) initWithDERPrivateKey:(NSData*)DERPrivateKey;
 - (id) initWithSecretKey:(NSData*)secretKey;
 
 // These properties return mutable copy of data so you can clear it if needed.
 @property(nonatomic, readonly) NSMutableData* publicKey;
-@property(nonatomic, readonly) NSMutableData* privateKey; // 279-byte private key with secret and all parameters.
+@property(nonatomic, readonly) NSMutableData* DERPrivateKey; // 279-byte private key with secret and all parameters.
 @property(nonatomic, readonly) NSMutableData* secretKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1 curve.
 
 // Returns YES if the public key is compressed.

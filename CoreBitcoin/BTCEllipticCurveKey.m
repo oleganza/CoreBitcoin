@@ -77,11 +77,11 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return self;
 }
 
-- (id) initWithPrivateKey:(NSData*)privateKey
+- (id) initWithDERPrivateKey:(NSData*)DERPrivateKey
 {
     if (self = [super init])
     {
-        [self setPrivateKey:privateKey];
+        [self setDERPrivateKey:DERPrivateKey];
     }
     return self;
 }
@@ -150,7 +150,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return _publicKey;
 }
 
-- (NSMutableData*) privateKey
+- (NSMutableData*) DERPrivateKey
 {
     if (!_key) return nil;
     int length = i2d_ECPrivateKey(_key, NULL);
@@ -181,19 +181,19 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     
     [self prepareKeyIfNeeded];
     
-    const unsigned char* bytes = [publicKey bytes];
-    if (!o2i_ECPublicKey(&_key, &bytes, [publicKey length])) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    const unsigned char* bytes = publicKey.bytes;
+    if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length)) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
                                                                                             reason:@"o2i_ECPublicKey failed. " userInfo:nil];
 }
 
-- (void) setPrivateKey:(NSData *)privateKey
+- (void) setDERPrivateKey:(NSData *)DERPrivateKey
 {
-    if (!privateKey) return;
+    if (!DERPrivateKey) return;
     
     [self prepareKeyIfNeeded];
     
-    const unsigned char* bytes = [privateKey bytes];
-    if (!d2i_ECPrivateKey(&_key, &bytes, [privateKey length])) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    const unsigned char* bytes = DERPrivateKey.bytes;
+    if (!d2i_ECPrivateKey(&_key, &bytes, DERPrivateKey.length)) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
                                                                                               reason:@"d2i_ECPrivateKey failed. " userInfo:nil];
 }
 
