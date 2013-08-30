@@ -1,6 +1,6 @@
 // Oleg Andreev <oleganza@gmail.com>
 
-#import "BTCEllipticCurveKey+BitcoinSignedMessage.h"
+#import "BTCKey+BitcoinSignedMessage.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCData.h"
 
@@ -15,7 +15,7 @@ static NSData* BTCSignatureHashForMessage(NSString* message)
     return BTCHash256(data);
 }
 
-@implementation BTCEllipticCurveKey (BitcoinSignedMessage)
+@implementation BTCKey (BitcoinSignedMessage)
 
 // Returns a signature for a message prepended with "Bitcoin Signed Message:\n" line.
 - (NSData*) signatureForMessage:(NSString*)message
@@ -28,7 +28,7 @@ static NSData* BTCSignatureHashForMessage(NSString* message)
 }
 
 // Verifies message against given signature. On success returns a public key.
-+ (BTCEllipticCurveKey*) verifySignature:(NSData*)signature forMessage:(NSString*)message
++ (BTCKey*) verifySignature:(NSData*)signature forMessage:(NSString*)message
 {
     // TODO
     
@@ -38,7 +38,7 @@ static NSData* BTCSignatureHashForMessage(NSString* message)
 // Verifies signature of the message with its public key.
 - (BOOL) isValidSignature:(NSData*)signature forMessage:(NSString*)message
 {
-    BTCEllipticCurveKey* key = [[self class] verifySignature:signature forMessage:message];
+    BTCKey* key = [[self class] verifySignature:signature forMessage:message];
     return [key isEqual:self];
 }
 

@@ -6,7 +6,7 @@
 #import "BTCTransaction.h"
 #import "BTCTransactionInput.h"
 #import "BTCTransactionOutput.h"
-#import "BTCEllipticCurveKey.h"
+#import "BTCKey.h"
 #import "BTCBigNumber.h"
 #import "BTCErrors.h"
 #import "BTCUnitsAndLimits.h"
@@ -1177,7 +1177,7 @@
 
 - (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkeyData subscript:(BTCScript*)subscript error:(NSError**)errorOut
 {
-    BTCEllipticCurveKey* pubkey = [[BTCEllipticCurveKey alloc] initWithPublicKey:pubkeyData];
+    BTCKey* pubkey = [[BTCKey alloc] initWithPublicKey:pubkeyData];
     
     if (!pubkey)
     {

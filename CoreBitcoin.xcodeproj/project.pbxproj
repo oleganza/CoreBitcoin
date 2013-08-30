@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20219A6D17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 20219A6C17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.m */; };
-		20219A7017D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 20219A6F17D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.m */; };
-		2057A9CD17CD555F00353D54 /* BTCEllipticCurveKey+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057A9CC17CD555F00353D54 /* BTCEllipticCurveKey+Tests.m */; };
+		20219A6D17D09B6300FC34C0 /* BTCKey+CompactSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 20219A6C17D09B6300FC34C0 /* BTCKey+CompactSignature.m */; };
+		20219A7017D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 20219A6F17D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.m */; };
+		2057A9CD17CD555F00353D54 /* BTCKey+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */; };
 		206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01417C735EE003B6987 /* NS+BTCBase58.m */; };
 		2084DD5E17B8FF47005AC9E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D2802517B8FE00004A462B /* Foundation.framework */; };
 		2084DD6117B8FF47005AC9E6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD6017B8FF47005AC9E6 /* main.m */; };
@@ -18,7 +18,7 @@
 		2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD6E17B8FF76005AC9E6 /* BTCBase58.m */; };
 		2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7017B8FF76005AC9E6 /* BTCBigNumber.m */; };
 		2084DD8A17B8FF76005AC9E6 /* BTCBigNumber+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7217B8FF76005AC9E6 /* BTCBigNumber+Tests.m */; };
-		2084DD8B17B8FF76005AC9E6 /* BTCEllipticCurveKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7417B8FF76005AC9E6 /* BTCEllipticCurveKey.m */; };
+		2084DD8B17B8FF76005AC9E6 /* BTCKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7417B8FF76005AC9E6 /* BTCKey.m */; };
 		2084DD8C17B8FF76005AC9E6 /* BTCProtocolSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7617B8FF76005AC9E6 /* BTCProtocolSerialization.m */; };
 		2084DD8D17B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7817B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m */; };
 		2084DD8E17B8FF76005AC9E6 /* BTCScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7A17B8FF76005AC9E6 /* BTCScript.m */; };
@@ -50,12 +50,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		20219A6B17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEllipticCurveKey+CompactSignature.h"; sourceTree = "<group>"; };
-		20219A6C17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEllipticCurveKey+CompactSignature.m"; sourceTree = "<group>"; };
-		20219A6E17D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEllipticCurveKey+BitcoinSignedMessage.h"; sourceTree = "<group>"; };
-		20219A6F17D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEllipticCurveKey+BitcoinSignedMessage.m"; sourceTree = "<group>"; };
-		2057A9CB17CD555F00353D54 /* BTCEllipticCurveKey+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEllipticCurveKey+Tests.h"; sourceTree = "<group>"; };
-		2057A9CC17CD555F00353D54 /* BTCEllipticCurveKey+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEllipticCurveKey+Tests.m"; sourceTree = "<group>"; };
+		20219A6B17D09B6300FC34C0 /* BTCKey+CompactSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKey+CompactSignature.h"; sourceTree = "<group>"; };
+		20219A6C17D09B6300FC34C0 /* BTCKey+CompactSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKey+CompactSignature.m"; sourceTree = "<group>"; };
+		20219A6E17D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKey+BitcoinSignedMessage.h"; sourceTree = "<group>"; };
+		20219A6F17D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKey+BitcoinSignedMessage.m"; sourceTree = "<group>"; };
+		2057A9CB17CD555F00353D54 /* BTCKey+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKey+Tests.h"; sourceTree = "<group>"; };
+		2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKey+Tests.m"; sourceTree = "<group>"; };
 		2084DD5D17B8FF47005AC9E6 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		2084DD6017B8FF47005AC9E6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2084DD6317B8FF47005AC9E6 /* UnitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -69,8 +69,8 @@
 		2084DD7017B8FF76005AC9E6 /* BTCBigNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCBigNumber.m; sourceTree = "<group>"; };
 		2084DD7117B8FF76005AC9E6 /* BTCBigNumber+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCBigNumber+Tests.h"; sourceTree = "<group>"; };
 		2084DD7217B8FF76005AC9E6 /* BTCBigNumber+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBigNumber+Tests.m"; sourceTree = "<group>"; };
-		2084DD7317B8FF76005AC9E6 /* BTCEllipticCurveKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCEllipticCurveKey.h; sourceTree = "<group>"; };
-		2084DD7417B8FF76005AC9E6 /* BTCEllipticCurveKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCEllipticCurveKey.m; sourceTree = "<group>"; };
+		2084DD7317B8FF76005AC9E6 /* BTCKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCKey.h; sourceTree = "<group>"; };
+		2084DD7417B8FF76005AC9E6 /* BTCKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCKey.m; sourceTree = "<group>"; };
 		2084DD7517B8FF76005AC9E6 /* BTCProtocolSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCProtocolSerialization.h; sourceTree = "<group>"; };
 		2084DD7617B8FF76005AC9E6 /* BTCProtocolSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCProtocolSerialization.m; sourceTree = "<group>"; };
 		2084DD7717B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCProtocolSerialization+Tests.h"; sourceTree = "<group>"; };
@@ -209,14 +209,14 @@
 				2084DD7017B8FF76005AC9E6 /* BTCBigNumber.m */,
 				2084DD7117B8FF76005AC9E6 /* BTCBigNumber+Tests.h */,
 				2084DD7217B8FF76005AC9E6 /* BTCBigNumber+Tests.m */,
-				2084DD7317B8FF76005AC9E6 /* BTCEllipticCurveKey.h */,
-				2084DD7417B8FF76005AC9E6 /* BTCEllipticCurveKey.m */,
-				20219A6B17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.h */,
-				20219A6C17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.m */,
-				20219A6E17D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.h */,
-				20219A6F17D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.m */,
-				2057A9CB17CD555F00353D54 /* BTCEllipticCurveKey+Tests.h */,
-				2057A9CC17CD555F00353D54 /* BTCEllipticCurveKey+Tests.m */,
+				2084DD7317B8FF76005AC9E6 /* BTCKey.h */,
+				2084DD7417B8FF76005AC9E6 /* BTCKey.m */,
+				20219A6B17D09B6300FC34C0 /* BTCKey+CompactSignature.h */,
+				20219A6C17D09B6300FC34C0 /* BTCKey+CompactSignature.m */,
+				20219A6E17D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.h */,
+				20219A6F17D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.m */,
+				2057A9CB17CD555F00353D54 /* BTCKey+Tests.h */,
+				2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */,
 				2084DD7517B8FF76005AC9E6 /* BTCProtocolSerialization.h */,
 				2084DD7617B8FF76005AC9E6 /* BTCProtocolSerialization.m */,
 				2084DD7717B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.h */,
@@ -288,22 +288,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20219A7017D09B8D00FC34C0 /* BTCEllipticCurveKey+BitcoinSignedMessage.m in Sources */,
+				20219A7017D09B8D00FC34C0 /* BTCKey+BitcoinSignedMessage.m in Sources */,
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
 				2084DD8717B8FF76005AC9E6 /* BTCAddress+Tests.m in Sources */,
 				2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */,
 				2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */,
 				2084DD8A17B8FF76005AC9E6 /* BTCBigNumber+Tests.m in Sources */,
-				2084DD8B17B8FF76005AC9E6 /* BTCEllipticCurveKey.m in Sources */,
+				2084DD8B17B8FF76005AC9E6 /* BTCKey.m in Sources */,
 				2084DD8C17B8FF76005AC9E6 /* BTCProtocolSerialization.m in Sources */,
-				20219A6D17D09B6300FC34C0 /* BTCEllipticCurveKey+CompactSignature.m in Sources */,
+				20219A6D17D09B6300FC34C0 /* BTCKey+CompactSignature.m in Sources */,
 				2084DD8D17B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m in Sources */,
 				2084DD8E17B8FF76005AC9E6 /* BTCScript.m in Sources */,
 				20B66C8717BFE4F9007128CE /* BTCErrors.m in Sources */,
 				2084DD8F17B8FF76005AC9E6 /* BTCTransaction.m in Sources */,
 				2084DD9017B8FF76005AC9E6 /* BTCTransactionInput.m in Sources */,
-				2057A9CD17CD555F00353D54 /* BTCEllipticCurveKey+Tests.m in Sources */,
+				2057A9CD17CD555F00353D54 /* BTCKey+Tests.m in Sources */,
 				2084DD9117B8FF76005AC9E6 /* BTCTransactionOutput.m in Sources */,
 				206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */,
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,

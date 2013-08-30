@@ -4,7 +4,7 @@
 #import "BTCData+Tests.h"
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
-#import "BTCEllipticCurveKey+Tests.h"
+#import "BTCKey+Tests.h"
 
 int main(int argc, const char * argv[])
 {
@@ -14,7 +14,7 @@ int main(int argc, const char * argv[])
         [BTCBigNumber runAllTests];
         [BTCAddress runAllTests];
         [BTCProtocolSerialization runAllTests];
-        [BTCEllipticCurveKey runAllTests];
+        [BTCKey runAllTests];
         NSLog(@"All tests passed.");
     }
     return 0;

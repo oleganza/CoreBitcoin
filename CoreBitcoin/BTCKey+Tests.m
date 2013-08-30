@@ -1,11 +1,11 @@
 // Oleg Andreev <oleganza@gmail.com>
 
-#import "BTCEllipticCurveKey+Tests.h"
-#import "BTCEllipticCurveKey.h"
+#import "BTCKey+Tests.h"
+#import "BTCKey.h"
 #import "BTCAddress.h"
 #import "NSData+BTCData.h"
 
-@implementation BTCEllipticCurveKey (Tests)
+@implementation BTCKey (Tests)
 
 + (void) runAllTests
 {
@@ -19,7 +19,7 @@
     NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     
     NSAssert(secret.length == 32, @"secret must be 32 bytes long");
-    BTCEllipticCurveKey* key = [[BTCEllipticCurveKey alloc] initWithPrivateKey:secret];
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
     
     BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:[key.publicKey BTCHash160]];
     BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key.privateKey];
@@ -35,7 +35,7 @@
     
     // Re-instantiate the key.
     NSData* pubkey = [key.publicKey copy];
-    BTCEllipticCurveKey* key2 = [[BTCEllipticCurveKey alloc] initWithPublicKey:pubkey];
+    BTCKey* key2 = [[BTCKey alloc] initWithPublicKey:pubkey];
     NSAssert([key2 isValidSignature:signature hash:messageData.SHA256], @"Signature must be valid");
     
     // Signature should be invalid if any bit is flipped.

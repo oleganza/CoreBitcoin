@@ -4,7 +4,9 @@
 
 // This is raw unencrypted EC key with methods to convert secret to a pubkey,
 // sign messages and perform math operations on elliptic curve.
-@interface BTCEllipticCurveKey : NSObject
+// When instantiated with a public key, only signature verification is possible.
+// When instantiated with a private key, all operations are available.s
+@interface BTCKey : NSObject
 
 // Newly generated random key pair.
 - (id) init;
@@ -42,7 +44,7 @@
 // Export and import keypair using Bitcoin address format.
 @class BTCPublicKeyAddress;
 @class BTCPrivateKeyAddress;
-@interface BTCEllipticCurveKey (BTCAddress)
+@interface BTCKey (BTCAddress)
 
 - (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
 

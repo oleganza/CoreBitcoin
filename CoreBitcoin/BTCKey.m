@@ -1,6 +1,6 @@
 // Oleg Andreev <oleganza@gmail.com>
 
-#import "BTCEllipticCurveKey.h"
+#import "BTCKey.h"
 #import "BTCData.h"
 #import "BTCAddress.h"
 #include <openssl/ec.h>
@@ -39,10 +39,10 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return success;
 }
 
-@interface BTCEllipticCurveKey ()
+@interface BTCKey ()
 @end
 
-@implementation BTCEllipticCurveKey {
+@implementation BTCKey {
     EC_KEY* _key;
     NSMutableData* _publicKey;
     BOOL _compressedPublicKey;
@@ -182,7 +182,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     [self prepareKeyIfNeeded];
     
     const unsigned char* bytes = publicKey.bytes;
-    if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length)) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length)) @throw [NSException exceptionWithName:@"BTCKey Exception"
                                                                                             reason:@"o2i_ECPublicKey failed. " userInfo:nil];
 }
 
@@ -193,7 +193,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     [self prepareKeyIfNeeded];
     
     const unsigned char* bytes = DERPrivateKey.bytes;
-    if (!d2i_ECPrivateKey(&_key, &bytes, DERPrivateKey.length)) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    if (!d2i_ECPrivateKey(&_key, &bytes, DERPrivateKey.length)) @throw [NSException exceptionWithName:@"BTCKey Exception"
                                                                                               reason:@"d2i_ECPrivateKey failed. " userInfo:nil];
 }
 
@@ -242,7 +242,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 - (void) generateKeyPair
 {
     [self prepareKeyIfNeeded];
-    if (!EC_KEY_generate_key(_key)) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    if (!EC_KEY_generate_key(_key)) @throw [NSException exceptionWithName:@"BTCKey Exception"
                                                                    reason:@"EC_KEY_generate_key failed. " userInfo:nil];
 }
 
@@ -250,7 +250,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
     if (_key) return;
     _key = EC_KEY_new_by_curve_name(NID_secp256k1);
-    if (!_key) @throw [NSException exceptionWithName:@"BTCEllipticCurveKey Exception"
+    if (!_key) @throw [NSException exceptionWithName:@"BTCKey Exception"
                                               reason:@"EC_KEY_new_by_curve_name failed. " userInfo:nil];
 }
 
@@ -263,12 +263,12 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 - (id) copy
 {
-    BTCEllipticCurveKey* newKey = [[BTCEllipticCurveKey alloc] initWithNewKeyPair:NO];
+    BTCKey* newKey = [[BTCKey alloc] initWithNewKeyPair:NO];
     if (_key) newKey->_key = EC_KEY_dup(_key);
     return newKey;
 }
 
-- (BOOL) isEqual:(BTCEllipticCurveKey*)otherKey
+- (BOOL) isEqual:(BTCKey*)otherKey
 {
     if (![otherKey isKindOfClass:[self class]]) return NO;
     return [self.publicKeyCached isEqual:otherKey.publicKeyCached];
@@ -281,12 +281,12 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p %@>", self, BTCHexStringFromData(self.publicKeyCached)];
+    return [NSString stringWithFormat:@"<BTCKey:0x%p %@>", self, BTCHexStringFromData(self.publicKeyCached)];
 }
 
 - (NSString*) debugDescription
 {
-    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p pubkey:%@ privkey:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.privateKey)];
+    return [NSString stringWithFormat:@"<BTCKey:0x%p pubkey:%@ privkey:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.privateKey)];
 }
 
 
@@ -315,7 +315,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 
 
-@implementation BTCEllipticCurveKey (BTCAddress)
+@implementation BTCKey (BTCAddress)
 
 - (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress
 {
