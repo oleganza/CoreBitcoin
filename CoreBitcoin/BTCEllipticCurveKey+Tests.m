@@ -22,7 +22,38 @@
     NSAssert([pubkeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"");
     NSAssert([privkeyAddress.base58String isEqual:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"], @"");
     
-//    [key signatureForHash:<#(NSData *)#>]
+    NSData* signature = [key signatureForHash:messageData.SHA256];
+//    NSLog(@"Signature: %@ (%d bytes)", [signature hexString], (int)signature.length);
+//    NSLog(@"Valid: %d", (int)[key isValidSignature:signature hash:messageData.SHA256]);
+    
+    NSAssert([key isValidSignature:signature hash:messageData.SHA256], @"Signature must be valid");
+    
+    // Re-instantiate the key.
+    NSData* pubkey = [key.publicKey copy];
+    BTCEllipticCurveKey* key2 = [[BTCEllipticCurveKey alloc] initWithPublicKey:pubkey];
+    NSAssert([key2 isValidSignature:signature hash:messageData.SHA256], @"Signature must be valid");
+    
+    // Signature should be invalid if any bit is flipped.
+    // This all works, of course, but takes a lot of time to compute.
+    if (0)
+    {
+        NSData* digest = messageData.SHA256;
+        NSMutableData* sig = [signature mutableCopy];
+        unsigned char* buf = sig.mutableBytes;
+        for (int i = 0; i < signature.length; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                unsigned char mask = 1 << j;
+                buf[i] = buf[i] ^ mask;
+                NSAssert(![key isValidSignature:sig hash:digest], @"Signature must not be valid if any bit is flipped");
+                NSAssert(![key2 isValidSignature:sig hash:digest], @"Signature must not be valid if any bit is flipped");
+                buf[i] = buf[i] ^ mask;
+                NSAssert([key isValidSignature:sig hash:digest], @"Signature must be valid again");
+                NSAssert([key2 isValidSignature:sig hash:digest], @"Signature must be valid again");
+            }
+        }
+    }
 }
 
 @end
