@@ -40,7 +40,7 @@ void BTCDataClear(NSMutableData* data);
 // If the argument is nil, returns nil.
 NSData* BTCSHA1(NSData* data);
 NSData* BTCSHA256(NSData* data);
-NSData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash or Hash256 in BitcoinQT)
+NSData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash in BitcoinQT)
 
 #if BTCDataRequiresOpenSSL
 // RIPEMD160 today is provided only by OpenSSL. SHA1 and SHA2 are provided by CommonCrypto framework.
