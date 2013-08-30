@@ -2,9 +2,13 @@
 
 #import "BTCEllipticCurveKey.h"
 #import "BTCData.h"
+#import "BTCAddress.h"
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
+
+#define BTCCompressedPubkeyLength   (33)
+#define BTCUncompressedPubkeyLength (65)
 
 int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
@@ -36,19 +40,17 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 }
 
 @interface BTCEllipticCurveKey ()
-@property(nonatomic, readwrite) NSData* publicKey;
-@property(nonatomic, readwrite) NSData* privateKey; // 279-byte private key with secret and all parameters.
-@property(nonatomic, readwrite) NSData* secretKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1 curve.
 @end
 
 @implementation BTCEllipticCurveKey {
     EC_KEY* _key;
+    NSMutableData* _publicKey;
+    BOOL _compressedPublicKey;
 }
 
 - (void) dealloc
 {
     [self clear];
-    if (_key) EC_KEY_free(_key);
 }
 
 - (id) initWithNewKeyPair:(BOOL)createKeyPair
@@ -70,7 +72,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     if (self = [super init])
     {
         if (![self isValidPubKey:publicKey]) return nil;
-        self.publicKey = publicKey;
+        [self setPublicKey:publicKey];
     }
     return self;
 }
@@ -79,7 +81,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
     if (self = [super init])
     {
-        self.privateKey = privateKey;
+        [self setPrivateKey:privateKey];
     }
     return self;
 }
@@ -88,7 +90,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
     if (self = [super init])
     {
-        self.secretKey = secretKey;
+        [self setSecretKey:secretKey];
     }
     return self;
 }
@@ -125,18 +127,30 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return signature;
 }
 
-- (NSData*) publicKey
+- (NSMutableData*) publicKey
 {
-    if (!_key) return nil;
-    int length = i2o_ECPublicKey(_key, NULL);
-    if (!length) return nil;
-    NSMutableData* data = [[NSMutableData alloc] initWithLength:length];
-    unsigned char* bytes = [data mutableBytes];
-    if (i2o_ECPublicKey(_key, &bytes) != length) return nil;
-    return data;
+    return [[self publicKeyCached] mutableCopy];
 }
 
-- (NSData*) privateKey
+- (NSData*) publicKeyCached
+{
+    if (!_publicKey)
+    {
+        if (!_key) return nil;
+        
+        // TODO: produce a compressed pubkey if needed.
+        
+        int length = i2o_ECPublicKey(_key, NULL);
+        if (!length) return nil;
+        NSMutableData* data = [[NSMutableData alloc] initWithLength:length];
+        unsigned char* bytes = [data mutableBytes];
+        if (i2o_ECPublicKey(_key, &bytes) != length) return nil;
+        _publicKey = data;
+    }
+    return _publicKey;
+}
+
+- (NSMutableData*) privateKey
 {
     if (!_key) return nil;
     int length = i2d_ECPrivateKey(_key, NULL);
@@ -147,11 +161,11 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return data;
 }
 
-- (NSData*) secretKey
+- (NSMutableData*) secretKey
 {
     const BIGNUM *bignum = EC_KEY_get0_private_key(_key);
-    int num_bytes = BN_num_bytes(bignum);
     if (!bignum) return nil;
+    int num_bytes = BN_num_bytes(bignum);
     NSMutableData* data = [[NSMutableData alloc] initWithLength:32];
     int copied_bytes = BN_bn2bin(bignum, &data.mutableBytes[32 - num_bytes]);
     if (copied_bytes != num_bytes) return nil;
@@ -160,7 +174,10 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 - (void) setPublicKey:(NSData *)publicKey
 {
-    if (!publicKey) return;
+    if (publicKey.length == 0) return;
+    _publicKey = [publicKey mutableCopy];
+    
+    _compressedPublicKey = ([self lengthOfPubKey:_publicKey] == BTCCompressedPubkeyLength);
     
     [self prepareKeyIfNeeded];
     
@@ -196,12 +213,29 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     BN_clear_free(bignum);
 }
 
+- (BOOL) isCompressedPublicKey
+{
+    return _compressedPublicKey;
+}
+
+- (void) setCompressedPublicKey:(BOOL)flag
+{
+    _publicKey = nil;
+    _compressedPublicKey = flag;
+}
+
 - (void) clear
 {
+    BTCDataClear(_publicKey);
+    _publicKey = nil;
+    
     // I couldn't find how to clear sensitive key data in OpenSSL,
     // so I just replace existing key with a new one.
     // Correct me if I'm doing it wrong.
     [self generateKeyPair];
+    
+    if (_key) EC_KEY_free(_key);
+    _key = NULL;
 }
 
 
@@ -234,10 +268,27 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return newKey;
 }
 
+- (BOOL) isEqual:(BTCEllipticCurveKey*)otherKey
+{
+    if (![otherKey isKindOfClass:[self class]]) return NO;
+    return [self.publicKeyCached isEqual:otherKey.publicKeyCached];
+}
+
+- (NSUInteger) hash
+{
+    return [self.publicKeyCached hash];
+}
+
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p>", self];
+    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p %@>", self, BTCHexStringFromData(self.publicKeyCached)];
 }
+
+- (NSString*) debugDescription
+{
+    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p pubkey:%@ secret:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.secretKey)];
+}
+
 
 
 - (NSUInteger) lengthOfPubKey:(NSData*)data
@@ -246,9 +297,9 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     
     unsigned char header = ((const unsigned char*)data.bytes)[0];
     if (header == 2 || header == 3)
-        return 33;
+        return BTCCompressedPubkeyLength;
     if (header == 4 || header == 6 || header == 7)
-        return 65;
+        return BTCUncompressedPubkeyLength;
     return 0;
 }
 
@@ -260,3 +311,44 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 
 @end
+
+
+
+
+@implementation BTCEllipticCurveKey (BTCAddress)
+
+- (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress
+{
+    if (self = [self initWithNewKeyPair:NO])
+    {
+        [self setSecretKey:privateKeyAddress.data];
+        [self setCompressedPublicKey:privateKeyAddress.compressed];
+    }
+    return self;
+}
+
+- (BTCPublicKeyAddress*) publicKeyAddress
+{
+    NSData* pubkey = [self publicKeyCached];
+    if (pubkey.length == 0) return nil;
+    return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
+}
+
+- (BTCPrivateKeyAddress*) privateKeyAddress
+{
+    NSMutableData* privkey = [self secretKey];
+    if (privkey.length == 0) return nil;
+    
+    BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey compressedPublicKey:[self isCompressedPublicKey]];
+    BTCDataClear(privkey);
+    return result;
+}
+
+@end
+
+
+
+
+
+
+

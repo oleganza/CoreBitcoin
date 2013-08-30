@@ -18,9 +18,13 @@
 - (id) initWithPrivateKey:(NSData*)privateKey;
 - (id) initWithSecretKey:(NSData*)secretKey;
 
-@property(nonatomic, readonly) NSData* publicKey;
-@property(nonatomic, readonly) NSData* privateKey; // 279-byte private key with secret and all parameters.
-@property(nonatomic, readonly) NSData* secretKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1 curve.
+// These properties return mutable copy of data so you can clear it if needed.
+@property(nonatomic, readonly) NSMutableData* publicKey;
+@property(nonatomic, readonly) NSMutableData* privateKey; // 279-byte private key with secret and all parameters.
+@property(nonatomic, readonly) NSMutableData* secretKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1 curve.
+
+// Returns YES if the public key is compressed.
+- (BOOL) isCompressedPublicKey;
 
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash;
@@ -33,3 +37,16 @@
 - (void) clear;
 
 @end
+
+
+// Export and import keypair using Bitcoin address format.
+@class BTCPublicKeyAddress;
+@class BTCPrivateKeyAddress;
+@interface BTCEllipticCurveKey (BTCAddress)
+
+- (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
+
+@property(nonatomic, readonly) BTCPublicKeyAddress* publicKeyAddress;
+@property(nonatomic, readonly) BTCPrivateKeyAddress* privateKeyAddress;
+@end
+

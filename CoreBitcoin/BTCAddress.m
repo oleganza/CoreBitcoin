@@ -216,6 +216,11 @@ enum
 
 + (instancetype) addressWithData:(NSData*)data
 {
+    return [self addressWithData:data compressedPublicKey:NO];
+}
+
++ (instancetype) addressWithData:(NSData*)data compressedPublicKey:(BOOL)compressedPubkey
+{
     if (!data) return nil;
     if (data.length != BTCPrivateKeyAddressLength)
     {
@@ -224,6 +229,7 @@ enum
     }
     BTCPrivateKeyAddress* addr = [[self alloc] init];
     addr.data = [data mutableCopy];
+    addr.compressed = compressedPubkey;
     return addr;
 }
 
