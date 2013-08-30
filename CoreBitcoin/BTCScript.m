@@ -478,9 +478,8 @@
             BTCOpcode opcode = [chunk unsignedCharValue];
             if (opcode > OP_16) return NO;
         }
-        else
+        else // data chunk represents a PUSHDATA op
         {
-            return NO;
         }
     }
     return YES;
