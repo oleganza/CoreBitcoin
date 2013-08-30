@@ -322,7 +322,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     if (self = [self initWithNewKeyPair:NO])
     {
         [self setPrivateKey:privateKeyAddress.data];
-        [self setCompressedPublicKey:privateKeyAddress.compressed];
+        [self setCompressedPublicKey:privateKeyAddress.compressedPublicKey];
     }
     return self;
 }

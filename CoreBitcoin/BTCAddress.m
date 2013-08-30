@@ -209,7 +209,7 @@ enum
 
 // Private key in Base58 format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC...)
 @implementation BTCPrivateKeyAddress {
-    BOOL _compressed;
+    BOOL _compressedPublicKey;
 }
 
 #define BTCPrivateKeyAddressLength 32
@@ -229,7 +229,7 @@ enum
     }
     BTCPrivateKeyAddress* addr = [[self alloc] init];
     addr.data = [data mutableCopy];
-    addr.compressed = compressedPubkey;
+    addr.compressedPublicKey = compressedPubkey;
     return addr;
 }
 
@@ -249,33 +249,33 @@ enum
     BTCPrivateKeyAddress* addr = [[self alloc] init];
     addr.data = [NSMutableData dataWithBytes:((const char*)data.bytes) + 1 length:32];
     addr.base58CString = cstring;
-    addr->_compressed = compressed;
+    addr->_compressedPublicKey = compressed;
     return addr;
 }
 
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
 // that derived pubkey must be compressed (as this affects  the pubkey address).
-- (BOOL) isCompressed
+- (BOOL) isCompressedPublicKey
 {
-    return _compressed;
+    return _compressedPublicKey;
 }
 
-- (void) setCompressed:(BOOL)compressed
+- (void) setCompressedPublicKey:(BOOL)compressed
 {
-    if (_compressed != compressed)
+    if (_compressedPublicKey != compressed)
     {
-        _compressed = compressed;
+        _compressedPublicKey = compressed;
         self.base58CString = NULL;
     }
 }
 
 - (NSMutableData*) dataForBase58Encoding
 {
-    NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPrivateKeyAddressLength + (_compressed ? 1 : 0)];
+    NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPrivateKeyAddressLength + (_compressedPublicKey ? 1 : 0)];
     char* buf = data.mutableBytes;
     buf[0] = [self versionByte];
     memcpy(buf + 1, self.data.mutableBytes, BTCPrivateKeyAddressLength);
-    if (_compressed)
+    if (_compressedPublicKey)
     {
         // Add extra byte 0x01 in the end.
         buf[1 + BTCPrivateKeyAddressLength] = (unsigned char)1;
