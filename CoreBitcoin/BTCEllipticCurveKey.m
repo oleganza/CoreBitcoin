@@ -86,11 +86,11 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return self;
 }
 
-- (id) initWithSecretKey:(NSData*)secretKey
+- (id) initWithPrivateKey:(NSData*)privateKey
 {
     if (self = [super init])
     {
-        [self setSecretKey:secretKey];
+        [self setPrivateKey:privateKey];
     }
     return self;
 }
@@ -161,7 +161,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
     return data;
 }
 
-- (NSMutableData*) secretKey
+- (NSMutableData*) privateKey
 {
     const BIGNUM *bignum = EC_KEY_get0_private_key(_key);
     if (!bignum) return nil;
@@ -197,15 +197,15 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
                                                                                               reason:@"d2i_ECPrivateKey failed. " userInfo:nil];
 }
 
-- (void) setSecretKey:(NSData *)secretKey
+- (void) setPrivateKey:(NSData *)privateKey
 {
-    if (!secretKey) return;
+    if (!privateKey) return;
     
     [self prepareKeyIfNeeded];
 
     if (!_key) return;
     
-    BIGNUM *bignum = BN_bin2bn(secretKey.bytes, (int)secretKey.length, BN_new());
+    BIGNUM *bignum = BN_bin2bn(privateKey.bytes, (int)privateKey.length, BN_new());
     
     if (!bignum) return;
     
@@ -286,7 +286,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 - (NSString*) debugDescription
 {
-    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p pubkey:%@ secret:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.secretKey)];
+    return [NSString stringWithFormat:@"<BTCEllipticCurveKey:0x%p pubkey:%@ privkey:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.privateKey)];
 }
 
 
@@ -321,7 +321,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 {
     if (self = [self initWithNewKeyPair:NO])
     {
-        [self setSecretKey:privateKeyAddress.data];
+        [self setPrivateKey:privateKeyAddress.data];
         [self setCompressedPublicKey:privateKeyAddress.compressed];
     }
     return self;
@@ -336,7 +336,7 @@ int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key)
 
 - (BTCPrivateKeyAddress*) privateKeyAddress
 {
-    NSMutableData* privkey = [self secretKey];
+    NSMutableData* privkey = [self privateKey];
     if (privkey.length == 0) return nil;
     
     BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey compressedPublicKey:[self isCompressedPublicKey]];
