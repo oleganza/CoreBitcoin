@@ -329,6 +329,9 @@
         
         BTCOpcode opcode = BTCOpcodeForName(token);
         
+        // If token is "CHECKSIG", try converting it to OP_CHECKSIG.
+        if (opcode == OP_INVALIDOPCODE) opcode = BTCOpcodeForName([@"OP_" stringByAppendingString:token]);
+        
         // Valid opcode - put as is.
         if (opcode != OP_INVALIDOPCODE)
         {
@@ -518,7 +521,7 @@
 
 
 
-- (void) invalidatedSerialization
+- (void) invalidateSerialization
 {
     _data = nil;
     _string = nil;
@@ -529,14 +532,14 @@
 - (void) appendOpcode:(BTCOpcode)opcode
 {
     [_chunks addObject:@(opcode)];
-    [self invalidatedSerialization];
+    [self invalidateSerialization];
 }
 
 - (void) appendData:(NSData*)data
 {
     if (!data) return;
     [_chunks addObject:data];
-    [self invalidatedSerialization];
+    [self invalidateSerialization];
 }
 
 - (void) appendScript:(BTCScript*)otherScript
@@ -545,7 +548,7 @@
     
     [_chunks addObjectsFromArray:otherScript->_chunks];
     
-    [self invalidatedSerialization];
+    [self invalidateSerialization];
 }
 
 - (BTCScript*) subScriptFromIndex:(NSUInteger)index

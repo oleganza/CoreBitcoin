@@ -123,17 +123,17 @@
 			isa = PBXGroup;
 			children = (
 				2084DD6017B8FF47005AC9E6 /* main.m */,
-				2084DD6217B8FF47005AC9E6 /* Supporting Files */,
+				2084DD6317B8FF47005AC9E6 /* UnitTests-Prefix.pch */,
+				2084DD6217B8FF47005AC9E6 /* Transactions */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
-		2084DD6217B8FF47005AC9E6 /* Supporting Files */ = {
+		2084DD6217B8FF47005AC9E6 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
-				2084DD6317B8FF47005AC9E6 /* UnitTests-Prefix.pch */,
 			);
-			name = "Supporting Files";
+			name = Transactions;
 			sourceTree = "<group>";
 		};
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
