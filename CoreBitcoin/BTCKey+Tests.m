@@ -16,11 +16,20 @@
 
 + (void) testRandomKeys
 {
-//    for (int i = 0; i < 16; i++)
-//    {
-//        BTCKey* k = [[BTCKey alloc] init];
-//        NSLog(@"key = %@", BTCHexStringFromData(k.privateKey));
-//    }
+    NSMutableArray* arr = [NSMutableArray array];
+    // just a sanity check, not a serious randomness
+    for (int i = 0; i < 32; i++)
+    {
+        BTCKey* k = [[BTCKey alloc] init];
+        //NSLog(@"key = %@", BTCHexStringFromData(k.privateKey));
+        
+        // Note: this test may fail, but very rarely.
+        NSData* subkey = [k.privateKey subdataWithRange:NSMakeRange(0, 4)];
+        NSAssert(![arr containsObject:subkey], @"Should not repeat");
+        NSAssert(k.privateKey.length == 32, @"Should be 32 bytes");
+        
+        [arr addObject:subkey];
+    }
 }
 
 + (void) testBasicSigning
