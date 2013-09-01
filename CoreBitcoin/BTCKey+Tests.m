@@ -9,8 +9,18 @@
 
 + (void) runAllTests
 {
+    [self testRandomKeys];
     [self testBasicSigning];
     [self testBitcoinSignedMessage];
+}
+
++ (void) testRandomKeys
+{
+//    for (int i = 0; i < 16; i++)
+//    {
+//        BTCKey* k = [[BTCKey alloc] init];
+//        NSLog(@"key = %@", BTCHexStringFromData(k.privateKey));
+//    }
 }
 
 + (void) testBasicSigning

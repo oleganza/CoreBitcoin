@@ -12,9 +12,10 @@
 #define BTCCompressedPubkeyLength   (33)
 #define BTCUncompressedPubkeyLength (65)
 
-static int ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const unsigned char *msg, int msglen, int recid, int check);
-static int BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key);
+static BOOL    BTCCheckPrivateKeyRange(const unsigned char *secret);
+static int     BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key);
 static NSData* BTCSignatureHashForBinaryMessage(NSData* data);
+static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const unsigned char *msg, int msglen, int recid, int check);
 
 @interface BTCKey ()
 @end
@@ -226,8 +227,13 @@ static NSData* BTCSignatureHashForBinaryMessage(NSData* data);
 - (void) generateKeyPair
 {
     [self prepareKeyIfNeeded];
-    if (!EC_KEY_generate_key(_key)) @throw [NSException exceptionWithName:@"BTCKey Exception"
-                                                                   reason:@"EC_KEY_generate_key failed. " userInfo:nil];
+    NSMutableData* secret = [NSMutableData dataWithLength:32];
+    unsigned char* bytes = secret.mutableBytes;
+    do {
+        RAND_bytes(bytes, 32);
+    } while (!BTCCheckPrivateKeyRange(bytes));
+    [self setPrivateKey:secret];
+    BTCDataClear(secret);
 }
 
 - (void) prepareKeyIfNeeded
@@ -501,6 +507,31 @@ static NSData* BTCSignatureHashForBinaryMessage(NSData* data);
 
 
 
+static BOOL BTCCheckPrivateKeyRange(const unsigned char *secret)
+{
+    // Do not convert to OpenSSL's data structures for range-checking keys,
+    // it's easy enough to do directly.
+    static const unsigned char maxPrivateKey[32] = {
+        0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
+        0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x40
+    };
+    BOOL isZero = YES;
+    for (int i = 0; i < 32 && isZero; i++)
+    {
+        if (secret[i] != 0)
+        {
+            isZero = NO;
+        }
+    }
+    if (isZero) return NO;
+    
+    for (int i = 0; i < 32; i++)
+    {
+        if (secret[i] < maxPrivateKey[i]) return YES;
+        if (secret[i] > maxPrivateKey[i]) return NO;
+    }
+    return YES;
+}
 
 
 static NSData* BTCSignatureHashForBinaryMessage(NSData* msg)
