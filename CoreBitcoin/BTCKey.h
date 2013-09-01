@@ -36,9 +36,6 @@
 // Returns compressed or uncompressed public key.
 - (NSMutableData*) publicKeyCompressed:(BOOL)compressed;
 
-// Returns YES if the public key is compressed.
-- (BOOL) isCompressedPublicKey;
-
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash;
 
