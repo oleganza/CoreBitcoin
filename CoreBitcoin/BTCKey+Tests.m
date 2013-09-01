@@ -10,6 +10,7 @@
 + (void) runAllTests
 {
     [self testBasicSigning];
+    [self testBitcoinSignedMessage];
 }
 
 + (void) testBasicSigning
@@ -61,6 +62,38 @@
     }
 }
 
+
+
+
++ (void) testBitcoinSignedMessage
+{
+    NSString* message = @"Test message";
+    NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
+    //key.compressedPublicKey = YES;
+    //NSLog(@"Pubkey 1: %@ (%d bytes)", key.publicKey, (int)key.publicKey.length);
+    
+    {
+        NSData* signature = [key signatureForMessage:message];
+        //NSLog(@"Signature: %@ (%d bytes)", [signature hexString], (int)signature.length);
+        BTCKey* key2 = [BTCKey verifySignature:signature forMessage:message];
+        //NSLog(@"Pubkey 2: %@ (%d bytes)", key2.publicKey, (int)key2.publicKey.length);
+        //NSLog(@"Valid: %d", (int)[key isValidSignature:signature forMessage:message]);
+        
+        NSAssert([key2.publicKey isEqual:key.publicKey], @"Recovered pubkeys should match");
+        NSAssert([key isValidSignature:signature forMessage:message], @"Signature must be valid");
+    }
+    
+    {
+        NSData* signature = BTCDataWithHexString(@"1B158259BD8EEB198BABBCC4308CDFB8E8068F0A712CAC634257933A072EA6DB7"
+                                                  "BEB3308F4C937D4F397A2A782BF12884045C27430719A2890F0127B4732D9CF0D");
+        
+        BTCKey* key = [BTCKey verifySignature:signature forMessage:@"Test message"];
+        NSAssert([key isValidSignature:signature forMessage:@"Test message"], @"Should validate signature");
+        NSAssert([key.publicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
+    }
+    
+}
 
 
 
