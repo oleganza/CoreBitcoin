@@ -405,6 +405,10 @@
 
 - (BOOL) isPayToScriptHashScript
 {
+    // TODO: check against the original serialized form instead of parsed chunks because BIP16 defines
+    // P2SH script as an exact byte template. Scripts using OP_PUSHDATA1/2/4 are not valid P2SH scripts.
+    // To do that we have to maintain original script binary data and each chunk should keep a range in that data.
+    
     if (_chunks.count != 3) return NO;
     
     return [self opcodeAtIndex:0] == OP_HASH160

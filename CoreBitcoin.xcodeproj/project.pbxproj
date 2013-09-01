@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2037AB1417D3BFF900DB248C /* BTCScript+Tests.m */; };
+		2037AB1817D3D1F900DB248C /* BTCBase58+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2037AB1717D3D1F900DB248C /* BTCBase58+Tests.m */; };
 		2057A9CD17CD555F00353D54 /* BTCKey+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */; };
 		206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01417C735EE003B6987 /* NS+BTCBase58.m */; };
 		2084DD5E17B8FF47005AC9E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D2802517B8FE00004A462B /* Foundation.framework */; };
@@ -48,6 +50,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2037AB1317D3BFF900DB248C /* BTCScript+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCScript+Tests.h"; sourceTree = "<group>"; };
+		2037AB1417D3BFF900DB248C /* BTCScript+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCScript+Tests.m"; sourceTree = "<group>"; };
+		2037AB1617D3D1F900DB248C /* BTCBase58+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCBase58+Tests.h"; sourceTree = "<group>"; };
+		2037AB1717D3D1F900DB248C /* BTCBase58+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBase58+Tests.m"; sourceTree = "<group>"; };
 		2057A9CB17CD555F00353D54 /* BTCKey+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKey+Tests.h"; sourceTree = "<group>"; };
 		2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKey+Tests.m"; sourceTree = "<group>"; };
 		2084DD5D17B8FF47005AC9E6 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +203,8 @@
 				2084DD6C17B8FF76005AC9E6 /* BTCAddress+Tests.m */,
 				2084DD6D17B8FF76005AC9E6 /* BTCBase58.h */,
 				2084DD6E17B8FF76005AC9E6 /* BTCBase58.m */,
+				2037AB1617D3D1F900DB248C /* BTCBase58+Tests.h */,
+				2037AB1717D3D1F900DB248C /* BTCBase58+Tests.m */,
 				20E1E01317C735EE003B6987 /* NS+BTCBase58.h */,
 				20E1E01417C735EE003B6987 /* NS+BTCBase58.m */,
 				2084DD6F17B8FF76005AC9E6 /* BTCBigNumber.h */,
@@ -215,6 +223,8 @@
 				20B9646E17BADECE008161BB /* BTCOpcode.m */,
 				2084DD7917B8FF76005AC9E6 /* BTCScript.h */,
 				2084DD7A17B8FF76005AC9E6 /* BTCScript.m */,
+				2037AB1317D3BFF900DB248C /* BTCScript+Tests.h */,
+				2037AB1417D3BFF900DB248C /* BTCScript+Tests.m */,
 				20B9646A17BACFAA008161BB /* BTCScriptMachine.h */,
 				20B9646B17BACFAA008161BB /* BTCScriptMachine.m */,
 				2084DD7B17B8FF76005AC9E6 /* BTCTransaction.h */,
@@ -280,6 +290,7 @@
 			files = (
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
+				2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */,
 				2084DD8717B8FF76005AC9E6 /* BTCAddress+Tests.m in Sources */,
 				2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */,
 				2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */,
@@ -298,6 +309,7 @@
 				2084DD9317B8FF76005AC9E6 /* BTCData.m in Sources */,
 				20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */,
 				20B9646C17BACFAA008161BB /* BTCScriptMachine.m in Sources */,
+				2037AB1817D3D1F900DB248C /* BTCBase58+Tests.m in Sources */,
 				20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

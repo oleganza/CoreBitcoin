@@ -18,6 +18,9 @@ NSMutableData* BTCDataFromBase58Check(NSString* string)
 
 NSMutableData* BTCDataFromBase58CString(const char* cstring)
 {
+    // empty string -> empty data.
+    if (cstring[0] == '\0') return [NSData data];
+    
     NSMutableData* result = nil;
     
     BN_CTX* pctx = BN_CTX_new();
@@ -64,20 +67,24 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     
     // Get bignum as little endian data
     
-    size_t bnsize = BN_bn2mpi(&bn, NULL);
-    if (bnsize <= 4)
+    NSMutableData* bndata = nil;
     {
-        @throw [NSException exceptionWithName:@"NSString+Base58 Exception"
-                                       reason:@"Failed to execute BN_bn2mpi." userInfo:nil];
+        size_t bnsize = BN_bn2mpi(&bn, NULL);
+        if (bnsize <= 4)
+        {
+            bndata = [NSMutableData data];
+        }
+        else
+        {
+            bndata = [NSMutableData dataWithLength:bnsize];
+            BN_bn2mpi(&bn, bndata.mutableBytes);
+            [bndata replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
+            BTCDataReverse(bndata);
+        }
     }
-    
-    NSMutableData* bndata = [NSMutableData dataWithLength:bnsize];
-    BN_bn2mpi(&bn, bndata.mutableBytes);
-    [bndata replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
-    BTCDataReverse(bndata);
+    size_t bnsize = bndata.length;
     
     // Trim off sign byte if present
-    bnsize = bndata.length;
     if (bnsize >= 2
         && ((unsigned char*)bndata.bytes)[bnsize - 1] == 0
         && ((unsigned char*)bndata.bytes)[bnsize - 2] >= 0x80)
