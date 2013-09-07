@@ -34,6 +34,12 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 // create canonical purist transactions but have no problem accepting and working with non-canonical ones.
 @property(nonatomic) BTCScriptVerification verificationFlags;
 
+// Returns a copy of a stack in its current state. Mostly used for testing.
+@property(nonatomic, copy, readonly) NSArray* stack;
+
+// Returns a copy of an altstack in its current state. Mostly used for testing.
+@property(nonatomic, copy, readonly) NSArray* altstack;
+
 // This will return nil if the transaction is nil, or inputIndex is out of bounds.
 // You can use -init if you want to run scripts without signature verification (so no transaction is needed).
 - (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex;

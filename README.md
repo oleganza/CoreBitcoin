@@ -1,5 +1,5 @@
 
-CoreBitcoin v0.0
+CoreBitcoin v0.1
 ================
 
 CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages, parse some transactions and scripts, and detect common transaction types. Support for blocks and script evaluation is still in progress.

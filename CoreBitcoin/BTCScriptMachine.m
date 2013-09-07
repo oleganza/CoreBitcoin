@@ -1324,6 +1324,16 @@
 }
 
 
+- (NSArray*) stack
+{
+    return [_stack copy] ?: @[];
+}
+
+- (NSArray*) altstack
+{
+    return [_altStack copy] ?: @[];
+}
+
 
 
 
