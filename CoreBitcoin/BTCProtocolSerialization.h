@@ -13,8 +13,8 @@
 // <= 0xffffffff    5                  0xfe followed by the value as uint32_t
 //  > 0xffffffff    9                  0xff followed by the value as uint64_t
 //
-// Note: BitcoinQT later added CVarInt which is different, more compact format
-// used in block storage. CVarInt is not a part of the protocol and is not implemented here.
+// Note: BitcoinQT later added VarInt which is different, more compact format
+// used in block storage. VarInt is not a part of the protocol and is not implemented here.
 
 // Attempts to read integer from data and returns amount of bytes read.
 // In case of error, returns 0.

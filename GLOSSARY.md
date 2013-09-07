@@ -1,5 +1,5 @@
 
-Bitcoin Glossary v0.1
+Bitcoin Glossary v0.2
 =====================
 
 Some unusual terms are frequently used in Bitcoin documentation and discussions like *tx* or *coinbase*. Or words like *scriptPubKey* were badly chosen and now deserve some extra explanation. This glossary will help you understand exact meaning of all Bitcoin-related terms.
@@ -10,14 +10,14 @@ Warning: this glossary is not yet fully reviewed and may contain some mistakes. 
 
 Bitcoin address is a *Base58Check* representation of a *Hash160* of a *public key* with a version byte 0x00 which maps to a prefix "1". Typically represented as text (ex. 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG) or as a QR code. 
 
-A variant of an address is *P2SH* address: a hash of a spending script with a version byte 0x05 which maps to a prefix "3" (ex. 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8).
+A more recent variant of an address is a *P2SH* address: a hash of a spending script with a version byte 0x05 which maps to a prefix "3" (ex. 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8).
 
 Another variant of an address is not a hash, but a raw private key representation (e.g. 5KQntKuhYWSRXNqp2yhdXzjekYAR7US3MT1715Mbv5CyUKV6hVe). It is rarely used, only for importing/exporting private keys or printing them on *paper wallets*.
 
 
 ### Altcoin
 
-A clone of Bitcoin protocol with some modifications. Usually all altcoins have rules incompatible with Bitcoin and have their own genesis blocks. Most notable altcoins are Litecoin (uses faster block confirmation time and scrypt as a proof-of-work) and Namecoin (has a special key-value storage). In theory, an altcoin can be started from an existing Bitcoin blockchain if someone wants to support a different set of rules (although, there was no such example to date). See also *Fork*.
+A clone of the protocol with some modifications. Usually all altcoins have rules incompatible with Bitcoin and have their own genesis blocks. Most notable altcoins are Litecoin (uses faster block confirmation time and scrypt as a proof-of-work) and Namecoin (has a special key-value storage). In theory, an altcoin can be started from an existing Bitcoin blockchain if someone wants to support a different set of rules (although, there was no such example to date). See also *Fork*.
 
 
 ### ASIC
@@ -58,19 +58,19 @@ As a unit, one Bitcoin (*BTC*, *XBT*) is defined as 100 million *satoshis*, the 
 
 ### Bitcoinj
 
-An implementation of full Bitcoin node as a Java library by Mike Hearn. Also includes *SPV* implementation.
+A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* implementation among other features.
 
 
 ### Bitcoinjs
 
-An incomplete implementation of a Bitcoin client as a JavaScript library. Allows singing transactions and performing several elliptic curve operations. Used by *brainwallet.org*.
+An incomplete JavaScript implementation of a Bitcoin client. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*.
 
 
 ### BitcoinQT
 
-Bitcoin implementation based on original code by *Satoshi Nakamoto*. Includes a graphical interface for Windows, OS X and Linux (using QT) and a command-line executable *bitcoind* that is typically used on servers. 
+Bitcoin implementation based on original code by *Satoshi Nakamoto*. Includes a graphical interface for Windows, OS X and Linux (using QT) and a command-line executable *bitcoind* that is typically used on servers.
 
-It is considered a *reference implementation* as it's mostly used full node implementation by users, companies and miners. Other implementations must be bug-for-bug compatible with it to avoid being *forked*. BitcoinQT uses OpenSSL for its ECDSA operations which has its own quirks (e.g. non-canonically encoded public keys are accepted by OpenSSL without an error, so other implementations must do the same).
+It is considered a *reference implementation* as it's the most used *full node* implementation, especially among *miners*. Other implementations must be bug-for-bug compatible with it to avoid being *forked*. BitcoinQT uses OpenSSL for its ECDSA operations which has its own quirks that became a part of the standard (e.g. non-canonically encoded public keys are accepted by OpenSSL without an error, so other implementations must do the same).
 
 
 ### bitcoind
@@ -85,7 +85,7 @@ A full Bitcoin implementation in Ruby by Julian Langschaedel. Used in production
 
 ### Block
 
-A data structure that consists of a *block header* and a *merkle tree* of its transactions. Each block (except for *genesis block*) references one previous block thus forming a tree called the *blockchain*. Block can be though of as a group of transactions with a timestamp and a *proof-of-work* attached.
+A data structure that consists of a *block header* and a *merkle tree* of transactions. Each block (except for *genesis block*) references one previous block thus forming a tree called the *blockchain*. Block can be though of as a group of transactions with a timestamp and a *proof-of-work* attached.
 
 
 ### Block Header
@@ -137,7 +137,9 @@ A common mistake when working with a *paper wallet* or a *brain wallet* is to ma
 
 ### Checkpoint
 
-A hash of a block before which the *BitcoinQT* client downloads blocks without verifying digital signatures for performance reasons. A checkpoint usually refers to a very deep block (at least several days) when it's clear to everyone that that block is accepted by the overwhelming majority of users and *reorganization* will not happen past that point. It also helps protecting most of the history from a *51% attack*. Since checkpoints affect how the *main chain* is determined (although, the risk of reorganization past the checkpoint is very-very low), they are part of the protocol and must be recognized by alternative clients.
+A hash of a block before which the *BitcoinQT* client downloads blocks without verifying digital signatures for performance reasons. A checkpoint usually refers to a very deep block (at least several days old) when it's clear to everyone that that block is accepted by the overwhelming majority of users and *reorganization* will not happen past that point. 
+
+It also helps protecting most of the history from a *51% attack*. Since checkpoints affect how the *main chain* is determined, they are part of the protocol and must be recognized by alternative clients (although, the risk of reorganization past the checkpoint would be incredibly low).
 
 
 ### Client
@@ -152,7 +154,9 @@ An informal term that means either 1 bitcoin, or an unspent *transaction output*
 
 ### Coinbase
 
-An input script of a transaction that generates new bitcoins. Or a name of that transaction itself ("coinbase transaction"). Coinbase transaction does not spend any existing transactions, but contains exactly one input which may contain any data in its script. *Genesis block* transaction contains a reference to The Times article from January 3rd 2009 to prove that more blocks were not created before that date. Some *mining pools* put their names in the coinbase transactions (so everyone can estimate how much *hashrate* each pool produces). Coinbase is also used to vote on protocol change (e.g. *P2SH*). Miners vote by putting some agreed-upon marker in the coinbase to see how many support the change. If a majority of miners support it and expect non-mining users to accept it, then they simply start enforcing new rule. Minority then should either continue with a forked blockchain (thus producing an *altcoin*) or accept new rule.
+An input script of a transaction that generates new bitcoins. Or a name of that transaction itself ("coinbase transaction"). Coinbase transaction does not spend any existing transactions, but contains exactly one input which may contain any data in its script. *Genesis block* transaction contains a reference to The Times article from January 3rd 2009 to prove that more blocks were not created before that date. Some *mining pools* put their names in the coinbase transactions (so everyone can estimate how much *hashrate* each pool produces). 
+
+Coinbase is also used to vote on a protocol change (e.g. *P2SH*). Miners vote by putting some agreed-upon marker in the coinbase to see how many support the change. If a majority of miners support it and expect non-mining users to accept it, then they simply start enforcing new rule. Minority then should either continue with a forked blockchain (thus producing an *altcoin*) or accept new rule.
 
 
 ### Coinbase.com
@@ -168,6 +172,11 @@ A concept of adding a special meaning to certain transaction outputs. This could
 ### Cold Storage
 
 A collective term for various security measures to reduce the risk of remote access to the private keys. It could be a normal computer disconnected from the internet, or a dedicated hardware wallet, or a USB stick with a wallet file, or a *paper wallet*.
+
+
+### CompactSize
+
+Original name of a variable-length integer format used in transaction and block serialization. Also known as "Satoshi's encoding". It uses 1, 3, 5 or 9 bytes to represent any 64-bit unsigned integer. Values lower than 253 are represented with 1 byte. Bytes 253, 254 and 255 indicate 16-, 32- or 64-bit integer that follows. Smaller numbers can be presented differently.  In *bitcoin-ruby* it is called "var_int", in *Bitcoinj* it is VarInt. *BitcoinQT* also has even more compact representation called VarInt which is not compatible with CompactSize and used in block storage.
 
 
 ### Confirmed Transaction
@@ -187,12 +196,17 @@ Difficulty is a measure of how difficult it is to find a new block compared to t
 
 ### Denial of Service
 
-Is a form of an attack on the network. Bitcoin nodes punish certain behavior of other nodes by banning their IP addresses for 24 hours to avoid DoS. Also, some theoretical attacks like *51% attack* may be used for network-wide DoS.
+Is a form of attack on the network. Bitcoin *nodes* punish certain behavior of other nodes by banning their IP addresses for 24 hours to avoid DoS. Also, some theoretical attacks like *51% attack* may be used for network-wide DoS.
+
+
+### Depth
+
+Depth refers to a place in the blockchain. A transaction with 6 *confirmations* can also be called "6 blocks deep".
 
 
 ### Deterministic Wallet
 
-A collective term for different ways to generate a sequence of *private keys* and/or *public keys*. Deterministic wallet does need a *Key Pool*. The simplest form of a deterministic wallet is a based on hashing a secret string concatenated with a key number. For each number the resulting hash is used as a private key (public key is derived from it). More complex scheme uses *elliptic curve arithmetic* to derive sequences of public and private keys separately which allows generating new *addresses* for every payment request without storing private keys on a web server. [More information on Bitcoin Wiki](https://en.bitcoin.it/wiki/Deterministic_wallet). See also *Wallet*.
+A collective term for different ways to generate a sequence of *private keys* and/or *public keys*. Deterministic wallet does not need a *Key Pool*. The simplest form of a deterministic wallet is based on hashing a secret string concatenated with a key number. For each number the resulting hash is used as a private key (public key is derived from it). More complex scheme uses *elliptic curve arithmetic* to derive sequences of public and private keys separately which allows generating new *addresses* for every payment request without storing private keys on a web server. [More information on Bitcoin Wiki](https://en.bitcoin.it/wiki/Deterministic_wallet). See also *Wallet*.
 
 
 ### DoS
@@ -214,7 +228,7 @@ A transaction output that is smaller than a typically fee required to spend it. 
 
 ### ECDSA
 
-Stands for *Elliptic Curve Digital Signature Algorithm*. Used to verify transaction ownership when making a transfer of Bitcoins. See *Signature*.
+Stands for *Elliptic Curve Digital Signature Algorithm*. Used to verify transaction ownership when making a transfer of bitcoins. See *Signature*.
 
 
 ### Elliptic Curve Arithmetic
@@ -447,7 +461,7 @@ An event in the *node* when one or more blocks in the *main chain* become *orpha
 
 ### Reward
 
-Amount of newly generated bitcoins that a *miner* may claim in a new block. The first transaction in the block allows miner to claim currently allowed reward as well as all *transaction fees* from all transactions in the block. Reward is *halved* every 210 000 blocks, approximately every 4 years. As of September 5, 2013 the reward is 25 BTC (the first halving occurred in December 2012). For security reasons, rewards cannot be spent before 100 blocks built on top of the current block.
+Amount of newly generated bitcoins that a *miner* may claim in a new block. The first transaction in the block allows miner to claim currently allowed reward as well as all *transaction fees* from all transactions in the block. Reward is *halved* every 210 000 blocks, approximately every 4 years. As of September 5, 2013 the reward is 25 BTC (the first halving occurred in December 2012). For security reasons, rewards cannot be *spent* before 100 blocks built on top of the current block.
 
 
 ### Satoshi
@@ -505,6 +519,11 @@ Sometimes the *soft fork* refers to an important change of software behavior tha
 Incorrect peer-to-peer messages (like sending invalid transactions) may be considered a denial of service attack (see *DoS*). Valid transactions sending very tiny amounts and/or having low *mining fees* are called *Dust* by some people. The protocol itself does not define which transactions are not worth relaying or mining, it's a decision of every individual node. Any valid transaction in the blockchain must be accepted by the node if it wishes to accept the remaining blocks, so transaction censorship only means increased confirmation delays. Individual payees may also blacklist certain addresses (refuse to accept payments from some addresses), but that's too easy to work around using *mixing*.
 
 
+### Spent Output
+
+A transaction *output* can be spent only once: when another valid transaction makes a reference to this output from its own input. When another transaction attempts to spend the same output, it will be rejected by the nodes already seeing the first transaction. Blockchain as a *proof-of-work* scheme allows every node to agree on which transaction was indeed the first one. The whole transaction is considered spent when all its outputs are spent.
+
+
 ### Split
 
 A split of a blockchain. See *Fork*.
@@ -542,7 +561,7 @@ UNIX timestamp is a standard representation of time as a number of seconds since
 
 ### Transaction
 
-A chunk of binary data that describes how bitcoins are moved from one owner to another. Transactions are stored in the *blockchain*. Every transaction (except for *coinbase* transactions) has a reference to one or more previous transactions (*inputs*) and one or more rules on how to spend these bitcoins further (*outputs*). Transaction is called *spent* when all its *outputs* are spent. See *Transaction Input* and *Transaction Output* for more info.
+A chunk of binary data that describes how bitcoins are moved from one owner to another. Transactions are stored in the *blockchain*. Every transaction (except for *coinbase* transactions) has a reference to one or more previous transactions (*inputs*) and one or more rules on how to spend these bitcoins further (*outputs*). See *Transaction Input* and *Transaction Output* for more info.
 
 
 ### Transaction Fee
@@ -582,9 +601,16 @@ Transaction that is not included in any block. Also known as "0-confirmation" tr
 
 ### UTXO Set
 
-A collection of *Unspent Transaction Outputs*. Typically used in discussions on optimizing an ever-growing index of *transaction outputs* that are not yet spent. The index is important to efficiently validate newly created transactions. Even if the rate of the new transactions remains constant, the time required to locate and verify unspent outputs grows. 
+A collection of *Unspent Transaction Outputs*. Typically used in discussions on optimizing an ever-growing index of *transaction outputs* that are not yet *spent*. The index is important to efficiently validate newly created transactions. Even if the rate of the new transactions remains constant, the time required to locate and verify unspent outputs grows. 
 
-Some people seek not technical, but social ways to solve the problem. For instance, by refusing to *relay* or *mine* transactions that are considered *dust* (containing outputs smaller than a *transaction fee* required to mine/relay them).
+Possible technical solutions include more efficient indexing algorithms and a more performant hardware. *BitcoinQT*, for example, keeps only an index of outputs matching user's keys and scans the entire blockchain when validating other transactions. A developer of one web wallet service mentioned that they maintain the entire index of UTXO and its size was around 100 Gb when the blockchain itself was only 8 Gb.
+
+Some people seek social methods to solve the problem. For instance, by refusing to *relay* or *mine* transactions that are considered *dust* (containing outputs smaller than a *transaction fee* required to mine/relay them).
+
+
+### VarInt
+
+This term may cause confusion as it means different formats in different Bitcoin implementations. See *CompactSize* for details.
 
 
 ### Wallet
