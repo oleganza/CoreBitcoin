@@ -28,19 +28,19 @@
     else if (size == 0xfd)
     {
         if (dataLength < 3) return 0;
-        if (valueOut) *valueOut = CFSwapInt16LittleToHost(((uint16_t*)((uint8_t*)data.bytes+1))[0]);
+        if (valueOut) *valueOut = OSReadLittleInt16(data.bytes, 1);
         return 3;
     }
     else if (size == 0xfe)
     {
         if (dataLength < 5) return 0;
-        if (valueOut) *valueOut = CFSwapInt32LittleToHost(((uint32_t*)((uint8_t*)data.bytes+1))[0]);
+        if (valueOut) *valueOut = OSReadLittleInt32(data.bytes, 1);
         return 5;
     }
     else
     {
         if (dataLength < 9) return 0;
-        if (valueOut) *valueOut = CFSwapInt64LittleToHost(((uint64_t*)((uint8_t*)data.bytes+1))[0]);
+        if (valueOut) *valueOut = OSReadLittleInt64(data.bytes, 1);
         return 9;
     }
     return 0;

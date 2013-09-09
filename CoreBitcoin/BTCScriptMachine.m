@@ -785,7 +785,7 @@
                 {
                     case OP_1ADD:       [bn add:_bigNumberOne]; break;
                     case OP_1SUB:       [bn subtract:_bigNumberOne]; break;
-                    case OP_NEGATE:     [bn multiply:[[BTCBigNumber alloc] initWithInt32:-1]]; break;
+                    case OP_NEGATE:     [bn multiply:[BTCBigNumber negativeOne]]; break;
                     case OP_ABS:        if ([bn less:_bigNumberZero]) [bn multiply:[BTCBigNumber negativeOne]]; break;
                     case OP_NOT:        bn.uint32value = (uint32_t)[bn isEqual:_bigNumberZero]; break;
                     case OP_0NOTEQUAL:  bn.uint32value = (uint32_t)(![bn isEqual:_bigNumberZero]); break;

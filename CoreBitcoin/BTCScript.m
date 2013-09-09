@@ -204,9 +204,9 @@
                 BTCOpcode opcode = [chunk unsignedCharValue];
                 
                 // Some other guys (BitcoinQT, bitcoin-ruby) encode "small enough" integers in decimal numbers and do that differently.
-                // BitcoinQT encodes as a decimal number any data less than 4 bytes.
+                // BitcoinQT encodes any data less than 4 bytes as a decimal number.
                 // bitcoin-ruby encodes 2..16 as decimals, 0 and -1 as opcode names and the rest is in hex.
-                // Now no matter which encoding you use, it will can be parsed incorrectly.
+                // Now no matter which encoding you use, it can be parsed incorrectly.
                 // Also: pushdata operations are typically encoded in a raw data which can be encoded in binary differently.
                 // This means, you'll never be able to parse a sane-looking script into only one binary.
                 // So forget about relying on parsing this thing exactly. Typically, we either have very small numbers (0..16),
