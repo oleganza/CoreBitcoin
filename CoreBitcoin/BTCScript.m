@@ -26,7 +26,7 @@
 
 // String representation of a chunk.
 // OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
-// Most compactly represented pushdata chunks >=160 bit (SHA1, RIPEMD160) is encoded as <hex string>
+// Most compactly represented pushdata chunks >= 128 bit is encoded as <hex string>
 // Smaller most compactly represented data is encoded as [<hex string>]
 // Non-compact pushdata (e.g. 75-byte string with PUSHDATA1) contain a decimal prefix denoting a length size before hex data in square brackets. Ex. "1:[...]", "2:[...]" or "4:[...]"
 // For both compat and non-compact pushdata chunks, if the data consists of all printable characters (0x20..0x7E), it is enclosed not in square brackets, but in single quotes as characters themselves. Non-compact string is prefixed with 1:, 2: or 4: like described above.
@@ -609,12 +609,14 @@
 {
     BTCScript* script = [[BTCScript alloc] init];
     script->_chunks = [_chunks mutableCopy];
+    script->_data = [_data copy];
     return script;
 }
 
 - (void) deleteOccurrencesOfData:(NSData*)data
 {
     if (!data) return;
+    //NSMutableArray* chunks = [NSMutableArray array];
     [_chunks removeObject:data];
 }
 
@@ -880,7 +882,8 @@
     return [_scriptData subdataWithRange:NSMakeRange(_range.location + loc, _range.length - loc)];
 }
 
-- (BOOL) isCompactData
+// Returns YES if the data is represented with the most compact opcode.
+- (BOOL) isDataCompact
 {
     if (self.isOpcode) return NO;
     BTCOpcode opcode = [self opcode];
@@ -894,7 +897,7 @@
 
 // String representation of a chunk.
 // OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
-// Most compactly represented pushdata chunks >=160 bit (SHA1, RIPEMD160) are encoded as <hex string>
+// Most compactly represented pushdata chunks >=128 bit are encoded as <hex string>
 // Smaller most compactly represented data is encoded as [<hex string>]
 // Non-compact pushdata (e.g. 75-byte string with PUSHDATA1) contains a decimal prefix denoting a length size before hex data in square brackets. Ex. "1:[...]", "2:[...]" or "4:[...]"
 // For both compat and non-compact pushdata chunks, if the data consists of all printable characters (0x20..0x7E), it is enclosed not in square brackets, but in single quotes as characters themselves. Non-compact string is prefixed with 1:, 2: or 4: like described above.
@@ -917,23 +920,127 @@
     }
     else
     {
-        if (opcode < OP_PUSHDATA1)
+        NSData* data = [self data];
+        
+        NSString* string = nil;
+        // As a nice side effect, empty data is encoded as empty string.
+        if ([self isASCIIData:data])
         {
+            string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
             
+            // Escape escapes & single quote characters.
+            string = [string stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
+            string = [string stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
+            
+            // Wrap in single quotes. Why not double? Because they are already used in JSON.
+            string = [NSString stringWithFormat:@"'%@'", string];
         }
+        else
+        {
+            string = BTCHexStringFromData(data);
+            
+            // Shorter than 128-bit chunks are wrapped in square brackets to avoid ambiguity with big all-decimal numbers.
+            if (data.length < 16)
+            {
+                string = [NSString stringWithFormat:@"[%@]", string];
+            }
+        }
+        
+        // Non-compact data is prefixed with a size of the length prefix.
+        if (![self isDataCompact])
+        {
+            int prefix = 1;
+            if (opcode == OP_PUSHDATA2) prefix = 2;
+            if (opcode == OP_PUSHDATA4) prefix = 4;
+            string = [NSString stringWithFormat:@"%d:%@", prefix, string];
+        }
+        return string;
     }
     
     return nil;
 }
 
-+ (BTCScriptChunk*) parseChunkFromData:(NSData*)data offset:(NSUInteger)offset
+- (BOOL) isASCIIData:(NSData*)data
 {
+    BOOL isASCII = YES;
+    for (int i = 0; i < data.length; i++)
+    {
+        char ch = ((const char*)data.bytes)[i];
+        if (!(ch >= 0x20 && ch <= 0x7E))
+        {
+            isASCII = NO;
+            break;
+        }
+    }
+    return isASCII;
+}
+
++ (BTCScriptChunk*) parseChunkFromData:(NSData*)scriptData offset:(NSUInteger)offset
+{
+    // Data should fit at least one opcode.
+    if (scriptData.length < (offset + 1)) return nil;
     
+    const uint8_t* bytes = ((const uint8_t*)[scriptData bytes]);
+    BTCOpcode opcode = bytes[offset];
+    
+    if (opcode > 0 && opcode <= OP_PUSHDATA4)
+    {
+        // push data opcode
+        int i = (int)offset + 1;
+        int length = (int)scriptData.length;
+        int endi = length - 1;
+        int lengthlength = 0;
+
+        uint32_t dataLength = 0;
+        if (opcode < OP_PUSHDATA1)
+        {
+            dataLength = opcode;
+        }
+        else if (opcode == OP_PUSHDATA1)
+        {
+            lengthlength = 1;
+            if (endi - i < lengthlength) return nil;
+            dataLength = *(bytes + i); i += lengthlength;
+        }
+        else if (opcode == OP_PUSHDATA2)
+        {
+            lengthlength = 2;
+            if (endi - i < lengthlength) return nil;
+            memcpy(&dataLength, bytes + i, lengthlength);
+            i += lengthlength;
+        }
+        else if (opcode == OP_PUSHDATA4)
+        {
+            lengthlength = 4;
+            if (endi - i < lengthlength) return nil;
+            memcpy(&dataLength, bytes + i, lengthlength);
+            i += lengthlength;
+        }
+        
+        if (endi - i < 0 || (unsigned int)(endi - i) < dataLength)
+            return nil;
+
+        BTCScriptChunk* chunk = [[BTCScriptChunk alloc] init];
+        chunk.scriptData = scriptData;
+        chunk.range = NSMakeRange(offset, 1 + lengthlength + dataLength);
+        return chunk;
+    }
+    else
+    {
+        // simple opcode
+        BTCScriptChunk* chunk = [[BTCScriptChunk alloc] init];
+        chunk.scriptData = scriptData;
+        chunk.range = NSMakeRange(offset, 1);
+        return chunk;
+    }
     return nil;
 }
 
+// Parses string representation of the chunk into script data
 + (NSData*) dataForString:(NSString*)word ambiguous:(BOOL*)ambiguousOut
 {
+    
+    
     
     return nil;
 }
