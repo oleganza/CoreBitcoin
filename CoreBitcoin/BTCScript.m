@@ -6,6 +6,41 @@
 #import "BTCErrors.h"
 #import "BTCData.h"
 
+@interface BTCScriptChunk : NSObject
+
+// A range of scriptData represented by this chunk.
+@property(nonatomic) NSRange range;
+
+// Reference to the whole script binary data
+@property(nonatomic) NSData* scriptData;
+
+// Return YES if it is not a pushdata chunk, that is a single byte opcode without data.
+// -data returns nil when the value is YES.
+@property(nonatomic, readonly) BOOL isOpcode;
+
+// Opcode used in the chunk. Simply a first byte of its data.
+@property(nonatomic, readonly) BTCOpcode opcode;
+
+// Data being pushed. Returns nil if the opcode is not OP_PUSHDATA*.
+@property(nonatomic, readonly) NSData* data;
+
+// String representation of a chunk.
+// OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
+// Most compactly represented pushdata chunks >=160 bit (SHA1, RIPEMD160) is encoded as <hex string>
+// Smaller most compactly represented data is encoded as [<hex string>]
+// Non-compact pushdata (e.g. 75-byte string with PUSHDATA1) contain a decimal prefix denoting a length size before hex data in square brackets. Ex. "1:[...]", "2:[...]" or "4:[...]"
+// For both compat and non-compact pushdata chunks, if the data consists of all printable characters (0x20..0x7E), it is enclosed not in square brackets, but in single quotes as characters themselves. Non-compact string is prefixed with 1:, 2: or 4: like described above.
+- (NSString*) string;
+
+// Returns a chunk if parsed correctly or nil if it is invalid.
++ (BTCScriptChunk*) parseChunkFromData:(NSData*)data offset:(NSUInteger)offset;
+
+// Converts a chunk from a word of a string representation of a script. Writes data to the provided buffer.
+// If ambiguousOut is not NULL, it is set to YES if the word may be interpreted differently.
++ (NSData*) dataForString:(NSString*)word ambiguous:(BOOL*)ambiguousOut;
+@end
+
+
 @interface BTCScript ()
 @end
 
@@ -15,6 +50,7 @@
     
     // Cached serialized representations for -data and -string methods.
     NSData* _data;
+    
     NSString* _string;
     
     // Multisignature script attributes.
@@ -797,3 +833,116 @@
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+@implementation BTCScriptChunk {
+}
+
+- (BTCOpcode) opcode
+{
+    return (BTCOpcode)((const unsigned char*)_scriptData.bytes)[_range.location];
+}
+
+- (BOOL) isOpcode
+{
+    BTCOpcode opcode = [self opcode];
+    // Pushdata opcodes are not considered a single "opcode".
+    if (opcode > 0 && opcode <= OP_PUSHDATA4) return NO;
+    return YES;
+}
+
+// Data being pushed. Returns nil if the opcode is not OP_PUSHDATA*.
+- (NSData*) data
+{
+    if (self.isOpcode) return nil;
+    BTCOpcode opcode = [self opcode];
+    NSUInteger loc = 1;
+    if (opcode == OP_PUSHDATA1)
+    {
+        loc += 1;
+    }
+    else if (opcode == OP_PUSHDATA2)
+    {
+        loc += 2;
+    }
+    else if (opcode == OP_PUSHDATA4)
+    {
+        loc += 4;
+    }
+    return [_scriptData subdataWithRange:NSMakeRange(_range.location + loc, _range.length - loc)];
+}
+
+- (BOOL) isCompactData
+{
+    if (self.isOpcode) return NO;
+    BTCOpcode opcode = [self opcode];
+    NSData* data = [self data];
+    if (opcode < OP_PUSHDATA1) return YES; // length fits in one byte under OP_PUSHDATA1.
+    if (opcode == OP_PUSHDATA1) return data.length >= OP_PUSHDATA1; // length should be less than OP_PUSHDATA1
+    if (opcode == OP_PUSHDATA2) return data.length > 0xff; // length should not fit in one byte
+    if (opcode == OP_PUSHDATA4) return data.length > 0xffff; // length should not fit in two bytes
+    return NO;
+}
+
+// String representation of a chunk.
+// OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
+// Most compactly represented pushdata chunks >=160 bit (SHA1, RIPEMD160) are encoded as <hex string>
+// Smaller most compactly represented data is encoded as [<hex string>]
+// Non-compact pushdata (e.g. 75-byte string with PUSHDATA1) contains a decimal prefix denoting a length size before hex data in square brackets. Ex. "1:[...]", "2:[...]" or "4:[...]"
+// For both compat and non-compact pushdata chunks, if the data consists of all printable characters (0x20..0x7E), it is enclosed not in square brackets, but in single quotes as characters themselves. Non-compact string is prefixed with 1:, 2: or 4: like described above.
+- (NSString*) string
+{
+    BTCOpcode opcode = [self opcode];
+    
+    if (self.isOpcode)
+    {
+        if (opcode == OP_0) return @"0";
+        if (opcode == OP_1NEGATE) return @"-1";
+        if (opcode >= OP_1 && opcode <= OP_16)
+        {
+            return [NSString stringWithFormat:@"%ul", ((int)opcode + 1 - (int)OP_1)];
+        }
+        else
+        {
+            return BTCNameForOpcode(opcode);
+        }
+    }
+    else
+    {
+        if (opcode < OP_PUSHDATA1)
+        {
+            
+        }
+    }
+    
+    return nil;
+}
+
++ (BTCScriptChunk*) parseChunkFromData:(NSData*)data offset:(NSUInteger)offset
+{
+    
+    return nil;
+}
+
++ (NSData*) dataForString:(NSString*)word ambiguous:(BOOL*)ambiguousOut
+{
+    
+    return nil;
+}
+@end
+
+
+
+
+
+
+
+
