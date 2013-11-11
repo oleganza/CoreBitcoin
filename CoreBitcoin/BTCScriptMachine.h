@@ -23,6 +23,10 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 // Required parameter.
 @property(nonatomic) uint32_t inputIndex;
 
+// Overrides inputScript from transaction.inputs[inputIndex].
+// Useful for testing, but useless if you need to test CHECKSIG operations. In latter case you still need a full transaction.
+@property(nonatomic) BTCScript* inputScript;
+
 // A timestamp of the current block. Default is current timestamp.
 // This is used to test for P2SH scripts or other changes in the protocol that may happen in the future.
 // If not specified, defaults to current timestamp thus using the latest protocol rules.
@@ -30,8 +34,8 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 
 // Flags affecting verification. Default is the most liberal verification.
 // One can be stricter to not relay transactions with non-canonical signatures and pubkey (as BitcoinQT does).
-// Defaults in CoreBitcoin: be liberal in what you accept and conservative in what you send. So we try to
-// create canonical purist transactions but have no problem accepting and working with non-canonical ones.
+// Defaults in CoreBitcoin: be liberal in what you accept and conservative in what you send.
+// So we try to create canonical purist transactions but have no problem accepting and working with non-canonical ones.
 @property(nonatomic) BTCScriptVerification verificationFlags;
 
 // Returns a copy of a stack in its current state. Mostly used for testing.

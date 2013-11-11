@@ -51,6 +51,76 @@ NSData* BTCRandomDataWithLength(NSUInteger length)
     return [[NSData alloc] initWithBytesNoCopy:bytes length:length];
 }
 
+// Returns data produced by flipping the coin as proposed by Dan Kaminsky:
+// https://gist.github.com/PaulCapestany/6148566
+
+static inline int BTCCoinFlip()
+{
+    __block int n = 0;
+    //int c = 0;
+    dispatch_time_t then = dispatch_time(DISPATCH_TIME_NOW, 999000ull);
+
+    // We need to increase variance of number of flips, so we force system to schedule some threads
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
+        {
+            n = !n;
+        }
+    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
+        {
+            n = !n;
+        }
+    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
+        {
+            n = !n;
+        }
+    });
+
+    while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
+    {
+        //c++;
+        n = !n; // flipping the coin
+    }
+    //NSLog(@"Flips: %d", c);
+    return n;
+}
+
+// Simple Von Neumann debiasing - throwing away two flips that return the same value.
+static inline int BTCFairCoinFlip()
+{
+    while(1)
+    {
+        int a = BTCCoinFlip();
+        if (a != BTCCoinFlip())
+        {
+            return a;
+        }
+    }
+}
+
+NSData* BTCCoinFlipDataWithLength(NSUInteger length)
+{
+    NSMutableData* data = [NSMutableData dataWithLength:length];
+    unsigned char* bytes = data.mutableBytes;
+    for (int i = 0; i < length; i++)
+    {
+        unsigned char byte = 0;
+        int bits = 8;
+        while(bits--)
+        {
+            byte <<= 1;
+            byte |= BTCFairCoinFlip();
+        }
+        bytes[i] = byte;
+    }
+    return data;
+}
+
+
 // Creates data with zero-terminated string in UTF-8 encoding.
 NSData* BTCDataWithUTF8String(const char* utf8string)
 {
@@ -66,7 +136,7 @@ NSData* BTCDataWithHexString(NSString* hexString)
 // Init with zero-terminated hex string (lower- or uppercase, with optional 0x prefix)
 NSData* BTCDataWithHexCString(const char* hexCString)
 {
-    if (!hexCString) return [NSData data];
+    if (hexCString == NULL) return nil;
     
     const unsigned char *psz = (const unsigned char*)hexCString;
     

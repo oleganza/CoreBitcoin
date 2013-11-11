@@ -194,7 +194,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<%@:0x%p 0x%@>", [self class], self, [self stringInBase:16]];
+    return [NSString stringWithFormat:@"<%@:0x%p 0x%@ (%@)>", [self class], self, [self stringInBase:16], [self stringInBase:10]];
 }
 
 
@@ -538,7 +538,7 @@
 - (void) setInt64value:(int64_t)value
 {
     [self throwIfImmutable];
-    bool isNegative;
+    bool isNegative = NO;
     uint64_t uintValue;
     if (value < 0)
     {
@@ -554,7 +554,6 @@
     else
     {
         uintValue = value;
-        isNegative = YES;
     }
     
     [self setUint64valuePrivate:uintValue negative:isNegative];

@@ -14,6 +14,10 @@ void BTCSecureClearCString(char *s);
 // Returns data with securely random bytes of the specified length. Uses /dev/random.
 NSData* BTCRandomDataWithLength(NSUInteger length);
 
+// Returns data produced by flipping the coin as proposed by Dan Kaminsky:
+// https://gist.github.com/PaulCapestany/6148566
+NSData* BTCCoinFlipDataWithLength(NSUInteger length);
+
 // Creates data with zero-terminated string in UTF-8 encoding.
 NSData* BTCDataWithUTF8String(const char* utf8string);
 

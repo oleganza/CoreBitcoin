@@ -121,21 +121,27 @@
 
 - (BOOL) verifyWithOutputScript:(BTCScript*)outputScript error:(NSError**)errorOut
 {
-    // Sanity check: transaction and its input should be consistent.
-    if (!(self.transaction && self.inputIndex < self.transaction.inputs.count))
+    // self.inputScript allows to override transaction so we can simply testing.
+    BTCScript* inputScript = self.inputScript;
+    
+    if (!inputScript)
     {
-        [NSException raise:@"BTCScriptMachineException"  format:@"transaction and valid inputIndex are required for script verification."];
-        return NO;
-    }
-    if (!outputScript)
-    {
-        [NSException raise:@"BTCScriptMachineException"  format:@"non-nil outputScript is required for script verification."];
-        return NO;
-    }
+        // Sanity check: transaction and its input should be consistent.
+        if (!(self.transaction && self.inputIndex < self.transaction.inputs.count))
+        {
+            [NSException raise:@"BTCScriptMachineException"  format:@"transaction and valid inputIndex are required for script verification."];
+            return NO;
+        }
+        if (!outputScript)
+        {
+            [NSException raise:@"BTCScriptMachineException"  format:@"non-nil outputScript is required for script verification."];
+            return NO;
+        }
 
-    BTCTransactionInput* txInput = self.transaction.inputs[self.inputIndex];
-    BTCScript* inputScript = txInput.signatureScript;
-
+        BTCTransactionInput* txInput = self.transaction.inputs[self.inputIndex];
+        inputScript = txInput.signatureScript;
+    }
+    
     // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
     if (![self runScript:inputScript error:errorOut])
     {
@@ -173,7 +179,7 @@
     if (shouldVerifyP2SH)
     {
         // BitcoinQT: scriptSig must be literals-only
-        if (![inputScript isPushOnly])
+        if (![inputScript isDataOnly])
         {
             if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Input script for P2SH spending must be literals-only.", @"")];
             return NO;
@@ -658,7 +664,7 @@
                 NSData* data = [self dataAtIndex: -n - 1];
                 if (opcode == OP_ROLL)
                 {
-                    [_stack removeObjectAtIndex: -n - 1];
+                    [self removeAtIndex: -n - 1];
                 }
                 [_stack addObject:data];
             }
@@ -1236,7 +1242,7 @@
     
     // Note: BitcoinQT returns a 256-bit little-endian number 1 in such case, but it does not matter
     // because it would crash before that in CScriptCheck::operator()(). We normally won't enter this condition
-    // if transaction is instantiated with initWithTransaction:inputIndex:, but if it was just -init-ed, it's better to check.
+    // if script machine is instantiated with initWithTransaction:inputIndex:, but if it was just -init-ed, it's better to check.
     if (_inputIndex >= tx.inputs.count)
     {
         if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:

@@ -48,8 +48,9 @@ Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT use
 Bounties
 --------
 
-- 1 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s. OpenSSL should be bundled inside. [@oleganza]
-- 0.2 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
+- 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
+- extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
+- 0.5 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
 
 To add your own bounty, add a line here (or edit an existing one), make a pull request and donate to the address below. Your donation will be reserved for that bounty only. I will contact you to check if the implementation is acceptable before paying out.
 

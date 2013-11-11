@@ -107,8 +107,9 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" with any valid N or M.
 - (BOOL) isMultisignatureScript;
 
-// Returns YES if the script consists of pushdata operations only.
-- (BOOL) isPushOnly;
+// Returns YES if the script consists of push data operations only (including OP_<N>). Aka isPushOnly in BitcoinQT.
+// Used in BIP16 (P2SH).
+- (BOOL) isDataOnly;
 
 // Enumerates all available operations.
 //   opIndex - index of the current operation: 0..(N-1) where N is number of ops.

@@ -47,6 +47,50 @@
     
     NSAssert([[BTCDataWithHexString(@"deadBeeF") base58String] isEqualToString:@"6h8cQN"], @"Encodes base58");
     NSAssert([[BTCDataWithHexString(@"00c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827") base58CheckString] isEqualToString:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Encodes base58 with checksum");
+    
+    
+    // Random number generators
+    if (0)
+    {
+        const int length = 1024*16;
+        double maxdeviation = 0.15;
+        
+        NSData* data = BTCCoinFlipDataWithLength(length);
+        
+        const int slots = 16;
+
+        const unsigned char* bytes = data.bytes;
+        int distribution[slots] = {0};
+        for (int i = 0; i < data.length; i++)
+        {
+            unsigned char c = bytes[i];
+            distribution[c % slots]++;
+        }
+        double max = 0;
+        double min = 99999999;
+        double avg = 0;
+        for (int i = 0; i < slots; i++)
+        {
+            avg += distribution[i];
+            max = MAX(max, distribution[i]);
+            min = MIN(min, distribution[i]);
+        }
+        avg /= slots;
+        
+        double deviation = (max - min) / avg;
+        NSLog(@"BTCCoinFlipDataWithLength: Deviation: %f", deviation);
+        
+        NSAssert(min > 0, @"Sanity check");
+        NSAssert(max > min, @"Sanity check");
+        NSAssert(deviation < maxdeviation, @"Deviation should be small enough");
+
+        for (int i = 0; i < slots; i++)
+        {
+            NSLog(@"distribution[%02d] = %d", i, distribution[i]);
+        }
+
+        NSLog(@"BTCCoinFlipDataWithLength: %@", [data subdataWithRange:NSMakeRange(0, 32)].hexString);
+    }
 }
 
 @end
