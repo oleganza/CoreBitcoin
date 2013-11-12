@@ -512,9 +512,12 @@
 {
     if (_chunks.count != 5) return NO;
     
+    BTCScriptChunk* dataChunk = [self chunkAtIndex:2];
+    
     return [self opcodeAtIndex:0] == OP_DUP
         && [self opcodeAtIndex:1] == OP_HASH160
-        && [self pushdataAtIndex:2].length == 20
+        && !dataChunk.isOpcode
+        && dataChunk.range.length == 21
         && [self opcodeAtIndex:3] == OP_EQUALVERIFY
         && [self opcodeAtIndex:4] == OP_CHECKSIG;
 }
@@ -527,8 +530,11 @@
     
     if (_chunks.count != 3) return NO;
     
+    BTCScriptChunk* dataChunk = [self chunkAtIndex:1];
+    
     return [self opcodeAtIndex:0] == OP_HASH160
-        && [self pushdataAtIndex:1].length == 20
+        && !dataChunk.isOpcode
+        && dataChunk.range.length == 21
         && [self opcodeAtIndex:2] == OP_EQUAL;
 }
 
@@ -775,6 +781,12 @@
 
 #pragma mark - Utility methods
 
+
+- (BTCScriptChunk*) chunkAtIndex:(NSInteger)index
+{
+    BTCScriptChunk* chunk = _chunks[index < 0 ? (_chunks.count + index) : index];
+    return chunk;
+}
 
 // Returns an opcode in a chunk.
 // If the chunk is data, not an opcode, returns OP_INVALIDOPCODE

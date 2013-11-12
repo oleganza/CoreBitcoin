@@ -243,6 +243,9 @@
         return NO;
     }
     
+    // Altstack should be reset between script runs.
+    _altStack = [NSMutableArray array];
+    
     _script = script;
     _opIndex = 0;
     _opcode = 0;
@@ -292,7 +295,7 @@
         return NO;
     }
     
-    if (opcode > OP_16 && ++_opCount > BTC_MAX_OPS_PER_SCRIPT)
+    if (opcode > OP_16 && !_pushdata && ++_opCount > BTC_MAX_OPS_PER_SCRIPT)
     {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")];
         return NO;

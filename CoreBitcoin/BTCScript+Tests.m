@@ -70,7 +70,7 @@
         NSError* error = nil;
         if (![scriptMachine verifyWithOutputScript:outputScript error:&error])
         {
-            NSLog(@"BTCScript validation error: %@", error);
+            NSLog(@"BTCScript validation error: %@ (%@)", error, comment);
             
             // for breakpoint.
             [scriptMachine verifyWithOutputScript:outputScript error:&error];
@@ -81,7 +81,34 @@
 
 + (void) testInvalidBitcoinQTScripts
 {
-    
+    for (NSArray* tuple in [self invalidBitcoinQTScripts])
+    {
+        NSString* inputScriptString = tuple[0];
+        NSString* outputScriptString = tuple[1];
+        NSString* comment = tuple.count > 2 ? tuple[2] : @"Script should not fail";
+        
+        BTCScript* inputScript = [[BTCScript alloc] initWithString:inputScriptString];
+        
+        // Script is malformed, it's okay.
+        if (!inputScript) continue;
+        
+        BTCScript* outputScript = [[BTCScript alloc] initWithString:outputScriptString];
+        
+        // Script is malformed, it's okay.
+        if (!outputScript) continue;
+        
+        BTCScriptMachine* scriptMachine = [[BTCScriptMachine alloc] init];
+        scriptMachine.verificationFlags = BTCScriptVerificationStrictEncoding;
+        scriptMachine.inputScript = inputScript;
+        
+        NSError* error = nil;
+        if ([scriptMachine verifyWithOutputScript:outputScript error:&error])
+        {
+            // for breakpoint.
+            [scriptMachine verifyWithOutputScript:outputScript error:&error];
+            NSAssert(0, comment);
+        }
+    }
 }
 
 
