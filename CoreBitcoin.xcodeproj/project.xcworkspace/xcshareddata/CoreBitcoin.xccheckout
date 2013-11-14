@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F6BACF96-6D2C-487E-B75E-A5A36B6A2328</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CoreBitcoin</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EF5725D0-3C9E-4E09-9E99-3DC8933B09CB</key>
+		<string>https://github.com/bjano/CoreBitcoin.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CoreBitcoin.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EF5725D0-3C9E-4E09-9E99-3DC8933B09CB</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/bjano/CoreBitcoin.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EF5725D0-3C9E-4E09-9E99-3DC8933B09CB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EF5725D0-3C9E-4E09-9E99-3DC8933B09CB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CoreBitcoin</string>
+		</dict>
+	</array>
+</dict>
+</plist>
