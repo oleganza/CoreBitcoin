@@ -656,7 +656,15 @@
                 
                 // Top item is a number of items to roll over.
                 // Take it and pop it from the stack.
-                int32_t n = [[self bigNumberAtIndex:-1] int32value];
+                BTCBigNumber* bn = [self bigNumberAtIndex:-1];
+                
+                if (!bn)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
+                
+                int32_t n = [bn int32value];
                 [self popFromStack];
                 
                 if (n < 0 || n >= _stack.count)
@@ -790,6 +798,12 @@
                 
                 BTCMutableBigNumber* bn = [self bigNumberAtIndex:-1];
                 
+                if (!bn)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
+                
                 switch (opcode)
                 {
                     case OP_1ADD:       [bn add:_bigNumberOne]; break;
@@ -826,8 +840,17 @@
                     return NO;
                 }
                 
+                // bn1 is nil when stack is ( <00000080 00>, <> )
+
                 BTCMutableBigNumber* bn1 = [self bigNumberAtIndex:-2];
                 BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-1];
+                
+                if (!bn1 || !bn2)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
+                
                 BTCMutableBigNumber* bn = nil;
                 
                 switch (opcode)
@@ -885,6 +908,12 @@
                 BTCMutableBigNumber* bn1 = [self bigNumberAtIndex:-3];
                 BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-2];
                 BTCMutableBigNumber* bn3 = [self bigNumberAtIndex:-1];
+                
+                if (!bn1 || !bn2 || !bn3)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
                 
                 BOOL value = ([bn2 lessOrEqual:bn1] && [bn1 less:bn3]);
                 
@@ -1035,7 +1064,15 @@
                     return NO;
                 }
                 
-                int32_t keysCount = [self bigNumberAtIndex:-i].int32value;
+                BTCBigNumber* bn = [self bigNumberAtIndex:-i];
+                
+                if (!bn)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
+
+                int32_t keysCount = bn.int32value;
                 if (keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG)
                 {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of keys for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
@@ -1062,7 +1099,15 @@
                 }
                 
                 // Read the required number of signatures.
-                int sigsCount = [self bigNumberAtIndex:-i].int32value;
+                BTCBigNumber* bn2 = [self bigNumberAtIndex:-i];
+                
+                if (!bn2)
+                {
+                    if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
+                    return NO;
+                }
+
+                int sigsCount = bn2.int32value;
                 if (sigsCount < 0 || sigsCount > keysCount)
                 {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of signatures for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
@@ -1372,12 +1417,19 @@
 {
     if (items == 1)
     {
-        return [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d item on stack.", @""), BTCNameForOpcode(_opcode), items]}];
+        return [NSError errorWithDomain:BTCErrorDomain
+                                   code:BTCErrorScriptError
+                               userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d item on stack.", @""), BTCNameForOpcode(_opcode), items]}];
     }
     return [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d items on stack.", @""), BTCNameForOpcode(_opcode), items]}];
 }
 
-
+- (NSError*) scriptErrorInvalidBignum
+{
+    return [NSError errorWithDomain:BTCErrorDomain
+                               code:BTCErrorScriptError
+                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid bignum data.", @"")}];
+}
 
 
 
@@ -1404,7 +1456,8 @@
     NSData* data = [self dataAtIndex:index];
     if (!data) return nil;
     
-    // BitcoinQT throws "CastToBigNum() : overflow"
+    // BitcoinQT throws "CastToBigNum() : overflow" and then catches it inside EvalScript to return false.
+    // This is catched in unit test for invalid scripts: @[@"2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "]
     if (data.length > 4)
     {
         return nil;

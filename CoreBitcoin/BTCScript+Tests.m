@@ -13,6 +13,9 @@
     [self testStringSerialization];
     [self testStandardScripts];
     
+    [self testScriptModifications];
+    [self testStrangeScripts];
+    
     [self testValidBitcoinQTScripts];
     [self testInvalidBitcoinQTScripts];
 }
@@ -38,6 +41,35 @@
     //
 }
 
++ (void) testScriptModifications
+{
+    // 
+}
+
++ (void) testStrangeScripts
+{
+//    @[@"2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "],
+//    @[@"-2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "],
+//    @[@"2147483647 DUP ADD", @"4294967294 NUMEQUAL", @"NUMEQUAL must be in numeric range"],
+    
+    BTCScript* script = [[BTCScript alloc] initWithString:@"2147483648 0 OP_ADD"];
+    
+    NSAssert(script, @"should be valid script");
+    
+    BTCScriptMachine* scriptMachine = [[BTCScriptMachine alloc] init];
+    scriptMachine.verificationFlags = BTCScriptVerificationStrictEncoding;
+    scriptMachine.inputScript = script;
+    
+    NSError* error = nil;
+    if (![scriptMachine verifyWithOutputScript:[[BTCScript alloc] initWithString:@"OP_NOP"] error:&error])
+    {
+//        NSLog(@"error: %@", error);
+    }
+    else
+    {
+//        NSLog(@"script passed: %@", script);
+    }
+}
 
 + (void) testValidBitcoinQTScripts
 {

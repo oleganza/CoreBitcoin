@@ -562,8 +562,8 @@
 - (void) setUint64valuePrivate:(uint64_t)value negative:(BOOL)isNegative
 {
     // Numbers are represented in OpenSSL using the MPI format. 4 byte length.
-    uint8_t rawMPI[sizeof(value) + 6];
-    uint8_t* currentByte = &rawMPI[4];
+    unsigned char rawMPI[sizeof(value) + 6];
+    unsigned char* currentByte = &rawMPI[4];
     BOOL leadingZeros = YES;
     for (int i = 0; i < 8; ++i)
     {
@@ -585,12 +585,12 @@
         *currentByte = c;
         ++currentByte;
     }
-    size_t size = currentByte - (rawMPI + 4);
+    unsigned int size = currentByte - (rawMPI + 4);
     rawMPI[0] = (size >> 24) & 0xff;
     rawMPI[1] = (size >> 16) & 0xff;
     rawMPI[2] = (size >> 8) & 0xff;
     rawMPI[3] = (size) & 0xff;
-    BN_mpi2bn(rawMPI, (int)(currentByte - rawMPI), &_bignum);
+    BN_mpi2bn(rawMPI, currentByte - rawMPI, &_bignum);
 }
 
 - (NSData*) data
