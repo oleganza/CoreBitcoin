@@ -23,8 +23,6 @@ If this sounds cumbersome, there is a bounty for creating a CoreBitcoin.framewor
 TODO
 ----
 
-- Universal OpenSSL libraries. Or as a part of a build process.
-- Universal CoreBitcoin.framework bundled with OpenSSL inside.
 - Full transaction support.
 - Full blockchain support.
 - BitcoinQT wallet reader.
@@ -35,6 +33,9 @@ TODO
 - Security analysis. Do we use truly random numbers? Do we sign things correctly? Do we have buffer overflows? And so on.
 - Example of creating a transaction given some txouts.
 - Example of verifying a transaction.
+
++ Universal OpenSSL libraries. Or as a part of a build process.
++ CoreBitcoin.framework for iOS and OS X with OpenSSL inside.
 
 
 OpenSSL
@@ -48,9 +49,9 @@ Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT use
 Bounties
 --------
 
-- 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
-- extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
 - 0.5 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
+- [done] 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
+- [done] extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
 
 To add your own bounty, add a line here (or edit an existing one), make a pull request and donate to the address below. Your donation will be reserved for that bounty only. I will contact you to check if the implementation is acceptable before paying out.
 
