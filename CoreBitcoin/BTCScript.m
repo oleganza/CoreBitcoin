@@ -418,7 +418,7 @@
                         // 5.1. Small Integer
                         if (decimalInteger >= -1 && decimalInteger <= 16)
                         {
-                            opcode = BTCOpcodeForSmallInteger(decimalInteger);
+                            opcode = BTCOpcodeForSmallInteger((NSUInteger)decimalInteger);
                             
                             if (opcode == OP_INVALIDOPCODE)
                             {

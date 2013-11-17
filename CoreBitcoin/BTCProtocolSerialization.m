@@ -100,7 +100,7 @@
     
     if (data.length < (varIntLength + length)) return nil;
     
-    return [data subdataWithRange:NSMakeRange(varIntLength, length)];
+    return [data subdataWithRange:NSMakeRange(varIntLength, (NSUInteger)length)];
 }
 
 + (NSData*) readVarStringFromStream:(NSInputStream*)stream
@@ -109,10 +109,10 @@
     NSUInteger varIntLength = [self readVarInt:&length fromStream:stream];
     if (varIntLength == 0) return nil;
     
-    NSMutableData* data = [NSMutableData dataWithLength:length];
+    NSMutableData* data = [NSMutableData dataWithLength:(NSUInteger)length];
     if (length > 0)
     {
-        [stream read:data.mutableBytes maxLength:length];
+        [stream read:data.mutableBytes maxLength:(NSUInteger)length];
     }
     return data;
 }
