@@ -29,7 +29,9 @@ MACOS_GCC="${DEVELOPER}/usr/bin/gcc"
 
 
 rm -rf openssl
-curl -O http://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz
+
+# Instead of downloading an archive over insecure link, we'll just keep it in the repo.
+# curl -O http://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz
 
 build()
 {
@@ -111,5 +113,7 @@ cp "${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64/libssl.a" "lib/libssl-osx.a"
 cd ..
 
 rm -rf openssl-${OPENSSL_VERSION}-*
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz
+
+# Do not remove archive: we keep it in the repository.
+# rm -rf openssl-${OPENSSL_VERSION}.tar.gz
 
