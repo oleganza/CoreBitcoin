@@ -1,6 +1,6 @@
 
-Bitcoin Glossary v0.2
-=====================
+Bitcoin Glossary
+================
 
 Some unusual terms are frequently used in Bitcoin documentation and discussions like *tx* or *coinbase*. Or words like *scriptPubKey* were badly chosen and now deserve some extra explanation. This glossary will help you understand exact meaning of all Bitcoin-related terms.
 
