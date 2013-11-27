@@ -252,6 +252,7 @@
 		2037AB1717D3D1F900DB248C /* BTCBase58+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBase58+Tests.m"; sourceTree = "<group>"; };
 		2039DB0117E2ED2B0051177B /* GLOSSARY.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = GLOSSARY.md; sourceTree = "<group>"; };
 		2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScriptStringRepresentation.md; sourceTree = "<group>"; };
+		204F8A801845FAF8002649CE /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		2057A9CB17CD555F00353D54 /* BTCKey+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKey+Tests.h"; sourceTree = "<group>"; };
 		2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKey+Tests.m"; sourceTree = "<group>"; };
 		206B0113183547C200878B8D /* CoreBitcoinOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBitcoinOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -478,6 +479,7 @@
 			isa = PBXGroup;
 			children = (
 				2084DD9417B8FF7E005AC9E6 /* README.md */,
+				204F8A801845FAF8002649CE /* TODO.txt */,
 				2039DB0117E2ED2B0051177B /* GLOSSARY.md */,
 				209818911839688D00541747 /* LICENSE.txt */,
 				2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */,
