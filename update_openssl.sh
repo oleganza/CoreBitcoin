@@ -51,15 +51,25 @@ build()
    popd
 }
 
+echo "Building OpenSSL for 32-bit iOS simulator"
 build "i386" "${IPHONESIMULATOR_GCC}" "${IPHONESIMULATOR_SDK}"
+
+echo "Building OpenSSL for 64-bit iOS simulator"
 build "x86_64" "${IPHONESIMULATOR_GCC}" "${IPHONESIMULATOR_SDK}"
 mv "openssl-${OPENSSL_VERSION}-x86_64" "openssl-${OPENSSL_VERSION}-x86_64-simulator"
 
+echo "Building OpenSSL for ARM 64-bit"
 build "arm64" "${IPHONEOS_GCC}" "${IPHONEOS_SDK}"
+
+echo "Building OpenSSL for ARMv7"
 build "armv7" "${IPHONEOS_GCC}" "${IPHONEOS_SDK}"
+
+echo "Building OpenSSL for ARMv7s"
 build "armv7s" "${IPHONEOS_GCC}" "${IPHONEOS_SDK}"
 
 rm -rf "openssl-${OPENSSL_VERSION}"
+
+echo "Building OpenSSL for 64-bit OS X"
 tar xfz "openssl-${OPENSSL_VERSION}.tar.gz"
 mv openssl-${OPENSSL_VERSION} openssl-${OPENSSL_VERSION}-x86_64
 cd openssl-${OPENSSL_VERSION}-x86_64
@@ -67,27 +77,12 @@ cd openssl-${OPENSSL_VERSION}-x86_64
 make &> "../openssl-${OPENSSL_VERSION}-x86_64.log"
 cd ..
 
+echo "Making universal OpenSSL libraries for OS X and iOS"
+
 mkdir openssl
 cd openssl
 mkdir include
 cp -r ${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64/include/openssl include/
-
-
-#mkdir lib
-#lipo \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-armv7/libcrypto.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-armv7s/libcrypto.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-arm64/libcrypto.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-i386/libcrypto.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64/libcrypto.a" \
-#	-create -output lib/libcrypto.a
-#lipo \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-armv7/libssl.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-armv7s/libssl.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-arm64/libssl.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-i386/libssl.a" \
-#	"${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64/libssl.a" \
-#	-create -output lib/libssl.a
 
 mkdir lib
 lipo \
