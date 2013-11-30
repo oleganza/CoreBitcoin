@@ -1,8 +1,8 @@
 openssl/bin
+openssl/lib
 openssl/lib/engines
 openssl/lib/pkgconfig
 openssl/ssl
-
 .DS_Store
 */build/*
 *.pbxuser
