@@ -5,10 +5,10 @@
 @class BTCPublicKeyAddress;
 @class BTCPrivateKeyAddress;
 
-// BTCKey encapsulates EC public and private keypair (or only public part).
+// BTCKey encapsulates EC public and private keypair (or only public part) on curve secp256k1.
 // You can sign data and verify signatures.
 // When instantiated with a public key, only signature verification is possible.
-// When instantiated with a private key, all operations are available.s
+// When instantiated with a private key, all operations are available.
 @interface BTCKey : NSObject
 
 // Newly generated random key pair.
