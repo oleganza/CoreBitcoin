@@ -4,6 +4,7 @@
 #import "BTCData.h"
 #import "BTCScriptMachine.h"
 #import "BTCScript.h"
+#import "BTCAddress.h"
 
 @implementation BTCScript (Tests)
 
@@ -38,7 +39,22 @@
 
 + (void) testStandardScripts
 {
-    //
+    BTCScript *script = [[BTCScript alloc] initWithData:BTCDataWithHexString(@"76a914b9c49f8bcade55c394824dbe8bb5b11f63603e7a88ac")];
+    
+    //NSLog(@"TEST: String: %@\nIs Hash160 Script: %d", script.string, script.isHash160Script);
+    
+    NSAssert([script isHash160Script], @"should be regular hash160 script");
+ 
+    
+    NSString* base58address = [[script standardAddress] base58String];
+    //NSLog(@"TEST: address: %@", base58address);
+    
+    NSAssert([base58address isEqualToString:@"1HwFZ7NorAFpz48hwPegr3mWbfwjo89CMB"], @"address should be correctly decoded");
+    
+    BTCScript* script2 = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:base58address]];
+    NSAssert([script2.data isEqual:script.data], @"script created from extracted address should be the same as the original script");
+    NSAssert([script2.string isEqual:script.string], @"script created from extracted address should be the same as the original script");
+    
 }
 
 + (void) testScriptModifications

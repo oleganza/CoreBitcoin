@@ -100,38 +100,38 @@
     if ([address isKindOfClass:[BTCPublicKeyAddress class]])
     {
         // OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG
-        NSMutableData* data = [NSMutableData data];
+        NSMutableData* resultData = [NSMutableData data];
         
         BTCOpcode prefix[] = {OP_DUP, OP_HASH160};
-        [data appendBytes:prefix length:sizeof(prefix)];
+        [resultData appendBytes:prefix length:sizeof(prefix)];
         
-        unsigned char length = data.length;
-        [data appendBytes:&length length:sizeof(length)];
+        unsigned char length = address.data.length;
+        [resultData appendBytes:&length length:sizeof(length)];
         
-        [data appendData:address.data];
+        [resultData appendData:address.data];
         
         BTCOpcode suffix[] = {OP_EQUALVERIFY, OP_CHECKSIG};
-        [data appendBytes:suffix length:sizeof(suffix)];
+        [resultData appendBytes:suffix length:sizeof(suffix)];
         
-        return [self initWithData:data];
+        return [self initWithData:resultData];
     }
     else if ([address isKindOfClass:[BTCScriptHashAddress class]])
     {
         // OP_HASH160 <hash> OP_EQUAL
-        NSMutableData* data = [NSMutableData data];
+        NSMutableData* resultData = [NSMutableData data];
         
         BTCOpcode prefix[] = {OP_HASH160};
-        [data appendBytes:prefix length:sizeof(prefix)];
+        [resultData appendBytes:prefix length:sizeof(prefix)];
         
-        unsigned char length = data.length;
-        [data appendBytes:&length length:sizeof(length)];
+        unsigned char length = address.data.length;
+        [resultData appendBytes:&length length:sizeof(length)];
         
-        [data appendData:address.data];
+        [resultData appendData:address.data];
         
         BTCOpcode suffix[] = {OP_EQUAL};
-        [data appendBytes:suffix length:sizeof(suffix)];
+        [resultData appendBytes:suffix length:sizeof(suffix)];
         
-        return [self initWithData:data];
+        return [self initWithData:resultData];
     }
     else
     {
@@ -534,7 +534,7 @@
     
     return [self opcodeAtIndex:0] == OP_HASH160
         && !dataChunk.isOpcode
-        && dataChunk.range.length == 21
+        && dataChunk.range.length == 21          // this is enough to match the exact byte template, any other encoding will be larger.
         && [self opcodeAtIndex:2] == OP_EQUAL;
 }
 
@@ -637,6 +637,33 @@
     }
 }
 
+
+- (BTCAddress*) standardAddress
+{
+    if ([self isHash160Script])
+    {
+        if (_chunks.count != 5) return nil;
+        
+        BTCScriptChunk* dataChunk = [self chunkAtIndex:2];
+        
+        if (!dataChunk.isOpcode && dataChunk.range.length == 21)
+        {
+            return [BTCPublicKeyAddress addressWithData:dataChunk.pushdata];
+        }
+    }
+    else if ([self isPayToScriptHashScript])
+    {
+        if (_chunks.count != 3) return nil;
+        
+        BTCScriptChunk* dataChunk = [self chunkAtIndex:1];
+        
+        if (!dataChunk.isOpcode && dataChunk.range.length == 21)
+        {
+            return [BTCScriptHashAddress addressWithData:dataChunk.pushdata];
+        }
+    }
+    return nil;
+}
 
 
 

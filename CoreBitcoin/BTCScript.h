@@ -59,7 +59,7 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 - (id) initWithString:(NSString*)string;
 
 // Standard script redeeming to a pubkey hash (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG)
-// or a P2SH address.
+// or a P2SH address (OP_HASH160 <20-byte hash> OP_EQUAL).
 - (id) initWithAddress:(BTCAddress*)address;
 
 // Initializes a multisignature script "OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG"
@@ -118,7 +118,9 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 //   stop - if set to YES, stops iterating.
 - (void) enumerateOperations:(void(^)(NSUInteger opIndex, BTCOpcode opcode, NSData* pushdata, BOOL* stop))block;
 
-
+// Returns BTCPublicKeyAddress or BTCScriptHashAddress if the script is a standard output script for these addresses.
+// If the script is something different, returns nil.
+- (BTCAddress*) standardAddress;
 
 
 #pragma mark - Modification API
