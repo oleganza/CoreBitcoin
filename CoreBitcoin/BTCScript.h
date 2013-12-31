@@ -3,6 +3,8 @@
 #import <Foundation/Foundation.h>
 #import "BTCOpcode.h"
 
+@class BTCAddress;
+
 // Hash type determines how OP_CHECKSIG hashes the transaction to create or
 // verify the signature in a transaction input.
 // Depending on hash type, transaction is modified in some way before its hash is computed.
@@ -43,7 +45,20 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
     
 };
 
-@class BTCAddress;
+@interface BTCScriptChunk : NSObject
+
+// Return YES if it is not a pushdata chunk, that is a single byte opcode without data.
+// -data returns nil when the value is YES.
+@property(nonatomic, readonly) BOOL isOpcode;
+
+// Opcode used in the chunk. Simply a first byte of its raw data.
+@property(nonatomic, readonly) BTCOpcode opcode;
+
+// Data being pushed. Returns nil if the opcode is not OP_PUSHDATA*.
+@property(nonatomic, readonly) NSData* pushdata;
+
+@end
+
 @interface BTCScript : NSObject<NSCopying>
 
 // Initialized an empty script.
@@ -77,6 +92,9 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 // Other data is hex-encoded.
 // This representation is inherently ambiguous, so don't use it for anything serious.
 - (NSString*) string;
+
+// List of parsed chunks of the script (BTCScriptChunk)
+- (NSArray*) scriptChunks;
 
 // Returns YES if the script is considered standard and can be relayed and mined normally by enough nodes.
 // Non-standard scripts are still valid if appear in blocks, but default nodes and miners will reject them.

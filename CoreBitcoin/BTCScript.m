@@ -6,7 +6,8 @@
 #import "BTCErrors.h"
 #import "BTCData.h"
 
-@interface BTCScriptChunk : NSObject
+
+@interface BTCScriptChunk ()
 
 // A range of scriptData represented by this chunk.
 @property(nonatomic) NSRange range;
@@ -16,16 +17,6 @@
 
 // Portion of scriptData defined by range.
 @property(nonatomic, readonly) NSData* chunkData;
-
-// Return YES if it is not a pushdata chunk, that is a single byte opcode without data.
-// -data returns nil when the value is YES.
-@property(nonatomic, readonly) BOOL isOpcode;
-
-// Opcode used in the chunk. Simply a first byte of its data.
-@property(nonatomic, readonly) BTCOpcode opcode;
-
-// Data being pushed. Returns nil if the opcode is not OP_PUSHDATA*.
-@property(nonatomic, readonly) NSData* pushdata;
 
 // String representation of a chunk.
 // OP_1NEGATE, OP_0, OP_1..OP_16 are represented as a decimal number.
@@ -611,6 +602,10 @@
     return YES;
 }
 
+- (NSArray*) scriptChunks
+{
+    return [_chunks copy];
+}
 
 - (void) enumerateOperations:(void(^)(NSUInteger opIndex, BTCOpcode opcode, NSData* pushdata, BOOL* stop))block
 {
