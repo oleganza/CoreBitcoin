@@ -585,12 +585,12 @@
         *currentByte = c;
         ++currentByte;
     }
-    unsigned int size = currentByte - (rawMPI + 4);
+    unsigned long size = currentByte - (rawMPI + 4);
     rawMPI[0] = (size >> 24) & 0xff;
     rawMPI[1] = (size >> 16) & 0xff;
     rawMPI[2] = (size >> 8) & 0xff;
     rawMPI[3] = (size) & 0xff;
-    BN_mpi2bn(rawMPI, currentByte - rawMPI, &_bignum);
+    BN_mpi2bn(rawMPI, (int)(currentByte - rawMPI), &_bignum);
 }
 
 - (NSData*) data
