@@ -2,8 +2,10 @@
 
 #import "BTCScript+Tests.h"
 #import "BTCData.h"
+#import "BTCBase58.h"
 #import "BTCScriptMachine.h"
 #import "BTCScript.h"
+#import "BTCKey.h"
 #import "BTCAddress.h"
 
 @implementation BTCScript (Tests)
@@ -54,6 +56,40 @@
     BTCScript* script2 = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"]];
     NSAssert([script2.data isEqual:script.data], @"script created from extracted address should be the same as the original script");
     NSAssert([script2.string isEqual:script.string], @"script created from extracted address should be the same as the original script");
+    
+    
+    {
+    	BTCKey* key = [[BTCKey alloc] init];
+        NSString *addressB58 = key.publicKeyAddress.base58String;
+        NSString *privKeyB58 = key.privateKeyAddress.base58String;
+        
+        NSLog(@"Address1: %@", addressB58);
+        NSLog(@"PrivKey1: %@", privKeyB58);
+        
+        // get address from private key
+
+        if (0) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>, possibly ARC issue.
+        {
+            NSData *privkey01 = [[BTCAddress addressWithBase58String:privKeyB58] data];
+
+            NSAssert([privkey01 isEqual:key.privateKey], @"private key should be the same");
+        }
+        
+        BTCPrivateKeyAddress* pkaddr = [BTCAddress addressWithBase58String:privKeyB58];
+        NSData *privkey = pkaddr.data;
+        
+        NSAssert([privkey isEqual:key.privateKey], @"private key should be the same");
+        
+        BTCKey* key2 = [[BTCKey alloc] initWithPrivateKey:privkey];
+        BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:BTCHash160(key2.publicKey)];
+        BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key2.privateKey];
+        
+        NSLog(@"Address2: %@", pubkeyAddress.base58String);
+        NSLog(@"PrivKey2: %@", privkeyAddress.base58String);
+        
+        NSString *address2 = key2.publicKeyAddress.base58String;
+        NSLog(@"Address1 %@ Equal Address2", [addressB58 isEqualToString:address2] ? @"is": @"is NOT");
+    }
     
 }
 
