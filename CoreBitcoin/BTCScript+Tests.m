@@ -68,13 +68,14 @@
         
         // get address from private key
 
-        if (0) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>, possibly ARC issue.
+        if (0) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>, possibly ARC-related issue.
         {
             NSData *privkey01 = [[BTCAddress addressWithBase58String:privKeyB58] data];
 
             NSAssert([privkey01 isEqual:key.privateKey], @"private key should be the same");
         }
         
+        // However, if we assign intermediate object to a variable, everything works fine. Need to investigate.
         BTCPrivateKeyAddress* pkaddr = [BTCAddress addressWithBase58String:privKeyB58];
         NSData *privkey = pkaddr.data;
         
