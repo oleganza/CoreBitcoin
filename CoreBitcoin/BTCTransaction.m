@@ -5,6 +5,8 @@
 #import "BTCTransactionOutput.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCData.h"
+#import "BTCScript.h"
+#import "BTCErrors.h"
 
 @interface BTCTransaction ()
 @property(nonatomic, readwrite) NSData* transactionHash;
@@ -306,6 +308,120 @@
     
     return YES;
 }
+
+
+#pragma mark - Signing a transaction
+
+
+
+// Hash for signing a transaction.
+// You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
+- (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut
+{
+    // Create a temporary copy of the transaction to apply modifications to it.
+    BTCTransaction* tx = [self copy];
+    
+    // We may have a scriptmachine instantiated without a transaction (for testing),
+    // but it should not use signature checks then.
+    if (!tx || inputIndex == 0xFFFFFFFF)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                      code:BTCErrorScriptError
+                                                  userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Transaction and valid input index must be provided for signature verification.", @"")}];
+        return nil;
+    }
+    
+    // Note: BitcoinQT returns a 256-bit little-endian number 1 in such case, but it does not matter
+    // because it would crash before that in CScriptCheck::operator()(). We normally won't enter this condition
+    // if script machine is instantiated with initWithTransaction:inputIndex:, but if it was just -init-ed, it's better to check.
+    if (inputIndex >= tx.inputs.count)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                      code:BTCErrorScriptError
+                                                  userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:
+                                                     NSLocalizedString(@"Input index is out of bounds for transaction: %d >= %d.", @""),
+                                                                                        (int)inputIndex, (int)tx.inputs.count]}];
+        return nil;
+    }
+    
+    // In case concatenating two scripts ends up with two codeseparators,
+    // or an extra one at the end, this prevents all those possible incompatibilities.
+    // Note: this normally never happens because there is no use for OP_CODESEPARATOR.
+    // But we have to do that cleanup anyway to not break on rare transaction that use that for lulz.
+    // Also: we modify the same subscript which is used several times for multisig check, but that's what BitcoinQT does as well.
+    [subscript deleteOccurrencesOfOpcode:OP_CODESEPARATOR];
+    
+    // Blank out other inputs' signature scripts
+    // and replace our input script with a subscript (which is typically a full output script from the previous transaction).
+    for (BTCTransactionInput* txin in tx.inputs)
+    {
+        txin.signatureScript = [[BTCScript alloc] init];
+    }
+    ((BTCTransactionInput*)tx.inputs[inputIndex]).signatureScript = subscript;
+    
+    // Blank out some of the outputs depending on BTCSignatureHashType
+    // Default is SIGHASH_ALL - all inputs and outputs are signed.
+    if ((hashType & SIGHASH_OUTPUT_MASK) == SIGHASH_NONE)
+    {
+        // Wildcard payee - we can pay anywhere.
+        [tx removeAllOutputs];
+        
+        // Blank out others' input sequence numbers to let others update transaction at will.
+        for (NSUInteger i = 0; i < tx.inputs.count; i++)
+        {
+            if (i != inputIndex)
+            {
+                ((BTCTransactionInput*)tx.inputs[i]).sequence = 0;
+            }
+        }
+    }
+    // Single mode assumes we sign an output at the same index as an input.
+    // Outputs before the one we need are blanked out. All outputs after are simply removed.
+    else if ((hashType & SIGHASH_OUTPUT_MASK) == SIGHASH_SINGLE)
+    {
+        // Only lock-in the txout payee at same index as txin.
+        uint32_t outputIndex = inputIndex;
+        
+        // If outputIndex is out of bounds, BitcoinQT is returning a 256-bit little-endian 0x01 instead of failing with error.
+        // We should do the same to stay compatible.
+        if (outputIndex >= tx.outputs.count)
+        {
+            static unsigned char littleEndianOne[32] = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            return [NSData dataWithBytes:littleEndianOne length:32];
+        }
+        
+        // All outputs before the one we need are blanked out. All outputs after are simply removed.
+        // This is equivalent to replacing outputs with (i-1) empty outputs and a i-th original one.
+        BTCTransactionOutput* myOutput = tx.outputs[outputIndex];
+        [tx removeAllOutputs];
+        for (int i = 0; i < outputIndex; i++)
+        {
+            [tx addOutput:[[BTCTransactionOutput alloc] init]];
+        }
+        [tx addOutput:myOutput];
+        
+        // Blank out others' input sequence numbers to let others update transaction at will.
+        for (NSUInteger i = 0; i < tx.inputs.count; i++)
+        {
+            if (i != inputIndex)
+            {
+                ((BTCTransactionInput*)tx.inputs[i]).sequence = 0;
+            }
+        }
+    }
+    
+    // Blank out other inputs completely. This is not recommended for open transactions.
+    if (hashType & SIGHASH_ANYONECANPAY)
+    {
+        BTCTransactionInput* input = tx.inputs[inputIndex];
+        [tx removeAllInputs];
+        [tx addInput:input];
+    }
+    
+    // Get a hash of a serialized transaction.
+    return [tx transactionHash];
+}
+
 
 
 

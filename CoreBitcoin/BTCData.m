@@ -6,6 +6,26 @@
 #include <openssl/ripemd.h>
 #endif
 
+// Use this subclass to make sure data is zeroed
+@implementation BTCMutableDataZeroedOnDealloc : NSMutableData
++ (instancetype) dataWithData:(NSData *)data
+{
+    if (!data) return nil;
+    
+    return [NSMutableData dataWithData:data];
+    
+//    BTCMutableDataZeroedOnDealloc* result = [[BTCMutableDataZeroedOnDealloc alloc] initWithBytes:data.bytes length:data.length];
+    BTCMutableDataZeroedOnDealloc* result = [[BTCMutableDataZeroedOnDealloc alloc] init];
+    [result appendBytes:data.bytes length:data.length];
+    return result;
+}
+- (void) dealloc
+{
+    [self resetBytesInRange:NSMakeRange(0, self.length)];
+}
+@end
+
+
 // This is designed to be not optimized out by compiler like memset
 void *BTCSecureMemset(void *v, unsigned char c, size_t n)
 {
@@ -199,7 +219,8 @@ NSData* BTCReversedData(NSData* data)
 
 NSMutableData* BTCReversedMutableData(NSData* data)
 {
-    NSMutableData* md = [data mutableCopy];
+    if (!data) return nil;
+    NSMutableData* md = [NSMutableData dataWithData:data];
     BTCDataReverse(md);
     return md;
 }

@@ -35,6 +35,7 @@
 
 + (void) testStringSerialization
 {
+    //NSLog(@"tx = %@", BTCHexStringFromData(BTCReversedData(BTCDataWithHexString(@"..."))));
     
     
 }
@@ -68,7 +69,7 @@
         
         // get address from private key
 
-        if (0) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>, possibly ARC-related issue.
+        if (1) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000> because it's cleared when address is dealloc'd.
         {
             NSData *privkey01 = [[BTCAddress addressWithBase58String:privKeyB58] data];
 

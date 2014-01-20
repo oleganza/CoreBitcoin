@@ -5,6 +5,11 @@
 // Change to 0 to disable code that requires OpenSSL (if you need some of these routines in your own project and you don't need OpenSSL)
 #define BTCDataRequiresOpenSSL 1
 
+// Use this subclass to make sure data is zeroed
+@interface BTCMutableDataZeroedOnDealloc : NSMutableData
++ (instancetype) dataWithData:(NSData *)data;
+@end
+
 // Securely overwrites memory buffer with a specified character.
 void *BTCSecureMemset(void *v, unsigned char c, size_t n);
 
@@ -55,4 +60,3 @@ NSData* BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash160 in 
 // Converts data to a hex string
 NSString* BTCHexStringFromData(NSData* data);
 NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than calling -uppercaseString on a lower-case result.
-

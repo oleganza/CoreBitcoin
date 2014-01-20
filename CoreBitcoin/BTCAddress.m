@@ -24,7 +24,8 @@ enum
 
 - (void) dealloc
 {
-    [self clear];
+    // The data may be retained by someone and should not be cleared like that.
+//    [self clear];
     if (_cstring) free(_cstring);
     _data = nil;
 }
@@ -160,7 +161,7 @@ enum
         return nil;
     }
     BTCPublicKeyAddress* addr = [[self alloc] init];
-    addr.data = [data mutableCopy];
+    addr.data = [NSMutableData dataWithData:data];
     return addr;
 }
 
@@ -172,7 +173,7 @@ enum
         return nil;
     }
     BTCPublicKeyAddress* addr = [[self alloc] init];
-    addr.data = [NSMutableData dataWithBytes:((const char*)composedData.bytes) + 1 length:composedData.length - 1];
+    addr.data = [[NSMutableData alloc] initWithBytes:((const char*)composedData.bytes) + 1 length:composedData.length - 1];
     addr.base58CString = cstring;
     return addr;
 }
@@ -228,7 +229,7 @@ enum
         return nil;
     }
     BTCPrivateKeyAddress* addr = [[self alloc] init];
-    addr.data = [data mutableCopy];
+    addr.data = [NSMutableData dataWithData:data];
     addr.compressedPublicKey = compressedPubkey;
     return addr;
 }
@@ -320,7 +321,7 @@ enum
         return nil;
     }
     BTCScriptHashAddress* addr = [[self alloc] init];
-    addr.data = [data mutableCopy];
+    addr.data = [NSMutableData dataWithData:data];
     return addr;
 }
 

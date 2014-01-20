@@ -27,11 +27,6 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     BOOL _compressedPublicKey;
 }
 
-- (void) dealloc
-{
-    [self clear];
-}
-
 - (id) initWithNewKeyPair:(BOOL)createKeyPair
 {
     if (self = [super init])
@@ -109,7 +104,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSMutableData*) publicKey
 {
-    return [[self publicKeyCached] mutableCopy];
+    return [NSMutableData dataWithData:[self publicKeyCached]];
 }
 
 - (NSData*) publicKeyCached
@@ -159,7 +154,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (void) setPublicKey:(NSData *)publicKey
 {
     if (publicKey.length == 0) return;
-    _publicKey = [publicKey mutableCopy];
+    _publicKey = [NSMutableData dataWithData:publicKey];
     
     _compressedPublicKey = ([self lengthOfPubKey:_publicKey] == BTCCompressedPubkeyLength);
     
