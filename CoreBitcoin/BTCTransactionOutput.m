@@ -1,5 +1,6 @@
 // Oleg Andreev <oleganza@gmail.com>
 
+#import "BTCTransaction.h"
 #import "BTCTransactionOutput.h"
 #import "BTCScript.h"
 #import "BTCAddress.h"
@@ -133,9 +134,27 @@
              };
 }
 
+- (uint32_t) index
+{
+    // Remember the index as it does not change when we add more outputs.
+    if (_transaction && _index == BTCTransactionOutputIndexUnknown)
+    {
+        NSUInteger idx = [_transaction.outputs indexOfObject:self];
+        if (idx != NSNotFound)
+        {
+            _index = (uint32_t)idx;
+        }
+    }
+    return _index;
+}
 
-
-
+- (NSData*) transactionHash
+{
+    // Do not remember transaction hash as it changes when we add another output or change some metadata of the tx.
+    if (_transactionHash) return _transactionHash;
+    if (_transaction) return _transaction.transactionHash;
+    return nil;
+}
 
 
 

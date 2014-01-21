@@ -229,6 +229,15 @@
 - (void) addOutput:(BTCTransactionOutput*)output
 {
     if (!output) return;
+    
+    if (!(output.transaction == nil || output.transaction == self))
+    {
+        @throw [NSException exceptionWithName:@"BTCTransaction consistency error!" reason:@"Can't add an output to a transaction when it references another transaction." userInfo:nil];
+        return;
+    }
+    output.index = BTCTransactionOutputIndexUnknown;
+    output.transactionHash = nil;
+    output.transaction = self;
     _outputs = [_outputs arrayByAddingObject:output];
     [self invalidatePayload];
 }
@@ -241,6 +250,10 @@
 
 - (void) removeAllOutputs
 {
+    for (BTCTransactionOutput* txout in _outputs)
+    {
+        txout.transaction = nil;
+    }
     _outputs = @[];
     [self invalidatePayload];
 }

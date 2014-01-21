@@ -20,7 +20,8 @@
 @property(nonatomic) BTCScript* signatureScript;
 
 // Input sequence. Default is maximum value 0xFFFFFFFF.
-// Sequence is used to require different signatures when tx is updated. It is only relevant when tx lockTime > 0.
+// Sequence is used to update a timelocked tx stored in memory of the nodes. It is only relevant when tx lockTime > 0.
+// Currently, for DoS and security reasons, nodes do not store timelocked transactions making the sequence number meaningless.
 @property(nonatomic) uint32_t sequence;
 
 // Serialized binary representation of the txin.
