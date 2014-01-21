@@ -9,5 +9,8 @@
 // List of BTCTransactionOutput instances parsed from the response.
 - (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut;
 
+// Request to broadcast a raw transaction data.
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data;
+
 @end
 

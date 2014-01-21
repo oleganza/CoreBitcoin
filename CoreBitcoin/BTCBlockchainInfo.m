@@ -68,5 +68,18 @@
     */
 }
 
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data
+{
+    if (data.length == 0) return nil;
+    
+    NSString* urlstring = @"https://blockchain.info/pushtx";
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring]];
+    request.HTTPMethod = @"POST";
+    NSString* form = [NSString stringWithFormat:@"tx=%@", BTCHexStringFromData(data)];
+    request.HTTPBody = [form dataUsingEncoding:NSUTF8StringEncoding];
+    return request;
+    
+}
+
 
 @end
