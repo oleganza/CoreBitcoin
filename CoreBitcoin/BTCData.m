@@ -330,4 +330,99 @@ NSString* BTCUppercaseHexStringFromData(NSData* data)
 }
 
 
+NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes)
+{
+    const unsigned long long blockSize = CC_SHA256_DIGEST_LENGTH;
+    
+    // Will be used for intermediate hash computation
+    unsigned char block[blockSize];
+    
+    // Context for computing hashes.
+    CC_SHA256_CTX ctx;
+    
+    // Round up the required memory to integral number of blocks
+    unsigned long long numberOfBlocks = numberOfBytes / blockSize;
+    if (numberOfBytes % blockSize) numberOfBlocks++;
+    numberOfBytes = numberOfBlocks * blockSize;
+    
+    // Make sure we have at least 1 round
+    rounds = rounds ? rounds : 1;
+    
+    // Allocate the required memory
+    NSMutableData* space = [NSMutableData dataWithLength:numberOfBytes];
+    unsigned char* spaceBytes = space.mutableBytes;
+    
+    // Hash the password with the salt to produce the initial seed
+    CC_SHA256_Init(&ctx);
+    CC_SHA256_Update(&ctx, password.bytes, (CC_LONG)password.length);
+    CC_SHA256_Update(&ctx, salt.bytes, (CC_LONG)salt.length);
+    CC_SHA256_Final(block, &ctx);
+
+    // Set the seed to the first block
+    memcpy(spaceBytes, block, blockSize);
+    
+    // Produce a chain of hashes to fill the memory with initial data
+    for (unsigned long long  i = 1; i < numberOfBlocks; i++)
+    {
+        // Put a hash of the previous block into the next block.
+        CC_SHA256_Init(&ctx);
+        CC_SHA256_Update(&ctx, spaceBytes + (i - 1) * blockSize, blockSize);
+        CC_SHA256_Final(block, &ctx);
+        memcpy(spaceBytes + i * blockSize, block, blockSize);
+    }
+    
+    // Each round consists of hashing the entire space block by block.
+    for (unsigned long long r = 0; r < rounds; r++)
+    {
+        // For each block, update it with the hash of the previous block
+        // mixed with the randomly shifted block around the current one.
+        for (unsigned long long b = 0; b < numberOfBlocks; b++)
+        {
+            unsigned long long prevb = (numberOfBlocks + b - 1) % numberOfBlocks;
+            
+            // Interpret the previous block as an integer to provide some randomness to memory location.
+            // This reduces potential for memory access optimization.
+            // We are simplifying a task here by simply taking first 64 bits instead of full 256 bits.
+            // In theory it may give some room for optimization, but it would be equivalent to a slightly more efficient prediction of the next block,
+            // which does not remove the need to store all blocks in memory anyway.
+            // Also, this optimization would be meaningless if the amount of memory is a power of two. E.g. 16, 32, 64 or 128 Mb.
+            unsigned long long offset = (*((unsigned long long*)(spaceBytes + prevb * blockSize))) % (numberOfBlocks - 1); // (N-1) is taken to exclude prevb block.
+            
+            // Calculate actual index relative to the current block.
+            offset = (b + offset) % numberOfBlocks;
+            
+            // Mix previous block with a random one.
+            CC_SHA256_Init(&ctx);
+            CC_SHA256_Update(&ctx, spaceBytes + prevb * blockSize, blockSize); // mix previous block
+            CC_SHA256_Update(&ctx, spaceBytes + offset * blockSize, blockSize); // mix random block around the current one
+            CC_SHA256_Final(block, &ctx);
+            memcpy(spaceBytes + b * blockSize, block, blockSize);
+        }
+    }
+    
+    // Hash the whole space to arrive at a final derived key.
+    CC_SHA256_Init(&ctx);
+    for (unsigned long long b = 0; b < numberOfBlocks; b++)
+    {
+        CC_SHA256_Update(&ctx, spaceBytes + b * blockSize, blockSize);
+    }
+    CC_SHA256_Final(block, &ctx);
+    
+    NSMutableData* derivedKey = [NSMutableData dataWithBytes:block length:blockSize];
+    
+    // Clean all the buffers to leave no traces of sensitive data
+    BTCSecureMemset(&ctx, 0, sizeof(ctx));
+    BTCSecureMemset(block, 0, blockSize);
+    BTCSecureMemset(spaceBytes, 0, numberOfBytes);
+    
+    return derivedKey;
+}
+
+
+
+
+
+
+
+
 

@@ -49,6 +49,16 @@
     NSAssert([[BTCDataWithHexString(@"00c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827") base58CheckString] isEqualToString:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Encodes base58 with checksum");
     
     
+    // Memory hard KDF
+
+    NSLog(@"Generating key with BTCMemoryHardKDF256...");
+    NSData* key = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+                                      2, // number of rounds
+                                      64*1024*1024 // memory required
+                                      );
+    NSLog(@"Generated key = %@", key);
+    
     // Random number generators
     if (0)
     {
