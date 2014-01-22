@@ -334,7 +334,7 @@ NSString* BTCUppercaseHexStringFromData(NSData* data)
 // So rounds=1 for 256 Mb of memory would mean 8M hash function calculations (8M blocks by 32 byte to form 256 Mb total).
 // Uses SHA256 as an internal hash function.
 // Password and salt are hashed before being placed in the first block.
-// The whole memory region is hashed twice after all rounds to generate the result.
+// The whole memory region is hashed after all rounds to generate the result.
 // Based on proposal by Sergio Demian Lerner http://bitslog.files.wordpress.com/2013/12/memohash-v0-3.pdf
 // Returns a mutable data, so you can cleanup the memory when needed.
 NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes)
