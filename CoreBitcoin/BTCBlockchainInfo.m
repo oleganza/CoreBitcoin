@@ -68,6 +68,18 @@
     */
 }
 
+- (NSArray*) unspentOutputsWithAddresses:(NSArray*)addresses error:(NSError**)errorOut
+{
+    NSURLRequest* req = [self requestForUnspentOutputsWithAddresses:addresses];
+    NSURLResponse* response = nil;
+    NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
+    if (!data)
+    {
+        return nil;
+    }
+    return [self unspentOutputsForResponseData:data error:errorOut];
+}
+
 - (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data
 {
     if (data.length == 0) return nil;
@@ -78,7 +90,21 @@
     NSString* form = [NSString stringWithFormat:@"tx=%@", BTCHexStringFromData(data)];
     request.HTTPBody = [form dataUsingEncoding:NSUTF8StringEncoding];
     return request;
+}
+
+- (BOOL) broadcastTransactionData:(NSData*)data error:(NSError**)errorOut
+{
+    NSURLRequest* req = [self requestForTransactionBroadcastWithData:data];
+    NSURLResponse* response = nil;
+    NSData* resultData = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
+    if (!resultData)
+    {
+        return NO;
+    }
     
+    // TODO: parse the response to determine if it was successful or not.
+    
+    return YES;
 }
 
 
