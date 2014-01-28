@@ -125,8 +125,16 @@
     BTCTransaction* tx = [[BTCTransaction alloc] init];
     tx.transactionHash = self.transactionHash;
     tx.displayTransactionHash = self.displayTransactionHash;
-    tx.inputs = [self.inputs copy];
-    tx.outputs = [self.outputs copy];
+    tx.inputs = [[NSArray alloc] initWithArray:self.inputs copyItems:YES]; // so each element is copied individually
+    tx.outputs = [[NSArray alloc] initWithArray:self.outputs copyItems:YES]; // so each element is copied individually
+    for (BTCTransactionInput* txin in tx.inputs)
+    {
+        txin.transaction = self;
+    }
+    for (BTCTransactionOutput* txout in tx.outputs)
+    {
+        txout.transaction = self;
+    }
     tx.data = [self.data copy];
     tx.version = self.version;
     tx.lockTime = self.lockTime;
@@ -140,29 +148,32 @@
 
 - (NSData*) transactionHash
 {
-    if (!_transactionHash)
-    {
-        _transactionHash = BTCHash256(self.data);
-    }
-    return _transactionHash;
+    return BTCHash256(self.data);
+//    if (!_transactionHash)
+//    {
+//        _transactionHash = BTCHash256(self.data);
+//    }
+//    return _transactionHash;
 }
 
 - (NSString*) displayTransactionHash
 {
-    if (!_displayTransactionHash)
-    {
-        _displayTransactionHash = BTCHexStringFromData(BTCReversedData(self.transactionHash));
-    }
-    return _displayTransactionHash;
+    return BTCHexStringFromData(BTCReversedData(self.transactionHash));
+//    if (!_displayTransactionHash)
+//    {
+//        _displayTransactionHash = BTCHexStringFromData(BTCReversedData(self.transactionHash));
+//    }
+//    return _displayTransactionHash;
 }
 
 - (NSData*) data
 {
-    if (!_data)
-    {
-        _data = [self computePayload];
-    }
-    return _data;
+    return [self computePayload];
+//    if (!_data)
+//    {
+//        _data = [self computePayload];
+//    }
+//    return _data;
 }
 
 - (NSData*) computePayload
@@ -221,6 +232,13 @@
 - (void) addInput:(BTCTransactionInput*)input
 {
     if (!input) return;
+    
+    if (!(input.transaction == nil || input.transaction == self))
+    {
+        @throw [NSException exceptionWithName:@"BTCTransaction consistency error!" reason:@"Can't add an input to a transaction when it references another transaction." userInfo:nil];
+        return;
+    }
+    input.transaction = self;
     _inputs = [_inputs arrayByAddingObject:input];
     [self invalidatePayload];
 }
@@ -430,6 +448,13 @@
         [tx removeAllInputs];
         [tx addInput:input];
     }
+    
+    [tx invalidatePayload];
+    
+    NSLog(@"\n----------------------\n");
+    NSLog(@"TX: %@", BTCHexStringFromData(tx.data));
+    NSLog(@"TX HASH: %@ (%@)", BTCHexStringFromData(tx.transactionHash), BTCHexStringFromData(BTCHash256(tx.data)));
+    NSLog(@"TX PLIST: %@", tx.dictionaryRepresentation);
     
     // Get a hash of a serialized transaction.
     return [tx transactionHash];

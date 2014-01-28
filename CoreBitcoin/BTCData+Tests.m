@@ -54,8 +54,8 @@
     NSLog(@"Generating key with BTCMemoryHardKDF256...");
     NSData* key = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      2, // number of rounds
-                                      64*1024*1024 // memory required
+                                      4, // number of rounds
+                                      8*1024*1024 // memory required
                                       );
     NSLog(@"Generated key = %@", key);
     

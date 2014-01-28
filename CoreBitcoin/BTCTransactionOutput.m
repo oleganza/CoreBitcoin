@@ -4,6 +4,7 @@
 #import "BTCTransactionOutput.h"
 #import "BTCScript.h"
 #import "BTCAddress.h"
+#import "BTCData.h"
 #import "BTCProtocolSerialization.h"
 
 @interface BTCTransactionOutput ()
@@ -77,7 +78,6 @@
 - (id) copyWithZone:(NSZone *)zone
 {
     BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
-    txout.data = [self.data copy];
     txout.value = self.value;
     txout.script = [self.script copy];
     return txout;
@@ -85,11 +85,12 @@
 
 - (NSData*) data
 {
-    if (!_data)
-    {
-        _data = [self computePayload];
-    }
-    return _data;
+    return [self computePayload];
+//    if (!_data)
+//    {
+//        _data = [self computePayload];
+//    }
+//    return _data;
 }
 
 - (NSData*) computePayload
@@ -108,6 +109,7 @@
 - (void) invalidatePayload
 {
     _data = nil;
+    [_transaction invalidatePayload];
 }
 
 - (void) setValue:(BTCSatoshi)value
@@ -124,11 +126,27 @@
     [self invalidatePayload];
 }
 
+- (NSString*) description
+{
+    NSData* txhash = self.transactionHash;
+    return [NSString stringWithFormat:@"<%@:0x%p%@%@ %@ BTC '%@'%@>", [self class], self,
+            (txhash ? [NSString stringWithFormat:@" %@", BTCHexStringFromData(txhash)]: @""),
+            (_index == BTCTransactionOutputIndexUnknown ? @"" : [NSString stringWithFormat:@":%d", _index]),
+            [self formattedBTCValue:_value],
+            _script.string,
+            (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %lu confirmations", _confirmations])];
+}
+
+- (NSString*) formattedBTCValue:(BTCSatoshi)value
+{
+    return [NSString stringWithFormat:@"%lld.%@", value / BTCCoin, [NSString stringWithFormat:@"%08lld", value % BTCCoin]];
+}
+
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation
 {
     return @{
-             @"value": [NSString stringWithFormat:@"%lld.%@", _value / BTCCoin, [[NSString stringWithFormat:@"%lld", _value % BTCCoin] stringByPaddingToLength:8 withString:@"0" startingAtIndex:0]],
+             @"value": [self formattedBTCValue:_value],
              // TODO: like in BTCTransactionInput, have an option to put both "asm" and "hex" representations of the script.
              @"scriptPubKey": _script.string ?: @"",
              };

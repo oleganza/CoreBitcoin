@@ -145,6 +145,10 @@ enum
     BTCDataClear(_data);
 }
 
+- (NSString*) description
+{
+    return [NSString stringWithFormat:@"<%@: %@>", [self class], [self base58String]];
+}
 @end
 
 

@@ -3,6 +3,7 @@
 #import <Foundation/Foundation.h>
 
 @class BTCScript;
+@class BTCTransaction;
 
 // Transaction input (aka "txin") represents a reference to another transaction's output.
 // Reference is defined by tx hash + tx output index.
@@ -26,6 +27,9 @@
 
 // Serialized binary representation of the txin.
 @property(nonatomic, readonly) NSData* data;
+
+// Set when input is added via [tx addInput:input]
+@property(weak, nonatomic) BTCTransaction* transaction;
 
 // Parses tx input from a data buffer.
 - (id) initWithData:(NSData*)data;

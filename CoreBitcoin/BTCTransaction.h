@@ -78,4 +78,7 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 + (BTCSatoshi) minimumRelayFee;
 + (void) setMinimumRelayFee:(BTCSatoshi)fee;
 
+// Used by inputs and outputs to invalidate cached payload.
+- (void) invalidatePayload;
+
 @end

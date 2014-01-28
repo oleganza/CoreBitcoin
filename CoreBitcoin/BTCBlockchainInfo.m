@@ -33,7 +33,7 @@
         txout.script = [[BTCScript alloc] initWithData:BTCDataWithHexString(item[@"script"])];
         txout.index = [item[@"tx_output_n"] intValue];
         txout.confirmations = [item[@"confirmations"] unsignedLongLongValue];
-        txout.transactionHash = BTCDataWithHexString(item[@"tx_hash"]);
+        txout.transactionHash = (BTCDataWithHexString(item[@"tx_hash"])); // unlike many other APIs, here tx_hash is not reversed, but a raw hash in hex.
         
         [outputs addObject:txout];
     }

@@ -1253,6 +1253,8 @@
     
     NSData* sighash = [_transaction signatureHashForScript:subscript inputIndex:_inputIndex hashType:hashType error:errorOut];
     
+    //NSLog(@"BTCScriptMachine: Hash for input %d [%d]: %@", _inputIndex, hashType, BTCHexStringFromData(sighash));
+    
     if (!sighash)
     {
         // errorOut is set already.
