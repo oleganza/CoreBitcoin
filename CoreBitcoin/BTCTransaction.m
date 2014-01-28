@@ -451,13 +451,22 @@
     
     [tx invalidatePayload];
     
-    NSLog(@"\n----------------------\n");
-    NSLog(@"TX: %@", BTCHexStringFromData(tx.data));
-    NSLog(@"TX HASH: %@ (%@)", BTCHexStringFromData(tx.transactionHash), BTCHexStringFromData(BTCHash256(tx.data)));
-    NSLog(@"TX PLIST: %@", tx.dictionaryRepresentation);
+    // Important: we have to hash transaction together with its hash type.
     
-    // Get a hash of a serialized transaction.
-    return [tx transactionHash];
+    NSMutableData* fulldata = [tx.data mutableCopy];
+    
+    uint32_t hashType32 = OSSwapHostToLittleInt32((uint32_t)hashType);
+    [fulldata appendBytes:&hashType32 length:sizeof(hashType32)];
+    
+    NSData* hash = BTCHash256(fulldata);
+    
+//    NSLog(@"\n----------------------\n");
+//    NSLog(@"TX: %@", BTCHexStringFromData(fulldata));
+//    NSLog(@"TX SUBSCRIPT: %@ (%@)", BTCHexStringFromData(subscript.data), subscript);
+//    NSLog(@"TX HASH: %@", BTCHexStringFromData(hash));
+//    NSLog(@"TX PLIST: %@", tx.dictionaryRepresentation);
+    
+    return hash;
 }
 
 
