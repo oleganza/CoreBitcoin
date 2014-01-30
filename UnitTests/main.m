@@ -13,13 +13,13 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
-//        [NSData runAllTests];
-//        [BTCBigNumber runAllTests];
-//        BTCBase58RunAllTests();
-//        [BTCAddress runAllTests];
-//        [BTCProtocolSerialization runAllTests];
-//        [BTCKey runAllTests];
-//        [BTCScript runAllTests];
+        [NSData runAllTests];
+        [BTCBigNumber runAllTests];
+        BTCBase58RunAllTests();
+        [BTCAddress runAllTests];
+        [BTCProtocolSerialization runAllTests];
+        [BTCKey runAllTests];
+        [BTCScript runAllTests];
         [BTCTransaction runAllTests];
         NSLog(@"All tests passed.");
     }

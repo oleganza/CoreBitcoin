@@ -18,6 +18,8 @@ NSMutableData* BTCDataFromBase58Check(NSString* string)
 
 NSMutableData* BTCDataFromBase58CString(const char* cstring)
 {
+    if (cstring == NULL) return nil;
+    
     // empty string -> empty data.
     if (cstring[0] == '\0') return [NSData data];
     
