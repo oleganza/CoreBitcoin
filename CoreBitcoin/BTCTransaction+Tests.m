@@ -36,7 +36,12 @@
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:privateKey];
     
     NSLog(@"Address: %@", key.publicKeyAddress);
-    NSAssert([@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.publicKeyAddress.base58String], @"Should get the address from the privkey correctly");
+    
+    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.publicKeyAddress.base58String])
+    {
+        NSLog(@"WARNING: incorrect private key is supplied");
+        return;
+    }
     
     NSError* error = nil;
     BTCTransaction* transaction = [self transactionSpendingFromPrivateKey:privateKey

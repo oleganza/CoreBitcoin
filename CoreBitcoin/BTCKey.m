@@ -3,6 +3,7 @@
 #import "BTCKey.h"
 #import "BTCData.h"
 #import "BTCAddress.h"
+#import "BTCCurvePoint.h"
 #import "BTCProtocolSerialization.h"
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
@@ -48,6 +49,17 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     {
         if (![self isValidPubKey:publicKey]) return nil;
         [self setPublicKey:publicKey];
+    }
+    return self;
+}
+
+- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint
+{
+    if (self = [super init])
+    {
+        if (!curvePoint) return nil;
+        [self prepareKeyIfNeeded];
+        EC_KEY_set_public_key(_key, curvePoint.EC_POINT);
     }
     return self;
 }
@@ -158,6 +170,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     unsigned char* bytes = [data mutableBytes];
     if (i2o_ECPublicKey(_key, &bytes) != length) return nil;
     return data;
+}
+
+- (BTCCurvePoint*) curvePoint
+{
+    const EC_POINT* ecpoint = EC_KEY_get0_public_key(_key);
+    BTCCurvePoint* cp = [[BTCCurvePoint alloc] initWithEC_POINT:ecpoint];
+    return cp;
 }
 
 - (NSMutableData*) DERPrivateKey

@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class BTCCurvePoint;
 @class BTCPublicKeyAddress;
 @class BTCPrivateKeyAddress;
 
@@ -18,6 +19,9 @@
 // You can use -isValidSignature:hash:
 - (id) initWithPublicKey:(NSData*)publicKey;
 
+// Initializes public key using a point on elliptic curve secp256k1.
+- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint;
+
 // Instantiates a key with either a DER private key (279 bytes) or a secret parameter (32 bytes).
 // Usually only secret parameter is used and private key is derived from it on the fly because other parameters are known (curve secp256k1).
 - (id) initWithPrivateKey:(NSData*)privateKey;
@@ -32,6 +36,9 @@
 // When you set public key, this property reflects whether it is compressed or not.
 // To set this property you must have private counterpart. Then, -publicKey will be compressed/uncompressed accordingly.
 @property(nonatomic, getter=isCompressedPublicKey) BOOL compressedPublicKey;
+
+// Returns public key as a point on secp256k1 curve.
+@property(nonatomic, readonly) BTCCurvePoint* curvePoint;
 
 // Returns compressed or uncompressed public key.
 - (NSMutableData*) publicKeyCompressed:(BOOL)compressed;

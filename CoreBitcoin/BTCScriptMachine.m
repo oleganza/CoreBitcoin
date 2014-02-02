@@ -357,7 +357,7 @@
             {
                 // ( -- value)
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:(int)opcode - (int)(OP_1 - 1)];
-                [_stack addObject:bn.data];
+                [_stack addObject:bn.littleEndianData];
             }
             break;
                 
@@ -589,7 +589,7 @@
             {
                 // -- stacksize
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:_stack.count];
-                [_stack addObject:bn.data];
+                [_stack addObject:bn.littleEndianData];
             }
             break;
                 
@@ -731,7 +731,7 @@
                     return NO;
                 }
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt64:[self dataAtIndex:-1].length];
-                [_stack addObject:bn.data];
+                [_stack addObject:bn.littleEndianData];
             }
             break;
 
@@ -815,7 +815,7 @@
                     default:            NSAssert(0, @"Invalid opcode"); break;
                 }
                 [self popFromStack];
-                [_stack addObject:bn.data];
+                [_stack addObject:bn.littleEndianData];
             }
             break;
 
@@ -879,7 +879,7 @@
                 
                 [self popFromStack];
                 [self popFromStack];
-                [_stack addObject:bn.data];
+                [_stack addObject:bn.littleEndianData];
                 
                 if (opcode == OP_NUMEQUALVERIFY)
                 {
@@ -921,7 +921,7 @@
                 [self popFromStack];
                 [self popFromStack];
                 
-                [_stack addObject:(value ? _bigNumberTrue : _bigNumberFalse).data];
+                [_stack addObject:(value ? _bigNumberTrue : _bigNumberFalse).littleEndianData];
             }
             break;
             
@@ -1358,7 +1358,7 @@
     // Get rid of extra leading zeros like BitcoinQT does:
     // CBigNum(CBigNum(vch).getvch());
     // FIXME: It's a cargo cult here. I haven't checked myself when do these extra zeros appear and whether they really go away. [Oleg]
-    BTCMutableBigNumber* bn = [[BTCMutableBigNumber alloc] initWithData:[[BTCBigNumber alloc] initWithData:data].data];
+    BTCMutableBigNumber* bn = [[BTCMutableBigNumber alloc] initWithLittleEndianData:[[BTCBigNumber alloc] initWithLittleEndianData:data].littleEndianData];
     return bn;
 }
 

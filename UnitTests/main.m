@@ -6,6 +6,7 @@
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
 #import "BTCKey+Tests.h"
+#import "BTCCurvePoint+Tests.h"
 #import "BTCScript+Tests.h"
 #import "BTCTransaction+Tests.h"
 
@@ -19,6 +20,7 @@ int main(int argc, const char * argv[])
         [BTCAddress runAllTests];
         [BTCProtocolSerialization runAllTests];
         [BTCKey runAllTests];
+        [BTCCurvePoint runAllTests];
         [BTCScript runAllTests];
         [BTCTransaction runAllTests];
         NSLog(@"All tests passed.");
