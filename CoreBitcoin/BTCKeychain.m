@@ -182,7 +182,7 @@
 // Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index
 {
-    BOOL privateDerivation = 0x80000000 & index;
+    BOOL privateDerivation = ((0x80000000 & index) != 0);
     
     if (!_privateKey && privateDerivation)
     {
@@ -191,7 +191,7 @@
 
     BTCKeychain* derivedKeychain = [[BTCKeychain alloc] init];
 
-    NSMutableData* data = [self extendedKeyPrefixWithVersion:BTCKeychainPrivateExtendedKeyVersion];
+    NSMutableData* data = [NSMutableData data];
     
     if (privateDerivation)
     {
@@ -211,13 +211,13 @@
     
     BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedData:[digest subdataWithRange:NSMakeRange(0, 32)]];
     
-    derivedKeychain.chainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
-    
     // Factor is too big, this derivation is invalid.
     if ([factor greaterOrEqual:[BTCCurvePoint curveOrder]])
     {
         return nil;
     }
+    
+    derivedKeychain.chainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
     
     if (_privateKey)
     {
@@ -318,6 +318,19 @@
 - (NSString*) description
 {
     return [NSString stringWithFormat:@"<%@:0x%p %@>", [self class], self, BTCBase58CheckStringWithData(self.extendedPublicKey)];
+}
+
+- (NSString*) debugDescription
+{
+    return [NSString stringWithFormat:@"<%@:0x%p depth:%d index:%x parentFingerprint:%x fingerprint:%x privkey:%@ pubkey:%@ chainCode:%@>", [self class], self,
+            (int)self.depth,
+            self.index,
+            self.parentFingerprint,
+            self.fingerprint,
+            [BTCHexStringFromData(self.privateKey) substringToIndex:8],
+            [BTCHexStringFromData(self.publicKey) substringToIndex:8],
+            [BTCHexStringFromData(self.chainCode) substringToIndex:8]
+            ];
 }
 
 

@@ -7,9 +7,10 @@
 //
 // BTCKeychain encapsulates either a pair of "extended" keys (private and public), or only a public extended key.
 // "Extended key" means the key (private or public) is accompanied by extra 256 bits of entropy called "chain code".
-// Keychain allows two modes of operation:
-// - "public derivation" which allows to derive public keys separately from the private ones.
-// - "private derivation" which derives only private keys.
+// Keychain has two modes of operation:
+// - "public derivation" which allows to derive public keys separately from the private ones (for indexes below 0x80000000).
+// - "private derivation" which derives only private keys (for indexes >= 0x80000000).
+// Derivation can be treated as a single key or as an new branch of keychains.
 @class BTCKey;
 @interface BTCKeychain : NSObject<NSCopying>
 
@@ -60,9 +61,9 @@
 // May return nil for some indexes (when hashing leads to invalid EC points) which is very rare, but must be expected. In such case, simply use another index.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 
-// Returns a derived key from this keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key
-// If the receiver contains private key, child key will also contain a private key.
-// If the receiver contains only public key, child key will only contain public key (nil is returned if index >= 0x80000000).
+// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i].key
+// If the receiver contains a private key, child key will also contain a private key.
+// If the receiver contains only a public key, child key will only contain a public key (nil is returned if index >= 0x80000000 - as private derivation is impossible).
 - (BTCKey*) keyAtIndex:(uint32_t)index;
 
 @end
