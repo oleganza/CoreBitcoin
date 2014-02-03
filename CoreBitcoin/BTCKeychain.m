@@ -45,7 +45,10 @@
     {
         if (extendedKey.length != 78) return nil;
         
-#warning TODO: read extended key
+        unsigned char* bytes = extendedKey.bytes;
+        
+
+        
     }
     return self;
 }
@@ -54,7 +57,7 @@
 #pragma mark - Properties
 
 
-- (BTCKey*) key
+- (BTCKey*) rootKey
 {
     if (_privateKey)
     {
@@ -156,7 +159,7 @@
 }
 
 // Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
-- (BTCKeychain*) childKeychainAtIndex:(uint32_t)index
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index
 {
     #warning TODO: derive the child keychain
     
@@ -165,9 +168,9 @@
 // Returns a key from a derived keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key
 // If the receiver contains private key, child key will also contain a private key.
 // If the receiver contains only public key, child key will only contain public key (nil is returned if index >= 0x80000000).
-- (BTCKey*) childKeyAtIndex:(uint32_t)index
+- (BTCKey*) keyAtIndex:(uint32_t)index
 {
-    return [[self childKeychainAtIndex:index] key];
+    return [[self derivedKeychainAtIndex:index] rootKey];
 }
 
 
