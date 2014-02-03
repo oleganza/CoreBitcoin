@@ -44,6 +44,8 @@
         NSAssert([@"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPublicKey)], @"");
         NSAssert([@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPrivateKey)], @"");
         
+        [self testDeserializationWithKeychain:masterChain];
+        
         
     }
 
@@ -74,6 +76,16 @@
         
     }
 
+}
+
++ (void) testDeserializationWithKeychain:(BTCKeychain*)keychain
+{
+    BTCKeychain* pubchain = [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPublicKey];
+    BTCKeychain* prvchain = [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPrivateKey];
+    
+    NSAssert(![pubchain isEqual:keychain], @"Public-only chain is not equal to private chain with the same parameters");
+    NSAssert([prvchain isEqual:keychain], @"Private chain is equal to private chain with the same parameters");
+    NSAssert([prvchain.extendedPublicKey isEqual:pubchain.extendedPublicKey], @"Private and public chains should have the same extended public keys");
 }
 
 @end

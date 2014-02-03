@@ -6,7 +6,10 @@
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 //
 // BTCKeychain encapsulates either a pair of "extended" keys (private and public), or only a public extended key.
-// Extended key means the key is accompanied by extra 256 bits of entropy called "chain code".
+// "Extended key" means the key (private or public) is accompanied by extra 256 bits of entropy called "chain code".
+// Keychain allows two modes of operation:
+// - "public derivation" which allows to derive public keys separately from the private ones.
+// - "private derivation" which derives only private keys.
 @class BTCKey;
 @interface BTCKeychain : NSObject<NSCopying>
 
@@ -48,6 +51,10 @@
 
 // Returns YES if the keychain can derive private keys.
 - (BOOL) isPrivate;
+
+// Returns a copy of the keychain stripped of the private key.
+// Equivalent to [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPublicKey]
+- (BTCKeychain*) publicKeychain;
 
 // Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;

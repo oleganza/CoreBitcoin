@@ -44,11 +44,30 @@
     if (self = [super init])
     {
         if (extendedKey.length != 78) return nil;
-        
-        unsigned char* bytes = extendedKey.bytes;
-        
 
+        const uint8_t* bytes = extendedKey.bytes;
+        uint32_t version = OSSwapBigToHostInt32(*((uint32_t*)bytes));
+
+        uint32_t keyprefix = bytes[45];
         
+        if (version == BTCKeychainPrivateExtendedKeyVersion)
+        {
+            // Should have 0-prefixed private key (1 + 32 bytes).
+            if (keyprefix != 0) return nil;
+            _privateKey = [extendedKey subdataWithRange:NSMakeRange(46, 32)];
+        }
+        else
+        {
+            // Should have a 33-byte public key with non-zero first byte.
+            if (keyprefix == 0) return nil;
+            _publicKey = [extendedKey subdataWithRange:NSMakeRange(45, 33)];
+        }
+
+        _depth = *(bytes + 4);
+        _parentFingerprint = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 5)));
+        _index = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 9)));
+        
+        _chainCode = [extendedKey subdataWithRange:NSMakeRange(13, 32)];
     }
     return self;
 }
@@ -163,6 +182,8 @@
 {
     #warning TODO: derive the child keychain
     
+    
+    
 }
 
 // Returns a key from a derived keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key
@@ -173,7 +194,18 @@
     return [[self derivedKeychainAtIndex:index] rootKey];
 }
 
-
+- (BTCKeychain*) publicKeychain
+{
+    BTCKeychain* keychain = [[BTCKeychain alloc] init];
+    
+    keychain.chainCode = self.chainCode;
+    keychain.publicKey = self.publicKey;
+    keychain.parentFingerprint = self.parentFingerprint;
+    keychain.index = self.index;
+    keychain.depth = self.depth;
+    
+    return keychain;
+}
 
 
 
