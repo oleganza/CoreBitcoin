@@ -1,3 +1,5 @@
+// Oleg Andreev <oleganza@gmail.com>
+
 #import "BTCCurvePoint.h"
 #import "BTCKey.h"
 #import "BTCData.h"

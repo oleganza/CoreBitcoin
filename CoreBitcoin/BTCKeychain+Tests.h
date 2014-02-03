@@ -1,8 +1,8 @@
 // Oleg Andreev <oleganza@gmail.com>
 
-#import "BTCCurvePoint.h"
+#import "BTCKeychain.h"
 
-@interface BTCCurvePoint (Tests)
+@interface BTCKeychain (Tests)
 
 + (void) runAllTests;
 

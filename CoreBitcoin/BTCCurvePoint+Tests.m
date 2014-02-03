@@ -1,3 +1,5 @@
+// Oleg Andreev <oleganza@gmail.com>
+
 #import "BTCData.h"
 #import "BTCKey.h"
 #import "BTCBigNumber.h"

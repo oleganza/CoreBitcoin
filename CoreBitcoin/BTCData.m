@@ -278,6 +278,14 @@ NSData* BTCHash256(NSData* data)
     return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
 }
 
+NSData* BTCHMACSHA512(NSData* key, NSData* data)
+{
+    if (!data) return nil;
+    unsigned char digest[CC_SHA512_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA512, key.bytes, key.length, data.bytes, data.length, digest);
+    return [NSData dataWithBytes:digest length:CC_SHA512_DIGEST_LENGTH];
+}
+
 #if BTCDataRequiresOpenSSL
 
 NSData* BTCRIPEMD160(NSData* data)

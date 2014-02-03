@@ -1,3 +1,5 @@
+// Oleg Andreev <oleganza@gmail.com>
+
 #import <Foundation/Foundation.h>
 #include <openssl/ec.h>
 

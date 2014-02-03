@@ -199,6 +199,15 @@
 		20B5A64018924F350035582D /* BTCTransaction+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B5A63F18924F350035582D /* BTCTransaction+Tests.m */; };
 		20B66C8717BFE4F9007128CE /* BTCErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B66C8617BFE4F9007128CE /* BTCErrors.m */; };
 		20B8AB92189E7E0100008138 /* BTCCurvePoint+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB91189E7E0100008138 /* BTCCurvePoint+Tests.m */; };
+		20B8AB95189EE88300008138 /* BTCKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 20B8AB93189EE88300008138 /* BTCKeychain.h */; };
+		20B8AB96189EE88300008138 /* BTCKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 20B8AB93189EE88300008138 /* BTCKeychain.h */; };
+		20B8AB97189EE88300008138 /* BTCKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 20B8AB93189EE88300008138 /* BTCKeychain.h */; };
+		20B8AB98189EE88300008138 /* BTCKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB94189EE88300008138 /* BTCKeychain.m */; };
+		20B8AB99189EE88300008138 /* BTCKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB94189EE88300008138 /* BTCKeychain.m */; };
+		20B8AB9A189EE88300008138 /* BTCKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB94189EE88300008138 /* BTCKeychain.m */; };
+		20B8AB9B189EE88300008138 /* BTCKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB94189EE88300008138 /* BTCKeychain.m */; };
+		20B8AB9C189EE88300008138 /* BTCKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB94189EE88300008138 /* BTCKeychain.m */; };
+		20B8AB9F189F0CEF00008138 /* BTCKeychain+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB9E189F0CEF00008138 /* BTCKeychain+Tests.m */; };
 		20B9646C17BACFAA008161BB /* BTCScriptMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B9646B17BACFAA008161BB /* BTCScriptMachine.m */; };
 		20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B9646E17BADECE008161BB /* BTCOpcode.m */; };
 		20C0DDB2183BC5E100A9EED0 /* libcrypto-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C0DDAE183BC5DB00A9EED0 /* libcrypto-ios.a */; };
@@ -321,6 +330,10 @@
 		20B66C8617BFE4F9007128CE /* BTCErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCErrors.m; sourceTree = "<group>"; };
 		20B8AB90189E7E0100008138 /* BTCCurvePoint+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCCurvePoint+Tests.h"; sourceTree = "<group>"; };
 		20B8AB91189E7E0100008138 /* BTCCurvePoint+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCCurvePoint+Tests.m"; sourceTree = "<group>"; };
+		20B8AB93189EE88300008138 /* BTCKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCKeychain.h; sourceTree = "<group>"; };
+		20B8AB94189EE88300008138 /* BTCKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCKeychain.m; sourceTree = "<group>"; };
+		20B8AB9D189F0CEF00008138 /* BTCKeychain+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCKeychain+Tests.h"; sourceTree = "<group>"; };
+		20B8AB9E189F0CEF00008138 /* BTCKeychain+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCKeychain+Tests.m"; sourceTree = "<group>"; };
 		20B9646A17BACFAA008161BB /* BTCScriptMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCScriptMachine.h; sourceTree = "<group>"; };
 		20B9646B17BACFAA008161BB /* BTCScriptMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCScriptMachine.m; sourceTree = "<group>"; };
 		20B9646D17BADE8F008161BB /* BTCOpcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCOpcode.h; sourceTree = "<group>"; };
@@ -585,6 +598,10 @@
 				2084DD7417B8FF76005AC9E6 /* BTCKey.m */,
 				2057A9CB17CD555F00353D54 /* BTCKey+Tests.h */,
 				2057A9CC17CD555F00353D54 /* BTCKey+Tests.m */,
+				20B8AB93189EE88300008138 /* BTCKeychain.h */,
+				20B8AB94189EE88300008138 /* BTCKeychain.m */,
+				20B8AB9D189F0CEF00008138 /* BTCKeychain+Tests.h */,
+				20B8AB9E189F0CEF00008138 /* BTCKeychain+Tests.m */,
 				2084DD7517B8FF76005AC9E6 /* BTCProtocolSerialization.h */,
 				2084DD7617B8FF76005AC9E6 /* BTCProtocolSerialization.m */,
 				2084DD7717B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.h */,
@@ -632,6 +649,7 @@
 				20148C331835650B00E68E9C /* NS+BTCBase58.h in Headers */,
 				20148C341835650B00E68E9C /* BTCBigNumber.h in Headers */,
 				207B2606188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
+				20B8AB96189EE88300008138 /* BTCKeychain.h in Headers */,
 				20148C351835650B00E68E9C /* BTCBigNumber+Tests.h in Headers */,
 				20148C361835650B00E68E9C /* BTCKey.h in Headers */,
 				20148C371835650B00E68E9C /* BTCKey+Tests.h in Headers */,
@@ -665,6 +683,7 @@
 				20148CDD183643FC00E68E9C /* NS+BTCBase58.h in Headers */,
 				20148CDE183643FC00E68E9C /* BTCBigNumber.h in Headers */,
 				207B2607188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
+				20B8AB97189EE88300008138 /* BTCKeychain.h in Headers */,
 				20148CDF183643FC00E68E9C /* BTCBigNumber+Tests.h in Headers */,
 				20148CE0183643FC00E68E9C /* BTCKey.h in Headers */,
 				20148CE1183643FC00E68E9C /* BTCKey+Tests.h in Headers */,
@@ -698,6 +717,7 @@
 				206B01441835484300878B8D /* BTCBase58.h in Headers */,
 				206B01471835484300878B8D /* BTCBigNumber.h in Headers */,
 				207B2605188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
+				20B8AB95189EE88300008138 /* BTCKeychain.h in Headers */,
 				206B01451835484300878B8D /* BTCBase58+Tests.h in Headers */,
 				206B01511835484300878B8D /* BTCTransaction.h in Headers */,
 				206B014E1835484300878B8D /* BTCScript.h in Headers */,
@@ -871,6 +891,7 @@
 				20148B0F18355DAD00E68E9C /* BTCBigNumber+Tests.m in Sources */,
 				20148B1018355DAD00E68E9C /* BTCKey.m in Sources */,
 				20148B1118355DAD00E68E9C /* BTCKey+Tests.m in Sources */,
+				20B8AB9A189EE88300008138 /* BTCKeychain.m in Sources */,
 				20148B1218355DAD00E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148B1318355DAD00E68E9C /* BTCProtocolSerialization+Tests.m in Sources */,
 				20148B1418355DAD00E68E9C /* BTCOpcode.m in Sources */,
@@ -901,6 +922,7 @@
 				20148C1D183563D000E68E9C /* BTCBigNumber+Tests.m in Sources */,
 				20148C1E183563D000E68E9C /* BTCKey.m in Sources */,
 				20148C1F183563D000E68E9C /* BTCKey+Tests.m in Sources */,
+				20B8AB9B189EE88300008138 /* BTCKeychain.m in Sources */,
 				20148C20183563D000E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148C21183563D000E68E9C /* BTCProtocolSerialization+Tests.m in Sources */,
 				20148C22183563D000E68E9C /* BTCOpcode.m in Sources */,
@@ -931,6 +953,7 @@
 				20148CC8183643E700E68E9C /* BTCBigNumber+Tests.m in Sources */,
 				20148CC9183643E700E68E9C /* BTCKey.m in Sources */,
 				20148CCA183643E700E68E9C /* BTCKey+Tests.m in Sources */,
+				20B8AB9C189EE88300008138 /* BTCKeychain.m in Sources */,
 				20148CCB183643E700E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148CCC183643E700E68E9C /* BTCProtocolSerialization+Tests.m in Sources */,
 				20148CCD183643E700E68E9C /* BTCOpcode.m in Sources */,
@@ -961,6 +984,7 @@
 				206B01571835485D00878B8D /* BTCErrors.m in Sources */,
 				206B01691835485D00878B8D /* BTCTransactionOutput.m in Sources */,
 				206B01671835485D00878B8D /* BTCTransaction.m in Sources */,
+				20B8AB99189EE88300008138 /* BTCKeychain.m in Sources */,
 				206B01551835485D00878B8D /* BTCData+Tests.m in Sources */,
 				206B015B1835485D00878B8D /* BTCBase58+Tests.m in Sources */,
 				206B01641835485D00878B8D /* BTCScript.m in Sources */,
@@ -979,8 +1003,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
+				20B8AB98189EE88300008138 /* BTCKeychain.m in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
 				2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */,
+				20B8AB9F189F0CEF00008138 /* BTCKeychain+Tests.m in Sources */,
 				2084DD8717B8FF76005AC9E6 /* BTCAddress+Tests.m in Sources */,
 				2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */,
 				2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */,

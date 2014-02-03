@@ -752,7 +752,7 @@
     return self;
 }
 
-- (instancetype) sub:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
+- (instancetype) subtract:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
 {
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_sub(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
