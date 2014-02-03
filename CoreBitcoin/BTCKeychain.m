@@ -3,6 +3,8 @@
 #import "BTCKeychain.h"
 #import "BTCData.h"
 #import "BTCKey.h"
+#import "BTCCurvePoint.h"
+#import "BTCBigNumber.h"
 #import "BTCBase58.h"
 
 #define BTCKeychainPrivateExtendedKeyVersion 0x0488ADE4
@@ -180,10 +182,69 @@
 // Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index
 {
-    #warning TODO: derive the child keychain
+    BOOL privateDerivation = 0x80000000 & index;
     
+    if (!_privateKey && privateDerivation)
+    {
+        return nil;
+    }
+
+    BTCKeychain* derivedKeychain = [[BTCKeychain alloc] init];
+
+    NSMutableData* data = [self extendedKeyPrefixWithVersion:BTCKeychainPrivateExtendedKeyVersion];
     
+    if (privateDerivation)
+    {
+        uint8_t padding = 0;
+        [data appendBytes:&padding length:1];
+        [data appendData:_privateKey];
+    }
+    else
+    {
+        [data appendData:self.publicKey];
+    }
     
+    uint32_t indexBE = OSSwapHostToBigInt32(index);
+    [data appendBytes:&indexBE length:sizeof(indexBE)];
+    
+    NSData* digest = BTCHMACSHA512(_chainCode, data);
+    
+    BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedData:[digest subdataWithRange:NSMakeRange(0, 32)]];
+    
+    derivedKeychain.chainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
+    
+    // Factor is too big, this derivation is invalid.
+    if ([factor greaterOrEqual:[BTCCurvePoint curveOrder]])
+    {
+        return nil;
+    }
+    
+    if (_privateKey)
+    {
+        BTCMutableBigNumber* pkNumber = [[BTCMutableBigNumber alloc] initWithUnsignedData:_privateKey];
+        [pkNumber add:factor mod:[BTCCurvePoint curveOrder]];
+        
+        // Check for invalid derivation.
+        if ([pkNumber isEqual:[BTCBigNumber zero]]) return nil;
+        
+        derivedKeychain.privateKey = pkNumber.unsignedData;
+    }
+    else
+    {
+        BTCCurvePoint* point = [[BTCCurvePoint alloc] initWithData:_publicKey];
+        [point addGeneratorMultipliedBy:factor];
+        
+        // Check for invalid derivation.
+        if ([point isInfinity]) return nil;
+        
+        derivedKeychain.publicKey = point.data;
+    }
+    
+    derivedKeychain.depth = _depth + 1;
+    derivedKeychain.parentFingerprint = self.fingerprint;
+    derivedKeychain.index = index;
+    
+    return derivedKeychain;
 }
 
 // Returns a key from a derived keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key

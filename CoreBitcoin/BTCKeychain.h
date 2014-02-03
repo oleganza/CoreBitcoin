@@ -57,6 +57,7 @@
 - (BTCKeychain*) publicKeychain;
 
 // Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
+// May return nil for some indexes (when hashing leads to invalid EC points) which is very rare, but must be expected. In such case, simply use another index.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 
 // Returns a derived key from this keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key

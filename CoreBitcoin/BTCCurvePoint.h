@@ -12,7 +12,7 @@
 @class BTCBigNumber;
 @interface BTCCurvePoint : NSObject <NSCopying>
 
-// Serialized form of a curve point.
+// Serialized form of a curve point as a compressed public key (32-byte X coordinate with 1-byte prefix)
 @property(nonatomic, readonly) NSData* data;
 
 // Underlying data structure in OpenSSL.

@@ -280,6 +280,7 @@ NSData* BTCHash256(NSData* data)
 
 NSData* BTCHMACSHA512(NSData* key, NSData* data)
 {
+    if (!key) return nil;
     if (!data) return nil;
     unsigned char digest[CC_SHA512_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA512, key.bytes, key.length, data.bytes, data.length, digest);
