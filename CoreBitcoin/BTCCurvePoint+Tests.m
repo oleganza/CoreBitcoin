@@ -42,7 +42,7 @@
 + (void) testDiffieHellman
 {
     // Alice: a, A=a*G. Bob: b, B=b*G.
-    // Test shared secret: a*B = b*A = a*b*G.
+    // Test shared secret: a*B = b*A = (a*b)*G.
     
     NSData* alicePrivateKeyData = BTCHash256([@"alice private key" dataUsingEncoding:NSUTF8StringEncoding]);
     NSData* bobPrivateKeyData = BTCHash256([@"bob private key" dataUsingEncoding:NSUTF8StringEncoding]);
