@@ -52,13 +52,24 @@
     // Memory hard KDF
 
     NSLog(@"Generating key with BTCMemoryHardKDF256...");
+    NSDate* t1 = [NSDate date];
     NSData* key = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      4, // number of rounds
-                                      8*1024*1024 // memory required
+                                      20, // number of rounds
+                                      3*1024*1024 // memory required
                                       );
-    NSLog(@"Generated key = %@", key);
+    NSLog(@"Generated key = %@ [%f sec]", key, -[t1 timeIntervalSinceNow]);
+
     
+    NSLog(@"Generating key with BTCMemoryHardAESKDF...");
+    NSDate* t2 = [NSDate date];
+    NSData* key2 = BTCMemoryHardAESKDF([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+                                      20, // number of rounds
+                                      32*1024*1024 // memory required
+                                      );
+    NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
+
     // Random number generators
     if (0)
     {

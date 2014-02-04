@@ -64,7 +64,7 @@ NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than ca
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 256-bit blocks).
 // Actual number of hash function computations is a number of rounds multiplied by a number of 256-bit blocks.
-// So rounds=1 for 256 Mb of memory would mean 8M hash function calculations (8M blocks by 32 byte to form 256 Mb total).
+// So rounds=1 for 256 Mb of memory would mean 8M hash function calculations (8M blocks by 32 bytes to form 256 Mb total).
 // Uses SHA256 as an internal hash function.
 // Password and salt are hashed before being placed in the first block.
 // The whole memory region is hashed after all rounds to generate the result.
@@ -73,7 +73,8 @@ NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than ca
 NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes);
 
 
-
+// Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 128-bit blocks)
+NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes);
 
 
 
