@@ -42,24 +42,41 @@
         
         BTCKeychain* masterChain = [[BTCKeychain alloc] initWithSeed:seed];
         
+        NSAssert(masterChain.parentFingerprint == 0, @"");
+        NSAssert(masterChain.depth == 0, @"");
+        NSAssert(masterChain.index == 0, @"");
+        NSAssert(masterChain.isHardened == NO, @"");
+        
         NSAssert([@"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPublicKey)], @"");
         NSAssert([@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPrivateKey)], @"");
         
         [self testDeserializationWithKeychain:masterChain];
         
-        BTCKeychain* m0prv = [masterChain derivedKeychainAtIndex:0x80000000 | 0];
+        BTCKeychain* m0prv = [masterChain derivedKeychainAtIndex:0 hardened:YES];
+        
+        NSAssert(m0prv.parentFingerprint != 0, @"");
+        NSAssert(m0prv.depth == 1, @"");
+        NSAssert(m0prv.index == 0, @"");
+        NSAssert(m0prv.isHardened == YES, @"");
+
         NSAssert([@"xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LHhwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw" isEqualToString:BTCBase58CheckStringWithData(m0prv.extendedPublicKey)], @"");
         NSAssert([@"xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7" isEqualToString:BTCBase58CheckStringWithData(m0prv.extendedPrivateKey)], @"");
         
         [self testDeserializationWithKeychain:m0prv];
 
         BTCKeychain* m0prv1pub = [m0prv derivedKeychainAtIndex:1];
+        
+        NSAssert(m0prv1pub.parentFingerprint != 0, @"");
+        NSAssert(m0prv1pub.depth == 2, @"");
+        NSAssert(m0prv1pub.index == 1, @"");
+        NSAssert(m0prv1pub.isHardened == NO, @"");
+
         NSAssert([@"xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkNAWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub.extendedPublicKey)], @"");
         NSAssert([@"xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu53Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub.extendedPrivateKey)], @"");
         
         [self testDeserializationWithKeychain:m0prv1pub];
 
-        BTCKeychain* m0prv1pub2prv = [m0prv1pub derivedKeychainAtIndex:0x80000000 | 2];
+        BTCKeychain* m0prv1pub2prv = [m0prv1pub derivedKeychainAtIndex:2 hardened:YES];
         NSAssert([@"xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJPMM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub2prv.extendedPublicKey)], @"");
         NSAssert([@"xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub2prv.extendedPrivateKey)], @"");
         
@@ -117,7 +134,7 @@
         
         [self testDeserializationWithKeychain:m0pub];
 
-        BTCKeychain* m0pubFFprv = [m0pub derivedKeychainAtIndex:0x80000000 | 2147483647];
+        BTCKeychain* m0pubFFprv = [m0pub derivedKeychainAtIndex:2147483647 hardened:YES];
         NSAssert([@"xpub6ASAVgeehLbnwdqV6UKMHVzgqAG8Gr6riv3Fxxpj8ksbH9ebxaEyBLZ85ySDhKiLDBrQSARLq1uNRts8RuJiHjaDMBU4Zn9h8LZNnBC5y4a" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv.extendedPublicKey)], @"");
         NSAssert([@"xprv9wSp6B7kry3Vj9m1zSnLvN3xH8RdsPP1Mh7fAaR7aRLcQMKTR2vidYEeEg2mUCTAwCd6vnxVrcjfy2kRgVsFawNzmjuHc2YmYRmagcEPdU9" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv.extendedPrivateKey)], @"");
         
@@ -129,7 +146,7 @@
         
         [self testDeserializationWithKeychain:m0pubFFprv1];
         
-        BTCKeychain* m0pubFFprv1pubFEprv = [m0pubFFprv1 derivedKeychainAtIndex:0x80000000 | 2147483646];
+        BTCKeychain* m0pubFFprv1pubFEprv = [m0pubFFprv1 derivedKeychainAtIndex:2147483646 hardened:YES];
         NSAssert([@"xpub6ERApfZwUNrhLCkDtcHTcxd75RbzS1ed54G1LkBUHQVHQKqhMkhgbmJbZRkrgZw4koxb5JaHWkY4ALHY2grBGRjaDMzQLcgJvLJuZZvRcEL" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv1pubFEprv.extendedPublicKey)], @"");
         NSAssert([@"xprvA1RpRA33e1JQ7ifknakTFpgNXPmW2YvmhqLQYMmrj4xJXXWYpDPS3xz7iAxn8L39njGVyuoseXzU6rcxFLJ8HFsTjSyQbLYnMpCqE2VbFWc" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv1pubFEprv.extendedPrivateKey)], @"");
         

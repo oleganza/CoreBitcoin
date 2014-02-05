@@ -19,6 +19,7 @@
 @property(nonatomic, readwrite) uint32_t parentFingerprint;
 @property(nonatomic, readwrite) uint32_t index;
 @property(nonatomic, readwrite) uint8_t depth;
+@property(nonatomic, readwrite) BOOL hardened;
 
 @property(nonatomic) NSData* privateKey;
 @property(nonatomic) NSData* publicKey;
@@ -68,6 +69,12 @@
         _depth = *(bytes + 4);
         _parentFingerprint = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 5)));
         _index = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 9)));
+        
+        if ((0x80000000 & _index) != 0)
+        {
+            _index = (~0x80000000) & _index;
+            _hardened = YES;
+        }
         
         _chainCode = [extendedKey subdataWithRange:NSMakeRange(13, 32)];
     }
@@ -138,7 +145,7 @@
     uint32_t parentfp = OSSwapHostToBigInt32(_parentFingerprint);
     [data appendBytes:&parentfp length:sizeof(parentfp)];
     
-    uint32_t childindex = OSSwapHostToBigInt32(_index);
+    uint32_t childindex = OSSwapHostToBigInt32(_hardened ? (0x80000000 | _index) : _index);
     [data appendBytes:&childindex length:sizeof(childindex)];
     
     [data appendData:_chainCode];
@@ -179,13 +186,29 @@
     return !!_privateKey;
 }
 
-// Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
+- (BOOL) isHardened
+{
+    return _hardened;
+}
+
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index
 {
-    BOOL privateDerivation = ((0x80000000 & index) != 0);
-    
-    if (!_privateKey && privateDerivation)
+    return [self derivedKeychainAtIndex:index hardened:NO];
+}
+
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened
+{
+    // As we use explicit parameter "hardened", do not allow higher bit set.
+    if ((0x80000000 & index) != 0)
     {
+        @throw [NSException exceptionWithName:@"BTCKeychain Exception"
+                                       reason:@"Indexes >= 0x80000000 are invalid. Use hardened:YES argument instead." userInfo:nil];
+        return nil;
+    }
+    
+    if (!_privateKey && hardened)
+    {
+        // Not possible to derive hardened keychain without a private key.
         return nil;
     }
 
@@ -193,7 +216,7 @@
 
     NSMutableData* data = [NSMutableData data];
     
-    if (privateDerivation)
+    if (hardened)
     {
         uint8_t padding = 0;
         [data appendBytes:&padding length:1];
@@ -204,7 +227,7 @@
         [data appendData:self.publicKey];
     }
     
-    uint32_t indexBE = OSSwapHostToBigInt32(index);
+    uint32_t indexBE = OSSwapHostToBigInt32(hardened ? (0x80000000 | index) : index);
     [data appendBytes:&indexBE length:sizeof(indexBE)];
     
     NSData* digest = BTCHMACSHA512(_chainCode, data);
@@ -243,16 +266,18 @@
     derivedKeychain.depth = _depth + 1;
     derivedKeychain.parentFingerprint = self.fingerprint;
     derivedKeychain.index = index;
+    derivedKeychain.hardened = hardened;
     
     return derivedKeychain;
 }
 
-// Returns a key from a derived keychain. This is a convenient way to access [... chuldKeychainAtIndex:i].key
-// If the receiver contains private key, child key will also contain a private key.
-// If the receiver contains only public key, child key will only contain public key (nil is returned if index >= 0x80000000).
 - (BTCKey*) keyAtIndex:(uint32_t)index
 {
-    return [[self derivedKeychainAtIndex:index] rootKey];
+    return [self keyAtIndex:index hardened:NO];
+}
+- (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened
+{
+    return [[self derivedKeychainAtIndex:index hardened:NO] rootKey];
 }
 
 - (BTCKeychain*) publicKeychain
@@ -264,6 +289,7 @@
     keychain.parentFingerprint = self.parentFingerprint;
     keychain.index = self.index;
     keychain.depth = self.depth;
+    keychain.hardened = self.hardened;
     
     return keychain;
 }
@@ -283,6 +309,7 @@
     keychain.parentFingerprint = self.parentFingerprint;
     keychain.index = self.index;
     keychain.depth = self.depth;
+    keychain.hardened = self.hardened;
     
     return keychain;
 }
@@ -295,6 +322,7 @@
     if (self.fingerprint != other.fingerprint) return NO;
     if (self.parentFingerprint != other.parentFingerprint) return NO;
     if (self.index != other.index) return NO;
+    if (self.hardened != other.hardened) return NO;
     
     if (self.isPrivate)
     {
@@ -322,10 +350,11 @@
 
 - (NSString*) debugDescription
 {
-    return [NSString stringWithFormat:@"<%@:0x%p depth:%d index:%x parentFingerprint:%x fingerprint:%x privkey:%@ pubkey:%@ chainCode:%@>", [self class], self,
-            (int)self.depth,
-            self.index,
-            self.parentFingerprint,
+    return [NSString stringWithFormat:@"<%@:0x%p depth:%d index:%x%@ parentFingerprint:%x fingerprint:%x privkey:%@ pubkey:%@ chainCode:%@>", [self class], self,
+            (int)_depth,
+            _index,
+            _hardened ? @" hardened:YES" : @"",
+            _parentFingerprint,
             self.fingerprint,
             [BTCHexStringFromData(self.privateKey) substringToIndex:8],
             [BTCHexStringFromData(self.publicKey) substringToIndex:8],

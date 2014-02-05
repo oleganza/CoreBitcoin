@@ -6,10 +6,11 @@
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 //
 // BTCKeychain encapsulates either a pair of "extended" keys (private and public), or only a public extended key.
-// "Extended key" means the key (private or public) is accompanied by extra 256 bits of entropy called "chain code".
+// "Extended key" means the key (private or public) is accompanied by extra 256 bits of entropy called "chain code" and
+// some metadata about it's position in a tree of keys (depth, parent fingerprint, index).
 // Keychain has two modes of operation:
-// - "public derivation" which allows to derive public keys separately from the private ones (for indexes below 0x80000000).
-// - "private derivation" which derives only private keys (for indexes >= 0x80000000).
+// - "normal derivation" which allows to derive public keys separately from the private ones (internally i below 0x80000000).
+// - "hardened derivation" which derives only private keys (for i >= 0x80000000).
 // Derivation can be treated as a single key or as an new branch of keychains.
 @class BTCKey;
 @interface BTCKeychain : NSObject<NSCopying>
@@ -37,7 +38,7 @@
 // Fingerprint of the parent keychain. For master keychain it is always 0.
 @property(nonatomic, readonly) uint32_t parentFingerprint;
 
-// Index in the parent keychain (if highest bit is 1, it is a private derivation).
+// Index in the parent keychain.
 // If this is a master keychain, index is 0.
 @property(nonatomic, readonly) uint32_t index;
 
@@ -53,18 +54,29 @@
 // Returns YES if the keychain can derive private keys.
 - (BOOL) isPrivate;
 
+// Returns YES if the keychain was derived via hardened derivation from its parent.
+// This means internally parameter i = 0x80000000 | self.index
+// For the master keychain index is zero and isHardened=NO.
+- (BOOL) isHardened;
+
 // Returns a copy of the keychain stripped of the private key.
 // Equivalent to [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPublicKey]
 - (BTCKeychain*) publicKeychain;
 
-// Returns a derived keychain. If index is >= 0x80000000, uses private derivation (possible only when private key is present; otherwise returns nil).
-// May return nil for some indexes (when hashing leads to invalid EC points) which is very rare, but must be expected. In such case, simply use another index.
+// Returns a derived keychain.
+// If hardened = YES, uses hardened derivation (possible only when private key is present; otherwise returns nil).
+// Index must be below 0x80000000, otherwise throws an exception.
+// May return nil for some indexes (when hashing leads to invalid EC points) which is very rare (chance is below 2^-127), but must be expected. In such case, simply use another index.
+// By default, a normal (non-hardened) derivation is used.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
-// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i].key
+// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].key
 // If the receiver contains a private key, child key will also contain a private key.
-// If the receiver contains only a public key, child key will only contain a public key (nil is returned if index >= 0x80000000 - as private derivation is impossible).
+// If the receiver contains only a public key, child key will only contain a public key. (Or nil will be returned if hardened = YES.)
+// By default, a normal (non-hardened) derivation is used.
 - (BTCKey*) keyAtIndex:(uint32_t)index;
+- (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
 @end
 
