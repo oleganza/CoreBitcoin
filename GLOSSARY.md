@@ -186,7 +186,7 @@ Transaction that has been included in the blockchain. Probability of transaction
 
 ### Confirmation Number
 
-Confirmation number is a measure of probability that transaction could be rejected from the *main chain*. "Zero confirmations" means that transaction is *unconfirmed* (not in any block yet). One confirmation means that the transaction is included in the latest block in the main chain. Two confirmations means the transaction is included in the block  right before the latest one. And so on.
+Confirmation number is a measure of probability that transaction could be rejected from the *main chain*. "Zero confirmations" means that transaction is *unconfirmed* (not in any block yet). One confirmation means that the transaction is included in the latest block in the main chain. Two confirmations means the transaction is included in the block right before the latest one. And so on. Probability of transaction being reversed (*"double spent"*) is diminishing exponentially with more blocks added "on top" of it.
 
 
 ### Difficulty
