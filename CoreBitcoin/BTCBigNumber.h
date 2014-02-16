@@ -1,6 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import <Foundation/Foundation.h>
+#import <openssl/bn.h>
 
 // Bitcoin-flavoured big number wrapping OpenSSL BIGNUM.
 // It is doing byte ordering like bitcoind does to stay compatible.
@@ -16,9 +17,14 @@
 @property(nonatomic, readonly) int32_t int32value;
 @property(nonatomic, readonly) uint64_t uint64value;
 @property(nonatomic, readonly) int64_t int64value;
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly) NSData* littleEndianData;  // data is reversed before being interpreted as internal state.
+@property(nonatomic, readonly) NSData* unsignedData;
 @property(nonatomic, readonly) NSString* hexString;
 @property(nonatomic, readonly) NSString* decimalString;
+
+// Pointer to an internal BIGNUM value. You should not modify it.
+// To modify, use [[bn mutableCopy] mutableBIGNUM] methods.
+@property(nonatomic, readonly) const BIGNUM* BIGNUM;
 
 // BTCBigNumber returns always the same object for these constants.
 // BTCMutableBigNumber returns a new object every time.
@@ -32,7 +38,11 @@
 - (id) initWithInt32:(int32_t)value;
 - (id) initWithUInt64:(uint64_t)value;
 - (id) initWithInt64:(int64_t)value;
-- (id) initWithData:(NSData*)data;
+- (id) initWithLittleEndianData:(NSData*)data; // data is reversed before being interpreted as internal state.
+- (id) initWithUnsignedData:(NSData*)data;
+
+// Initialized with OpenSSL representation of bignum.
+- (id) initWithBIGNUM:(const BIGNUM*)bignum;
 
 // Inits with setString:base:
 - (id) initWithString:(NSString*)string base:(NSUInteger)base;
@@ -85,9 +95,12 @@
 @property(nonatomic, readwrite) int32_t int32value;
 @property(nonatomic, readwrite) uint64_t uint64value;
 @property(nonatomic, readwrite) int64_t int64value;
-@property(nonatomic, readwrite) NSData* data;
+@property(nonatomic, readwrite) NSData* littleEndianData;
+@property(nonatomic, readwrite) NSData* unsignedData;
 @property(nonatomic, readwrite) NSString* hexString;
 @property(nonatomic, readwrite) NSString* decimalString;
+
+@property(nonatomic, readonly) BIGNUM* mutableBIGNUM;
 
 // BTCBigNumber returns always the same object for these constants.
 // BTCMutableBigNumber returns a new object every time.
@@ -101,8 +114,11 @@
 // Operators modify the receiver and return self.
 // To create a new instance z = x + y use copy method: z = [[x copy] add:y]
 - (instancetype) add:(BTCBigNumber*)other; // +=
+- (instancetype) add:(BTCBigNumber*)other mod:(BTCBigNumber*)mod;
 - (instancetype) subtract:(BTCBigNumber*)other; // -=
+- (instancetype) subtract:(BTCBigNumber*)other mod:(BTCBigNumber*)mod;
 - (instancetype) multiply:(BTCBigNumber*)other; // *=
+- (instancetype) multiply:(BTCBigNumber*)other mod:(BTCBigNumber*)mod;
 - (instancetype) divide:(BTCBigNumber*)other; // /=
 - (instancetype) mod:(BTCBigNumber*)other; // %=
 - (instancetype) lshift:(unsigned int)shift; // <<=

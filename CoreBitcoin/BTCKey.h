@@ -2,13 +2,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class BTCCurvePoint;
 @class BTCPublicKeyAddress;
 @class BTCPrivateKeyAddress;
 
-// BTCKey encapsulates EC public and private keypair (or only public part).
+// BTCKey encapsulates EC public and private keypair (or only public part) on curve secp256k1.
 // You can sign data and verify signatures.
 // When instantiated with a public key, only signature verification is possible.
-// When instantiated with a private key, all operations are available.s
+// When instantiated with a private key, all operations are available.
 @interface BTCKey : NSObject
 
 // Newly generated random key pair.
@@ -17,6 +18,9 @@
 // Instantiates a key without a secret counterpart.
 // You can use -isValidSignature:hash:
 - (id) initWithPublicKey:(NSData*)publicKey;
+
+// Initializes public key using a point on elliptic curve secp256k1.
+- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint;
 
 // Instantiates a key with either a DER private key (279 bytes) or a secret parameter (32 bytes).
 // Usually only secret parameter is used and private key is derived from it on the fly because other parameters are known (curve secp256k1).
@@ -32,6 +36,9 @@
 // When you set public key, this property reflects whether it is compressed or not.
 // To set this property you must have private counterpart. Then, -publicKey will be compressed/uncompressed accordingly.
 @property(nonatomic, getter=isCompressedPublicKey) BOOL compressedPublicKey;
+
+// Returns public key as a point on secp256k1 curve.
+@property(nonatomic, readonly) BTCCurvePoint* curvePoint;
 
 // Returns compressed or uncompressed public key.
 - (NSMutableData*) publicKeyCompressed:(BOOL)compressed;

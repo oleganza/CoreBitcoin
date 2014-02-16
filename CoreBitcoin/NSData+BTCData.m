@@ -93,7 +93,7 @@
     size_t dataOutMoved = 0;
     CCCryptorStatus cryptstatus = CCCrypt(
                                           operation,                   // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
-                                          kCCAlgorithmAES128,          // CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */
+                                          kCCAlgorithmAES,             // CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */
                                           kCCOptionPKCS7Padding,       // CCOptions options,      /* kCCOptionPKCS7Padding, etc. */
                                           key.bytes,                   // const void *key,
                                           key.length,                  // size_t keyLength,

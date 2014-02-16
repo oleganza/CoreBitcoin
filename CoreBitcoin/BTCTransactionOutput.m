@@ -1,8 +1,10 @@
 // Oleg Andreev <oleganza@gmail.com>
 
+#import "BTCTransaction.h"
 #import "BTCTransactionOutput.h"
 #import "BTCScript.h"
 #import "BTCAddress.h"
+#import "BTCData.h"
 #import "BTCProtocolSerialization.h"
 
 @interface BTCTransactionOutput ()
@@ -76,7 +78,6 @@
 - (id) copyWithZone:(NSZone *)zone
 {
     BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
-    txout.data = [self.data copy];
     txout.value = self.value;
     txout.script = [self.script copy];
     return txout;
@@ -84,11 +85,12 @@
 
 - (NSData*) data
 {
-    if (!_data)
-    {
-        _data = [self computePayload];
-    }
-    return _data;
+    return [self computePayload];
+//    if (!_data)
+//    {
+//        _data = [self computePayload];
+//    }
+//    return _data;
 }
 
 - (NSData*) computePayload
@@ -107,6 +109,7 @@
 - (void) invalidatePayload
 {
     _data = nil;
+    [_transaction invalidatePayload];
 }
 
 - (void) setValue:(BTCSatoshi)value
@@ -123,19 +126,53 @@
     [self invalidatePayload];
 }
 
+- (NSString*) description
+{
+    NSData* txhash = self.transactionHash;
+    return [NSString stringWithFormat:@"<%@:0x%p%@%@ %@ BTC '%@'%@>", [self class], self,
+            (txhash ? [NSString stringWithFormat:@" %@", BTCHexStringFromData(txhash)]: @""),
+            (_index == BTCTransactionOutputIndexUnknown ? @"" : [NSString stringWithFormat:@":%d", _index]),
+            [self formattedBTCValue:_value],
+            _script.string,
+            (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %lu confirmations", _confirmations])];
+}
+
+- (NSString*) formattedBTCValue:(BTCSatoshi)value
+{
+    return [NSString stringWithFormat:@"%lld.%@", value / BTCCoin, [NSString stringWithFormat:@"%08lld", value % BTCCoin]];
+}
+
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation
 {
     return @{
-             @"value": [NSString stringWithFormat:@"%lld.%@", _value / BTCCoin, [[NSString stringWithFormat:@"%lld", _value % BTCCoin] stringByPaddingToLength:8 withString:@"0" startingAtIndex:0]],
+             @"value": [self formattedBTCValue:_value],
              // TODO: like in BTCTransactionInput, have an option to put both "asm" and "hex" representations of the script.
              @"scriptPubKey": _script.string ?: @"",
              };
 }
 
+- (uint32_t) index
+{
+    // Remember the index as it does not change when we add more outputs.
+    if (_transaction && _index == BTCTransactionOutputIndexUnknown)
+    {
+        NSUInteger idx = [_transaction.outputs indexOfObject:self];
+        if (idx != NSNotFound)
+        {
+            _index = (uint32_t)idx;
+        }
+    }
+    return _index;
+}
 
-
-
+- (NSData*) transactionHash
+{
+    // Do not remember transaction hash as it changes when we add another output or change some metadata of the tx.
+    if (_transactionHash) return _transactionHash;
+    if (_transaction) return _transaction.transactionHash;
+    return nil;
+}
 
 
 

@@ -1,12 +1,12 @@
-
 CoreBitcoin v0.1
 ================
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can encode/decode addresses, apply various hash functions, sign and verify messages, parse some transactions and scripts, and detect common transaction types. Support for blocks and script evaluation is still in progress.
+CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can already encode/decode addresses, apply various hash functions, sign and verify messages, parse and compose transactions, execute scripts, and detect common transaction types. Support for blocks and networking is still in progress.
 
-Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug and should be investigated.
+Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
 
-Whenever counterintuitive things happen, I try to provide an accurate documentation to at least explain that we are aware of it (even if don't always know why it was done that way). If you read the source and lack documentation for some weird code, please add a "WTF?" comment right there and send me a pull request. Or create an issue on Github.
+Whenever counterintuitive things happen, I try to provide an accurate documentation to at least explain that we are aware of it (even if we don't always know why it was done that way). If you read the source and lack documentation for some weird code, please add a "WTF?" comment right there and send us a pull request. Or create an issue on Github.
+
 
 How To
 ------
@@ -20,23 +20,6 @@ In your project settings, add `$(SRCROOT)/CoreBitcoin/openssl/include` to "Heade
 If this sounds cumbersome, there is a bounty for creating a CoreBitcoin.framework to simplify integration process.
 
 
-TODO
-----
-
-- Full transaction support.
-- Full blockchain support.
-- BitcoinQT wallet reader.
-- Blockchain.info wallet reader.
-- Unit tests for EC sign/verify.
-- Unit tests for transaction parsing/serialization.
-- Modern unit test suite.
-- Security analysis. Do we use truly random numbers? Do we sign things correctly? Do we have buffer overflows? And so on.
-- Example of creating a transaction given some txouts.
-- Example of verifying a transaction.
-
-+ Universal OpenSSL libraries. Or as a part of a build process.
-+ CoreBitcoin.framework for iOS and OS X with OpenSSL inside.
-
 
 OpenSSL
 -------
@@ -49,7 +32,7 @@ Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT use
 Bounties
 --------
 
-- 0.5 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
+- 0.1 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
 - [done] 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
 - [done] extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
 

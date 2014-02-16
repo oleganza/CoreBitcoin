@@ -2,7 +2,6 @@
 
 #import "BTCBigNumber.h"
 #import "BTCData.h"
-#import <openssl/bn.h>
 
 #define BTCBigNumberCompare(a, b) (BN_cmp(&(a->_bignum), &(b->_bignum)))
 
@@ -19,7 +18,7 @@
 @dynamic int32value;
 @dynamic uint64value;
 @dynamic int64value;
-@dynamic data;
+@dynamic littleEndianData;
 @dynamic hexString;
 @dynamic decimalString;
 
@@ -112,14 +111,20 @@
     _immutable = YES;
     return self;
 }
-- (id) initWithData:(NSData*)data
+- (id) initWithLittleEndianData:(NSData*)data
 {
     if (!data) return nil;
-    if (self = [self init]) self.data = data;
+    if (self = [self init]) self.littleEndianData = data;
     _immutable = YES;
     return self;
 }
-
+- (id) initWithUnsignedData:(NSData *)data
+{
+    if (!data) return nil;
+    if (self = [self init]) self.unsignedData = data;
+    _immutable = YES;
+    return self;
+}
 - (id) initWithString:(NSString*)string base:(NSUInteger)base
 {
     if (!string) return nil;
@@ -138,7 +143,19 @@
     return [self initWithString:decimalString base:10];
 }
 
+- (id) initWithBIGNUM:(const BIGNUM*)otherBIGNUM
+{
+    if (self = [self init])
+    {
+        BN_copy(&_bignum, otherBIGNUM);
+    }
+    return self;
+}
 
+- (const BIGNUM*) BIGNUM
+{
+    return &_bignum;
+}
 
 
 #pragma mark - NSObject
@@ -585,15 +602,15 @@
         *currentByte = c;
         ++currentByte;
     }
-    unsigned int size = currentByte - (rawMPI + 4);
+    unsigned long size = currentByte - (rawMPI + 4);
     rawMPI[0] = (size >> 24) & 0xff;
     rawMPI[1] = (size >> 16) & 0xff;
     rawMPI[2] = (size >> 8) & 0xff;
     rawMPI[3] = (size) & 0xff;
-    BN_mpi2bn(rawMPI, currentByte - rawMPI, &_bignum);
+    BN_mpi2bn(rawMPI, (int)(currentByte - rawMPI), &_bignum);
 }
 
-- (NSData*) data
+- (NSData*) littleEndianData
 {
     size_t size = BN_bn2mpi(&_bignum, NULL);
     if (size <= 4)
@@ -607,7 +624,7 @@
     return data;
 }
 
-- (void) setData:(NSData *)data
+- (void) setLittleEndianData:(NSData *)data
 {
     [self throwIfImmutable];
     NSUInteger size = data.length;
@@ -624,6 +641,27 @@
     bytes[3] = (size >> 0) & 0xff;
     
     BN_mpi2bn(bytes, (int)mdata.length, &_bignum);
+}
+
+- (NSData*) unsignedData
+{
+    int num_bytes = BN_num_bytes(&_bignum);
+    NSMutableData* data = [[NSMutableData alloc] initWithLength:32];
+    int copied_bytes = BN_bn2bin(&_bignum, &data.mutableBytes[32 - num_bytes]);
+    if (copied_bytes != num_bytes) return nil;
+    return data;
+}
+
+- (void) setUnsignedData:(NSData *)data
+{
+    [self throwIfImmutable];
+    
+    if (!data) return;
+    
+    if (!BN_bin2bn(data.bytes, (int)data.length, &_bignum))
+    {
+        return;
+    }
 }
 
 
@@ -660,6 +698,10 @@
 
 @implementation BTCMutableBigNumber
 
+- (BIGNUM*) mutableBIGNUM
+{
+    return &(self->_bignum);
+}
 
 + (instancetype) zero
 {
@@ -696,9 +738,25 @@
     return self;
 }
 
+- (instancetype) add:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_mod_add(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return self;
+}
+
 - (instancetype) subtract:(BTCBigNumber *)other // -=
 {
     BN_sub(&(self->_bignum), &(self->_bignum), &(other->_bignum));
+    return self;
+}
+
+- (instancetype) subtract:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_mod_sub(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
+    BN_CTX_free(pctx);
     return self;
 }
 
@@ -706,6 +764,14 @@
 {
     BN_CTX* pctx = BN_CTX_new();
     BN_mul(&(self->_bignum), &(self->_bignum), &(other->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return self;
+}
+
+- (instancetype) multiply:(BTCBigNumber*)other mod:(BTCBigNumber *)mod
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_mod_mul(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }

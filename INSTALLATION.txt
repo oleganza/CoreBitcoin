@@ -1,0 +1,21 @@
+How to build and use as a framework:
+
+0. 	check out from github
+
+1. 	run update_openssl.sh
+	This will build the OpenSSL library for all the architectures you may need
+
+2.  run build_libraries.sh
+	This will create the frameworks and static libraries containing everything 
+	you need to include CoreBitcoin in other projects.
+	
+3.	Drag and drop one of the .framework files into your project. If you have
+	targets for both OSX and iOS in the same project you have to use both frameworks.
+	In this case you need to uncheck "Copy items into destination group's folder", as the
+	two files have the same name.
+	
+4.	Add the framework(s) to the target(s) where you want to use them. (if you haven't done
+	so when adding the files to the project)
+	
+5.  include the header files where you need them, such as:
+	#import <CoreBitcoin/BTCAddress.h>

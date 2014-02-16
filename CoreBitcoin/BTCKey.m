@@ -3,6 +3,7 @@
 #import "BTCKey.h"
 #import "BTCData.h"
 #import "BTCAddress.h"
+#import "BTCCurvePoint.h"
 #import "BTCProtocolSerialization.h"
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
@@ -27,11 +28,6 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     BOOL _compressedPublicKey;
 }
 
-- (void) dealloc
-{
-    [self clear];
-}
-
 - (id) initWithNewKeyPair:(BOOL)createKeyPair
 {
     if (self = [super init])
@@ -53,6 +49,17 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     {
         if (![self isValidPubKey:publicKey]) return nil;
         [self setPublicKey:publicKey];
+    }
+    return self;
+}
+
+- (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint
+{
+    if (self = [super init])
+    {
+        if (!curvePoint) return nil;
+        [self prepareKeyIfNeeded];
+        EC_KEY_set_public_key(_key, curvePoint.EC_POINT);
     }
     return self;
 }
@@ -94,22 +101,53 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 // Returns a signature data for a 256-bit hash using private key.
 - (NSData*)signatureForHash:(NSData*)hash
 {
-    unsigned int sigSize = ECDSA_size(_key);
-    NSMutableData* signature = [NSMutableData dataWithLength:sigSize];
-    
-    if (!ECDSA_sign(0, (unsigned char*)hash.bytes, (int)hash.length, signature.mutableBytes, &sigSize, _key))
+    ECDSA_SIG *sig = ECDSA_do_sign((unsigned char*)hash.bytes, (int)hash.length, _key);
+    if (sig == NULL)
     {
-        BTCDataClear(signature);
         return nil;
     }
-    [signature setLength:sigSize];
+    BN_CTX *ctx = BN_CTX_new();
+    BN_CTX_start(ctx);
+    
+    const EC_GROUP *group = EC_KEY_get0_group(_key);
+    BIGNUM *order = BN_CTX_get(ctx);
+    BIGNUM *halforder = BN_CTX_get(ctx);
+    EC_GROUP_get_order(group, order, ctx);
+    BN_rshift1(halforder, order);
+    if (BN_cmp(sig->s, halforder) > 0)
+    {
+        // enforce low S values, by negating the value (modulo the order) if above order/2.
+        BN_sub(sig->s, order, sig->s);
+    }
+    BN_CTX_end(ctx);
+    BN_CTX_free(ctx);
+    unsigned int sigSize = ECDSA_size(_key);
+    
+    NSMutableData* signature = [NSMutableData dataWithLength:sigSize + 16]; // Make sure it is big enough
+    
+    unsigned char *pos = (unsigned char *)signature.mutableBytes;
+    sigSize = i2d_ECDSA_SIG(sig, &pos);
+    ECDSA_SIG_free(sig);
+    [signature setLength:sigSize];  // Shrink to fit actual size
     
     return signature;
+    
+//    unsigned int sigSize = ECDSA_size(_key);
+//    NSMutableData* signature = [NSMutableData dataWithLength:sigSize];
+//    
+//    if (!ECDSA_sign(0, (unsigned char*)hash.bytes, (int)hash.length, signature.mutableBytes, &sigSize, _key))
+//    {
+//        BTCDataClear(signature);
+//        return nil;
+//    }
+//    [signature setLength:sigSize];
+//    
+//    return signature;
 }
 
 - (NSMutableData*) publicKey
 {
-    return [[self publicKeyCached] mutableCopy];
+    return [NSMutableData dataWithData:[self publicKeyCached]];
 }
 
 - (NSData*) publicKeyCached
@@ -132,6 +170,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     unsigned char* bytes = [data mutableBytes];
     if (i2o_ECPublicKey(_key, &bytes) != length) return nil;
     return data;
+}
+
+- (BTCCurvePoint*) curvePoint
+{
+    const EC_POINT* ecpoint = EC_KEY_get0_public_key(_key);
+    BTCCurvePoint* cp = [[BTCCurvePoint alloc] initWithEC_POINT:ecpoint];
+    return cp;
 }
 
 - (NSMutableData*) DERPrivateKey
@@ -159,7 +204,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (void) setPublicKey:(NSData *)publicKey
 {
     if (publicKey.length == 0) return;
-    _publicKey = [publicKey mutableCopy];
+    _publicKey = [NSMutableData dataWithData:publicKey];
     
     _compressedPublicKey = ([self lengthOfPubKey:_publicKey] == BTCCompressedPubkeyLength);
     

@@ -15,8 +15,20 @@ void BTCAssertHexEncodesToBase58(NSString* hex, NSString* base58)
     NSCAssert([data2 isEqual:data], @"should decode base58 correctly");
 }
 
+void BTCAssertDetectsInvalidBase58(NSString* text)
+{
+	NSData *data = BTCDataFromBase58Check(text);
+    
+    NSCAssert(data == nil, @"should return nil if base58 is invalid");
+}
+
 void BTCBase58RunAllTests()
 {
+    BTCAssertDetectsInvalidBase58(nil);
+    BTCAssertDetectsInvalidBase58(@" ");
+    BTCAssertDetectsInvalidBase58(@"lLoO");
+    BTCAssertDetectsInvalidBase58(@"öまи");
+    
     BTCAssertHexEncodesToBase58(@"", @"");
     BTCAssertHexEncodesToBase58(@"61", @"2g");
     BTCAssertHexEncodesToBase58(@"626262", @"a3gV");

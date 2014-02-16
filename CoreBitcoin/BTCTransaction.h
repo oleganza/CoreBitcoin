@@ -2,9 +2,11 @@
 
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"
+#import "BTCSignatureHashType.h"
 
 static const uint32_t BTCTransactionCurrentVersion = 1;
 
+@class BTCScript;
 @class BTCTransactionInput;
 @class BTCTransactionOutput;
 @interface BTCTransaction : NSObject<NSCopying>
@@ -43,6 +45,10 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation;
 
+// Hash for signing a transaction.
+// You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
+- (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
+
 // Adds input script
 - (void) addInput:(BTCTransactionInput*)input;
 
@@ -71,5 +77,8 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 // Minimum base fee to relay a transaction.
 + (BTCSatoshi) minimumRelayFee;
 + (void) setMinimumRelayFee:(BTCSatoshi)fee;
+
+// Used by inputs and outputs to invalidate cached payload.
+- (void) invalidatePayload;
 
 @end

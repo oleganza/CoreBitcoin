@@ -1,5 +1,6 @@
 // Oleg Andreev <oleganza@gmail.com>
 
+#import "BTCTransaction.h"
 #import "BTCTransactionInput.h"
 #import "BTCScript.h"
 #import "BTCProtocolSerialization.h"
@@ -110,11 +111,12 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
 - (NSData*) data
 {
-    if (!_data)
-    {
-        _data = [self computePayload];
-    }
-    return _data;
+    return [self computePayload];
+//    if (!_data)
+//    {
+//        _data = [self computePayload];
+//    }
+//    return _data;
 }
 
 - (NSData*) computePayload
@@ -136,6 +138,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 - (void) invalidatePayload
 {
     _data = nil;
+    [_transaction invalidatePayload];
 }
 
 - (void) setPreviousHash:(NSData *)previousHash
