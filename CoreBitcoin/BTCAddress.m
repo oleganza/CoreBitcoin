@@ -3,6 +3,7 @@
 #import "BTCAddress.h"
 #import "BTCData.h"
 #import "BTCBase58.h"
+#import "BTCKey.h"
 
 enum
 {
@@ -256,6 +257,13 @@ enum
     addr.base58CString = cstring;
     addr->_compressedPublicKey = compressed;
     return addr;
+}
+
+- (BTCKey*) key
+{
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:self.data];
+    key.compressedPublicKey = self.isCompressedPublicKey;
+    return key;
 }
 
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
