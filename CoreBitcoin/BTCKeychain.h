@@ -25,7 +25,7 @@
 // Use BTCBase58CheckStringWithData to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPublicKey;
 
-// Serialized extended private key or nil if the receiver is public keychain.
+// Serialized extended private key or nil if the receiver is public-only keychain.
 // Use BTCBase58CheckStringWithData to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPrivateKey;
 
@@ -71,7 +71,7 @@
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
-// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].key
+// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].rootKey
 // If the receiver contains a private key, child key will also contain a private key.
 // If the receiver contains only a public key, child key will only contain a public key. (Or nil will be returned if hardened = YES.)
 // By default, a normal (non-hardened) derivation is used.
