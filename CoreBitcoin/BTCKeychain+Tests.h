@@ -1,4 +1,4 @@
-// Oleg Andreev <oleganza@gmail.com>
+// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import "BTCKeychain.h"
 

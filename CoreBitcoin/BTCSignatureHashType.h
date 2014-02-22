@@ -1,3 +1,5 @@
+// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+
 #ifndef CoreBitcoin_BTCSignatureHashType_h
 #define CoreBitcoin_BTCSignatureHashType_h
 
