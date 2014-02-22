@@ -12,13 +12,11 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/oleganza/CoreBitcoin"
   s.license      = 'WTFPL'
   s.author       = { "Oleg Andreev" => "oleganza@gmail.com" }
-  s.source       = { :git => "https://github.com/oleganza/CoreBitcoin.git", :branch => "master", :tag => "0.1.0" }
-  s.source_files = 'CoreBitcoin', 'openssl/include/openssl/*.h'
-  s.libraries    = 'libcrypto', 'libssl'
+  s.ios.deployment_target = '7.0'
+  s.osx.deployment_target = '10.9'
+  s.source       = { :git => "https://github.com/oleganza/CoreBitcoin.git" }
+  s.source_files = 'CoreBitcoin'
   s.requires_arc = true
   s.framework    = 'Foundation'
-  s.xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(SRCROOT)/CoreBitcoin/openssl/include',
-    'LIBRARY_SEARCH_PATHS' => '$(SRCROOT)/CoreBitcoin/openssl/lib'
-  }
+  s.dependency 'OpenSSL', '~> 1.0.1'
 end
