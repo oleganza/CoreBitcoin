@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.9'
   s.source       = { :git => "https://github.com/oleganza/CoreBitcoin.git" }
   s.source_files = 'CoreBitcoin'
+  s.exclude_files = 'CoreBitcoin/**/*+Tests.{h,m}'
   s.requires_arc = true
   s.framework    = 'Foundation'
   s.dependency 'OpenSSL', '~> 1.0.1'

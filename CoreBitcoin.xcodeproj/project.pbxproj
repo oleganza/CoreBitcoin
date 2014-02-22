@@ -345,6 +345,7 @@
 		20C3F16817BFDCF8009DB89C /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCCurvePoint.h; sourceTree = "<group>"; };
 		20CD68D9189B18820083E1A9 /* BTCCurvePoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCCurvePoint.m; sourceTree = "<group>"; };
+		20D09B9B18B94D4B00794209 /* build_libraries.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_libraries.sh; sourceTree = "<group>"; };
 		20D2802517B8FE00004A462B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20E1E01017C73181003B6987 /* NSData+BTCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+BTCData.h"; sourceTree = "<group>"; };
 		20E1E01117C73181003B6987 /* NSData+BTCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BTCData.m"; sourceTree = "<group>"; };
@@ -524,6 +525,7 @@
 				209818911839688D00541747 /* LICENSE.txt */,
 				2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */,
 				209818921839694000541747 /* CoreBitcoin.podspec */,
+				20D09B9B18B94D4B00794209 /* build_libraries.sh */,
 				20D2802717B8FE00004A462B /* CoreBitcoin */,
 				2084DD9917B8FFB0005AC9E6 /* OpenSSL */,
 				2084DD5F17B8FF47005AC9E6 /* UnitTests */,
