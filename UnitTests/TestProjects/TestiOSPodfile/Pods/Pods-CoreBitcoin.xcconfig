@@ -1,0 +1,1 @@
+PODS_COREBITCOIN_OTHER_LDFLAGS = -framework Foundation

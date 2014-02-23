@@ -1,0 +1,1 @@
+../../CoreBitcoin/CoreBitcoin/BTCBase58.h

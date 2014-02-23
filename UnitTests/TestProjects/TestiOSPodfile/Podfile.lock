@@ -1,0 +1,17 @@
+PODS:
+  - CoreBitcoin (0.1.0):
+    - OpenSSL (~> 1.0.1)
+  - OpenSSL (1.0.1)
+
+DEPENDENCIES:
+  - CoreBitcoin (from `https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec`)
+
+EXTERNAL SOURCES:
+  CoreBitcoin:
+    :podspec: https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec
+
+SPEC CHECKSUMS:
+  CoreBitcoin: 5ec9637f3e755b6a50be257c17dfc9dc2c8f19e6
+  OpenSSL: 9b85178853701b1e9bbf70df695a4c149799e772
+
+COCOAPODS: 0.29.0

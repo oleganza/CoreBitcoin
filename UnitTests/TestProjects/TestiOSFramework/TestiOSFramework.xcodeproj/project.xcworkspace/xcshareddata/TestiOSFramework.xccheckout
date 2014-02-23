@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>445F7623-2910-4E28-B8C1-08564E5E4137</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TestiOSFramework</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FA92D138-A8ED-4673-975C-064C0B607556</key>
+		<string>ssh://github.com/oleganza/CoreBitcoin.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>UnitTests/TestProjects/TestiOSFramework/TestiOSFramework.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FA92D138-A8ED-4673-975C-064C0B607556</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/oleganza/CoreBitcoin.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FA92D138-A8ED-4673-975C-064C0B607556</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FA92D138-A8ED-4673-975C-064C0B607556</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CoreBitcoin</string>
+		</dict>
+	</array>
+</dict>
+</plist>
