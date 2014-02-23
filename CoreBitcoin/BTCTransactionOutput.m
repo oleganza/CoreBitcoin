@@ -134,7 +134,7 @@
             (_index == BTCTransactionOutputIndexUnknown ? @"" : [NSString stringWithFormat:@":%d", _index]),
             [self formattedBTCValue:_value],
             _script.string,
-            (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %lu confirmations", _confirmations])];
+            (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %d confirmations", (unsigned int)_confirmations])];
 }
 
 - (NSString*) formattedBTCValue:(BTCSatoshi)value

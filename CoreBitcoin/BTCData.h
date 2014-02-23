@@ -70,11 +70,11 @@ NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than ca
 // The whole memory region is hashed after all rounds to generate the result.
 // Based on proposal by Sergio Demian Lerner http://bitslog.files.wordpress.com/2013/12/memohash-v0-3.pdf
 // Returns a mutable data, so you can cleanup the memory when needed.
-NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes);
+NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes);
 
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 128-bit blocks)
-NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes);
+NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes);
 
 
 

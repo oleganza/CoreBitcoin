@@ -347,9 +347,9 @@ NSString* BTCUppercaseHexStringFromData(NSData* data)
 // The whole memory region is hashed after all rounds to generate the result.
 // Based on proposal by Sergio Demian Lerner http://bitslog.files.wordpress.com/2013/12/memohash-v0-3.pdf
 // Returns a mutable data, so you can cleanup the memory when needed.
-NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes)
+NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes)
 {
-    const unsigned long long blockSize = CC_SHA256_DIGEST_LENGTH;
+    const unsigned int blockSize = CC_SHA256_DIGEST_LENGTH;
     
     // Will be used for intermediate hash computation
     unsigned char block[blockSize];
@@ -358,7 +358,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long
     CC_SHA256_CTX ctx;
     
     // Round up the required memory to integral number of blocks
-    unsigned long long numberOfBlocks = numberOfBytes / blockSize;
+    unsigned int numberOfBlocks = numberOfBytes / blockSize;
     if (numberOfBytes % blockSize) numberOfBlocks++;
     numberOfBytes = numberOfBlocks * blockSize;
     
@@ -379,7 +379,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long
     memcpy(spaceBytes, block, blockSize);
     
     // Produce a chain of hashes to fill the memory with initial data
-    for (unsigned long long  i = 1; i < numberOfBlocks; i++)
+    for (unsigned int  i = 1; i < numberOfBlocks; i++)
     {
         // Put a hash of the previous block into the next block.
         CC_SHA256_Init(&ctx);
@@ -389,13 +389,13 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long
     }
     
     // Each round consists of hashing the entire space block by block.
-    for (unsigned long long r = 0; r < rounds; r++)
+    for (unsigned int r = 0; r < rounds; r++)
     {
         // For each block, update it with the hash of the previous block
         // mixed with the randomly shifted block around the current one.
-        for (unsigned long long b = 0; b < numberOfBlocks; b++)
+        for (unsigned int b = 0; b < numberOfBlocks; b++)
         {
-            unsigned long long prevb = (numberOfBlocks + b - 1) % numberOfBlocks;
+            unsigned int prevb = (numberOfBlocks + b - 1) % numberOfBlocks;
             
             // Interpret the previous block as an integer to provide some randomness to memory location.
             // This reduces potential for memory access optimization.
@@ -419,7 +419,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long
     
     // Hash the whole space to arrive at a final derived key.
     CC_SHA256_Init(&ctx);
-    for (unsigned long long b = 0; b < numberOfBlocks; b++)
+    for (unsigned int b = 0; b < numberOfBlocks; b++)
     {
         CC_SHA256_Update(&ctx, spaceBytes + b * blockSize, blockSize);
     }
@@ -438,7 +438,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned long
 
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 128-bit blocks)
-NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned long long rounds, unsigned long long numberOfBytes)
+NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes)
 {
     // The idea is to use a highly optimized AES implementation in CBC mode to quickly transform a lot of memory.
     // For the first round, a SHA256(password+salt) is used as AES key and SHA256(key+salt) is used as Initialization Vector (IV).
@@ -456,13 +456,13 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned long
     // k-th round can reduce memory to k blocks, the k-th round would need recomputation of the (k-1)-th round in parallel (n(k) = n(k-1) + (1 + n(k-1)) = 1 + 2*n(k-1))
     // Ultimately, k rounds with N blocks of memory would need at minimum k blocks of memory at expense of (2^k - 1) rounds.
     
-    const unsigned long long digestSize = CC_SHA256_DIGEST_LENGTH;
-    const unsigned long long blockSize = 128/8;
+    const unsigned int digestSize = CC_SHA256_DIGEST_LENGTH;
+    const unsigned int blockSize = 128/8;
 
     // Round up the required memory to integral number of blocks
     {
         if (numberOfBytes < digestSize) numberOfBytes = digestSize;
-        unsigned long long numberOfBlocks = numberOfBytes / blockSize;
+        unsigned int numberOfBlocks = numberOfBytes / blockSize;
         if (numberOfBytes % blockSize) numberOfBlocks++;
         numberOfBytes = numberOfBlocks * blockSize;
     }
@@ -498,7 +498,7 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned long
     
     // Each round consists of encrypting the entire space using AES-CBC
     BOOL failed = NO;
-    for (unsigned long long r = 0; r < rounds; r++)
+    for (unsigned int r = 0; r < rounds; r++)
     {
         if (1) // Apple implementation - slightly faster than OpenSSL one.
         {

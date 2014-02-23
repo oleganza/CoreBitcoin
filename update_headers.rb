@@ -50,4 +50,3 @@ File.open("CoreBitcoin/CoreBitcoin+Categories.h", "w") do |f|
   end
 end
 
-puts header_filenames

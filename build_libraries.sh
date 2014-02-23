@@ -2,10 +2,10 @@
 
 # Cleanup to start with a blank slate
 
+rm -rf build
 mkdir -p build
-rm -rf build/CoreBitcoin.build
-rm -rf build/*.framework
-rm -rf build/*.a
+
+xcodebuild clean
 
 # Update all headers to produce up-to-date combined headers.
 
@@ -95,7 +95,7 @@ mv build/include ${BINARIES_TARGETDIR}/include
 # Clean up
 rm -rf build
 
-# Remove +Tests headers.
-
+# Remove +Tests.h headers from libraries and frameworks.
+find ${BINARIES_TARGETDIR} -name '*+Tests.h' -print0 | xargs -0 rm
 
 
