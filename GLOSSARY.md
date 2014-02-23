@@ -120,7 +120,7 @@ Utility based on bitcoinjs to craft transactions by hand, convert *private keys*
 
 ### BTC
 
-Most popular informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). See also *XBT*.
+The most popular informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). See also *XBT*.
 
 
 ### Casascius Coins
@@ -625,7 +625,7 @@ A web service providing wallet functionality: ability to store, send and receive
 
 ### XBT
 
-Informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). Some people proposed using it for 0.01 Bitcoin to avoid confusion with *BTC*. Recently it was reported that it is used in Bloomberg terminal to display Bitcoin price ticker. See also *BTC*.
+Informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). Some people proposed using it for 0.01 Bitcoin to avoid confusion with *BTC*. There were rumors that Bloomberg tests XBT as a ticker for 1 Bitcoin, but currently there is only ticker XBTFUND for SecondMarket's Bitcoin Investment Trust. See also *BTC*.
 
 
 ### 0-Confirmation (Zero-Confirmation)
