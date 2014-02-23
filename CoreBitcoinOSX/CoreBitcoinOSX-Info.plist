@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>hu.bjano.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.oleganza.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -23,7 +23,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2013 Oleg Andreev. All rights reserved.</string>
+	<string>CoreBitcoin by Oleg Andreev &lt;oleganza@gmail.com&gt;, WTFPL.</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
 </dict>
