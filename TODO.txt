@@ -1,15 +1,15 @@
 
 
 - rename both iOS and OSX frameworks to CoreBitcoin so the #include can be the same for both platforms in a portable code (we can ship it as "iOS/CoreBitcoin.framework")
-- add aggregate header CoreBitcoin.h with all non-test and non-category methods.
-- add aggregate header CoreBitcoinAdditions.h that includes categories on standard classes.
++ add aggregate header CoreBitcoin.h with all non-test and non-category methods.
++ add aggregate header CoreBitcoin+Categories.h that includes categories on standard classes.
 - add aggregate header CoreBitcoinTests.h with tests
 - add openssl dependency in cocoapods (we can specify the exact hash for security). If openssl cocoapods does not have fat iOS build, that needs to be fixed.
 
 - support for blocks and their validation
 - support for network messages
 - support for SPV like in Bitcoinj
-- support for HD wallets
++ support for HD wallets
 
 - Scrypt wrapper API where fixed number of rounds and memory usage can be specified (and not computed from current machine capabilities) [bounty 0.1 BTC by @oleganza]
 
@@ -21,8 +21,8 @@
 
 - Security analysis. Do we use truly random numbers? Do we sign things correctly? Do we have buffer overflows? And so on. Should add bounties for that.
 
-- Sample code for creating a transaction given some txouts.
-- Sample code for verifying a transaction.
++ Sample code for creating a transaction given some txouts.
++ Sample code for verifying a transaction.
 
 + full transaction support.
 + Universal OpenSSL libraries. Or as a part of a build process.
