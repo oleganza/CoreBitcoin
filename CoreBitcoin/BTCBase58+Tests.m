@@ -27,9 +27,13 @@ void BTCBase58RunAllTests()
     BTCAssertDetectsInvalidBase58(nil);
     BTCAssertDetectsInvalidBase58(@" ");
     BTCAssertDetectsInvalidBase58(@"lLoO");
+    BTCAssertDetectsInvalidBase58(@"l");
+    BTCAssertDetectsInvalidBase58(@"L");
+    BTCAssertDetectsInvalidBase58(@"o");
+    BTCAssertDetectsInvalidBase58(@"O");
     BTCAssertDetectsInvalidBase58(@"öまи");
     
-    BTCAssertHexEncodesToBase58(@"", @"");
+    BTCAssertHexEncodesToBase58(@"", @""); // Empty string is valid encoding of an empty binary string
     BTCAssertHexEncodesToBase58(@"61", @"2g");
     BTCAssertHexEncodesToBase58(@"626262", @"a3gV");
     BTCAssertHexEncodesToBase58(@"636363", @"aPEr");
