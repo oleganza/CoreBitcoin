@@ -1,38 +1,70 @@
-CoreBitcoin v0.1
-================
+CoreBitcoin
+===========
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can already encode/decode addresses, apply various hash functions, sign and verify messages, parse and compose transactions, execute scripts, and detect common transaction types. Support for blocks and networking is still in progress.
+CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. It's already a useful toolkit, but does not yet provide full node implementation.
 
 Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
 
-Whenever counterintuitive things happen, I try to provide an accurate documentation to at least explain that we are aware of it (even if we don't always know why it was done that way). If you read the source and lack documentation for some weird code, please add a "WTF?" comment right there and send us a pull request. Or create an issue on Github.
+Features
+--------
+
+- EC keys and signatures for binary and Bitcoin text messages.
+- Addresses
+- Transactions
+- Scripts
+- Blockchain.info API to fetch unspent outputs and send signed transactions
+- BIP32 hierarchical deterministic wallets
+- Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points.
+- Various cryptographic primitives: hash functions, ECC, encryption.
+
+Still missing:
+
+- Blocks
+- P2P communication with other nodes
+- Importing BitcoinQT, Electrum and Blockchain.info wallets
 
 
-How To
-------
+Using CoreBitcoin CocoaPod
+--------------------------
 
-Clone this repo and make sure you can run "UnitTests" target. It is a simple command-line app that runs a bunch of asserts. If nothing fails, the program silently exits.
+Add this to your Podfile:
 
-If it works well, add this repo as a submodule to your project. Then add all source files, OpenSSL headers, libcrypto.a and libssl.a. 
+    pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec'
 
-In your project settings, add `$(SRCROOT)/CoreBitcoin/openssl/include` to "Headers Search Paths" and `$(SRCROOT)/CoreBitcoin/openssl/lib` in "Library Search Paths".
+Run in Terminal:
 
-If this sounds cumbersome, there is a bounty for creating a CoreBitcoin.framework to simplify integration process.
+    $ pod install
+
+Include headers:
+
+	#import <CoreBitcoin/CoreBitcoin.h>
+
+If you'd like to use categories, include different header:
+
+	#import <CoreBitcoin/CoreBitcoin+Categories.h>
 
 
+Using CoreBitcoin.framework
+---------------------------
 
-OpenSSL
--------
+Clone this repository and build all libraries:
 
-The only external dependency is OpenSSL (used for Bignum, ECC and RIPEMD160). OpenSSL source is stored in this repo and is built with update_openssl.sh script. OpenSSL binaries are OSX-only and committed in the repo. This is far from perfect and binary does not support iOS architectures. This will be fixed in the future.
+	$ ./update_openssl.sh
+	$ ./build_libraries.sh
 
-Ideally, we wouldn't require OpenSSL at all, but keep in mind that BitcoinQT uses OpenSSL and some of its quirks are now a part of the protocol. So if you are going to reimplement ECC, it must be bug-to-bug compatible with OpenSSL implementation.
+Copy iOS or OS X framework located in binaries/iOS or binaries/OSX to your project.
+
+Include headers:
+
+	#import <CoreBitcoin/CoreBitcoin.h>
+	
+There are also raw universal libraries (.a) with headers located in binaries/include, if you happen to need them for some reason. Frameworks and binary libraries have OpenSSL built-in. If you have different version of OpenSSL in your project, consider using CocoaPods or raw sources of CoreBitcoin.
 
 
 Bounties
 --------
 
-- 0.1 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
+- [done] 0.1 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
 - [done] 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
 - [done] extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
 
@@ -56,7 +88,7 @@ Donate
 
 Please send your donations here: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG.
 
-All funds will be used only for bounties to fix stuff. Every withdrawal from this address will be documented.
+All funds will be used only for bounties to fix stuff.
 
 You can also donate for a specific bounty. The amount will be reserved for that bounty and listed above.
 
@@ -64,5 +96,5 @@ You can also donate for a specific bounty. The amount will be reserved for that 
 License
 -------
 
-Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. It is not MIT License because no one reads your legalese anyway and it only adds burden. Instead, you are encouraged to donate money for development.
+Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. It is not MIT License because no one reads your legalese anyway and it only adds burden. Instead, you are encouraged to donate money for development and use sources how you like.
 
