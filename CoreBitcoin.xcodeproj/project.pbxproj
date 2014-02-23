@@ -211,6 +211,9 @@
 		20D09BA418BA14F900794209 /* CoreBitcoin+Categories.h in Headers */ = {isa = PBXBuildFile; fileRef = 20D09BA018BA14F900794209 /* CoreBitcoin+Categories.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20D09BA518BA14F900794209 /* CoreBitcoin+Categories.h in Headers */ = {isa = PBXBuildFile; fileRef = 20D09BA018BA14F900794209 /* CoreBitcoin+Categories.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20D09BA618BA14F900794209 /* CoreBitcoin+Categories.h in Headers */ = {isa = PBXBuildFile; fileRef = 20D09BA018BA14F900794209 /* CoreBitcoin+Categories.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20D09BBE18BA2FEA00794209 /* BTCSignatureHashType.h in Headers */ = {isa = PBXBuildFile; fileRef = 207B2602188C440600916AE6 /* BTCSignatureHashType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20D09BBF18BA2FEB00794209 /* BTCSignatureHashType.h in Headers */ = {isa = PBXBuildFile; fileRef = 207B2602188C440600916AE6 /* BTCSignatureHashType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		20D09BC018BA2FEB00794209 /* BTCSignatureHashType.h in Headers */ = {isa = PBXBuildFile; fileRef = 207B2602188C440600916AE6 /* BTCSignatureHashType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01117C73181003B6987 /* NSData+BTCData.m */; };
 /* End PBXBuildFile section */
 
@@ -332,6 +335,7 @@
 		20D09B9E18BA144C00794209 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		20D09B9F18BA14F900794209 /* CoreBitcoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreBitcoin.h; sourceTree = "<group>"; };
 		20D09BA018BA14F900794209 /* CoreBitcoin+Categories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoin+Categories.h"; sourceTree = "<group>"; };
+		20D09BBA18BA29BB00794209 /* postprocess_openssl_includes_in_framework.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = postprocess_openssl_includes_in_framework.rb; sourceTree = SOURCE_ROOT; };
 		20D2802517B8FE00004A462B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20E1E01017C73181003B6987 /* NSData+BTCData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+BTCData.h"; sourceTree = "<group>"; };
 		20E1E01117C73181003B6987 /* NSData+BTCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BTCData.m"; sourceTree = "<group>"; };
@@ -508,6 +512,7 @@
 				2084DD9F17B90174005AC9E6 /* update_openssl.sh */,
 				20D09B9C18BA12FE00794209 /* update_headers.rb */,
 				20D09B9B18B94D4B00794209 /* build_libraries.sh */,
+				20D09BBA18BA29BB00794209 /* postprocess_openssl_includes_in_framework.rb */,
 			);
 			name = Utils;
 			path = CoreBitcoin;
@@ -652,6 +657,7 @@
 				20148C341835650B00E68E9C /* BTCBigNumber.h in Headers */,
 				207B2606188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA518BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
+				20D09BC018BA2FEB00794209 /* BTCSignatureHashType.h in Headers */,
 				20B8AB96189EE88300008138 /* BTCKeychain.h in Headers */,
 				20148C351835650B00E68E9C /* BTCBigNumber+Tests.h in Headers */,
 				20148C361835650B00E68E9C /* BTCKey.h in Headers */,
@@ -688,6 +694,7 @@
 				20148CDE183643FC00E68E9C /* BTCBigNumber.h in Headers */,
 				207B2607188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA618BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
+				20D09BBF18BA2FEB00794209 /* BTCSignatureHashType.h in Headers */,
 				20B8AB97189EE88300008138 /* BTCKeychain.h in Headers */,
 				20148CDF183643FC00E68E9C /* BTCBigNumber+Tests.h in Headers */,
 				20148CE0183643FC00E68E9C /* BTCKey.h in Headers */,
@@ -724,6 +731,7 @@
 				206B01471835484300878B8D /* BTCBigNumber.h in Headers */,
 				207B2605188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA418BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
+				20D09BBE18BA2FEA00794209 /* BTCSignatureHashType.h in Headers */,
 				20B8AB95189EE88300008138 /* BTCKeychain.h in Headers */,
 				206B01451835484300878B8D /* BTCBase58+Tests.h in Headers */,
 				206B01511835484300878B8D /* BTCTransaction.h in Headers */,

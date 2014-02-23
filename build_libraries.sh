@@ -42,19 +42,27 @@ mv build/CoreBitcoinIOS.framework/CoreBitcoinIOS build/CoreBitcoinIOS.framework/
 lipo build/CoreBitcoinIOS.framework/CoreBitcoinIOS-simulator build/CoreBitcoinIOS.framework/CoreBitcoinIOS-device \
 		-create -output build/CoreBitcoinIOS.framework/CoreBitcoinIOS
 		
+# Update openssl includes to match framework header search path
+
+./postprocess_openssl_includes_in_framework.rb build/CoreBitcoinIOS.framework
+
 # Delete the intermediate files
 		
 rm build/CoreBitcoinIOS.framework/CoreBitcoinIOS-device
 rm build/CoreBitcoinIOS.framework/CoreBitcoinIOS-simulator
 rm -rf build/CoreBitcoinIOS-simulator.framework
 
-
 # Build for OS X
 
 xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinOSXlib -configuration Release
 xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinOSX    -configuration Release
 
+# Update openssl includes to match framework header search path
+
+./postprocess_openssl_includes_in_framework.rb build/CoreBitcoinOSX.framework
+
 # Clean up
+
 rm -rf build/CoreBitcoin.build
 
 
