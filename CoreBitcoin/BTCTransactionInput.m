@@ -10,9 +10,6 @@
 @property(nonatomic, readwrite) NSData* data;
 @end
 
-static const NSUInteger BTCTxHashLength = 32;
-static unsigned char BTCZeroHash[BTCTxHashLength] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
 static const uint32_t BTCInvalidIndex = 0xFFFFFFFF; // aka "(unsigned int) -1" in BitcoinQT.
 static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
@@ -22,7 +19,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     if (self = [super init])
     {
-        _previousHash = [NSData dataWithBytes:BTCZeroHash length:BTCTxHashLength];
+        _previousHash = BTCZero256();
         _previousIndex = BTCInvalidIndex;
         _signatureScript = [[BTCScript alloc] init];
         _sequence = BTCMaxSequence; // max
@@ -225,7 +222,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if (stream.streamStatus == NSStreamStatusNotOpen) return NO;
     
     // Read previousHash
-    uint8_t hash[BTCTxHashLength] = {0};
+    uint8_t hash[32] = {0};
     if ([stream read:(uint8_t*)hash maxLength:sizeof(hash)] != sizeof(hash)) return NO;
     _previousHash = [NSData dataWithBytes:hash length:sizeof(hash)];
     
@@ -247,8 +244,8 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 - (BOOL) isCoinbase
 {
     return (_previousIndex == BTCInvalidIndex) &&
-            _previousHash.length == BTCTxHashLength &&
-            0 == memcmp(BTCZeroHash, _previousHash.bytes, BTCTxHashLength);
+            _previousHash.length == 32 &&
+            0 == memcmp(BTCZeroString256(), _previousHash.bytes, 32);
 }
 
 

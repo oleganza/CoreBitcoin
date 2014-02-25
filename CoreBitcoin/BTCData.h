@@ -52,6 +52,15 @@ NSData* BTCSHA256(NSData* data);
 NSData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash in BitcoinQT)
 NSData* BTCHMACSHA512(NSData* key, NSData* data);
 
+// 160-bit zero string
+NSData* BTCZero160();
+
+// 256-bit zero string
+NSData* BTCZero256();
+
+// Pointer to a static array of zeros (256 bits long).
+const unsigned char* BTCZeroString256();
+
 #if BTCDataRequiresOpenSSL
 // RIPEMD160 today is provided only by OpenSSL. SHA1 and SHA2 are provided by CommonCrypto framework.
 NSData* BTCRIPEMD160(NSData* data);

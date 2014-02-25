@@ -3,7 +3,9 @@
 #import <CoreBitcoin/BTCAddress.h>
 #import <CoreBitcoin/BTCBase58.h>
 #import <CoreBitcoin/BTCBigNumber.h>
+#import <CoreBitcoin/BTCBlock.h>
 #import <CoreBitcoin/BTCBlockchainInfo.h>
+#import <CoreBitcoin/BTCBlockHeader.h>
 #import <CoreBitcoin/BTCCurvePoint.h>
 #import <CoreBitcoin/BTCData.h>
 #import <CoreBitcoin/BTCErrors.h>

@@ -7,6 +7,8 @@
 #include <openssl/evp.h>
 #endif
 
+static const unsigned char _BTCZeroString256[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 // Use this subclass to make sure data is zeroed
 @implementation BTCMutableDataZeroedOnDealloc : NSMutableData
 + (instancetype) dataWithData:(NSData *)data
@@ -277,6 +279,21 @@ NSData* BTCHash256(NSData* data)
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
     return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+}
+
+NSData* BTCZero160()
+{
+    return [NSData dataWithBytes:_BTCZeroString256 length:20];
+}
+
+NSData* BTCZero256()
+{
+    return [NSData dataWithBytes:_BTCZeroString256 length:32];
+}
+
+const unsigned char* BTCZeroString256()
+{
+    return _BTCZeroString256;
 }
 
 NSData* BTCHMACSHA512(NSData* key, NSData* data)
