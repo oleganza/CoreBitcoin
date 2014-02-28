@@ -85,5 +85,12 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 128-bit blocks)
 NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes);
 
+// Probabilistic memory-hard KDF with 256-bit output and only one difficulty parameter - amount of memory.
+// Actual amount of memory is rounded to a whole number of 256-bit blocks.
+// Uses SHA512 as internal hash function.
+// Computational time is proportional to amount of memory.
+// Brutefore with half the memory raises amount of hash computations quadratically.
+NSMutableData* BTCJerk256(NSData* password, NSData* salt, unsigned int numberOfBytes);
+
 
 

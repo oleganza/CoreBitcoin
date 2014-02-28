@@ -51,24 +51,33 @@
     
     // Memory hard KDF
 
-    NSLog(@"Generating key with BTCMemoryHardKDF256...");
+    NSLog(@"Generating key with BTCJerk256...");
     NSDate* t1 = [NSDate date];
-    NSData* key = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+    NSData* key1 = BTCJerk256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+                                      128*1024*1024 // memory required
+                                      );
+    NSLog(@"Generated key = %@ [%f sec]", key1, -[t1 timeIntervalSinceNow]);
+    
+
+    NSLog(@"Generating key with BTCMemoryHardKDF256...");
+    NSDate* t2 = [NSDate date];
+    NSData* key2 = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
                                       20, // number of rounds
                                       2*1024*1024 // memory required
                                       );
-    NSLog(@"Generated key = %@ [%f sec]", key, -[t1 timeIntervalSinceNow]);
+    NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
 
     
     NSLog(@"Generating key with BTCMemoryHardAESKDF...");
-    NSDate* t2 = [NSDate date];
-    NSData* key2 = BTCMemoryHardAESKDF([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+    NSDate* t3 = [NSDate date];
+    NSData* key3 = BTCMemoryHardAESKDF([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
                                       20, // number of rounds
                                       16*1024*1024 // memory required
                                       );
-    NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
+    NSLog(@"Generated key = %@ [%f sec]", key3, -[t3 timeIntervalSinceNow]);
 
     // Random number generators
     if (0)
