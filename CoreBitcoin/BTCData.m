@@ -271,12 +271,42 @@ NSData* BTCSHA256(NSData* data)
     return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
+NSData* BTCSHA256Concat(NSData* data1, NSData* data2)
+{
+    if (!data1 || !data2) return nil;
+    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+    
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+    CC_SHA256_Update(&ctx, [data1 bytes], (CC_LONG)[data1 length]);
+    CC_SHA256_Update(&ctx, [data2 bytes], (CC_LONG)[data2 length]);
+    CC_SHA256_Final(digest, &ctx);
+    return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+}
+
 NSData* BTCHash256(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
+    CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
+    return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+}
+
+NSData* BTCHash256Concat(NSData* data1, NSData* data2)
+{
+    if (!data1 || !data2) return nil;
+    
+    unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
+    unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
+    
+    CC_SHA256_CTX ctx;
+    CC_SHA256_Init(&ctx);
+    CC_SHA256_Update(&ctx, [data1 bytes], (CC_LONG)[data1 length]);
+    CC_SHA256_Update(&ctx, [data2 bytes], (CC_LONG)[data2 length]);
+    CC_SHA256_Final(digest1, &ctx);
+
     CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
     return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
 }
