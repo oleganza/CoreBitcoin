@@ -1,4 +1,3 @@
-
 Bitcoin Glossary
 ================
 
@@ -80,7 +79,7 @@ Original implementation of Bitcoin with a command line interface. Currently a pa
 
 ### bitcoin-ruby
 
-A full Bitcoin implementation in Ruby by Julian Langschaedel. Used in production on *Coinbase.com*.
+A Bitcoin utilities library in Ruby by Julian Langschaedel. Used in production on *Coinbase.com*.
 
 
 ### Block
