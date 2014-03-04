@@ -211,8 +211,11 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     [self prepareKeyIfNeeded];
     
     const unsigned char* bytes = publicKey.bytes;
-    if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length)) @throw [NSException exceptionWithName:@"BTCKey Exception"
-                                                                                            reason:@"o2i_ECPublicKey failed. " userInfo:nil];
+    if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length))
+    {
+        _publicKey = nil;
+        _compressedPublicKey = nil;
+    }
 }
 
 - (void) setDERPrivateKey:(NSData *)DERPrivateKey
@@ -223,8 +226,10 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     [self prepareKeyIfNeeded];
     
     const unsigned char* bytes = DERPrivateKey.bytes;
-    if (!d2i_ECPrivateKey(&_key, &bytes, DERPrivateKey.length)) @throw [NSException exceptionWithName:@"BTCKey Exception"
-                                                                                              reason:@"d2i_ECPrivateKey failed. " userInfo:nil];
+    if (!d2i_ECPrivateKey(&_key, &bytes, DERPrivateKey.length))
+    {
+        // OpenSSL failed for some weird reason. I have no idea what we should do.
+    }
 }
 
 - (void) setPrivateKey:(NSData *)privateKey
@@ -286,8 +291,10 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 {
     if (_key) return;
     _key = EC_KEY_new_by_curve_name(NID_secp256k1);
-    if (!_key) @throw [NSException exceptionWithName:@"BTCKey Exception"
-                                              reason:@"EC_KEY_new_by_curve_name failed. " userInfo:nil];
+    if (!_key)
+    {
+        // This should not generally happen.
+    }
 }
 
 

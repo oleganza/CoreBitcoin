@@ -26,8 +26,8 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     NSMutableData* result = nil;
     
     BN_CTX* pctx = BN_CTX_new();
-    __block BIGNUM bn58; BN_init(&bn58); BN_set_word(&bn58, 58);
-    __block BIGNUM bn; BN_init(&bn); BN_zero(&bn);
+    __block BIGNUM bn58;   BN_init(&bn58);   BN_set_word(&bn58, 58);
+    __block BIGNUM bn;     BN_init(&bn);     BN_zero(&bn);
     __block BIGNUM bnChar; BN_init(&bnChar);
     
     void(^finish)() = ^{
@@ -59,12 +59,16 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
         BN_set_word(&bnChar, p1 - BTCBase58Alphabet);
         
         if (!BN_mul(&bn, &bn, &bn58, pctx))
-            @throw [NSException exceptionWithName:@"NSString+Base58 Exception"
-                                           reason:@"Failed to execute BN_mul." userInfo:nil];
+        {
+            finish();
+            return nil;
+        }
         
         if (!BN_add(&bn, &bn, &bnChar))
-            @throw [NSException exceptionWithName:@"NSString+Base58 Exception"
-                                           reason:@"Failed to execute BN_add." userInfo:nil];
+        {
+            finish();
+            return nil;
+        }
     }
     
     // Get bignum as little endian data
@@ -184,8 +188,8 @@ char* BTCBase58CStringWithData(NSData* data)
     {
         if (!BN_div(&dv, &rem, &bn, &bn58, pctx))
         {
-            @throw [NSException exceptionWithName:@"NSData+Base58"
-                                           reason:@"Failed to execute BN_div." userInfo:nil];
+            finish();
+            return nil;
         }
         BN_copy(&bn, &dv);
         unsigned long c = BN_get_word(&rem);

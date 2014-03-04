@@ -24,6 +24,7 @@
 - (NSString*) hexUppercaseString;
 
 // Encrypts/decrypts data using the key.
+// IV should either be nil or at least 128 bits long
 + (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector;
 + (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector;
 

@@ -12,6 +12,9 @@
 // - "normal derivation" which allows to derive public keys separately from the private ones (internally i below 0x80000000).
 // - "hardened derivation" which derives only private keys (for i >= 0x80000000).
 // Derivation can be treated as a single key or as an new branch of keychains.
+
+static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
+
 @class BTCKey;
 @interface BTCKeychain : NSObject<NSCopying>
 
@@ -22,11 +25,11 @@
 @property(nonatomic, readonly) NSData* chainCode;
 
 // Serialized extended public key.
-// Use BTCBase58CheckStringWithData to convert to Base58 form.
+// Use BTCBase58CheckStringWithData() to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPublicKey;
 
 // Serialized extended private key or nil if the receiver is public-only keychain.
-// Use BTCBase58CheckStringWithData to convert to Base58 form.
+// Use BTCBase58CheckStringWithData() to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPrivateKey;
 
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
@@ -49,6 +52,7 @@
 - (id) initWithSeed:(NSData*)seed;
 
 // Initializes keychain with a serialized extended key.
+// Use BTCDataFromBase58Check() to convert from Base58 string.
 - (id) initWithExtendedKey:(NSData*)extendedKey;
 
 // Returns YES if the keychain can derive private keys.
@@ -65,7 +69,7 @@
 
 // Returns a derived keychain.
 // If hardened = YES, uses hardened derivation (possible only when private key is present; otherwise returns nil).
-// Index must be below 0x80000000, otherwise throws an exception.
+// Index must be less of equal BTCKeychainMaxIndex, otherwise throws an exception.
 // May return nil for some indexes (when hashing leads to invalid EC points) which is very rare (chance is below 2^-127), but must be expected. In such case, simply use another index.
 // By default, a normal (non-hardened) derivation is used.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
