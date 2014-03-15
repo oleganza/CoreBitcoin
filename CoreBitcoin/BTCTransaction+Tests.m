@@ -163,8 +163,8 @@
         txin.previousIndex = txout.index;
         [tx addInput:txin];
         
-        NSLog(@"txhash: http://blockchain.info/rawtx/%@", BTCHexStringFromData(txout.transactionHash));
-        NSLog(@"txhash: http://blockchain.info/rawtx/%@ (reversed)", BTCHexStringFromData(BTCReversedData(txout.transactionHash)));
+        NSLog(@"txhash: http://blockchain.info/rawtx/%@", NSStringFromBTC256(txout.transactionHash));
+        NSLog(@"txhash: http://blockchain.info/rawtx/%@ (reversed)", NSStringFromBTC256(BTC256Swap(txout.transactionHash)));
         
         spentCoins += txout.value;
     }
@@ -196,15 +196,15 @@
         
         NSData* d1 = tx.data;
         
-        NSData* hash = [tx signatureHashForScript:txout.script inputIndex:i hashType:BTCSignatureHashTypeAll error:errorOut];
+        BTC256 hash = [tx signatureHashForScript:txout.script inputIndex:i hashType:BTCSignatureHashTypeAll error:errorOut];
         
         NSData* d2 = tx.data;
         
         NSAssert([d1 isEqual:d2], @"Transaction must not change within signatureHashForScript!");
         
         // 134675e153a5df1b8e0e0f0c45db0822f8f681a2eb83a0f3492ea8f220d4d3e4
-        NSLog(@"Hash for input %d: %@", i, BTCHexStringFromData(hash));
-        if (!hash)
+        NSLog(@"Hash for input %d: %@", i, NSStringFromBTC256(hash));
+        if (BTC256Equal(<#BTC256 chunk1#>, <#BTC256 chunk2#>))
         {
             return nil;
         }

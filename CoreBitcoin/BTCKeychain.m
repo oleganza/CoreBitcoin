@@ -14,7 +14,7 @@
 @property(nonatomic, readwrite) NSData* chainCode;
 @property(nonatomic, readwrite) NSData* extendedPublicKey;
 @property(nonatomic, readwrite) NSData* extendedPrivateKey;
-@property(nonatomic, readwrite) NSData* identifier;
+@property(nonatomic, readwrite) BTC160 identifier;
 @property(nonatomic, readwrite) uint32_t fingerprint;
 @property(nonatomic, readwrite) uint32_t parentFingerprint;
 @property(nonatomic, readwrite) uint32_t index;
@@ -35,9 +35,10 @@
     {
         if (!seed) return nil;
         
-        NSData* hmac = BTCHMACSHA512([@"Bitcoin seed" dataUsingEncoding:NSASCIIStringEncoding], seed);
-        _privateKey = [hmac subdataWithRange:NSMakeRange(0, 32)];
-        _chainCode  = [hmac subdataWithRange:NSMakeRange(32, 32)];
+        _identifier = BTC160Zero;
+        BTC512 hmac = BTCHMACSHA512([@"Bitcoin seed" dataUsingEncoding:NSASCIIStringEncoding], seed);
+        _privateKey = [NSData dataWithBytes:&hmac length:32];
+        _chainCode  = [NSData dataWithBytes:(const unsigned char*)(&hmac) + 32 length:32];
     }
     return self;
 }
@@ -47,7 +48,9 @@
     if (self = [super init])
     {
         if (extendedKey.length != 78) return nil;
-
+        
+        _identifier = BTC160Zero;
+        
         const uint8_t* bytes = extendedKey.bytes;
         uint32_t version = OSSwapBigToHostInt32(*((uint32_t*)bytes));
 
@@ -153,9 +156,9 @@
     return data;
 }
 
-- (NSData*) identifier
+- (BTC160) identifier
 {
-    if (!_identifier)
+    if (BTC160Equal(_identifier, BTC160Zero))
     {
         _identifier = BTCHash160(self.publicKey);
     }
@@ -166,8 +169,7 @@
 {
     if (_fingerprint == 0)
     {
-        const uint32_t* bytes = self.identifier.bytes;
-        _fingerprint = OSSwapBigToHostInt32(bytes[0]);
+        _fingerprint = OSSwapBigToHostInt32(_identifier.words32[0]);
     }
     return _fingerprint;
 }
@@ -230,7 +232,8 @@
     uint32_t indexBE = OSSwapHostToBigInt32(hardened ? (0x80000000 | index) : index);
     [data appendBytes:&indexBE length:sizeof(indexBE)];
     
-    NSData* digest = BTCHMACSHA512(_chainCode, data);
+    BTC512 digest512 = BTCHMACSHA512(_chainCode, data);
+    NSData* digest = [NSData dataWithBytes:&digest512 length:sizeof(BTC512)];
     
     BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedData:[digest subdataWithRange:NSMakeRange(0, 32)]];
     
@@ -269,6 +272,16 @@
     derivedKeychain.hardened = hardened;
     
     return derivedKeychain;
+}
+
+- (BTCKeychain*) derivedKeychainAtLargeIndex:(uint64_t)largeIndex
+{
+    return [self derivedKeychainAtLargeIndex:largeIndex hardened:NO];
+}
+
+- (BTCKeychain*) derivedKeychainAtLargeIndex:(uint64_t)index hardened:(BOOL)hardened
+{
+    return [[self derivedKeychainAtIndex:(index >> 31) & 0x7FFFFFFF hardened:hardened] derivedKeychainAtIndex:(index & 0x7FFFFFFF) hardened:hardened];
 }
 
 - (BTCKey*) keyAtIndex:(uint32_t)index

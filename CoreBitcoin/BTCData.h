@@ -1,6 +1,7 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
+#import "BTC256.h"
 
 // Change to 0 to disable code that requires OpenSSL (if you need some of these routines in your own project and you don't need OpenSSL)
 #define BTCDataRequiresOpenSSL 1
@@ -47,27 +48,18 @@ void BTCDataClear(NSMutableData* data);
 
 // Core hash functions that we need.
 // If the argument is nil, returns nil.
-NSData* BTCSHA1(NSData* data);
-NSData* BTCSHA256(NSData* data);
-NSData* BTCSHA256Concat(NSData* data1, NSData* data2); // SHA256(data1 || data2)
-NSData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash() in BitcoinQT)
-NSData* BTCHash256Concat(NSData* data1, NSData* data2);  // SHA256(SHA256(data1 || data2))
-NSData* BTCHMACSHA512(NSData* key, NSData* data);
+BTC160 BTCSHA1(NSData* data);
+BTC256 BTCSHA256(NSData* data);
+BTC256 BTCSHA256Concat(NSData* data1, NSData* data2); // SHA256(data1 || data2)
+BTC256 BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash() in BitcoinQT)
+BTC256 BTCHash256Concat(NSData* data1, NSData* data2);  // SHA256(SHA256(data1 || data2))
+BTC512 BTCHMACSHA512(NSData* key, NSData* data);
 
 #if BTCDataRequiresOpenSSL
 // RIPEMD160 today is provided only by OpenSSL. SHA1 and SHA2 are provided by CommonCrypto framework.
-NSData* BTCRIPEMD160(NSData* data);
-NSData* BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash160 in BitcoinQT)
+BTC160 BTCRIPEMD160(NSData* data);
+BTC160 BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash160 in BitcoinQT)
 #endif
-
-// 160-bit zero string
-NSData* BTCZero160();
-
-// 256-bit zero string
-NSData* BTCZero256();
-
-// Pointer to a static array of zeros (256 bits long).
-const unsigned char* BTCZeroString256();
 
 // Converts data to a hex string
 NSString* BTCHexStringFromData(NSData* data);

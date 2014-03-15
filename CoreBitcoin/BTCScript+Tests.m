@@ -83,7 +83,7 @@
         NSAssert([privkey isEqual:key.privateKey], @"private key should be the same");
         
         BTCKey* key2 = [[BTCKey alloc] initWithPrivateKey:privkey];
-        BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:BTCHash160(key2.publicKey)];
+        BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:NSDataFromBTC160(BTCHash160(key2.publicKey))];
         BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key2.privateKey];
         
         NSLog(@"Address2: %@", pubkeyAddress.base58String);

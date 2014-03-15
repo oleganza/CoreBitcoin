@@ -214,7 +214,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length))
     {
         _publicKey = nil;
-        _compressedPublicKey = nil;
+        _compressedPublicKey = NO;
     }
 }
 
@@ -375,7 +375,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 {
     NSData* pubkey = [self publicKeyCached];
     if (pubkey.length == 0) return nil;
-    return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
+    return [BTCPublicKeyAddress addressWithData:NSDataFromBTC160(BTCHash160(pubkey))];
 }
 
 - (BTCPrivateKeyAddress*) privateKeyAddress
@@ -592,7 +592,7 @@ static NSData* BTCSignatureHashForBinaryMessage(NSData* msg)
     NSMutableData* data = [NSMutableData data];
     [data appendData:[BTCProtocolSerialization dataForVarString:[@"Bitcoin Signed Message:\n" dataUsingEncoding:NSASCIIStringEncoding]]];
     [data appendData:[BTCProtocolSerialization dataForVarString:msg ?: [NSData data]]];
-    return BTCHash256(data);
+    return NSDataFromBTC256(BTCHash256(data));
 }
 
 

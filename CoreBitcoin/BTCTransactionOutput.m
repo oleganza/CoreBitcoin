@@ -25,6 +25,7 @@
 {
     if (self = [super init])
     {
+        _transactionHash = BTC256Zero;
         _value = -1;
         _script = [[BTCScript alloc] init];
     }
@@ -128,9 +129,9 @@
 
 - (NSString*) description
 {
-    NSData* txhash = self.transactionHash;
+    BTC256 txhash = self.transactionHash;
     return [NSString stringWithFormat:@"<%@:0x%p%@%@ %@ BTC '%@'%@>", [self class], self,
-            (txhash ? [NSString stringWithFormat:@" %@", BTCHexStringFromData(txhash)]: @""),
+            (!BTC256Equal(txhash, BTC256Zero) ? [NSString stringWithFormat:@" %@", NSStringFromBTC256(txhash)]: @""),
             (_index == BTCTransactionOutputIndexUnknown ? @"" : [NSString stringWithFormat:@":%d", _index]),
             [self formattedBTCValue:_value],
             _script.string,
@@ -166,12 +167,12 @@
     return _index;
 }
 
-- (NSData*) transactionHash
+- (BTC256) transactionHash
 {
     // Do not remember transaction hash as it changes when we add another output or change some metadata of the tx.
-    if (_transactionHash) return _transactionHash;
+    if (!BTC256Equal(_transactionHash, BTC256Zero)) return _transactionHash;
     if (_transaction) return _transaction.transactionHash;
-    return nil;
+    return BTC256Zero;
 }
 
 

@@ -947,23 +947,23 @@
                 
                 if (opcode == OP_RIPEMD160)
                 {
-                    hash = BTCRIPEMD160(data);
+                    hash = NSDataFromBTC160(BTCRIPEMD160(data));
                 }
                 else if (opcode == OP_SHA1)
                 {
-                    hash = BTCSHA1(data);
+                    hash = NSDataFromBTC160(BTCSHA1(data));
                 }
                 else if (opcode == OP_SHA256)
                 {
-                    hash = BTCSHA256(data);
+                    hash = NSDataFromBTC256(BTCSHA256(data));
                 }
                 else if (opcode == OP_HASH160)
                 {
-                    hash = BTCHash160(data);
+                    hash = NSDataFromBTC160(BTCHash160(data));
                 }
                 else if (opcode == OP_HASH256)
                 {
-                    hash = BTCHash256(data);
+                    hash = NSDataFromBTC160(BTCHash256(data));
                 }
                 [self popFromStack];
                 [_stack addObject:hash];

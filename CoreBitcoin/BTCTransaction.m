@@ -9,7 +9,7 @@
 #import "BTCErrors.h"
 
 @interface BTCTransaction ()
-@property(nonatomic, readwrite) NSData* transactionHash;
+@property(nonatomic, readwrite) BTC256 transactionHash;
 @property(nonatomic, readwrite) NSString* displayTransactionHash;
 @property(nonatomic, readwrite) NSArray* inputs;
 @property(nonatomic, readwrite) NSArray* outputs;
@@ -104,20 +104,12 @@
 - (BOOL) isEqual:(BTCTransaction*)object
 {
     if (![object isKindOfClass:[BTCTransaction class]]) return NO;
-    return [object.transactionHash isEqual:self.transactionHash];
+    return BTC256Equal(object.transactionHash, self.transactionHash);
 }
 
 - (NSUInteger) hash
 {
-    if (self.transactionHash.length >= sizeof(NSUInteger))
-    {
-        // Interpret first bytes as a hash value
-        return *((NSUInteger*)self.transactionHash.bytes);
-    }
-    else
-    {
-        return 0;
-    }
+    return (NSUInteger)self.transactionHash.words64[0];
 }
 
 - (id) copyWithZone:(NSZone *)zone
@@ -146,19 +138,14 @@
 #pragma mark - Properties
 
 
-- (NSData*) transactionHash
+- (BTC256) transactionHash
 {
     return BTCHash256(self.data);
-//    if (!_transactionHash)
-//    {
-//        _transactionHash = BTCHash256(self.data);
-//    }
-//    return _transactionHash;
 }
 
 - (NSString*) displayTransactionHash
 {
-    return BTCHexStringFromData(BTCReversedData(self.transactionHash));
+    return NSStringFromBTC256(BTC256Swap(self.transactionHash));
 //    if (!_displayTransactionHash)
 //    {
 //        _displayTransactionHash = BTCHexStringFromData(BTCReversedData(self.transactionHash));
@@ -212,7 +199,7 @@
 - (void) invalidatePayload
 {
     // These ivars will be recomputed next time their properties are accessed.
-    _transactionHash = nil;
+    _transactionHash = BTC256Zero;
     _displayTransactionHash = nil;
     _data = nil;
 }
@@ -254,7 +241,7 @@
         return;
     }
     output.index = BTCTransactionOutputIndexUnknown;
-    output.transactionHash = nil;
+    output.transactionHash = BTC256Zero;
     output.transaction = self;
     _outputs = [_outputs arrayByAddingObject:output];
     [self invalidatePayload];
@@ -347,7 +334,7 @@
 
 // Hash for signing a transaction.
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
-- (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut
+- (BTC256) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut
 {
     // Create a temporary copy of the transaction to apply modifications to it.
     BTCTransaction* tx = [self copy];
@@ -359,7 +346,7 @@
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
                                                       code:BTCErrorScriptError
                                                   userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Transaction and valid input index must be provided for signature verification.", @"")}];
-        return nil;
+        return BTC256Zero;
     }
     
     // Note: BitcoinQT returns a 256-bit little-endian number 1 in such case, but it does not matter
@@ -372,7 +359,7 @@
                                                   userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:
                                                      NSLocalizedString(@"Input index is out of bounds for transaction: %d >= %d.", @""),
                                                                                         (int)inputIndex, (int)tx.inputs.count]}];
-        return nil;
+        return BTC256Zero;
     }
     
     // In case concatenating two scripts ends up with two codeseparators,
@@ -417,8 +404,10 @@
         // We should do the same to stay compatible.
         if (outputIndex >= tx.outputs.count)
         {
-            static unsigned char littleEndianOne[32] = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-            return [NSData dataWithBytes:littleEndianOne length:32];
+//            static unsigned char littleEndianOne[32] = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+            BTC256 one = BTC256Zero;
+            one.words64[0] = 1;
+            return one;
         }
         
         // All outputs before the one we need are blanked out. All outputs after are simply removed.
@@ -458,7 +447,7 @@
     uint32_t hashType32 = OSSwapHostToLittleInt32((uint32_t)hashType);
     [fulldata appendBytes:&hashType32 length:sizeof(hashType32)];
     
-    NSData* hash = BTCHash256(fulldata);
+    BTC256 hash = BTCHash256(fulldata);
     
 //    NSLog(@"\n----------------------\n");
 //    NSLog(@"TX: %@", BTCHexStringFromData(fulldata));

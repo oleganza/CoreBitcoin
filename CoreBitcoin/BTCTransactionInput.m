@@ -19,7 +19,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     if (self = [super init])
     {
-        _previousHash = BTCZero256();
+        _previousHash = BTC256Zero;
         _previousIndex = BTCInvalidIndex;
         _signatureScript = [[BTCScript alloc] init];
         _sequence = BTCMaxSequence; // max
@@ -53,7 +53,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if (self = [self init])
     {
         NSString* prevHashString = (dictionary[@"prev_out"] ?: @{})[@"hash"];
-        if (prevHashString) _previousHash = BTCReversedData(BTCDataWithHexString(prevHashString));
+        if (prevHashString) _previousHash = BTC256Swap(BTC256FromNSString(prevHashString));
         NSNumber* prevIndexNumber = (dictionary[@"prev_out"] ?: @{})[@"n"];
         if (prevIndexNumber) _previousIndex = prevIndexNumber.unsignedIntValue;
         
@@ -98,7 +98,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 - (id) copyWithZone:(NSZone *)zone
 {
     BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
-    txin.previousHash = [self.previousHash copy];
+    txin.previousHash = self.previousHash;
     txin.previousIndex = self.previousIndex;
     txin.signatureScript = [self.signatureScript copy];
     txin.sequence = self.sequence;
@@ -120,7 +120,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     NSMutableData* payload = [NSMutableData data];
     
-    [payload appendData:_previousHash];
+    [payload appendBytes:&_previousHash length:sizeof(_previousHash)];
     [payload appendBytes:&_previousIndex length:4];
     
     NSData* scriptData = _signatureScript.data;
@@ -138,9 +138,9 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     [_transaction invalidatePayload];
 }
 
-- (void) setPreviousHash:(NSData *)previousHash
+- (void) setPreviousHash:(BTC256)previousHash
 {
-    if (_previousHash == previousHash) return;
+    if (BTC256Equal(_previousHash, previousHash)) return;
     _previousHash = previousHash;
     [self invalidatePayload];
 }
@@ -171,7 +171,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     dict[@"prev_out"] = @{
-                        @"hash": BTCHexStringFromData(BTCReversedData(_previousHash)), // transaction hashes are reversed
+                        @"hash": NSStringFromBTC256(BTC256Swap(_previousHash)), // transaction hashes are reversed
                         @"n": @(_previousIndex),
                         };
     
@@ -222,9 +222,9 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if (stream.streamStatus == NSStreamStatusNotOpen) return NO;
     
     // Read previousHash
-    uint8_t hash[32] = {0};
-    if ([stream read:(uint8_t*)hash maxLength:sizeof(hash)] != sizeof(hash)) return NO;
-    _previousHash = [NSData dataWithBytes:hash length:sizeof(hash)];
+    BTC256 hash;
+    if ([stream read:&hash maxLength:sizeof(hash)] != sizeof(hash)) return NO;
+    _previousHash = hash;
     
     // Read previousIndex
     if ([stream read:(uint8_t*)(&_previousIndex) maxLength:sizeof(_previousIndex)] != sizeof(_previousIndex)) return NO;
@@ -243,9 +243,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
 - (BOOL) isCoinbase
 {
-    return (_previousIndex == BTCInvalidIndex) &&
-            _previousHash.length == 32 &&
-            0 == memcmp(BTCZeroString256(), _previousHash.bytes, 32);
+    return (_previousIndex == BTCInvalidIndex) && BTC256Equal(_previousHash, BTC256Zero);
 }
 
 

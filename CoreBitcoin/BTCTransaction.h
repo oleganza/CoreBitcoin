@@ -3,6 +3,7 @@
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"
 #import "BTCSignatureHashType.h"
+#import "BTC256.h"
 
 static const uint32_t BTCTransactionCurrentVersion = 1;
 
@@ -12,7 +13,7 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 @interface BTCTransaction : NSObject<NSCopying>
 
 // Raw transaction hash SHA256(SHA256(payload))
-@property(nonatomic, readonly) NSData* transactionHash;
+@property(nonatomic, readonly) BTC256 transactionHash;
 
 // Reversed hex representation of -hash
 @property(nonatomic, readonly) NSString* displayTransactionHash;
@@ -47,7 +48,7 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 
 // Hash for signing a transaction.
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
-- (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
+- (BTC256) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
 
 // Adds input script
 - (void) addInput:(BTCTransactionInput*)input;

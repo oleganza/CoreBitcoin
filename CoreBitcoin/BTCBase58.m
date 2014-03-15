@@ -125,10 +125,10 @@ NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
     {
         return nil;
     }
-    NSData* hash = BTCHash256([result subdataWithRange:NSMakeRange(0, length - 4)]);
+    BTC256 hash = BTCHash256([result subdataWithRange:NSMakeRange(0, length - 4)]);
     
     // Last 4 bytes should be equal first 4 bytes of the hash.
-    if (memcmp(hash.bytes, result.bytes + length - 4, 4) != 0)
+    if (memcmp(&hash, result.bytes + length - 4, 4) != 0)
     {
         return nil;
     }
@@ -221,8 +221,8 @@ char* BTCBase58CheckCStringWithData(NSData* immutabledata)
 {
     // add 4-byte hash check to the end
     NSMutableData* data = [immutabledata mutableCopy];
-    NSData* checksum = BTCHash256(data);
-    [data appendBytes:checksum.bytes length:4];
+    BTC256 checksum = BTCHash256(data);
+    [data appendBytes:&checksum length:4];
     char* result = BTCBase58CStringWithData(data);
     BTCDataClear(data);
     return result;

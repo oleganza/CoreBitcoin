@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"
+#import "BTC256.h"
 
 @class BTCScript;
 @class BTCAddress;
@@ -40,8 +41,8 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // Number of confirmations. Default is NSNotFound.
 @property(nonatomic) NSUInteger confirmations;
 
-// Identifier of the transaction. Default is nil.
-@property(nonatomic) NSData* transactionHash;
+// Identifier of the transaction. Default is BTC256Zero.
+@property(nonatomic) BTC256 transactionHash;
 
 // Parses tx output from a data buffer.
 - (id) initWithData:(NSData*)data;

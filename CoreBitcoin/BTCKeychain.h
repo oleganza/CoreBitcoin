@@ -1,6 +1,7 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
+#import "BTC256.h"
 
 // Implementation of BIP32 "Hierarchical Deterministic Wallets" (HDW)
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
@@ -33,7 +34,7 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 @property(nonatomic, readonly) NSData* extendedPrivateKey;
 
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
-@property(nonatomic, readonly) NSData* identifier;
+@property(nonatomic, readonly) BTC160 identifier;
 
 // Fingerprint of the keychain.
 @property(nonatomic, readonly) uint32_t fingerprint;
@@ -74,6 +75,13 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // By default, a normal (non-hardened) derivation is used.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened;
+
+// Splits the index in two parts: higher 31 bits and lower 31 bits. Higher bits used to derive first-tier keychain, lower bits - to derive a second-tier keychain from it.
+// Returns [[keychain derivedKeychainAtIndex:(index >> 31) & 0x7FFFFFFF] derivedKeychainAtIndex:index & 0x7FFFFFFF]
+// This is in API to provide a standard way to generate huge amounts of keys that may approach 2 billion count allowed by 31-bit index in a foreseeble future.
+// This gives 62 bits for the counter which allows generating more than 4 million trillions of keys.
+- (BTCKeychain*) derivedKeychainAtLargeIndex:(uint64_t)largeIndex;
+- (BTCKeychain*) derivedKeychainAtLargeIndex:(uint64_t)index hardened:(BOOL)hardened;
 
 // Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].rootKey
 // If the receiver contains a private key, child key will also contain a private key.

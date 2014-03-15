@@ -12,7 +12,7 @@
 @interface BTCTransactionInput : NSObject <NSCopying>
 
 // Hash of the previous transaction.
-@property(nonatomic) NSData* previousHash;
+@property(nonatomic) BTC256 previousHash;
 
 // Index of the previous transaction's output.
 @property(nonatomic) uint32_t previousIndex;

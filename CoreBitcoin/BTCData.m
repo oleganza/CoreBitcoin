@@ -7,8 +7,6 @@
 #include <openssl/evp.h>
 #endif
 
-static const unsigned char _BTCZeroString256[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
 // Use this subclass to make sure data is zeroed
 @implementation BTCMutableDataZeroedOnDealloc : NSMutableData
 + (instancetype) dataWithData:(NSData *)data
@@ -255,15 +253,15 @@ void BTCDataClear(NSMutableData* self)
     [self resetBytesInRange:NSMakeRange(0, self.length)];
 }
 
-NSData* BTCSHA1(NSData* data)
+BTC160 BTCSHA1(NSData* data)
 {
     if (!data) return nil;
-    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1([data bytes], (CC_LONG)[data length], digest);
-    return [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
+    BTC160 digest;
+    CC_SHA1([data bytes], (CC_LONG)[data length], &digest);
+    return digest;
 }
 
-NSData* BTCSHA256(NSData* data)
+BTC256 BTCSHA256(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
@@ -271,7 +269,7 @@ NSData* BTCSHA256(NSData* data)
     return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
-NSData* BTCSHA256Concat(NSData* data1, NSData* data2)
+BTC256 BTCSHA256Concat(NSData* data1, NSData* data2)
 {
     if (!data1 || !data2) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
@@ -284,22 +282,22 @@ NSData* BTCSHA256Concat(NSData* data1, NSData* data2)
     return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
-NSData* BTCHash256(NSData* data)
+BTC256 BTCHash256(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
-    unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
+    BTC256 digest2;
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
-    CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, &digest2);
+    return digest2
 }
 
-NSData* BTCHash256Concat(NSData* data1, NSData* data2)
+BTC256 BTCHash256Concat(NSData* data1, NSData* data2)
 {
     if (!data1 || !data2) return nil;
     
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
-    unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
+    BTC256 digest2;
     
     CC_SHA256_CTX ctx;
     CC_SHA256_Init(&ctx);
@@ -307,52 +305,37 @@ NSData* BTCHash256Concat(NSData* data1, NSData* data2)
     CC_SHA256_Update(&ctx, [data2 bytes], (CC_LONG)[data2 length]);
     CC_SHA256_Final(digest1, &ctx);
 
-    CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, &digest2);
+    return digest2;
 }
 
-NSData* BTCZero160()
-{
-    return [NSData dataWithBytes:_BTCZeroString256 length:20];
-}
-
-NSData* BTCZero256()
-{
-    return [NSData dataWithBytes:_BTCZeroString256 length:32];
-}
-
-const unsigned char* BTCZeroString256()
-{
-    return _BTCZeroString256;
-}
-
-NSData* BTCHMACSHA512(NSData* key, NSData* data)
+BTC512 BTCHMACSHA512(NSData* key, NSData* data)
 {
     if (!key) return nil;
     if (!data) return nil;
-    unsigned char digest[CC_SHA512_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA512, key.bytes, key.length, data.bytes, data.length, digest);
-    return [NSData dataWithBytes:digest length:CC_SHA512_DIGEST_LENGTH];
+    BTC512 digest;
+    CCHmac(kCCHmacAlgSHA512, key.bytes, key.length, data.bytes, data.length, &digest);
+    return digest;
 }
 
 #if BTCDataRequiresOpenSSL
 
-NSData* BTCRIPEMD160(NSData* data)
+BTC160 BTCRIPEMD160(NSData* data)
 {
     if (!data) return nil;
-    unsigned char digest[RIPEMD160_DIGEST_LENGTH];
-    RIPEMD160([data bytes], (size_t)[data length], digest);
-    return [NSData dataWithBytes:digest length:RIPEMD160_DIGEST_LENGTH];
+    BTC160 digest;
+    RIPEMD160([data bytes], (size_t)[data length], &digest);
+    return digest;
 }
 
-NSData* BTCHash160(NSData* data)
+BTC160 BTCHash160(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
-    unsigned char digest2[RIPEMD160_DIGEST_LENGTH];
+    BTC160 digest2;
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
-    RIPEMD160(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
+    RIPEMD160(digest1, CC_SHA256_DIGEST_LENGTH, &digest2);
+    return digest2;
 }
 
 #endif
