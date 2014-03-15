@@ -4,6 +4,6 @@
 
 @implementation BTCBlock
 
-// TODO
+
 
 @end
