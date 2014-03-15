@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
-#import "BTCBigNumber+Tests.h"
+#import "BTC256+Tests.h"
 #import "BTCData+Tests.h"
+#import "BTCBigNumber+Tests.h"
 #import "BTCBase58+Tests.h"
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
@@ -15,7 +16,9 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool
     {
+        BTC256RunAllTests();
         [NSData runAllTests];
+        
         [BTCBigNumber runAllTests];
         BTCBase58RunAllTests();
         [BTCAddress runAllTests];

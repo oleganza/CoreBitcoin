@@ -18,12 +18,14 @@ Dir.glob("CoreBitcoin/**/*.h").each do |header_filename|
   
   data = File.read(header_filename)
   
+  # Update first line with an authorship comment.
+  
   data.gsub!(%r{\A(//[^\n]+\n)+\n}mi, header_comment + "\n\n")
   if !data[header_comment]
     data = header_comment + "\n\n" + data
   end
 
-  if false 
+  if false
     puts "------- BEGIN FILE #{header_filename} ----------" 
   
     puts data
@@ -34,6 +36,8 @@ Dir.glob("CoreBitcoin/**/*.h").each do |header_filename|
   
   File.open(header_filename, "w"){|f| f.write data }
 end
+
+# Update combined headers
 
 File.open("CoreBitcoin/CoreBitcoin.h", "w") do |f|
   f.write(header_comment + "\n\n")
