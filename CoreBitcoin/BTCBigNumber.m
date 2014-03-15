@@ -19,6 +19,7 @@
 @dynamic uint64value;
 @dynamic int64value;
 @dynamic littleEndianData;
+@dynamic unsignedData;
 @dynamic hexString;
 @dynamic decimalString;
 
@@ -697,6 +698,16 @@
 
 
 @implementation BTCMutableBigNumber
+
+@dynamic compact;
+@dynamic uint32value;
+@dynamic int32value;
+@dynamic uint64value;
+@dynamic int64value;
+@dynamic littleEndianData;
+@dynamic unsignedData;
+@dynamic hexString;
+@dynamic decimalString;
 
 - (BIGNUM*) mutableBIGNUM
 {
