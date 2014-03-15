@@ -1,13 +1,48 @@
-//
-//  BTCNetwork.h
-//  CoreBitcoin
-//
-//  Created by Oleg Andreev on 15.03.2014.
-//  Copyright (c) 2014 Oleg Andreev. All rights reserved.
-//
+// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
+#import "BTC256.h"
 
-@interface BTCNetwork : NSObject
+@class BTCBigNumber;
+@class BTCBlock;
+@interface BTCNetwork : NSObject <NSCopying>
+
+
+// Available networks
+
+// Main Bitcoin network, singleton instance.
++ (BTCNetwork*) mainnet;
+
+// Testnet3 (current testnet), singleton instance.
++ (BTCNetwork*) testnet3;
+
+
+
+// Network Parameters
+// Note: all properties are writable so you can tweak parameters for testing purposes.
+// If you do so, you may want to use -copy.
+
+
+// Returns YES if this network is testnet3 (used to tweak certain validation rules).
+- (BOOL) isTestnet;
+
+// Hash of the genesis block.
+@property(nonatomic) NSData* genesisBlockHash;
+
+// Default port for TCP connections.
+@property(nonatomic) uint32_t defaultPort;
+
+// Maximum target for the proof of work: CBigNum(~uint256(0) >> 32) for mainnet.
+@property(nonatomic) BTCBigNumber* proofOfWorkLimit;
+
+// Array of pairs @[ @(int <height>), NSData* <hash> ] sorted by height.
+@property(nonatomic) NSArray* checkpoints;
+
+
+// Returns a checkpoint hash if it exists or BTC256Zero if there is no checkpoint at such height.
+- (NSData*) checkpointAtHeight:(int)height;
+
+// Returns height of checkpoint or -1 if there is no such checkpoint.
+- (int) heightForCheckpoint:(NSData*)checkpointHash;
 
 @end
