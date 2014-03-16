@@ -13,7 +13,7 @@ static const int32_t BTCBlockCurrentVersion = 2;
 @property(nonatomic) uint32_t difficultyTarget; // aka nBits
 @property(nonatomic) uint32_t nonce;
 
-@property(nonatomic, readonly) NSData* hash;
+@property(nonatomic, readonly) NSData* blockHash;
 @property(nonatomic, readonly) NSData* data;
 
 + (NSUInteger) headerLength;
