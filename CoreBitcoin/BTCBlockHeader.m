@@ -45,7 +45,7 @@
     return self;
 }
 
-- (NSData*) hash
+- (NSData*) blockHash
 {
     return BTCHash256(self.data);
 }
