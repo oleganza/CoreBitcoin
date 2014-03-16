@@ -214,7 +214,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length))
     {
         _publicKey = nil;
-        _compressedPublicKey = nil;
+        _compressedPublicKey = NO;
     }
 }
 
