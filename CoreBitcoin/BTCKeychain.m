@@ -277,7 +277,7 @@
 }
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened
 {
-    return [[self derivedKeychainAtIndex:index hardened:NO] rootKey];
+    return [[self derivedKeychainAtIndex:index hardened:hardened] rootKey];
 }
 
 - (BTCKeychain*) publicKeychain
