@@ -119,6 +119,8 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
 
 NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
 {
+    if (cstring == NULL) return nil;
+    
     NSMutableData* result = BTCDataFromBase58CString(cstring);
     size_t length = result.length;
     if (length < 4)
@@ -139,6 +141,8 @@ NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
 
 char* BTCBase58CStringWithData(NSData* data)
 {
+    if (!data) return NULL;
+    
     BN_CTX* pctx = BN_CTX_new();
     __block BIGNUM bn58; BN_init(&bn58); BN_set_word(&bn58, 58);
     __block BIGNUM bn0;  BN_init(&bn0);  BN_zero(&bn0);
@@ -219,6 +223,7 @@ char* BTCBase58CStringWithData(NSData* data)
 // String in Base58 with checksum
 char* BTCBase58CheckCStringWithData(NSData* immutabledata)
 {
+    if (!data) return NULL;
     // add 4-byte hash check to the end
     NSMutableData* data = [immutabledata mutableCopy];
     NSData* checksum = BTCHash256(data);
@@ -230,6 +235,7 @@ char* BTCBase58CheckCStringWithData(NSData* immutabledata)
 
 NSString* BTCBase58StringWithData(NSData* data)
 {
+    if (!data) return nil;
     char* s = BTCBase58CStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
     BTCSecureClearCString(s);
@@ -240,6 +246,7 @@ NSString* BTCBase58StringWithData(NSData* data)
 
 NSString* BTCBase58CheckStringWithData(NSData* data)
 {
+    if (!data) return nil;
     char* s = BTCBase58CheckCStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
     BTCSecureClearCString(s);
