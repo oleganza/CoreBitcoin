@@ -223,7 +223,7 @@ char* BTCBase58CStringWithData(NSData* data)
 // String in Base58 with checksum
 char* BTCBase58CheckCStringWithData(NSData* immutabledata)
 {
-    if (!data) return NULL;
+    if (!immutabledata) return NULL;
     // add 4-byte hash check to the end
     NSMutableData* data = [immutabledata mutableCopy];
     NSData* checksum = BTCHash256(data);
