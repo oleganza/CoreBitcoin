@@ -647,8 +647,8 @@
 - (NSData*) unsignedData
 {
     int num_bytes = BN_num_bytes(&_bignum);
-    NSMutableData* data = [[NSMutableData alloc] initWithLength:32];
-    int copied_bytes = BN_bn2bin(&_bignum, &data.mutableBytes[32 - num_bytes]);
+    NSMutableData* data = [[NSMutableData alloc] initWithLength:32]; // zeroed data
+    int copied_bytes = BN_bn2bin(&_bignum, &data.mutableBytes[32 - num_bytes]); // fill the tail of the data so it's zero-padded to the left
     if (copied_bytes != num_bytes) return nil;
     return data;
 }
@@ -825,7 +825,13 @@
     return self;
 }
 
-
+- (instancetype) inverseMod:(BTCBigNumber*)mod // (a^-1) mod n
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_mod_inverse(&(self->_bignum), &(self->_bignum), &(mod->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return self;
+}
 
 @end
 
