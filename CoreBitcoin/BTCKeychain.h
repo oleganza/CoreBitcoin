@@ -16,6 +16,7 @@
 static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 
 @class BTCKey;
+@class BTCBigNumber;
 @interface BTCKeychain : NSObject<NSCopying>
 
 // The root key of the keychain. If this is a public-only keychain, key does not have a private key.
@@ -75,12 +76,19 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
+// If factorOut is not NULL, it will be contain a number that is being added to the private key.
+// This is useful when BIP32 is used in blind signatures protocol.
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut;
+
 // Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].rootKey
 // If the receiver contains a private key, child key will also contain a private key.
 // If the receiver contains only a public key, child key will only contain a public key. (Or nil will be returned if hardened = YES.)
 // By default, a normal (non-hardened) derivation is used.
 - (BTCKey*) keyAtIndex:(uint32_t)index;
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened;
+
+// Clears sensitive data from keychain
+- (void) clear;
 
 @end
 

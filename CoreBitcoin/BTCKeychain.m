@@ -198,6 +198,11 @@
 
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened
 {
+    return [self derivedKeychainAtIndex:index hardened:hardened factor:NULL];
+}
+
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut
+{
     // As we use explicit parameter "hardened", do not allow higher bit set.
     if ((0x80000000 & index) != 0)
     {
@@ -240,6 +245,8 @@
         return nil;
     }
     
+    if (factorOut) *factorOut = factor;
+    
     derivedKeychain.chainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
     
     if (_privateKey)
@@ -251,6 +258,8 @@
         if ([pkNumber isEqual:[BTCBigNumber zero]]) return nil;
         
         derivedKeychain.privateKey = pkNumber.unsignedData;
+        
+        [pkNumber clear];
     }
     else
     {
@@ -292,6 +301,12 @@
     keychain.hardened = self.hardened;
     
     return keychain;
+}
+
+- (void) clear
+{
+#warning FIXME: keep privateKey in NSMutableData, also add BTCSubdataWithRange(data, range) that returns mutable data (so it's zeroable).
+//  BTCDataClear(_privateKey);
 }
 
 
