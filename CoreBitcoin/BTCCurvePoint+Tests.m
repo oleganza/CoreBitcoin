@@ -32,6 +32,9 @@
     BTCCurvePoint* pubkeyPoint = [[generator copy] multiply:bn];
     BTCKey* keyFromPoint = [[BTCKey alloc] initWithCurvePoint:pubkeyPoint];
     
+    // 2.1. Test serialization
+    
+    NSAssert([pubkeyPoint isEqual:[[BTCCurvePoint alloc] initWithData:pubkeyPoint.data]], @"test serialization");
     
     // 3. Compare the two pubkeys.
     
