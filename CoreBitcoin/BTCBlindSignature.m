@@ -19,7 +19,7 @@
     BTCKeychain* _custodianKeychain;
 }
 
-// Convenience API
+// High-level API
 // This is BIP32-based API to keep track of just a single private key for multiple signatures.
 
 // Alice as a client needs private client keychain and public custodian keychain (provided by Bob).
@@ -238,7 +238,7 @@
 
 
 // Core Algorithm
-// Exposed as a public API for testing purposes. Use less verbose convenience API above for real usage.
+// Exposed as a public API for testing purposes. Use less verbose high-level API above for real usage.
 
 // Alice wants Bob to sign her transactions blindly.
 // Bob will provide Alice with blinded public keys and blinded signatures for each transaction.

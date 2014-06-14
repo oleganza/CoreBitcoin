@@ -10,9 +10,42 @@
 @class BTCCurvePoint;
 @interface BTCBlindSignature : NSObject
 
-// Convenience API
+// High-level API
 // This is BIP32-based API to keep track of just a single private key for multiple signatures.
 //
+// Usage:
+// 1. Bob creates his keychain and gives keychain.extendedPublicKey to Alice.
+//
+// 2. Alice creates her instance of the API:
+//    BTCBlindSignature* alice = [[BTCBlindSignature alloc] initWithClientKeychain:aliceKeychain custodianKeychain:bobPublicKeychain];
+//
+// 3. Bob creates his instance of the API:
+//    BTCBlindSignature* bob = [[BTCBlindSignature alloc] initWithCustodianKeychain:bobKeychain];
+//
+// 4. Alice generates a public key to use in a destination script (e.g. in a multisig transaction).
+//    BTCKey* pubkey = [alice publicKeyAtIndex:i];
+//
+// 5. Later, when Alice wants to redeem her funds, she prepares a redeeming transaction and computes its hash:
+//    NSData* hash = BTCHash256(...);
+//
+// 6. Alice blinds this hash and sends it to Bob:
+//    NSData* blindedHash = [alice blindedHashForHash:hash index:i];
+//
+// 7. Bob receives the blindedHash and computes blind signature for Alice (and sends it back to her).
+//    NSData* blindSig = [bob blindSignatureForBlindedHash:blindedHash index:i];
+//
+// 8. Alice receives the blind signature from Bob and computes the complete ECDSA signature ready to use in her redeeming transaction.
+//    NSData* finalSig = [alice unblindedSignatureForBlindSignature:blindSig index:i];
+//
+// Alice may verify that signature satisfies the public key: [pubkey isValidSignature:finalSig hash:hash].
+//
+// Note: the same index i must not be reused for a different transaction.
+//
+// IMPORTANT: once you published one transaction, you cannot adjust mining fees or outputs and resend a different transaction.
+//            if you do, you will expose the same nonce for two different hashes and that will allow someone to find our a matching private key
+//            and issue a doublespending transaction in attempt to steal your funds.
+//
+// Algorithm in detail:
 // 1. Alice creates an extended private key u.
 // 2. Bob creates an extended private key w and sends the corresponding extended public key W to Alice.
 // 3. Alice assigns an index i for each “blind” public key T to use in the future. Alice must use each value of i only for one message.
@@ -68,7 +101,7 @@
 
 
 // Core Algorithm
-// Exposed as a public API for testing purposes. Use less verbose convenience API above for real usage.
+// Exposed as a public API for testing purposes. Use high-level API above in real applications.
 
 // Alice wants Bob to sign her transactions blindly.
 // Bob will provide Alice with blinded public keys and blinded signatures for each transaction.
