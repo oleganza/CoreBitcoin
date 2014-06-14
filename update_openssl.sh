@@ -10,7 +10,7 @@ OPENSSL_VERSION="1.0.1e"
 
 DEVELOPER="/Applications/Xcode.app/Contents/Developer"
 
-IOS_SDK_VERSION="7.0"
+IOS_SDK_VERSION="7.1"
 OSX_SDK_VERSION="10.9"
 
 WORKDIR=${PWD}
@@ -27,7 +27,24 @@ MACOS_PLATFORM="${DEVELOPER}/Platforms/MacOSX.platform"
 MACOS_SDK="${MACOS_PLATFORM}/Developer/SDKs/MacOSX${OSX_SDK_VERSION}.sdk"
 MACOS_GCC="${DEVELOPER}/usr/bin/gcc"
 
+if [ ! -e $IPHONEOS_SDK ]; then
+    echo "Error! iOS SDK is not found: ${IPHONEOS_SDK}"
+    exit
+fi
 
+if [ ! -e $MACOS_SDK ]; then
+    echo "Error! OS X SDK is not found: ${MACOS_SDK}"
+    exit
+fi
+
+if [ -e openssl ]; then
+    if [ -e openssl.bak ]; then
+        rm -rf openssl.bak
+    fi
+    mv openssl openssl.bak
+fi
+
+rm -rf openssl-${OPENSSL_VERSION}-*
 rm -rf openssl
 
 # Instead of downloading an archive over insecure link, we'll just keep it in the repo.
@@ -102,7 +119,7 @@ lipo \
 	"${WORKDIR}/openssl-${OPENSSL_VERSION}-i386/libssl.a" \
 	"${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64-simulator/libssl.a" \
 	-create -output lib/libssl-ios.a
-	
+
 cp "${WORKDIR}/openssl-${OPENSSL_VERSION}-x86_64/libssl.a" "lib/libssl-osx.a" 
 
 cd ..
