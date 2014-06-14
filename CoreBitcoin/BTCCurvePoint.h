@@ -19,7 +19,7 @@
 @property(nonatomic, readonly) const EC_POINT* EC_POINT;
 
 // Returns the generator point. Same as [BTCCurvePoint alloc] init].
-+ (id) generator;
++ (instancetype) generator;
 
 // Returns order of the secp256k1 curve (FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141).
 + (BTCBigNumber*) curveOrder;
@@ -43,5 +43,13 @@
 // Coordinates of the point
 - (BTCBigNumber*) x;
 - (BTCBigNumber*) y;
+
+// Re-declared copy to provide exact return type.
+- (BTCCurvePoint*) copy;
+
+// Clears internal point data.
+- (void) clear;
+
+
 
 @end

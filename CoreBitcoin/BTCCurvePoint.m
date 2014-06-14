@@ -26,7 +26,7 @@
     _bnctx = NULL;
 }
 
-+ (id) generator
++ (instancetype) generator
 {
     return [[self alloc] init];
 }
@@ -230,10 +230,23 @@
     return result;
 }
 
+// Clears internal point data.
+- (void) clear
+{
+    if (_point) EC_POINT_clear_free(_point);
+    _point = NULL;
+}
+
+
 
 #pragma mark - NSObject & NSCopying
 
 
+// Re-declared copy to provide exact return type.
+- (BTCCurvePoint*) copy
+{
+    return [self copyWithZone:nil];
+}
 
 - (id) copyWithZone:(NSZone *)zone
 {
