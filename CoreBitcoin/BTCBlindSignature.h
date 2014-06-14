@@ -60,11 +60,11 @@
 - (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index;
 
 // Step 9-10: Bob computes a signature for Alice.
-- (NSData*) blindSignatureForBlindedHash:(NSData*)blindSignature index:(uint32_t)index;
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash index:(uint32_t)index;
 
 // Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
 // Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
-- (NSData*) unblindedSignatureForBlindSignature:(NSData*)hash index:(uint32_t)index;
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature index:(uint32_t)index;
 
 
 // Core Algorithm

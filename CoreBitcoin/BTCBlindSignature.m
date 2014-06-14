@@ -108,11 +108,11 @@
 }
 
 // Step 9-10: Bob computes a signature for Alice.
-- (NSData*) blindSignatureForBlindedHash:(NSData*)hash index:(uint32_t)index
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash index:(uint32_t)index
 {
-    if (!hash) return nil;
+    if (!blindedHash) return nil;
     
-    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:hash];
+    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:blindedHash];
     
     //    From
     //      P = p^-1·G = (w + x)·G (where x is a factor in ND(W, 2·i + 0))
