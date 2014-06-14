@@ -50,6 +50,8 @@
     
     
     // Memory hard KDF
+    
+    return;
 
     NSLog(@"Generating key with BTCJerk256...");
     NSDate* t1 = [NSDate date];
