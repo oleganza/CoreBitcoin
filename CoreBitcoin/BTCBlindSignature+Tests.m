@@ -4,10 +4,11 @@
 
 #import "BTCBlindSignature+Tests.h"
 
+#import "BTCKey.h"
+#import "BTCKeychain.h"
 #import "BTCData.h"
 #import "BTCBigNumber.h"
 #import "BTCCurvePoint.h"
-#import "BTCKey.h"
 
 
 @implementation BTCBlindSignature (Tests)
@@ -73,9 +74,52 @@
     NSAssert([pubkey isValidSignature:finalSignature hash:hash], @"should have created a valid signature after all that trouble");
 }
 
+
+
 + (void) testConvenienceAPI
 {
+    BTCKeychain* aliceKeychain = [[BTCKeychain alloc] initWithSeed:[@"Alice" dataUsingEncoding:NSUTF8StringEncoding]];
+    BTCKeychain* bobKeychain = [[BTCKeychain alloc] initWithSeed:[@"Bob" dataUsingEncoding:NSUTF8StringEncoding]];
+    BTCKeychain* bobPublicKeychain = [[BTCKeychain alloc] initWithExtendedKey:bobKeychain.extendedPublicKey];
+
+    NSAssert(aliceKeychain, @"sanity check");
+    NSAssert(bobKeychain, @"sanity check");
+    NSAssert(bobPublicKeychain, @"sanity check");
+
+    BTCBlindSignature* alice = [[BTCBlindSignature alloc] initWithClientKeychain:aliceKeychain custodianKeychain:bobPublicKeychain];
+    BTCBlindSignature* bob = [[BTCBlindSignature alloc] initWithCustodianKeychain:bobKeychain];
     
+    NSAssert(alice, @"sanity check");
+    NSAssert(bob, @"sanity check");
+    
+    for (uint32_t i = 0; i < 32; i++)
+    {
+        // This will be Alice's pubkey that she can use in a destination script.
+        BTCKey* pubkey = [alice publicKeyAtIndex:i];
+        NSAssert(pubkey, @"sanity check");
+        
+        //NSLog(@"pubkey = %@", pubkey);
+        
+        // This will be a hash of Alice's transaction.
+        NSData* hash = BTCHash256([[NSString stringWithFormat:@"transaction %ul", i] dataUsingEncoding:NSUTF8StringEncoding]);
+        
+        //NSLog(@"hash = %@", hash);
+        
+        // Alice will send this to Bob.
+        NSData* blindedHash = [alice blindedHashForHash:hash index:i];
+        NSAssert(blindedHash, @"sanity check");
+        
+        // Bob computes the signature for Alice and sends it back to her.
+        NSData* blindSig = [bob blindSignatureForBlindedHash:blindedHash index:i];
+        NSAssert(blindSig, @"sanity check");
+        
+        // Alice receives the blind signature and computes the complete ECDSA signature ready to use in a redeeming transaction.
+        NSData* finalSig = [alice unblindedSignatureForBlindSignature:blindSig index:i];
+        NSAssert(finalSig, @"sanity check");
+        
+        NSAssert([pubkey isValidSignature:finalSig hash:hash], @"Check that the resulting signature is valid for our original hash and pubkey.");
+    }
 }
+
 
 @end

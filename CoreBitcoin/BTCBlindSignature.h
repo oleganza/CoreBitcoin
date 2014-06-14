@@ -4,14 +4,67 @@
 
 #import <Foundation/Foundation.h>
 
+@class BTCKey;
+@class BTCKeychain;
 @class BTCBigNumber;
 @class BTCCurvePoint;
 @interface BTCBlindSignature : NSObject
 
 // Convenience API
 // This is BIP32-based API to keep track of just a single private key for multiple signatures.
+//
+// 1. Alice creates an extended private key u.
+// 2. Bob creates an extended private key w and sends the corresponding extended public key W to Alice.
+// 3. Alice assigns an index i for each “blind” public key T to use in the future. Alice must use each value of i only for one message.
+// 4. Alice generates a, b, c, d using HD(u, i), a “hardened” derivation according to BIP32:
+//    a = HD(u, 4·i + 0)
+//    b = HD(u, 4·i + 1)
+//    c = HD(u, 4·i + 2)
+//    d = HD(u, 4·i + 3)
+// 5. Alice generates P and Q via ND(W, i), normal (“non-hardened”) derivation according to BIP32:
+//    P = ND(W, 2·i + 0)
+//    Q = ND(W, 2·i + 1)
+// 6. Using a, b, c, d, P and Q, Alice computes T and K and stores tuple (T, K, i) for the future,
+//    until she needs to request a signature from Bob.
+// 7. When Alice needs to sign her message, she retrieves K and i
+//    and recovers her secret parameters a, b, c, d using HD(u, i).
+// 8. Alice sends Bob a blinded hash h2 = a·h + b (mod n) and index i.
+// 9. Because P and Q are not simply the public keys of p and q,
+//    Bob needs to do extra operations to derive p and q from w and i (following BIP32 would not be enough):
+//    From
+//      P = p^-1·G = (w + x)·G (where x is a factor in ND(W, 2·i + 0))
+//    follows:
+//      p = (w + x)^-1 mod n
+//
+//    From
+//      Q = q·p^-1·G = (w + y)·G (where y is a factor in ND(W, 2·i + 1))
+//    follows:
+//      q = (w + y)·(w + x)^-1 mod n
+//
+//    Factors x and y are produced according to BIP32 as first 32 bytes of HMAC-SHA512.
+//    See [BIP32] for details.
+//
+// 10. Bob computes blinded signature s1 = p·h2 + q (mod n) and sends it to Alice (after verifying her identity).
+// 11. Alice receives the blinded signature, unblinds it and arrives at a final signature (Kx, s2).
 
-// ...
+// Alice as a client needs private client keychain and public custodian keychain (provided by Bob).
+- (id) initWithClientKeychain:(BTCKeychain*)clientKeychain custodianKeychain:(BTCKeychain*)custodianKeychain;
+
+// Bob as a custodian only needs his own private keychain.
+- (id) initWithCustodianKeychain:(BTCKeychain*)custodianKeychain;
+
+// Steps 4-6: Alice generates public key to use in a transaction.
+- (BTCKey*) publicKeyAtIndex:(uint32_t)index;
+
+// Steps 7-8: Alice blinds her message and sends it to Bob.
+- (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index;
+
+// Step 9-10: Bob computes a signature for Alice.
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindSignature index:(uint32_t)index;
+
+// Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
+// Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)hash index:(uint32_t)index;
 
 
 // Core Algorithm
@@ -54,7 +107,7 @@
 
 // 9. Now Alice has (Kx, s2) which is a valid ECDSA signature of hash h verifiable by public key T.
 // This returns final DER-encoded ECDSA signature ready to be used in a bitcoin transaction.
-// Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
+// Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
 - (NSData*) aliceCompleteSignatureForKx:(BTCBigNumber*)Kx unblindedSignature:(BTCBigNumber*)unblindedSignature;
 
 @end

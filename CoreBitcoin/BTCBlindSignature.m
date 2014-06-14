@@ -3,6 +3,9 @@
 // http://oleganza.com/blind-ecdsa-draft-v2.pdf
 
 #import "BTCBlindSignature.h"
+#import "BTCData.h"
+#import "BTCKey.h"
+#import "BTCKeychain.h"
 #import "BTCCurvePoint.h"
 #import "BTCBigNumber.h"
 #include <openssl/ec.h>
@@ -11,8 +14,227 @@
 #include <openssl/bn.h>
 
 
-@implementation BTCBlindSignature
+@implementation BTCBlindSignature {
+    BTCKeychain* _clientKeychain;
+    BTCKeychain* _custodianKeychain;
+}
 
+// Convenience API
+// This is BIP32-based API to keep track of just a single private key for multiple signatures.
+
+// Alice as a client needs private client keychain and public custodian keychain (provided by Bob).
+- (id) initWithClientKeychain:(BTCKeychain*)clientKeychain custodianKeychain:(BTCKeychain*)custodianKeychain;
+{
+    if (!clientKeychain || !custodianKeychain) return nil;
+    
+    // Sanity check: client keychain must be private and custodian one must be public.
+    if (!clientKeychain.isPrivate) return nil;
+    if (custodianKeychain.isPrivate) return nil;
+
+    if (self = [super init])
+    {
+        _clientKeychain = clientKeychain;
+        _custodianKeychain = custodianKeychain;
+    }
+    return self;
+}
+
+// Bob as a custodian only needs his own private keychain.
+- (id) initWithCustodianKeychain:(BTCKeychain*)custodianKeychain
+{
+    if (!custodianKeychain) return nil;
+    
+    // Sanity check: custodian keychain must be private.
+    if (!custodianKeychain.isPrivate) return nil;
+    
+    if (self = [super init])
+    {
+        _custodianKeychain = custodianKeychain;
+    }
+    return self;
+}
+
+// Steps 4-6: Alice generates public key to use in a transaction.
+- (BTCKey*) publicKeyAtIndex:(uint32_t)index
+{
+    BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
+    BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
+    BTCBigNumber* c = [self privateNumberFromKeychain:_clientKeychain index:4*index + 2];
+    BTCBigNumber* d = [self privateNumberFromKeychain:_clientKeychain index:4*index + 3];
+    
+    BTCCurvePoint* P = [self pointFromKeychain:_custodianKeychain index:2*index + 0];
+    BTCCurvePoint* Q = [self pointFromKeychain:_custodianKeychain index:2*index + 1];
+    
+    NSArray* KT = [self alice_K_and_T_for_a:a b:b c:c d:d P:P Q:Q];
+    
+    BTCCurvePoint* K = KT.firstObject;
+    BTCCurvePoint* T = KT.lastObject;
+    
+    NSAssert(K, @"sanity check");
+    NSAssert(T, @"sanity check");
+    
+    BTCKey* key = [[BTCKey alloc] initWithCurvePoint:T];
+    
+    NSAssert(key, @"sanity check");
+    
+    [K clear];
+    [a clear];
+    [b clear];
+    [c clear];
+    [d clear];
+    [P clear];
+    [Q clear];
+    
+    return key;
+}
+
+// Steps 7-8: Alice blinds her message and sends it to Bob.
+- (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index
+{
+    if (!hash) return nil;
+    
+    BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
+    BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
+    
+    BTCBigNumber* h1 = [[BTCBigNumber alloc] initWithUnsignedData:hash];
+    
+    BTCBigNumber* h2 = [self aliceBlindedHashForHash:h1 a:a b:b];
+    
+    [a clear];
+    [b clear];
+    [h1 clear];
+    
+    return h2.unsignedData;
+}
+
+// Step 9-10: Bob computes a signature for Alice.
+- (NSData*) blindSignatureForBlindedHash:(NSData*)hash index:(uint32_t)index
+{
+    if (!hash) return nil;
+    
+    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:hash];
+    
+    //    From
+    //      P = p^-1·G = (w + x)·G (where x is a factor in ND(W, 2·i + 0))
+    //    follows:
+    //      p = (w + x)^-1 mod n
+    //
+    //    From
+    //      Q = q·p^-1·G = (w + y)·G (where y is a factor in ND(W, 2·i + 1))
+    //    follows:
+    //      q = (w + y)·(w + x)^-1 mod n = (w + y)·p mod n
+
+    BTCBigNumber* order = [BTCCurvePoint curveOrder];
+    
+    BTCBigNumber* w = [[BTCBigNumber alloc] initWithUnsignedData:_custodianKeychain.rootKey.privateKey];
+    
+    BTCBigNumber* x = nil;
+    BTCBigNumber* y = nil;
+    
+    [_custodianKeychain derivedKeychainAtIndex:2*index + 0 hardened:NO factor:&x];
+    [_custodianKeychain derivedKeychainAtIndex:2*index + 1 hardened:NO factor:&y];
+    
+    BTCBigNumber* p = [[[w mutableCopy] add:x mod:order] inverseMod:order];
+    BTCBigNumber* q = [[[w mutableCopy] add:y mod:order] multiply:p mod:order];
+    
+    BTCBigNumber* s1 = [self bobBlindedSignatureForHash:h2 p:p q:q];
+    
+    [w clear];
+    [x clear];
+    [y clear];
+    [p clear];
+    [q clear];
+    [h2 clear];
+    
+    return s1.unsignedData;
+}
+
+// Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
+// Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature index:(uint32_t)index
+{
+    if (!blindSignature) return nil;
+    
+    BTCBigNumber* s1 = [[BTCBigNumber alloc] initWithUnsignedData:blindSignature];
+
+    BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
+    BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
+    BTCBigNumber* c = [self privateNumberFromKeychain:_clientKeychain index:4*index + 2];
+    BTCBigNumber* d = [self privateNumberFromKeychain:_clientKeychain index:4*index + 3];
+
+    BTCCurvePoint* P = [self pointFromKeychain:_custodianKeychain index:2*index + 0];
+    BTCCurvePoint* Q = [self pointFromKeychain:_custodianKeychain index:2*index + 1];
+    
+    NSArray* KT = [self alice_K_and_T_for_a:a b:b c:c d:d P:P Q:Q];
+    
+    BTCCurvePoint* K = KT.firstObject;
+    BTCCurvePoint* T = KT.lastObject;
+    
+    NSAssert(K, @"sanity check");
+    NSAssert(T, @"sanity check");
+
+    BTCBigNumber* s2 = [self aliceUnblindedSignatureForSignature:s1 c:c d:d];
+    
+    NSAssert(s2, @"sanity check");
+
+    NSData* sig = [self aliceCompleteSignatureForKx:K.x unblindedSignature:s2];
+
+    NSAssert(sig, @"sanity check");
+
+    [K clear];
+    [s2 clear];
+    [s1 clear];
+    [a clear];
+    [b clear];
+    [c clear];
+    [d clear];
+    
+    return sig;
+}
+
+
+- (BTCBigNumber*) privateNumberFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index
+{
+    BTCKeychain* derivedKC = [keychain derivedKeychainAtIndex:index hardened:YES];
+    
+    NSAssert(derivedKC, @"sanity check");
+    
+    BTCKey* key = derivedKC.rootKey;
+    
+    NSAssert(key, @"sanity check");
+    
+    NSMutableData* privKeyData = key.privateKey;
+    
+    NSAssert(privKeyData, @"sanity check");
+    
+    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:privKeyData];
+    
+    BTCDataClear(privKeyData);
+    [key clear];
+    [derivedKC clear];
+    
+    return bn;
+}
+
+- (BTCCurvePoint*) pointFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index
+{
+    BTCKeychain* derivedKC = [keychain derivedKeychainAtIndex:index hardened:NO];
+    
+    NSAssert(derivedKC, @"sanity check");
+    
+    BTCKey* key = derivedKC.rootKey;
+    
+    NSAssert(key, @"sanity check");
+    
+    BTCCurvePoint* point = [key curvePoint];
+    
+    NSAssert(point, @"sanity check");
+    
+    [key clear];
+    [derivedKC clear];
+    
+    return point;
+}
 
 
 // Core Algorithm
