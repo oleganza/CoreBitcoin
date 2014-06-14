@@ -11,6 +11,7 @@
 #import <CoreBitcoin/BTCErrors.h>
 #import <CoreBitcoin/BTCKey.h>
 #import <CoreBitcoin/BTCKeychain.h>
+#import <CoreBitcoin/BTCBlindSignature.h>
 #import <CoreBitcoin/BTCOpcode.h>
 #import <CoreBitcoin/BTCProtocolSerialization.h>
 #import <CoreBitcoin/BTCScript.h>
