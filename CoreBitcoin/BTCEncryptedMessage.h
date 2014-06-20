@@ -26,11 +26,11 @@ typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
     // No address is given, recipient must attempt to decrypt the message to figure if he is indeed a recipient.
     BTCEncryptedMessageAddressLengthNone           = 0,
     
-    // First 7 bits of the address. To route message efficiently to 1% of the total users yet keeping recipient secret.
-    BTCEncryptedMessageAddressLengthLightRouting   = 7,
+    // First 4 bits of the address. To route message efficiently to 6% of all users yet keeping recipient secret.
+    BTCEncryptedMessageAddressLengthLightRouting   = 4,
     
-    // First 10 bits of the address. To route message to 0.1% of the user. Good anonymity of recipient is maintained if number of users is more than 1M.
-    BTCEncryptedMessageAddressLengthNormalRouting  = 10,
+    // First 7 bits of the address. To route message to 0.8% of the users. Good anonymity of recipient is maintained if number of users is more than 200K.
+    BTCEncryptedMessageAddressLengthNormalRouting  = 7,
     
     // Fingerprint is a short 32-bit identifier to be compact, but yet allow fast identification like in BIP32 / BTCKeychain.
     BTCEncryptedMessageAddressLengthFingerprint    = 32,
@@ -75,7 +75,7 @@ typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
 // Internally it is mixed with the message and its parameters to ensure uniqueness of encryption key per message.
 // When in doubt, simply use nil as a seed - we will generate a random one from system RNG.
 // If difficultyTarget is below 0xFF, finds a nonce key repeatedly to match the difficulty. (So you might want to run this on a separate thread.)
-- (NSData*) encryptedDataWithKey:(BTCKey*)key seed:(NSData*)seed;
+- (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed;
 
 
 
