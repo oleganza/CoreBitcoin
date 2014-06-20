@@ -45,4 +45,35 @@ void BTCBase58RunAllTests()
     BTCAssertHexEncodesToBase58(@"ecac89cad93923c02321", @"EJDM8drfXA6uyA");
     BTCAssertHexEncodesToBase58(@"10c8511e", @"Rt5zm");
     BTCAssertHexEncodesToBase58(@"00000000000000000000", @"1111111111");
+
+    // Search for vanity prefix
+    NSString* prefix = @"s";
+    
+    NSData* payload = BTCRandomDataWithLength(32);
+    for (uint32_t i = 0x10000000; i <= UINT32_MAX; i++)
+    {
+        int j = 10;
+        NSString* serialization = nil;
+        do
+        {
+            NSMutableData* data = [NSMutableData data];
+            
+            uint32_t idx = 0;
+            [data appendBytes:&i length:sizeof(i)];
+            [data appendBytes:&idx length:sizeof(idx)];
+            [data appendData:payload];
+            
+            serialization = BTCBase58CheckStringWithData(data);
+            
+            payload = BTCRandomDataWithLength(32);
+            
+        } while ([serialization hasPrefix:prefix] && j-- > 0);
+        
+        if ([serialization hasPrefix:prefix])
+        {
+            NSLog(@"integer for prefix %@ is %d", prefix, i);
+            break;
+        }
+    }
+    
 }
