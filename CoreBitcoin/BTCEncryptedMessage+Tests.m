@@ -21,6 +21,11 @@
     [self testMessages];
 }
 
++ (void) testMessages
+{
+    
+}
+
 + (void) testProofOfWork
 {
     NSAssert([BTCEncryptedMessage targetForCompactTarget:0] == 0, @"0x00 -> 0");
@@ -51,6 +56,8 @@
         uint8_t t2 = [BTCEncryptedMessage compactTargetForTarget:target];
         
         // uncomment this line to visualize data
+        
+        //NSLog(@"byte = % 4d %@   target = %@ % 11d", (int)t, [self binaryString8:t], [self binaryString32:target], target);
         //NSLog(@"t = % 4d %@ (%@) -> %@ % 11d -> %@ % 3d", (int)t, [self binaryString8:t], [self binaryString8:nt], [self binaryString32:target], target, [self binaryString8:t2], (int)t2);
         
         NSAssert(nt == t2, @"should transform back and forth correctly");
