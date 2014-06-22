@@ -19,6 +19,10 @@ void BTCSecureClearCString(char *s);
 // Returns data with securely random bytes of the specified length. Uses /dev/random.
 NSData* BTCRandomDataWithLength(NSUInteger length);
 
+// Returns random string with securely random bytes of the specified length. Uses /dev/random.
+// Caller should use free() to release the memory occupied by the buffer.
+void *BTCCreateRandomBytesOfLength(size_t length);
+
 // Returns data produced by flipping the coin as proposed by Dan Kaminsky:
 // https://gist.github.com/PaulCapestany/6148566
 NSData* BTCCoinFlipDataWithLength(NSUInteger length);
