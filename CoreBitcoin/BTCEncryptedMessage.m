@@ -29,17 +29,42 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     return self;
 }
 
-- (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed
+- (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed0
 {
-    if (!seed) seed = BTCRandomDataWithLength(32);
+    // These will be used for various purposes.
+    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256_CTX ctx;
     
-    self.address = BTCHash160(recipientKey.publicKey);
+    NSMutableData* recipientPubKey = [recipientKey publicKeyCompressed:YES];
+    
+    self.address = BTCHash160(recipientPubKey);
     self.addressLength = MIN(self.address.length * 8, self.addressLength);
     
     self.timestamp = (uint32_t)[[NSData data] timeIntervalSince1970];
     
     // Transform seed into a unique per-message seed.
-    seed = BTCSHA256Concat(self.address, BTCSHA256Concat(_decryptedData, seed));
+    // TODO: perform raw SHA computation to be able to erase digests from memory.
+    CC_SHA256_Init(&ctx);
+    if (seed0)
+    {
+        CC_SHA256_Update(&ctx, seed0.bytes, (CC_LONG)seed0.length);
+    }
+    else
+    {
+        // If no seed given, use random bytes.
+        void* randomBytes = BTCCreateRandomBytesOfLength(32);
+        CC_SHA256_Update(&ctx, randomBytes, 32);
+        BTCSecureMemset(randomBytes, 0, 32);
+        free(randomBytes);
+    }
+    CC_SHA256_Update(&ctx, _decryptedData.bytes, (CC_LONG)_decryptedData.length);
+    CC_SHA256_Update(&ctx, recipientPubKey.bytes, (CC_LONG)recipientPubKey.length);
+    CC_SHA256_Final(digest, &ctx);
+
+    NSMutableData* seed = [NSMutableData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    
+    BTCSecureMemset(digest, 0, CC_SHA256_DIGEST_LENGTH);
+    BTCDataClear(recipientPubKey);
     
     if (self.timestampVariance > 0)
     {
@@ -81,9 +106,6 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         // Compute the private key
         
-        unsigned char digest[CC_SHA256_DIGEST_LENGTH];
-        
-        CC_SHA256_CTX ctx;
         CC_SHA256_Init(&ctx);
         CC_SHA256_Update(&ctx, [seed bytes], (CC_LONG)[seed length]);
         CC_SHA256_Update(&ctx, &nonce, sizeof(nonce));
@@ -164,6 +186,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
             return nil;
         }
         
+        // Raw encrypted data + variable-length data length prefix.
         [messageData appendData:[BTCProtocolSerialization dataForVarString:encryptedData]];
         
         NSData* messageHash = BTCHash256(messageData);
@@ -172,7 +195,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         if (prefix <= fullTarget)
         {
-            [messageData appendData:[messageHash subdataWithRange:NSMakeRange(32-8, 8)]];
+            BTCDataClear(seed);
+            const int checksumLength = 4;
+            [messageData appendData:[messageHash subdataWithRange:NSMakeRange(32-checksumLength, checksumLength)]];
             return messageData;
         }
         
@@ -224,6 +249,10 @@ static uint8_t BTCEMCompactTargetForFullTarget(uint32_t fullTarget)
     {
         if (BTCEMFullTargetForCompactTarget(ct) <= fullTarget)
         {
+            uint32_t order = ct >> 3;
+            if (order == 0) return ct >> 2;
+            if (order == 1) return ct & (0xff - 1 - 2);
+            if (order == 2) return ct & (0xff - 1);
             return ct;
         }
     }
@@ -239,12 +268,18 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget)
     uint32_t order = compactTarget >> 3;
     uint32_t tail = compactTarget & (1 + 2 + 4);
     
-    // TODO: instead throwing out order when it's too small, consider throwing off tail and respecting order.
-    if (order < 3) return tail;
+    if (order == 0) return (tail >> 2);
     
-    uint32_t fullTarget = (2 << order) +
-                          (tail << (order - 3)) +  // move the tail behind the highest bit
-                          ((2 << (order - 3)) - 1); // fill the rest after the tail with 1111...
+    // Compose a full tail where highest 3 bits are tail and the rest is ones.
+    // Then shift it where the order says.
+    
+    // [8 bits] [8 bits] [8 bits] [5 bits] [3 tail bits]
+    tail <<= 8 + 8 + 8 + 5;
+    tail += ((1 << (8 + 8 + 8 + 5)) - 1); // trailing 1's
+    
+    tail >>= 32 - order;
+    
+    uint32_t fullTarget = (1 << order) + tail;
     
     return fullTarget;
 }

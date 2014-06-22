@@ -236,6 +236,7 @@
 		20C0DDBA183BC5EB00A9EED0 /* libcrypto-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C0DDAF183BC5DB00A9EED0 /* libcrypto-osx.a */; };
 		20C0DDBB183BC5EB00A9EED0 /* libssl-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C0DDB1183BC5DB00A9EED0 /* libssl-osx.a */; };
 		20C3F16917BFDCF8009DB89C /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C3F16817BFDCF8009DB89C /* libSystem.dylib */; };
+		20C4860A1955A88C0061DF75 /* BTCEncryptedMessage+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C486091955A88B0061DF75 /* BTCEncryptedMessage+Tests.m */; };
 		20CD68DA189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20CD68DB189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20CD68DC189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -398,6 +399,8 @@
 		20C0DDB0183BC5DB00A9EED0 /* libssl-ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libssl-ios.a"; path = "openssl/lib/libssl-ios.a"; sourceTree = SOURCE_ROOT; };
 		20C0DDB1183BC5DB00A9EED0 /* libssl-osx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libssl-osx.a"; path = "openssl/lib/libssl-osx.a"; sourceTree = SOURCE_ROOT; };
 		20C3F16817BFDCF8009DB89C /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
+		20C486081955A88B0061DF75 /* BTCEncryptedMessage+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEncryptedMessage+Tests.h"; sourceTree = "<group>"; };
+		20C486091955A88B0061DF75 /* BTCEncryptedMessage+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEncryptedMessage+Tests.m"; sourceTree = "<group>"; };
 		20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCCurvePoint.h; sourceTree = "<group>"; };
 		20CD68D9189B18820083E1A9 /* BTCCurvePoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCCurvePoint.m; sourceTree = "<group>"; };
 		20D008C018D1AFA800079B79 /* BTC256+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTC256+Tests.h"; sourceTree = "<group>"; };
@@ -694,6 +697,8 @@
 				208642BA194C9EAF003A3A2C /* BTCBlindSignature+Tests.m */,
 				2054DC731950E35E007175C8 /* BTCEncryptedMessage.h */,
 				2054DC741950E35E007175C8 /* BTCEncryptedMessage.m */,
+				20C486081955A88B0061DF75 /* BTCEncryptedMessage+Tests.h */,
+				20C486091955A88B0061DF75 /* BTCEncryptedMessage+Tests.m */,
 				2084DD7517B8FF76005AC9E6 /* BTCProtocolSerialization.h */,
 				2084DD7617B8FF76005AC9E6 /* BTCProtocolSerialization.m */,
 				2084DD7717B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.h */,
@@ -1137,6 +1142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
+				20C4860A1955A88C0061DF75 /* BTCEncryptedMessage+Tests.m in Sources */,
 				20B8AB98189EE88300008138 /* BTCKeychain.m in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
 				2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */,

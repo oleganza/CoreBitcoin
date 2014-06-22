@@ -17,7 +17,7 @@
 // N bytes     pubkey nonce: a compressed public key used in a DH algorithm to establish a secret that is then used as a key in AES-CBC.
 // 1,2,3,5,9   bytes of message length (M) as 'CompactSize' variable-length integer encoding. See BTCProtocolSerialization.
 // M bytes     encrypted message
-// 8 bytes     checksum: last 8 bytes of SHA256(SHA256(...)) of all preceding data (including the magic number).
+// 4 bytes     checksum: last 4 bytes of SHA256(SHA256(...)) of all preceding data (including the magic number).
 //
 
 static unsigned char BTCEncryptedMessageVersion[4] = {0xc1, 0xb9, 0xf0, 0xe3};
