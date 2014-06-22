@@ -352,7 +352,10 @@ NSData* BTCHash160(NSData* data)
     unsigned char digest2[RIPEMD160_DIGEST_LENGTH];
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     RIPEMD160(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
+    NSData* result = [NSData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
+    BTCSecureMemset(digest1, 0, CC_SHA256_DIGEST_LENGTH);
+    BTCSecureMemset(digest2, 0, RIPEMD160_DIGEST_LENGTH);
+    return result;
 }
 
 #endif
