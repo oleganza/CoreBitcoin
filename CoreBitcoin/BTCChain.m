@@ -12,7 +12,7 @@
 - (NSMutableURLRequest*) requestForUnspentOutputsWithAddress:(BTCAddress*)address
 {
     NSString* pathString = [NSString stringWithFormat:@"addresses/%@/unspents", [address valueForKey:@"base58String"]];
-    NSURL *url = [BTCChain _newChainURLWithV1BitcoinPath:pathString];
+    NSURL* url = [BTCChain _newChainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"GET";
     return request;
@@ -52,6 +52,43 @@
     return [self unspentOutputsForResponseData:data error:errorOut];
 }
 
+
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data
+{
+    if (data.length == 0) return nil;
+    
+    NSString* pathString = @"transactions";
+    NSURL* url = [BTCChain _newChainURLWithV1BitcoinPath:pathString];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    NSDictionary *requestDictionary = @{@"hex":BTCHexStringFromData(data)};
+    
+    NSError *serializationError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestDictionary options:0 error:&serializationError];
+    if (serializationError != nil) {
+        return nil;
+    }
+    
+    request.HTTPMethod = @"PUT";
+    request.HTTPBody = jsonData;
+    return request;
+}
+
+- (BOOL) broadcastTransactionData:(NSData*)data error:(NSError**)errorOut
+{
+    NSURLRequest* req = [self requestForTransactionBroadcastWithData:data];
+    NSURLResponse* response = nil;
+    
+    [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
+    
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+
+    if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
+        return YES;
+    }
+    
+    return NO;
+}
 
 #pragma mark -
 

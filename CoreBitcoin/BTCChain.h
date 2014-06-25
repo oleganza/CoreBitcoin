@@ -13,4 +13,10 @@
 // Makes sync request for unspent outputs and parses the outputs.
 - (NSArray*) unspentOutputsWithAddress:(BTCAddress*)addresses error:(NSError**)errorOut;
 
+
+// Broadcasting transaction
+
+// Request to broadcast a raw transaction data.
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data;
+
 @end
