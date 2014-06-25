@@ -15,15 +15,21 @@
 #import "BTCScript.h"
 #import "BTCScriptMachine.h"
 #import "BTCAddress.h"
+#import "BTCChain.h"
+
+typedef enum : NSUInteger {
+    BTCAPIChain,
+    BTCAPIBlockchain,
+} BTCAPI;
 
 @implementation BTCTransaction (Tests)
 
 + (void) runAllTests
 {
-    [self testSpendCoins];
+    [self testSpendCoins:BTCAPIBlockchain];
 }
 
-+ (void) testSpendCoins
++ (void) testSpendCoins:(BTCAPI)btcAPI
 {
     // For safety I'm not putting a private key in the source code, but copy-paste here from Keychain on each run.
     printf("Private key in hex:\n");
@@ -45,10 +51,11 @@
     
     NSError* error = nil;
     BTCTransaction* transaction = [self transactionSpendingFromPrivateKey:privateKey
-                                                                       to:[BTCPublicKeyAddress addressWithBase58String:@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo"]
+                                                                       to:[BTCPublicKeyAddress addressWithBase58String:@"1A3tnautz38PZL15YWfxTeh8MtuMDhEPVB"]
                                                                    change:key.publicKeyAddress // send change to the same address
                                                                    amount:100000
-                                                                      fee:100
+                                                                      fee:0
+                                                                      api:btcAPI
                                                                     error:&error];
     
     if (!transaction)
@@ -63,7 +70,7 @@
     sleep(5);
     NSLog(@"Sending...");
     sleep(1);
-    NSURLRequest* req = [[[BTCBlockchainInfo alloc] init] requestForTransactionBroadcastWithData:[transaction data]];
+    NSURLRequest *req = [[[BTCChain alloc] init] requestForTransactionBroadcastWithData:[transaction data]];
     NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:nil error:nil];
     
     NSLog(@"Broadcast result: data = %@", data);
@@ -71,12 +78,13 @@
 }
 
 
-// Simple method for now, fetching unspent coins on the fly from blockchain.info
+// Simple method for now, fetching unspent coins on the fly
 + (BTCTransaction*) transactionSpendingFromPrivateKey:(NSData*)privateKey
                                          to:(BTCPublicKeyAddress*)destinationAddress
                                      change:(BTCPublicKeyAddress*)changeAddress
                                      amount:(BTCSatoshi)amount
-                                        fee:(BTCSatoshi)fee
+                                                  fee:(BTCSatoshi)fee
+                                                  api:(BTCAPI)btcApi
                                                 error:(NSError**)errorOut
 {
     // 1. Get a private key, destination address, change address and amount
@@ -84,14 +92,27 @@
     // 3. Take the smallest available outputs to combine into the inputs of new transaction
     // 4. Prepare the scripts with proper signatures for the inputs
     // 5. Broadcast the transaction
-
+    
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:privateKey];
-    
-    BTCBlockchainInfo* bci = [[BTCBlockchainInfo alloc] init];
-    
-    NSError* error = nil;
-    NSArray* utxos = [bci unspentOutputsWithAddresses:@[ key.publicKeyAddress ] error:&error];
 
+    NSError* error = nil;
+    NSArray* utxos = nil;
+    
+    switch (btcApi) {
+        case BTCAPIBlockchain: {
+            BTCBlockchainInfo* bci = [[BTCBlockchainInfo alloc] init];
+            utxos = [bci unspentOutputsWithAddresses:@[ key.publicKeyAddress ] error:&error];
+            break;
+        }
+        case BTCAPIChain: {
+            BTCChain* chain = [[BTCChain alloc] init];
+            utxos = [chain unspentOutputsWithAddress:key.publicKeyAddress error:&error];
+            break;
+        }
+        default:
+            break;
+    }
+    
     NSLog(@"UTXOs for %@: %@ %@", key.publicKeyAddress, utxos, error);
 
     // Can't download unspent outputs - return with error.
