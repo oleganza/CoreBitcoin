@@ -40,7 +40,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     self.address = BTCHash160(recipientPubKey);
     self.addressLength = MIN(self.address.length * 8, self.addressLength);
     
-    self.timestamp = (uint32_t)[[NSData data] timeIntervalSince1970];
+    self.timestamp = (uint32_t)[[NSDate date] timeIntervalSince1970];
     
     // Transform seed into a unique per-message seed.
     // TODO: perform raw SHA computation to be able to erase digests from memory.
