@@ -1,10 +1,10 @@
-#import "BTCChain.h"
+#import "BTCChainCom.h"
 #import "BTCAddress.h"
 #import "BTCTransactionOutput.h"
 #import "BTCScript.h"
 #import "BTCData.h"
 
-@implementation BTCChain
+@implementation BTCChainCom
 
 #define CHAIN_KEY @"Free API Key from http://chain.com"
 
@@ -12,7 +12,7 @@
 - (NSMutableURLRequest*) requestForUnspentOutputsWithAddress:(BTCAddress*)address
 {
     NSString* pathString = [NSString stringWithFormat:@"addresses/%@/unspents", [address valueForKey:@"base58String"]];
-    NSURL* url = [BTCChain _newChainURLWithV1BitcoinPath:pathString];
+    NSURL* url = [BTCChainCom _newChainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"GET";
     return request;
@@ -58,7 +58,7 @@
     if (data.length == 0) return nil;
     
     NSString* pathString = @"transactions";
-    NSURL* url = [BTCChain _newChainURLWithV1BitcoinPath:pathString];
+    NSURL* url = [BTCChainCom _newChainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     NSDictionary *requestDictionary = @{@"hex":BTCHexStringFromData(data)};

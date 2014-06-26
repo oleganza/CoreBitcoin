@@ -15,7 +15,7 @@
 #import "BTCScript.h"
 #import "BTCScriptMachine.h"
 #import "BTCAddress.h"
-#import "BTCChain.h"
+#import "BTCChainCom.h"
 
 typedef enum : NSUInteger {
     BTCAPIChain,
@@ -70,7 +70,7 @@ typedef enum : NSUInteger {
     sleep(5);
     NSLog(@"Sending...");
     sleep(1);
-    NSURLRequest *req = [[[BTCChain alloc] init] requestForTransactionBroadcastWithData:[transaction data]];
+    NSURLRequest *req = [[[BTCChainCom alloc] init] requestForTransactionBroadcastWithData:[transaction data]];
     NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:nil error:nil];
     
     NSLog(@"Broadcast result: data = %@", data);
@@ -105,7 +105,7 @@ typedef enum : NSUInteger {
             break;
         }
         case BTCAPIChain: {
-            BTCChain* chain = [[BTCChain alloc] init];
+            BTCChainCom* chain = [[BTCChainCom alloc] init];
             utxos = [chain unspentOutputsWithAddress:key.publicKeyAddress error:&error];
             break;
         }

@@ -2,7 +2,7 @@
 @class BTCAddress;
 
 // Collection of APIs for Chain.con
-@interface BTCChain : NSObject
+@interface BTCChainCom : NSObject
 
 // Getting unspent outputs.
 
