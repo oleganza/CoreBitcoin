@@ -4,15 +4,25 @@
 #import "BTCScript.h"
 #import "BTCData.h"
 
+@interface BTCChainCom()
+@property NSString* token;
+@end
+
 @implementation BTCChainCom
 
-#define CHAIN_KEY @"Free API Key from http://chain.com"
+// Initalizes a BTCChainCom object with a free API Token from http://chain.com
+- (id)initWithToken:(NSString *)token {
+    if (self = [super init]) {
+        self.token = token;
+    }
+    return self;
+}
 
 // Builds a request from a list of BTCAddress objects.
 - (NSMutableURLRequest*) requestForUnspentOutputsWithAddress:(BTCAddress*)address
 {
     NSString* pathString = [NSString stringWithFormat:@"addresses/%@/unspents", [address valueForKey:@"base58String"]];
-    NSURL* url = [BTCChainCom _newChainURLWithV1BitcoinPath:pathString];
+    NSURL* url = [self _newChainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"GET";
     return request;
@@ -58,7 +68,7 @@
     if (data.length == 0) return nil;
     
     NSString* pathString = @"transactions";
-    NSURL* url = [BTCChainCom _newChainURLWithV1BitcoinPath:pathString];
+    NSURL* url = [self _newChainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     NSDictionary *requestDictionary = @{@"hex":BTCHexStringFromData(data)};
@@ -92,9 +102,9 @@
 
 #pragma mark -
 
-+ (NSURL *)_newChainURLWithV1BitcoinPath:(NSString *)path {
+- (NSURL *)_newChainURLWithV1BitcoinPath:(NSString *)path {
     NSString *baseURLString = @"https://api.chain.com/v1/bitcoin";
-    NSString *URLString = [NSString stringWithFormat:@"%@/%@?key=%@", baseURLString, path, CHAIN_KEY];
+    NSString *URLString = [NSString stringWithFormat:@"%@/%@?key=%@", baseURLString, path, self.token];
     return [NSURL URLWithString:URLString];
 }
 

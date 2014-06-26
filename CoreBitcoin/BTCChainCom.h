@@ -4,6 +4,8 @@
 // Collection of APIs for Chain.con
 @interface BTCChainCom : NSObject
 
+- (id)initWithToken:(NSString *)token; // Free API Token from http://chain.com
+
 // Getting unspent outputs.
 
 // Builds a request from a list of BTCAddress objects.

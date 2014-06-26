@@ -70,7 +70,7 @@ typedef enum : NSUInteger {
     sleep(5);
     NSLog(@"Sending...");
     sleep(1);
-    NSURLRequest *req = [[[BTCChainCom alloc] init] requestForTransactionBroadcastWithData:[transaction data]];
+    NSURLRequest* req = [[[BTCChainCom alloc] initWithToken:@"Free API Token form chain.com"] requestForTransactionBroadcastWithData:[transaction data]];
     NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:nil error:nil];
     
     NSLog(@"Broadcast result: data = %@", data);
@@ -105,7 +105,7 @@ typedef enum : NSUInteger {
             break;
         }
         case BTCAPIChain: {
-            BTCChainCom* chain = [[BTCChainCom alloc] init];
+            BTCChainCom* chain = [[BTCChainCom alloc] initWithToken:@"Free API Token form chain.com"];
             utxos = [chain unspentOutputsWithAddress:key.publicKeyAddress error:&error];
             break;
         }
