@@ -26,6 +26,7 @@ typedef enum : NSUInteger {
 
 + (void) runAllTests
 {
+    [self testSpendCoins:BTCAPIChain];
     [self testSpendCoins:BTCAPIBlockchain];
 }
 
