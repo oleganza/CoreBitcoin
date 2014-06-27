@@ -89,7 +89,7 @@
     NSString* message = @"Test message";
     NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
-    //key.compressedPublicKey = YES;
+    //key.publicKeyCompressed = YES;
     //NSLog(@"Pubkey 1: %@ (%d bytes)", key.publicKey, (int)key.publicKey.length);
     
     {

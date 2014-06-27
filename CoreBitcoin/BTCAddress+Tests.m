@@ -29,7 +29,7 @@
     BTCPrivateKeyAddress* addr = [BTCAddress addressWithBase58String:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
-    NSAssert(!addr.isCompressedPublicKey, @"Address should be not compressed");
+    NSAssert(!addr.isPublicKeyCompressed, @"Address should be not compressed");
     NSAssert([@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a" isEqualToString:[addr.data hexString]], @"Must decode secret key correctly.");
     
     BTCPrivateKeyAddress* addr2 = [BTCPrivateKeyAddress addressWithData:BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a")];
@@ -42,14 +42,14 @@
     BTCPrivateKeyAddress* addr = [BTCAddress addressWithBase58String:@"L3p8oAcQTtuokSCRHQ7i4MhjWc9zornvpJLfmg62sYpLRJF9woSu"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
-    NSAssert(addr.isCompressedPublicKey, @"Address should be compressed");
+    NSAssert(addr.isPublicKeyCompressed, @"Address should be compressed");
     NSAssert([@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a" isEqualToString:[addr.data hexString]], @"Must decode secret key correctly.");
     
     BTCPrivateKeyAddress* addr2 = [BTCPrivateKeyAddress addressWithData:BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a")];
     NSAssert(addr2, @"Address should be created");
-    addr2.compressedPublicKey = YES;
+    addr2.publicKeyCompressed = YES;
     NSAssert([@"L3p8oAcQTtuokSCRHQ7i4MhjWc9zornvpJLfmg62sYpLRJF9woSu" isEqualToString:addr2.base58String], @"Must encode secret key correctly.");
-    addr2.compressedPublicKey = NO;
+    addr2.publicKeyCompressed = NO;
     NSAssert([@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS" isEqualToString:addr2.base58String], @"Must encode secret key correctly.");
 }
 

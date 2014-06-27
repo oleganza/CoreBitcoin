@@ -25,7 +25,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 @implementation BTCKey {
     EC_KEY* _key;
     NSMutableData* _publicKey;
-    BOOL _compressedPublicKey;
+    BOOL _publicKeyCompressed;
 }
 
 - (id) initWithNewKeyPair:(BOOL)createKeyPair
@@ -154,15 +154,26 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 {
     if (!_publicKey)
     {
-        _publicKey = [self publicKeyCompressed:_compressedPublicKey];
+        _publicKey = [self publicKeyWithCompression:_publicKeyCompressed];
     }
     return _publicKey;
 }
 
-- (NSMutableData*) publicKeyCompressed:(BOOL)compressed
+- (NSMutableData*) compressedPublicKey
+{
+    return [self publicKeyWithCompression:YES];
+}
+
+- (NSMutableData*) uncompressedPublicKey
+{
+    return [self publicKeyWithCompression:NO];
+}
+
+
+- (NSMutableData*) publicKeyWithCompression:(BOOL)compression
 {
     if (!_key) return nil;
-    EC_KEY_set_conv_form(_key, compressed ? POINT_CONVERSION_COMPRESSED : POINT_CONVERSION_UNCOMPRESSED);
+    EC_KEY_set_conv_form(_key, compression ? POINT_CONVERSION_COMPRESSED : POINT_CONVERSION_UNCOMPRESSED);
     int length = i2o_ECPublicKey(_key, NULL);
     if (!length) return nil;
     NSAssert(length <= 65, @"Pubkey length must be up to 65 bytes.");
@@ -206,7 +217,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     if (publicKey.length == 0) return;
     _publicKey = [NSMutableData dataWithData:publicKey];
     
-    _compressedPublicKey = ([self lengthOfPubKey:_publicKey] == BTCCompressedPubkeyLength);
+    _publicKeyCompressed = ([self lengthOfPubKey:_publicKey] == BTCCompressedPubkeyLength);
     
     [self prepareKeyIfNeeded];
     
@@ -214,7 +225,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     if (!o2i_ECPublicKey(&_key, &bytes, publicKey.length))
     {
         _publicKey = nil;
-        _compressedPublicKey = NO;
+        _publicKeyCompressed = NO;
     }
 }
 
@@ -249,15 +260,15 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     BN_clear_free(bignum);
 }
 
-- (BOOL) isCompressedPublicKey
+- (BOOL) isPublicKeyCompressed
 {
-    return _compressedPublicKey;
+    return _publicKeyCompressed;
 }
 
-- (void) setCompressedPublicKey:(BOOL)flag
+- (void) setPublicKeyCompressed:(BOOL)flag
 {
     _publicKey = nil;
-    _compressedPublicKey = flag;
+    _publicKeyCompressed = flag;
 }
 
 - (void) clear
@@ -366,7 +377,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     if (self = [self initWithNewKeyPair:NO])
     {
         [self setPrivateKey:privateKeyAddress.data];
-        [self setCompressedPublicKey:privateKeyAddress.compressedPublicKey];
+        [self setPublicKeyCompressed:privateKeyAddress.publicKeyCompressed];
     }
     return self;
 }
@@ -383,7 +394,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     NSMutableData* privkey = [self privateKey];
     if (privkey.length == 0) return nil;
     
-    BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey compressedPublicKey:[self isCompressedPublicKey]];
+    BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey publicKeyCompressed:[self isPublicKeyCompressed]];
     BTCDataClear(privkey);
     return result;
 }
@@ -429,7 +440,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     int nBitsS = BN_num_bits(sig->s);
     if (nBitsR <= 256 && nBitsS <= 256)
     {
-        NSData* pubkey = [self publicKeyCompressed:YES];
+        NSData* pubkey = [self compressedPublicKey];
         BOOL foundMatchingPubkey = NO;
         for (int i=0; i < 4; i++)
         {
@@ -437,7 +448,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
             BTCKey* key2 = [[BTCKey alloc] initWithNewKeyPair:NO];
             if (ECDSA_SIG_recover_key_GFp(key2->_key, sig, hashbytes, hashlength, i, 1) == 1)
             {
-                NSData* pubkey2 = [key2 publicKeyCompressed:YES];
+                NSData* pubkey2 = [key2 compressedPublicKey];
                 if ([pubkey isEqual:pubkey2])
                 {
                     rec = i;
@@ -453,7 +464,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     ECDSA_SIG_free(sig);
     
     // First byte is a header
-    sigbytes[0] = 0x1b + rec + (self.isCompressedPublicKey ? 4 : 0);
+    sigbytes[0] = 0x1b + rec + (self.isPublicKeyCompressed ? 4 : 0);
     return sigdata;
 }
 
@@ -473,7 +484,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     
     // It will be updated via direct access to _key ivar.
     BTCKey* key = [[BTCKey alloc] initWithNewKeyPair:NO];
-    key.compressedPublicKey = compressedPubKey;
+    key.publicKeyCompressed = compressedPubKey;
     
     if (rec<0 || rec>=3)
     {

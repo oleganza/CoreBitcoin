@@ -28,20 +28,22 @@
 - (id) initWithDERPrivateKey:(NSData*)DERPrivateKey;
 
 // These properties return mutable copy of data so you can clear it if needed.
-// publicKey is compressed if -compressedPublicKey is YES.
+
+// publicKey is compressed if -publicKeyCompressed is YES.
 @property(nonatomic, readonly) NSMutableData* publicKey;
+
+// These are returning explicitly compressed or uncompressed copies of the public key.
+@property(nonatomic, readonly) NSMutableData* compressedPublicKey;
+@property(nonatomic, readonly) NSMutableData* uncompressedPublicKey;
 @property(nonatomic, readonly) NSMutableData* privateKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1
 @property(nonatomic, readonly) NSMutableData* DERPrivateKey; // 279-byte private key including secret and all curve parameters.
 
 // When you set public key, this property reflects whether it is compressed or not.
 // To set this property you must have private counterpart. Then, -publicKey will be compressed/uncompressed accordingly.
-@property(nonatomic, getter=isCompressedPublicKey) BOOL compressedPublicKey;
+@property(nonatomic, getter=isPublicKeyCompressed) BOOL publicKeyCompressed;
 
 // Returns public key as a point on secp256k1 curve.
 @property(nonatomic, readonly) BTCCurvePoint* curvePoint;
-
-// Returns compressed or uncompressed public key.
-- (NSMutableData*) publicKeyCompressed:(BOOL)compressed;
 
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash;
@@ -63,7 +65,7 @@
 - (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
 
 // Public key hash. Refers to a compressed public key if was initialized with private key serialization marked with "private" flag.
-// See -compressedPublicKey property.
+// See -publicKeyCompressed property.
 @property(nonatomic, readonly) BTCPublicKeyAddress* publicKeyAddress;
 
 // Private key encoded as an address.

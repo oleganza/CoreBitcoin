@@ -35,7 +35,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     unsigned char digest256[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256_CTX ctx256;
     
-    NSMutableData* recipientPubKey = [recipientKey publicKeyCompressed:YES];
+    NSMutableData* recipientPubKey = [recipientKey compressedPublicKey];
     
     self.address = BTCHash160(recipientPubKey);
     self.addressLength = MIN(self.address.length * 8, self.addressLength);
@@ -125,7 +125,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 
         BTCKey* nonceKey = [[BTCKey alloc] initWithPrivateKey:privkey];
         
-        NSData* pubkey = [nonceKey publicKeyCompressed:YES];
+        NSData* pubkey = [nonceKey compressedPublicKey];
         
         uint8_t pubkeyLength = pubkey.length;
         

@@ -90,7 +90,7 @@
     if (_privateKey)
     {
         BTCKey* key = [[BTCKey alloc] initWithPrivateKey:_privateKey];
-        key.compressedPublicKey = YES;
+        key.publicKeyCompressed = YES;
         return key;
     }
     else
@@ -176,7 +176,7 @@
 {
     if (!_publicKey)
     {
-        _publicKey = [[[BTCKey alloc] initWithPrivateKey:_privateKey] publicKeyCompressed:YES];
+        _publicKey = [[[BTCKey alloc] initWithPrivateKey:_privateKey] compressedPublicKey];
     }
     return _publicKey;
 }

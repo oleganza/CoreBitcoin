@@ -48,13 +48,13 @@
 @interface BTCPrivateKeyAddress : BTCAddress
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
 // that derived pubkey must be compressed (as this affects the address derived from pubkey).
-@property(nonatomic, getter=isCompressedPublicKey) BOOL compressedPublicKey;
+@property(nonatomic, getter=isPublicKeyCompressed) BOOL publicKeyCompressed;
 
 // Returns BTCKey containing a key pair. Its public key is compressed as specified by the address.
 @property(nonatomic, readonly) BTCKey* key;
 
-// Creates address from raw private key data. If the public key must be compressed, pass YES to compressedPublicKey:.
-+ (instancetype) addressWithData:(NSData*)data compressedPublicKey:(BOOL)compressedPubkey;
+// Creates address from raw private key data. If the public key must be compressed, pass YES to publicKeyCompressed:.
++ (instancetype) addressWithData:(NSData*)data publicKeyCompressed:(BOOL)compressedPubkey;
 @end
 @interface BTCPrivateKeyAddressTestnet : BTCPrivateKeyAddress
 @end
