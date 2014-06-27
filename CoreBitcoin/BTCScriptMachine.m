@@ -1004,7 +1004,7 @@
                 // Normally we neither have signatures in the output scripts, nor checksig ops in the input scripts.
                 // In early days of Bitcoin (before July 2010) input and output scripts were concatenated and executed as one,
                 // so this cleanup could make sense. But the concatenation was done with OP_CODESEPARATOR in the middle,
-                // so dropping sigs still didn't make much sense - output script was still hashes separately from signatures in the input one.
+                // so dropping sigs still didn't make much sense - output script was still hashed separately from the input script (that contains signatures).
                 // There could have been some use case if one could put a signature
                 // right in the output script. E.g. to provably time-lock the funds.
                 // But the second tx must contain a valid hash to its parent while
@@ -1187,6 +1187,9 @@
                 }
                 
                 // Remove all signatures, counts and pubkeys from stack.
+                // Note: 'i' points past the signatures. Due to postfix decrement (i--) this loop will pop one extra item from the stack.
+                // We can't change this code to use prefix decrement (--i) until every node does the same.
+                // So when redeeming multisig scripts one has to prepend signatures with a dummy OP_0 item for it to be popped here.
                 while (i-- > 0)
                 {
                     [self popFromStack];
