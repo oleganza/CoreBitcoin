@@ -20,8 +20,19 @@
 - (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut
 {
     if (!responseData) return nil;
-    NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:errorOut];
-    if (!dict || ![dict isKindOfClass:[NSDictionary class]]) return nil;
+    NSError* parseError = nil;
+    NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&parseError];
+    if (!dict || ![dict isKindOfClass:[NSDictionary class]])
+    {
+        // Blockchain.info returns "No free outputs to spend" instead of a valid JSON.
+        NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        if (responseString && [responseString rangeOfString:@"No free outputs to spend"].length > 0)
+        {
+            return @[];
+        }
+        if (errorOut) *errorOut = parseError;
+        return nil;
+    }
     
     NSMutableArray* outputs = [NSMutableArray array];
     
