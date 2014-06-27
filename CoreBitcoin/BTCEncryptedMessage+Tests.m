@@ -23,6 +23,20 @@
 
 + (void) testMessages
 {
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCSHA256([@"key" dataUsingEncoding:NSUTF8StringEncoding])];
+    
+    BTCEncryptedMessage* msg = [[BTCEncryptedMessage alloc] initWithData:BTCDataWithUTF8String("Hello, world!")];
+    
+    msg.difficultyTarget = 0xFFFFFFFF >> 8;
+    
+    NSLog(@"difficulty: %@ (%x)", [self binaryString32:msg.difficultyTarget], msg.difficultyTarget);
+    
+    NSData* encryptedMsg = [msg encryptedDataWithKey:key seed:BTCDataWithHexString(@"deadbeef")];
+    
+    NSAssert(msg.difficultyTarget == 0x00FFFFFF, @"default target should be absolute maximum");
+    
+    NSLog(@"encrypted msg = %@ hash: %@...", BTCHexStringFromData(encryptedMsg), BTCHexStringFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
+    
     
 }
 

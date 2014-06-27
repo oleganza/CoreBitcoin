@@ -22,7 +22,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     
     if (self = [super init])
     {
-        _difficultyTarget = 0xFF;
+        _difficultyTarget = 0xFFFFFFFF;
         _addressLength = BTCEncryptedMessageAddressLengthNone;
         _decryptedData = data;
     }
@@ -32,38 +32,38 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 - (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed0
 {
     // These will be used for various purposes.
-    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256_CTX ctx;
+    unsigned char digest256[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256_CTX ctx256;
     
     NSMutableData* recipientPubKey = [recipientKey publicKeyCompressed:YES];
     
     self.address = BTCHash160(recipientPubKey);
     self.addressLength = MIN(self.address.length * 8, self.addressLength);
     
-    self.timestamp = (uint32_t)[[NSData data] timeIntervalSince1970];
+    self.timestamp = (uint32_t)[[NSDate date] timeIntervalSince1970];
     
     // Transform seed into a unique per-message seed.
     // TODO: perform raw SHA computation to be able to erase digests from memory.
-    CC_SHA256_Init(&ctx);
+    CC_SHA256_Init(&ctx256);
     if (seed0)
     {
-        CC_SHA256_Update(&ctx, seed0.bytes, (CC_LONG)seed0.length);
+        CC_SHA256_Update(&ctx256, seed0.bytes, (CC_LONG)seed0.length);
     }
     else
     {
         // If no seed given, use random bytes.
         void* randomBytes = BTCCreateRandomBytesOfLength(32);
-        CC_SHA256_Update(&ctx, randomBytes, 32);
+        CC_SHA256_Update(&ctx256, randomBytes, 32);
         BTCSecureMemset(randomBytes, 0, 32);
         free(randomBytes);
     }
-    CC_SHA256_Update(&ctx, _decryptedData.bytes, (CC_LONG)_decryptedData.length);
-    CC_SHA256_Update(&ctx, recipientPubKey.bytes, (CC_LONG)recipientPubKey.length);
-    CC_SHA256_Final(digest, &ctx);
+    CC_SHA256_Update(&ctx256, _decryptedData.bytes, (CC_LONG)_decryptedData.length);
+    CC_SHA256_Update(&ctx256, recipientPubKey.bytes, (CC_LONG)recipientPubKey.length);
+    CC_SHA256_Final(digest256, &ctx256);
 
-    NSMutableData* seed = [NSMutableData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    NSMutableData* seed = [NSMutableData dataWithBytes:digest256 length:CC_SHA256_DIGEST_LENGTH];
     
-    BTCSecureMemset(digest, 0, CC_SHA256_DIGEST_LENGTH);
+    BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
     BTCDataClear(recipientPubKey);
     
     if (self.timestampVariance > 0)
@@ -73,7 +73,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         self.timestamp -= (rand % self.timestampVariance);
     }
     
-    uint32_t fullTarget = BTCEMFullTargetForCompactTarget(_difficultyTarget);
+    uint8_t compactTarget = BTCEMCompactTargetForFullTarget(_difficultyTarget);
     
     NSMutableData* messageData = [[NSMutableData alloc] initWithCapacity:100 + _decryptedData.length];
     
@@ -88,7 +88,15 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         [messageData appendBytes:BTCEncryptedMessageVersion length:4];
         
-        [messageData appendBytes:&_difficultyTarget length:1];
+        [messageData appendBytes:&compactTarget length:1];
+        
+        uint8_t noncePlaceholder = 0;
+        [messageData appendBytes:&noncePlaceholder length:1];
+        
+        NSUInteger offsetForNonce = messageData.length;
+        
+        uint32_t ts = OSSwapHostToBigInt32(self.timestamp);
+        [messageData appendBytes:&ts length:sizeof(ts)];
         
         [messageData appendBytes:&_addressLength length:1];
         
@@ -98,7 +106,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         if (partialByte > 0)
         {
-            // Add one more byte, but mask lower bits with zeros. (We kinda treat address as a big endian number.)
+            // Add one more byte, but mask lower bits with zeros. (We treat address as a big endian number.)
             
             uint8_t lastByte = ((uint8_t*)self.address.bytes)[_addressLength/8] & (0xFF << (8 - partialByte));
             [messageData appendBytes:&lastByte length:1];
@@ -106,12 +114,14 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         // Compute the private key
         
-        CC_SHA256_Init(&ctx);
-        CC_SHA256_Update(&ctx, [seed bytes], (CC_LONG)[seed length]);
-        CC_SHA256_Update(&ctx, &nonce, sizeof(nonce));
-        CC_SHA256_Final(digest, &ctx);
+        CC_SHA256_Init(&ctx256);
+        CC_SHA256_Update(&ctx256, [seed bytes], (CC_LONG)[seed length]);
+        CC_SHA256_Update(&ctx256, &nonce, sizeof(nonce));
+        CC_SHA256_Final(digest256, &ctx256);
         
-        NSData* privkey = [NSData dataWithBytesNoCopy:digest length:CC_SHA256_DIGEST_LENGTH freeWhenDone:NO]; // not copying data as it'll be copied into bignum right away anyway.
+        nonce++;
+        
+        NSData* privkey = [NSData dataWithBytesNoCopy:digest256 length:CC_SHA256_DIGEST_LENGTH freeWhenDone:NO]; // not copying data as it'll be copied into bignum right away anyway.
 
         BTCKey* nonceKey = [[BTCKey alloc] initWithPrivateKey:privkey];
         
@@ -137,9 +147,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         NSData* pointX = curvePoint.x.unsignedData;
         
         // Hash the x-coordinate for better diffusion.
-        CC_SHA256_Init(&ctx);
-        CC_SHA256_Update(&ctx, [pointX bytes], (CC_LONG)[pointX length]);
-        CC_SHA256_Final(digest, &ctx);
+        CC_SHA256_Init(&ctx256);
+        CC_SHA256_Update(&ctx256, [pointX bytes], (CC_LONG)[pointX length]);
+        CC_SHA256_Final(digest256, &ctx256);
 
         int blockSize = kCCBlockSizeAES128;
         int encryptedDataCapacity = (int)(_decryptedData.length / blockSize + 1) * blockSize;
@@ -150,7 +160,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
                                               kCCEncrypt,                  // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
                                               kCCAlgorithmAES,             // CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */
                                               kCCOptionPKCS7Padding,       // CCOptions options,      /* kCCOptionPKCS7Padding, etc. */
-                                              digest,                      // const void *key,
+                                              digest256,                   // const void *key,
                                               CC_SHA256_DIGEST_LENGTH,     // size_t keyLength,
                                               NULL,                        // const void *iv,         /* optional initialization vector */
                                               [_decryptedData bytes],      // const void *dataIn,     /* optional per op and alg */
@@ -163,6 +173,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         if (cryptstatus != kCCSuccess)
         {
             BTCDataClear(encryptedData);
+            BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
             encryptedData = nil;
         }
         else
@@ -179,39 +190,169 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         }
         [pk clear];
         [curvePoint clear];
-        BTCSecureMemset(digest, 0, CC_SHA256_DIGEST_LENGTH);
+        BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
+        BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
         if (!encryptedData)
         {
+            BTCDataClear(seed);
             return nil;
         }
         
         // Raw encrypted data + variable-length data length prefix.
         [messageData appendData:[BTCProtocolSerialization dataForVarString:encryptedData]];
+
+        // Add 16-byte checksum which is SHA256^2 of the shared secret + decrypted message
+        CC_SHA256_Init(&ctx256);
+        CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
+        CC_SHA256_Update(&ctx256, _decryptedData.bytes, (CC_LONG)_decryptedData.length);
+        CC_SHA256_Final(digest256, &ctx256);
+        CC_SHA256_Init(&ctx256);
+        CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
+        CC_SHA256_Final(digest256, &ctx256);
         
-        NSData* messageHash = BTCHash256(messageData);
+        [messageData appendBytes:digest256 length:16];
         
-        uint32_t prefix = OSSwapBigToHostConstInt32(*((uint32_t*)[messageHash bytes]));
+        BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
+        BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
-        if (prefix <= fullTarget)
+        // Do not even compute the full hash if we don't need PoW.
+        if (_difficultyTarget == 0xFFFFFFFF)
         {
             BTCDataClear(seed);
-            const int checksumLength = 4;
-            [messageData appendData:[messageHash subdataWithRange:NSMakeRange(32-checksumLength, checksumLength)]];
             return messageData;
         }
         
+        // Compute full hash for PoW.
+        unsigned char digest512[CC_SHA512_DIGEST_LENGTH];
+        CC_SHA512_CTX ctx512;
+        
+        // Iterate 256 nonces
+        
+        uint8_t nonce2 = 0;
+        uint8_t* msgbytes = (uint8_t*)messageData.mutableBytes;
+        do {
+            
+            msgbytes[offsetForNonce] = nonce2; // skip prefix and difficulty target.
+            
+            // Add 16-byte checksum which is SHA256^2 of the shared secret + decrypted message
+            CC_SHA512_Init(&ctx512);
+            CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
+            CC_SHA512_Update(&ctx512, messageData.bytes, (CC_LONG)messageData.length);
+            CC_SHA512_Final(digest512, &ctx512);
+            CC_SHA512_Init(&ctx512);
+            CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
+            CC_SHA512_Final(digest512, &ctx512);
+            
+            // To avoid bignum math, we only check 32-bit prefixes for PoW.
+            uint32_t prefix = OSSwapBigToHostConstInt32(*((uint32_t*)digest512));
+            
+            if (prefix <= _difficultyTarget)
+            {
+                BTCDataClear(seed);
+                return messageData;
+            }
+            
+            if (nonce2 == 255)
+            {
+                break; // go back to main loop and try another pubkey.
+            }
+            
+            nonce2++;
+            
+        } while (1);
     } while (1);
 }
 
 
 
-// Instantiates encrypted message with binary frame. Checks version, checksum and if difficulty matches the actual proof of work.
+// Instantiates encrypted message with its binary representation. Checks that difficulty matches the actual proof of work.
 // To decrypt the message, use -decryptedContentsForKey:
 - (id) initWithEncryptedData:(NSData*)data
 {
-    // TODO.
-    return nil;
+    if (self = [super init])
+    {
+        // Check for minimum length.
+        uint32_t datalength = (uint32_t)data.length;
+        
+        if (datalength < (4 + 1 + 1 + 4 + 1 + 1 + 32 + 1 + 16)) return nil;
+        
+        // Compute full hash for PoW.
+        unsigned char digest512[CC_SHA512_DIGEST_LENGTH];
+        CC_SHA512_CTX ctx512;
+        
+        // Iterate 256 nonces
+        
+        uint8_t nonce = 0;
+        uint8_t* msgbytes = (uint8_t*)data.bytes;
+        
+        // Check the magic prefix.
+        if (memcmp(BTCEncryptedMessageVersion, msgbytes, sizeof(BTCEncryptedMessageVersion)) != 0)
+        {
+            return nil;
+        }
+        
+        nonce = msgbytes[4+1]; // skip prefix and difficulty target.
+        
+        // Add 16-byte checksum which is SHA256^2 of the shared secret + decrypted message.
+        CC_SHA512_Init(&ctx512);
+        CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
+        CC_SHA512_Update(&ctx512, data.bytes, (CC_LONG)data.length);
+        CC_SHA512_Final(digest512, &ctx512);
+        CC_SHA512_Init(&ctx512);
+        CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
+        CC_SHA512_Final(digest512, &ctx512);
+        
+        // To avoid bignum math, we only check 32-bit prefixes for PoW.
+        uint32_t prefix = OSSwapBigToHostConstInt32(*((uint32_t*)digest512));
+        
+        uint32_t target = BTCEMFullTargetForCompactTarget(msgbytes[4]);
+        
+        if (prefix > target)
+        {
+            return nil;
+        }
+        
+        // Fill in properties.
+            
+        _difficultyTarget = target;
+        
+        _timestamp = OSSwapBigToHostConstInt32(*(uint32_t*)(msgbytes + 6));
+        
+        _addressLength = msgbytes[10];
+        
+        uint8_t realAddrLength = _addressLength/8 + (_addressLength % 8 == 0 ? 0 : 1);
+        if (_addressLength > 0)
+        {
+            _address = [data subdataWithRange:NSMakeRange(11, realAddrLength)];
+        }
+        else
+        {
+            _address = [NSData data];
+        }
+        
+        uint32_t offset = 11 + realAddrLength;
+        
+        if (datalength <= offset) return nil;
+        
+        uint8_t pubkeyLength = msgbytes[offset];
+        
+        offset++;
+        
+        if (datalength <= (offset + pubkeyLength)) return nil;
+        
+        NSData* pubkeyNonceData = [NSData dataWithBytes:msgbytes + offset length:pubkeyLength];
+        
+        BTCKey* pubkeyNonce = [[BTCKey alloc] initWithPublicKey:pubkeyNonceData];
+        
+        offset += pubkeyLength;
+        
+        if (datalength <= offset) return nil;
+        
+        // TODO...
+        
+    }
+    return self;
 }
 
 // Attempts to decrypt the message with a given private key and returns result.

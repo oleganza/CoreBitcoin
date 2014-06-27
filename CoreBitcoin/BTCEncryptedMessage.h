@@ -9,16 +9,18 @@
 //
 // Binary structure:
 // 4 bytes     version prefix (also a magic number).
-// 1 byte      proof-of-work difficulty target (similar to "bits" field in BTCBlockHeader).
-// 4 bytes     timestamp. Used to filter out replays. Helps preventing DoS even if you don't use PoW.
+// 1 byte      proof-of-work difficulty target (similar to "bits" field in BTCBlockHeader). SHA256^2 of the entire encrypted message should be below target.
+// 1 byte      proof-of-work nonce. When overflown, new private key should be generated and message should be re-encrypted.
+// 4 bytes     timestamp. Used to filter out replays. Helps preventing DoS even if you don't use PoW. Big-endian.
 // 1 byte      recipient's address length (R bits)
 // R bits      recipient's address (BTCHash160(pubkey)), from 0 to 20 bytes. Only first R bits are used.
-// 1 byte      pubkey nonce length (N)
+// 1 byte      pubkey nonce length (N) // normally - 32 bytes.
 // N bytes     pubkey nonce: a compressed public key used in a DH algorithm to establish a secret that is then used as a key in AES-CBC.
 // 1,2,3,5,9   bytes of message length (M) as 'CompactSize' variable-length integer encoding. See BTCProtocolSerialization.
 // M bytes     encrypted message
-// 4 bytes     checksum: last 4 bytes of SHA256(SHA256(...)) of all preceding data (including the magic number).
-//
+// 16 bytes    checksum: first 16 bytes of SHA512(SHA512()) of the shared secret and the decrypted message.
+//             So the receiver can verify that the message was actually sent to him before even trying to parse it.
+//             We do not show the checksum of the message alone as it may leak the contents (e.g. when there is a limited set of possible messages).
 
 static unsigned char BTCEncryptedMessageVersion[4] = {0xc1, 0xb9, 0xf0, 0xe3};
 
@@ -43,8 +45,9 @@ typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
 @interface BTCEncryptedMessage : NSObject
 
 // Proof-of-work difficulty target.
-// Set it before encrypting
-@property(nonatomic) uint8_t difficultyTarget;
+// Set it before encrypting the message that needs some Proof-of-Work attached.
+// Default is maximum target: 0xFFFFFFFF.
+@property(nonatomic) uint32_t difficultyTarget;
 
 // UNIX timestamp. Only needed for DoS prevention. For anonymity may be randomized within past hour (depends on application).
 @property(nonatomic) uint32_t timestamp;
