@@ -168,6 +168,8 @@
     
     [data appendBytes:&n_opcode length:sizeof(n_opcode)];
     
+    BTCOpcode checkmultisig_opcode = OP_CHECKMULTISIG;
+    [data appendBytes:&checkmultisig_opcode length:sizeof(checkmultisig_opcode)];
     
     if (self = [self initWithData:data])
     {
