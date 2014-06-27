@@ -12,10 +12,11 @@ Features
 - Addresses
 - Transactions
 - Scripts
-- Blockchain.info API to fetch unspent outputs and send signed transactions
-- BIP32 hierarchical deterministic wallets
+- Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
+- BIP32 hierarchical deterministic wallets (BTCKeychain).
+- Blind signatures implementation.
 - Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points.
-- Various cryptographic primitives: hash functions, ECC, encryption.
+- Various cryptographic primitives like hash functions and AES encryption.
 
 Still missing:
 
