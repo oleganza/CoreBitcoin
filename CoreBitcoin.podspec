@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   s.exclude_files = 'CoreBitcoin/**/*+Tests.{h,m}'
   s.requires_arc = true
   s.framework    = 'Foundation'
-  s.dependency 'OpenSSL', '~> 1.0.1'
+  s.dependency 'OpenSSL', '1.0.1'
 end
