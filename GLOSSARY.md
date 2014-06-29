@@ -3,7 +3,7 @@ Bitcoin Glossary
 
 Some unusual terms are frequently used in Bitcoin documentation and discussions like *tx* or *coinbase*. Or words like *scriptPubKey* were badly chosen and now deserve some extra explanation. This glossary will help you understand exact meaning of all Bitcoin-related terms.
 
-Warning: this glossary is not yet fully reviewed and may contain some mistakes. Please report all issues to oleganza@gmail.com or clone this repo and submit pull requests. Thanks!
+If you find an inaccuracy, please report it to oleganza@gmail.com or clone this repo and submit pull requests. Thanks!
 
 ### Address
 
@@ -55,6 +55,11 @@ As a network, Bitcoin is all the computers that follow the same rules and exchan
 As a unit, one Bitcoin (*BTC*, *XBT*) is defined as 100 million *satoshis*, the smallest units available in the current transaction format. Bitcoin is not capitalized when speaking about the amount: "I received 0.4 bitcoins."
 
 
+### Bitcoin Core
+
+New name of *BitcoinQT* since release of version 0.9 on March 19, 2014. Not to confuse with *CoreBitcoin*, an Objective-C implementation published in August 2013. See also *Bitcore*, a JavaScript implementation for Node.js by Bitpay.
+
+
 ### Bitcoinj
 
 A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* implementation among other features.
@@ -62,7 +67,7 @@ A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* 
 
 ### Bitcoinjs
 
-An incomplete JavaScript implementation of a Bitcoin client. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*.
+A JavaScript toolkit. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*.
 
 
 ### BitcoinQT
@@ -80,6 +85,11 @@ Original implementation of Bitcoin with a command line interface. Currently a pa
 ### bitcoin-ruby
 
 A Bitcoin utilities library in Ruby by Julian Langschaedel. Used in production on *Coinbase.com*.
+
+
+### Bitcore
+
+A Bitcoin toolkit by Bitpay written in JavaScript. More complete than *Bitcoinjs*.
 
 
 ### Block
@@ -647,7 +657,7 @@ Glossary is made by Oleg Andreev ([oleganza@gmail.com](mailto:oleganza@gmail.com
 
 Send your thanks here: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG.
 
-The glossary is released under the [WTFPL](http://www.wtfpl.net).
+This glossary is released under [WTFPL](http://www.wtfpl.net). Do what you want with it, but I would appreciate if you give full credit in case you republish it.
 
 Please report any mistakes or create pull requests on Github. Contributors will be listed here. Thanks!
 

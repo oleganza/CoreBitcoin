@@ -98,5 +98,5 @@ You can also donate for a specific bounty. The amount will be reserved for that 
 License
 -------
 
-Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. It is not MIT License because no one reads your legalese anyway and it only adds burden. Instead, you are encouraged to donate money for development and use sources how you like.
+Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. It is not MIT License because no one reads the legalese anyway and it only adds burden. Instead, you are encouraged to donate money for development and use sources how you like.
 
