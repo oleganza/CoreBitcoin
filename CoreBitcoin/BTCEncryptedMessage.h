@@ -9,18 +9,20 @@
 //
 // Binary structure:
 // 4 bytes     version prefix (also a magic number).
-// 1 byte      proof-of-work difficulty target (similar to "bits" field in BTCBlockHeader). SHA256^2 of the entire encrypted message should be below target.
+// 1 byte      proof-of-work difficulty target (similar to "bits" field in BTCBlockHeader). SHA512^2 of the entire encrypted message should be below target.
 // 1 byte      proof-of-work nonce. When overflown, new private key should be generated and message should be re-encrypted.
 // 4 bytes     timestamp. Used to filter out replays. Helps preventing DoS even if you don't use PoW. Big-endian.
 // 1 byte      recipient's address length (R bits)
 // R bits      recipient's address (BTCHash160(pubkey)), from 0 to 20 bytes. Only first R bits are used.
 // 1 byte      pubkey nonce length (N) // normally - 32 bytes.
 // N bytes     pubkey nonce: a compressed public key used in a DH algorithm to establish a secret that is then used as a key in AES-CBC.
-// 1,2,3,5,9   bytes of message length (M) as 'CompactSize' variable-length integer encoding. See BTCProtocolSerialization.
+// 1,2,3,5,9 bytes of message length (M) as 'CompactSize' variable-length integer encoding. See BTCProtocolSerialization.
 // M bytes     encrypted message
-// 16 bytes    checksum: first 16 bytes of SHA512(SHA512()) of the shared secret and the decrypted message.
+// 16 bytes    checksum: first 16 bytes of SHA256(SHA256()) of the shared secret and the decrypted message.
 //             So the receiver can verify that the message was actually sent to him before even trying to parse it.
 //             We do not show the checksum of the message alone as it may leak the contents (e.g. when there is a limited set of possible messages).
+//             We do not add checksum of the entire message as it's a job of a transport layer.
+//             Also, a reasonably difficult proof-of-work implicitly acts as a checksum of the entire message.
 
 static unsigned char BTCEncryptedMessageVersion[4] = {0xc1, 0xb9, 0xf0, 0xe3};
 
@@ -85,12 +87,12 @@ typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
 // Decrypt
 
 
-// Instantiates encrypted message with binary frame. Checks version, checksum and if difficulty matches the actual proof of work.
+// Instantiates encrypted message with its binary representation. Checks version, checksum and proof of work.
 // To decrypt the message, use -decryptedContentsForKey:
 - (id) initWithEncryptedData:(NSData*)data;
 
 // Attempts to decrypt the message with a given private key and returns result.
-- (NSData*) decryptedDataWithKey:(BTCKey*)key;
+- (NSData*) decryptedDataWithKey:(BTCKey*)key error:(NSError**)errorOut;
 
 
 

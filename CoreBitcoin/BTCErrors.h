@@ -12,4 +12,7 @@ typedef NS_ENUM(NSUInteger, BTCErrorCode) {
     
     // Script verification errors
     BTCErrorScriptError                  = 5001,
+    
+    // BTCEncryptedMessage errors
+    
 };

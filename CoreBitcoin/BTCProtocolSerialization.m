@@ -94,11 +94,18 @@
 
 + (NSData*) readVarStringFromData:(NSData*)data
 {
+    return [self readVarStringFromData:data readBytes:NULL];
+}
+
++ (NSData*) readVarStringFromData:(NSData*)data readBytes:(NSUInteger*)lengthOut
+{
     uint64_t length = 0;
     NSUInteger varIntLength = [self readVarInt:&length fromData:data];
     if (varIntLength == 0) return nil;
     
     if (data.length < (varIntLength + length)) return nil;
+    
+    if (lengthOut) *lengthOut = varIntLength + length;
     
     return [data subdataWithRange:NSMakeRange(varIntLength, (NSUInteger)length)];
 }
