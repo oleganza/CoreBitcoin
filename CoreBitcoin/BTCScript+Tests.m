@@ -125,7 +125,7 @@
                                @[bob],
                                @[carl],
                                
-                               // tTo many signatures and the last two are incorrect
+                               // Too many signatures and the last two are incorrect
                                @[alice, bob, david],
                                @[bob, carl, alice],
                                @[bob, bob, bob],
