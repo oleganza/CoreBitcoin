@@ -1189,7 +1189,7 @@
                 // Remove all signatures, counts and pubkeys from stack.
                 // Note: 'i' points past the signatures. Due to postfix decrement (i--) this loop will pop one extra item from the stack.
                 // We can't change this code to use prefix decrement (--i) until every node does the same.
-                // So when redeeming multisig scripts one has to prepend signatures with a dummy OP_0 item for it to be popped here.
+                // This means that to redeem multisig script you have to prepend a dummy OP_0 item before all signatures so it can be popped here.
                 while (i-- > 0)
                 {
                     [self popFromStack];
