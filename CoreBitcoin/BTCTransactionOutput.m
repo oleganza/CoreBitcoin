@@ -13,25 +13,35 @@
 
 @implementation BTCTransactionOutput
 
-+ (instancetype) outputWithValue:(BTCSatoshi)value address:(BTCAddress*)address
-{
-    BTCTransactionOutput* output = [[BTCTransactionOutput alloc] init];
-    output.value = value;
-    output.script = [[BTCScript alloc] initWithAddress:address];
-    return output;
-}
 
 - (id) init
 {
+    return [self initWithValue:-1 script:[[BTCScript alloc] init]];
+}
+
+- (id) initWithValue:(BTCSatoshi)value
+{
+    return [self initWithValue:value script:[[BTCScript alloc] init]];
+}
+
+- (id) initWithValue:(BTCSatoshi)value address:(BTCAddress*)address
+{
+    return [self initWithValue:value script:[[BTCScript alloc] initWithAddress:address]];
+}
+
+- (id) initWithValue:(BTCSatoshi)value script:(BTCScript*)script
+{
     if (self = [super init])
     {
-        _value = -1;
-        _script = [[BTCScript alloc] init];
+        _index = BTCTransactionOutputIndexUnknown;
+        _confirmations = NSNotFound;
+        _value = value;
+        _script = script;
     }
     return self;
 }
 
-// Parses tx input from a data buffer.
+// Parses tx output from a data buffer.
 - (id) initWithData:(NSData*)data
 {
     if (self = [self init])
@@ -41,7 +51,7 @@
     return self;
 }
 
-// Read tx input from the stream.
+// Reads tx output from the stream.
 - (id) initWithStream:(NSInputStream*)stream
 {
     if (self = [self init])

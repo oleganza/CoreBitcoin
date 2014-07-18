@@ -1,6 +1,7 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
+#import "BTCSignatureHashType.h"
 
 @class BTCCurvePoint;
 @class BTCPublicKeyAddress;
@@ -49,8 +50,11 @@
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash;
 
 // Returns a signature data for a 256-bit hash using private key.
-// Returns nil if signing failed or private key is not present.
+// Returns nil if signing failed or a private key is not present.
 - (NSData*)signatureForHash:(NSData*)hash;
+
+// Same as above, but also appends a hash type byte to the signature.
+- (NSData*)signatureForHash:(NSData*)hash withHashType:(BTCSignatureHashType)hashType;
 
 // Clears all key data from memory making receiver invalid.
 - (void) clear;

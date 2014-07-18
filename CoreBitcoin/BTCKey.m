@@ -101,6 +101,17 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 // Returns a signature data for a 256-bit hash using private key.
 - (NSData*)signatureForHash:(NSData*)hash
 {
+    return [self signatureForHash:hash appendHashType:NO hashType:0];
+}
+
+// Same as above, but also appends a hash type byte to the signature.
+- (NSData*)signatureForHash:(NSData*)hash withHashType:(BTCSignatureHashType)hashType
+{
+    return [self signatureForHash:hash appendHashType:YES hashType:hashType];
+}
+
+- (NSData*)signatureForHash:(NSData*)hash appendHashType:(BOOL)appendHashType hashType:(BTCSignatureHashType)hashType
+{
     ECDSA_SIG *sig = ECDSA_do_sign((unsigned char*)hash.bytes, (int)hash.length, _key);
     if (sig == NULL)
     {
@@ -130,20 +141,26 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     ECDSA_SIG_free(sig);
     [signature setLength:sigSize];  // Shrink to fit actual size
     
+    if (appendHashType)
+    {
+        [signature appendBytes:&hashType length:sizeof(hashType)];
+    }
+    
     return signature;
     
-//    unsigned int sigSize = ECDSA_size(_key);
-//    NSMutableData* signature = [NSMutableData dataWithLength:sigSize];
-//    
-//    if (!ECDSA_sign(0, (unsigned char*)hash.bytes, (int)hash.length, signature.mutableBytes, &sigSize, _key))
-//    {
-//        BTCDataClear(signature);
-//        return nil;
-//    }
-//    [signature setLength:sigSize];
-//    
-//    return signature;
+    //    unsigned int sigSize = ECDSA_size(_key);
+    //    NSMutableData* signature = [NSMutableData dataWithLength:sigSize];
+    //
+    //    if (!ECDSA_sign(0, (unsigned char*)hash.bytes, (int)hash.length, signature.mutableBytes, &sigSize, _key))
+    //    {
+    //        BTCDataClear(signature);
+    //        return nil;
+    //    }
+    //    [signature setLength:sigSize];
+    //    
+    //    return signature;
 }
+
 
 - (NSMutableData*) publicKey
 {

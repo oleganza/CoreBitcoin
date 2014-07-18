@@ -41,6 +41,7 @@
 // Initializes a multisignature script "OP_<M> <pubkey1> ... <pubkeyN> OP_<N> OP_CHECKMULTISIG"
 // N must be >= M, M and N should be from 1 to 16.
 // If you need a more customized transaction with OP_CHECKMULTISIG, create it using other methods.
+// publicKeys is an array of NSData objects.
 - (id) initWithPublicKeys:(NSArray*)publicKeys signaturesRequired:(NSUInteger)signaturesRequired;
 
 

@@ -7,11 +7,16 @@
 #import "BTCScript.h"
 #import "BTCKey.h"
 #import "BTCAddress.h"
+#import "BTCTransaction.h"
+#import "BTCTransactionOutput.h"
+#import "BTCTransactionInput.h"
 
 @implementation BTCScript (Tests)
 
 + (void) runAllTests
 {
+    [self testMultisignatureScripts];
+    
     [self testBinarySerialization];
     [self testStringSerialization];
     [self testStandardScripts];
@@ -21,6 +26,142 @@
     
     [self testValidBitcoinQTScripts];
     [self testInvalidBitcoinQTScripts];
+}
+
++ (void) testMultisignatureScripts
+{
+    // 1. Create some keys
+    
+    BTCKey* alice = [[BTCKey alloc] initWithPrivateKey:BTCHash256(BTCDataWithUTF8String("alice"))];
+    BTCKey* bob   = [[BTCKey alloc] initWithPrivateKey:BTCHash256(BTCDataWithUTF8String("bob"))];
+    BTCKey* carl  = [[BTCKey alloc] initWithPrivateKey:BTCHash256(BTCDataWithUTF8String("carl"))];
+    BTCKey* david = [[BTCKey alloc] initWithPrivateKey:BTCHash256(BTCDataWithUTF8String("david"))];
+    
+    // 2. Compose a source transaction (does not need to be fully valid o have any inputs)
+    
+    NSArray* pubkeys = [@[alice, bob, carl] valueForKey:@"publicKey"];
+    BTCTransaction* srcTx = [[BTCTransaction alloc] init];
+    
+    // Lets have a 2-of-3 multisig output.
+    BTCTransactionOutput* srcTxOut = [[BTCTransactionOutput alloc] initWithValue:100 script:[[BTCScript alloc] initWithPublicKeys:pubkeys signaturesRequired:2]];
+    [srcTx addOutput:srcTxOut];
+    
+    BTCTransaction* dstTx = [[BTCTransaction alloc] init];
+    
+    // Add dummy output (we don't care where the coins will go)
+    [dstTx addOutput:[[BTCTransactionOutput alloc] initWithValue:100]];
+    
+    BTCTransactionInput* dstTxIn = [[BTCTransactionInput alloc] init];
+    dstTxIn.previousHash = srcTx.transactionHash;
+    dstTxIn.previousIndex = 0;
+    [dstTx addInput:dstTxIn];
+    
+    // 3. Sign the redeeming transaction.
+    
+    BTCSignatureHashType hashtype = BTCSignatureHashTypeAll;
+    NSData* hash = [dstTx signatureHashForScript:srcTxOut.script inputIndex:0 hashType:hashtype error:NULL];
+    
+    NSAssert(hash, @"sanity check");
+    
+    // 4. Simple signing case useful as a sample code.
+    
+    {
+        BTCScript* signatureScript = [[BTCScript alloc] init];
+        
+        [signatureScript appendOpcode:OP_0]; // always prepend dummy OP_0 because OP_CHECKMULTISIG pops one too many items from the stack.
+        [signatureScript appendData:[alice signatureForHash:hash withHashType:hashtype]];
+        [signatureScript appendData:[bob signatureForHash:hash withHashType:hashtype]];
+        
+        dstTxIn.signatureScript = signatureScript;
+        
+        // Verify the transaction.
+    
+        BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:dstTx inputIndex:0];
+        BOOL r = [sm verifyWithOutputScript:[srcTxOut.script copy] error:NULL];
+        NSAssert(r, @"should verify first output");
+    }
+    
+    // 5. Check valid combinations
+    
+    for (NSArray* keys in @[
+                                   // Exactly 2 signatures in correct order.
+                                   @[alice, bob],
+                                   @[bob,   carl],
+                                   @[alice, carl],
+                                   
+                                   // Too many signatures, but the last ones are correct
+                                   @[alice, alice, bob],
+                                   @[david, alice, carl],
+                                   @[alice, bob,   carl],
+                                   ])
+    {
+        BTCScript* signatureScript = [[BTCScript alloc] init];
+        
+        [signatureScript appendOpcode:OP_0];
+        for (BTCKey* key in keys)
+        {
+            [signatureScript appendData:[key signatureForHash:hash withHashType:hashtype]];
+        }
+        
+        dstTxIn.signatureScript = signatureScript;
+        
+        // Verify the transaction.
+        
+        BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:dstTx inputIndex:0];
+        NSError* error = nil;
+        BOOL r = [sm verifyWithOutputScript:[srcTxOut.script copy] error:&error];
+        if (!r)
+        {
+            NSLog(@"BTCScriptMachine error: %@", error);
+        }
+        NSAssert(r, @"should verify first output");
+    }
+    
+    // Check invalid combinations
+    for (NSArray* keys in @[
+                                // Not enough signatures
+                               @[],
+                               @[alice],
+                               @[bob],
+                               @[carl],
+                               
+                               // tTo many signatures and the last two are incorrect
+                               @[alice, bob, david],
+                               @[bob, carl, alice],
+                               @[bob, bob, bob],
+                               
+                               // Incorrect signatures
+                               @[alice, alice],
+                               @[bob, bob],
+                               @[carl, carl],
+                               @[david, david],
+                               @[alice, david],
+                               
+                               // Incorrect order
+                               @[bob, alice],
+                               @[carl, bob],
+                               @[carl, alice],
+                               ])
+    {
+        BTCScript* signatureScript = [[BTCScript alloc] init];
+        
+        [signatureScript appendOpcode:OP_0];
+        for (BTCKey* key in keys)
+        {
+            [signatureScript appendData:[key signatureForHash:hash withHashType:hashtype]];
+        }
+        
+        dstTxIn.signatureScript = signatureScript;
+        
+        // Verify the transaction.
+        
+        BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:dstTx inputIndex:0];
+        NSError* error = nil;
+        BOOL r = [sm verifyWithOutputScript:[srcTxOut.script copy] error:&error];
+        //NSLog(@"BTCScriptMachine error: %@", error);
+        NSAssert(!r, @"should not verify first output");
+    }
+    
 }
 
 + (void) testBinarySerialization

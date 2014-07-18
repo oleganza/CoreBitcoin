@@ -197,8 +197,8 @@ typedef enum : NSUInteger {
     NSLog(@"Total satoshis to change:      %lld", (spentCoins - (amount + fee)));
     
     // Add required outputs - payment and change
-    BTCTransactionOutput* paymentOutput = [BTCTransactionOutput outputWithValue:amount address:destinationAddress];
-    BTCTransactionOutput* changeOutput = [BTCTransactionOutput outputWithValue:(spentCoins - (amount + fee)) address:changeAddress];
+    BTCTransactionOutput* paymentOutput = [[BTCTransactionOutput alloc] initWithValue:amount address:destinationAddress];
+    BTCTransactionOutput* changeOutput = [[BTCTransactionOutput alloc] initWithValue:(spentCoins - (amount + fee)) address:changeAddress];
     
     // Idea: deterministically-randomly choose which output goes first to improve privacy.
     [tx addOutput:paymentOutput];
@@ -218,7 +218,9 @@ typedef enum : NSUInteger {
         
         NSData* d1 = tx.data;
         
-        NSData* hash = [tx signatureHashForScript:txout.script inputIndex:i hashType:BTCSignatureHashTypeAll error:errorOut];
+        BTCSignatureHashType hashtype = BTCSignatureHashTypeAll;
+        
+        NSData* hash = [tx signatureHashForScript:txout.script inputIndex:i hashType:hashtype error:errorOut];
         
         NSData* d2 = tx.data;
         
@@ -231,22 +233,17 @@ typedef enum : NSUInteger {
             return nil;
         }
         
-        NSData* signature = [key signatureForHash:hash];
-        
-        NSMutableData* signatureForScript = [signature mutableCopy];
-        unsigned char hashtype = BTCSignatureHashTypeAll;
-        [signatureForScript appendBytes:&hashtype length:1];
+        NSData* signatureForScript = [key signatureForHash:hash withHashType:hashtype];
         [sigScript appendData:signatureForScript];
         [sigScript appendData:key.publicKey];
         
-        NSAssert([key isValidSignature:signature hash:hash], @"Signature must be valid");
+        NSData* sig = [signatureForScript subdataWithRange:NSMakeRange(0, signatureForScript.length - 1)]; // trim hashtype byte to check the signature.
+        NSAssert([key isValidSignature:sig hash:hash], @"Signature must be valid");
         
         txin.signatureScript = sigScript;
     }
     
-    // Transaction is signed now, return it.
-    
-    // TODO: validate the signatures before returning for extra measure.
+    // Validate the signatures before returning for extra measure.
     
     {
         BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:tx inputIndex:0];
@@ -255,6 +252,9 @@ typedef enum : NSUInteger {
         NSLog(@"Error: %@", error);
         NSAssert(r, @"should verify first output");
     }
+    
+    // Transaction is signed now, return it.
+
 
     return tx;
 }

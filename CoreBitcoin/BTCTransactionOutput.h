@@ -14,10 +14,6 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // input which makes the script execute with success.
 @interface BTCTransactionOutput : NSObject<NSCopying>
 
-// Creates an output with a standard script redeeming to an address (OP_DUP OP_HASH160 <addr> OP_EQUALVERIFY OP_CHECKSIG).
-// Also supports P2SH addresses.
-+ (instancetype) outputWithValue:(BTCSatoshi)value address:(BTCAddress*)address;
-
 // Serialized binary form of the output (payload)
 @property(nonatomic, readonly) NSData* data;
 
@@ -46,11 +42,20 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // Parses tx output from a data buffer.
 - (id) initWithData:(NSData*)data;
 
-// Read tx output from the stream.
+// Reads tx output from the stream.
 - (id) initWithStream:(NSInputStream*)stream;
 
-// Constructs transaction output from a dictionary representation
+// Makes tx output from a dictionary representation
 - (id) initWithDictionary:(NSDictionary*)dictionary;
+
+// Makes tx output with a certain amount of coins on the output.
+- (id) initWithValue:(BTCSatoshi)value;
+
+// Makes tx output with a standard script redeeming to an address (pubkey hash or P2SH).
+- (id) initWithValue:(BTCSatoshi)value address:(BTCAddress*)address;
+
+// Makes tx output with a given script.
+- (id) initWithValue:(BTCSatoshi)value script:(BTCScript*)script;
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation;
