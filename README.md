@@ -1,11 +1,13 @@
 CoreBitcoin
 ===========
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. It's already a useful toolkit, but does not yet provide full node implementation.
+CoreBitcoin implements Bitcoin protocol in Objective-C. It is far from being complete, but it is already a useful toolkit.
 
 Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
 
 CoreBitcoin deliberately implements as much as possible directly in Objective-C with limited dependency on OpenSSL. This gives everyone an opportunity to learn Bitcoin on a clean codebase and enables all Mac and iOS developers participate in extending and improving Bitcoin protocol.
+
+Note that "Bitcoin Core" (previously known as BitcoinQT or "Satoshi client") is a completely different project.
 
 
 Features
