@@ -386,7 +386,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 {
     // 1. Reconstruct a shared secret from key and _nonceKey.
     // 2. Decrypt message.
-    // 3. Compare checksums.
+    // 3. Verify the checksum.
     // 4. If valid, return the message. Otherwise, set error and return nil.
     
     
@@ -410,6 +410,8 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     CC_SHA256_Init(&ctx256);
     CC_SHA256_Update(&ctx256, [pointX bytes], (CC_LONG)[pointX length]);
     CC_SHA256_Final(digest256, &ctx256);
+
+    // 2. Decrypt message.
     
     int blockSize = kCCBlockSizeAES128;
     int decryptedDataCapacity = (int)(_encryptedData.length / blockSize + 1) * blockSize;
@@ -458,7 +460,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         return nil;
     }
 
-    // Verify the checksum
+    // 3. Verify the checksum.
     
     CC_SHA256_Init(&ctx256);
     CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
