@@ -39,13 +39,15 @@
     
     // 2. Compose a source transaction (does not need to be fully valid o have any inputs)
     
-    NSArray* pubkeys = [@[alice, bob, carl] valueForKey:@"publicKey"];
+    NSArray* pubkeys = [@[alice, bob, carl] valueForKey:@"compressedPublicKey"];
     BTCTransaction* srcTx = [[BTCTransaction alloc] init];
     
     // Lets have a 2-of-3 multisig output.
     BTCTransactionOutput* srcTxOut = [[BTCTransactionOutput alloc] initWithValue:100 script:[[BTCScript alloc] initWithPublicKeys:pubkeys signaturesRequired:2]];
     [srcTx addOutput:srcTxOut];
     
+    //NSLog(@"Script: %@", srcTxOut.script.string);
+
     BTCTransaction* dstTx = [[BTCTransaction alloc] init];
     
     // Add dummy output (we don't care where the coins will go)
