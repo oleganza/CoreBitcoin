@@ -6,7 +6,7 @@
 // Hash type determines how OP_CHECKSIG hashes the transaction to create or
 // verify the signature in a transaction input.
 // Depending on hash type, transaction is modified in some way before its hash is computed.
-// Hash type is a single byte appended to a signature in a transaction input.
+// Hash type is 1 byte appended to a signature in a transaction input.
 typedef NS_ENUM(unsigned char, BTCSignatureHashType)
 {
     // First three types are mutually exclusive (tested using "type & 0x1F").
@@ -28,7 +28,7 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
     
     // Hash only the output with the same index as the current input.
     // Preceding outputs are "nullified", other outputs are removed.
-    // Special case: if there is no matching output, hash is "0000...0001" (32 bytes)
+    // Special case: if there is no matching output, hash is "0000000000000000000000000000000000000000000000000000000000000001" (32 bytes)
     SIGHASH_SINGLE       = 3,
     BTCSignatureHashTypeSingle = SIGHASH_SINGLE,
     

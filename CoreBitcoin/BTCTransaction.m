@@ -454,9 +454,8 @@
     [tx invalidatePayload];
     
     // Important: we have to hash transaction together with its hash type.
-    
+    // Hash type is appended as little endian uint32 unlike 1-byte suffix of the signature.
     NSMutableData* fulldata = [tx.data mutableCopy];
-    
     uint32_t hashType32 = OSSwapHostToLittleInt32((uint32_t)hashType);
     [fulldata appendBytes:&hashType32 length:sizeof(hashType32)];
     
