@@ -168,6 +168,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         NSMutableData* encryptedData = [[NSMutableData alloc] initWithLength:encryptedDataCapacity];
         
         size_t dataOutMoved = 0;
+                
         CCCryptorStatus cryptstatus = CCCrypt(
                                               kCCEncrypt,                  // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
                                               kCCAlgorithmAES,             // CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */
@@ -221,10 +222,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         CC_SHA256_Init(&ctx256);
         CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
         CC_SHA256_Final(digest256, &ctx256);
-        
+
         [messageData appendBytes:digest256 length:BTCEncryptedMessageChecksumLength];
         
-        BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
         // Do not even compute the full hash if we don't need PoW.
@@ -248,7 +248,6 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
             
             // Compute proof-of-work hash.
             CC_SHA512_Init(&ctx512);
-            CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
             CC_SHA512_Update(&ctx512, msgbytes, (CC_LONG)messageData.length);
             CC_SHA512_Final(digest512, &ctx512);
             CC_SHA512_Init(&ctx512);
@@ -307,7 +306,6 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         // Proof-of-work check.
         CC_SHA512_Init(&ctx512);
-        CC_SHA512_Update(&ctx512, digest512, CC_SHA512_DIGEST_LENGTH);
         CC_SHA512_Update(&ctx512, data.bytes, (CC_LONG)data.length);
         CC_SHA512_Final(digest512, &ctx512);
         CC_SHA512_Init(&ctx512);
@@ -362,7 +360,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         _nonceKey = nonceKey;
         
-        // To reconstruct shared secret, this nonceKey should be multiplied by our private key.
+        // To reconstruct the shared secret, this nonceKey should be multiplied by our private key.
         // This will happen in -decryptedDataWithKey
 
         NSUInteger encodedMessageLength = 0; // contains both the encrypted message length and the length of its length prefix.
@@ -416,7 +414,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     int blockSize = kCCBlockSizeAES128;
     int decryptedDataCapacity = (int)(_encryptedData.length / blockSize + 1) * blockSize;
     NSMutableData* decryptedData = [[NSMutableData alloc] initWithLength:decryptedDataCapacity];
-
+    
     size_t dataOutMoved = 0;
     CCCryptorStatus cryptstatus = CCCrypt(
                                           kCCDecrypt,                  // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
@@ -464,7 +462,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     
     CC_SHA256_Init(&ctx256);
     CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
-    CC_SHA256_Update(&ctx256, decryptedData.bytes, (CC_LONG)_decryptedData.length);
+    CC_SHA256_Update(&ctx256, decryptedData.bytes, (CC_LONG)decryptedData.length);
     CC_SHA256_Final(digest256, &ctx256);
     CC_SHA256_Init(&ctx256);
     CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);

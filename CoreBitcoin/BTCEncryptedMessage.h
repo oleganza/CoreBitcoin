@@ -4,14 +4,14 @@
 
 // Encrypted message is a versatile format inspired by Bitmessage.
 // Messages are encrypted with recipient's public key (Bitcoin-compatible, that is secp256k1)
-// and may contain none to full receipient information (hash of their public key) depending on your application's needs.
-// It allows attaching an optional proof-of-work that is extremely fast to evaluate.
+// and may contain none to full recipient information (hash of their public key) depending on your application's needs.
+// Also allows attaching an optional proof-of-work that is extremely fast to evaluate.
 //
 // Binary structure:
 // 4 bytes     version prefix (also a magic number).
 // 1 byte      proof-of-work difficulty target (similar to "bits" field in BTCBlockHeader). SHA512^2 of the entire encrypted message should be below target.
 // 1 byte      proof-of-work nonce. When overflown, new private key should be generated and message should be re-encrypted.
-// 4 bytes     timestamp. Used to filter out replays. Helps preventing DoS even if you don't use PoW. Big-endian.
+// 4 bytes     timestamp to filter out replays. Helps preventing DoS even if you don't use PoW. Big-endian.
 // 1 byte      recipient's address length (R bits)
 // R bits      recipient's address (BTCHash160(pubkey)), from 0 to 20 bytes. Only first R bits are used.
 // 1 byte      pubkey nonce length (N) // normally - 32 bytes.

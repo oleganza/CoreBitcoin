@@ -23,21 +23,36 @@
 
 + (void) testMessages
 {
-    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCSHA256([@"key" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCSHA256([@"some key" dataUsingEncoding:NSUTF8StringEncoding])];
     
-    BTCEncryptedMessage* msg = [[BTCEncryptedMessage alloc] initWithData:BTCDataWithUTF8String("Hello, world!")];
+    NSString* originalString = @"Hello!";
     
-    msg.difficultyTarget = 0xFFFFFFFF >> 8;
+    BTCEncryptedMessage* msg = [[BTCEncryptedMessage alloc] initWithData:[originalString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    msg.difficultyTarget = 0x0000FFFF;
     
     NSLog(@"difficulty: %@ (%x)", [self binaryString32:msg.difficultyTarget], msg.difficultyTarget);
     
     NSData* encryptedMsg = [msg encryptedDataWithKey:key seed:BTCDataWithHexString(@"deadbeef")];
     
-    NSAssert(msg.difficultyTarget == 0x00FFFFFF, @"default target should be absolute maximum");
+    NSAssert(msg.difficultyTarget == 0x0000FFFF, @"check the difficulty target");
     
-    NSLog(@"encrypted msg = %@ hash: %@...", BTCHexStringFromData(encryptedMsg), BTCHexStringFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
+    NSLog(@"encrypted msg = %@   hash: %@...", BTCHexStringFromData(encryptedMsg), BTCHexStringFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
     
+    BTCEncryptedMessage* receivedMsg = [[BTCEncryptedMessage alloc] initWithEncryptedData:encryptedMsg];
     
+    NSAssert(receivedMsg, @"pow and format are correct");
+    
+    NSError* error = nil;
+    NSData* decryptedData = [receivedMsg decryptedDataWithKey:key error:&error];
+    
+    NSAssert(decryptedData, @"should decrypt correctly");
+    
+    NSString* string = [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
+    
+    NSAssert(string, @"should decode a UTF-8 string");
+    
+    NSAssert([string isEqualToString:originalString], @"should decrypt the original string");
 }
 
 + (void) testProofOfWork
