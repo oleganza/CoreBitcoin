@@ -44,6 +44,11 @@ A variant of Base58 encoding that appends first 4 bytes of *Hash256* of the enco
 Bitcoin Improvement Proposals. RFC-like documents modeled after PEPs (Python Enhancement Proposals) discussing different aspects of the protocol and software. Most interesting BIPs describe *hard fork* changes in the core protocol that require supermajority of Bitcoin users (or, in some cases, only miners) to agree on the change and accept it in an organized manner.
 
 
+### Bit
+
+Name of a Bitcoin denomination equal to 100 *satoshis* (1 millionth of 1 *BTC*). In 2014 several companies including Bitpay and Coinbase, and various wallet apps adopted *bit* to display bitcoin amounts.
+
+
 ### Bitcoin
 
 Refers to a protocol, network or a unit of currency. 
@@ -67,7 +72,7 @@ A Java implementation of a full Bitcoin node by Mike Hearn. Also includes *SPV* 
 
 ### Bitcoinjs
 
-A JavaScript toolkit. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*.
+A JavaScript Bitcoin library. Allows singing transactions and performing several elliptic curve operations. Used on *brainwallet.org*. See also *Bitcore*, another JS library.
 
 
 ### BitcoinQT
@@ -77,12 +82,12 @@ Bitcoin implementation based on original code by *Satoshi Nakamoto*. Includes a 
 It is considered a *reference implementation* as it's the most used *full node* implementation, especially among *miners*. Other implementations must be bug-for-bug compatible with it to avoid being *forked*. BitcoinQT uses OpenSSL for its ECDSA operations which has its own quirks that became a part of the standard (e.g. non-canonically encoded public keys are accepted by OpenSSL without an error, so other implementations must do the same).
 
 
-### bitcoind
+### Bitcoind
 
 Original implementation of Bitcoin with a command line interface. Currently a part of *BitcoinQT* project. "D" stands for "daemon" per UNIX tradition to name processes running in background. See also *BitcoinQT*.
 
 
-### bitcoin-ruby
+### Bitcoin-ruby
 
 A Bitcoin utilities library in Ruby by Julian Langschaedel. Used in production on *Coinbase.com*.
 
@@ -129,7 +134,7 @@ Utility based on bitcoinjs to craft transactions by hand, convert *private keys*
 
 ### BTC
 
-The most popular informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). See also *XBT*.
+The most popular informal currency code for 1 Bitcoin (defined as 100 000 000 *Satoshis*). See also *XBT* and *Bit*.
 
 
 ### Casascius Coins
@@ -200,7 +205,7 @@ Confirmation number is a measure of probability that transaction could be reject
 
 ### Difficulty
 
-Difficulty is a measure of how difficult it is to find a new block compared to the easiest it can ever be. By definition, it is a maximum *target* divided by the current target. Difficulty is used in two Bitcoin rules: 1) every block must be meet difficulty target to ensure 10 minute interval between blocks and 2) transactions are considered confirmed only when belonging to a *main chain* which is the one with the biggest cumulative difficulty of all blocks.  As of September 5, 2013 the difficulty is 86 933 018 and grows by 20-30% every two weeks. See also *Target*.
+Difficulty is a measure of how difficult it is to find a new block compared to the easiest it can ever be. By definition, it is a maximum *target* divided by the current target. Difficulty is used in two Bitcoin rules: 1) every block must be meet difficulty target to ensure 10 minute interval between blocks and 2) transactions are considered confirmed only when belonging to a *main chain* which is the one with the biggest cumulative difficulty of all blocks.  As of July 27, 2014 the difficulty is 18 736 441 558 and grows by 3-5% every two weeks. See also *Target*.
 
 
 ### Denial of Service
@@ -304,7 +309,7 @@ To compute a hash function of some data. If hash function is not mentioned expli
 
 ### Hashrate
 
-A measure of mining hardware performance expressed in hashes per second. As of September 5, the hash rate of all Bitcoin mining nodes combined is around 647 000 Gh/s. For comparison, AMD Radeon graphics cards produce from 200 to 800 Mh/s depending on model.
+A measure of mining hardware performance expressed in hashes per second (GH/s). As of July 27, 2014 the hash rate of all Bitcoin mining nodes combined is around 135 799 000 GH/s. For comparison, AMD Radeon graphics cards produce from 0.2 to 0.8 GH/s depending on model.
 
 
 ### Hash Type (hashtype)
@@ -470,7 +475,7 @@ An event in the *node* when one or more blocks in the *main chain* become *orpha
 
 ### Reward
 
-Amount of newly generated bitcoins that a *miner* may claim in a new block. The first transaction in the block allows miner to claim currently allowed reward as well as all *transaction fees* from all transactions in the block. Reward is *halved* every 210 000 blocks, approximately every 4 years. As of September 5, 2013 the reward is 25 BTC (the first halving occurred in December 2012). For security reasons, rewards cannot be *spent* before 100 blocks built on top of the current block.
+Amount of newly generated bitcoins that a *miner* may claim in a new block. The first transaction in the block allows miner to claim currently allowed reward as well as all *transaction fees* from all transactions in the block. Reward is *halved* every 210 000 blocks, approximately every 4 years. As of July 27, 2014 the reward is 25 BTC (the first halving occurred in December 2012). For security reasons, rewards cannot be *spent* before 100 blocks built on top of the current block.
 
 
 ### Satoshi
@@ -575,7 +580,7 @@ A chunk of binary data that describes how bitcoins are moved from one owner to a
 
 ### Transaction Fee
 
-Also known as "miners' fee", an amount that an author of transaction pays to a miner who will include the transaction in a block. The fee is expressed as difference between the sum of all *input* amounts and a sum of all *output* amounts. Unlike traditional payment systems, miners do not explicitly require fees and most miners allow free transactions. All miners are competing between each other for the fees and all transactions are competing for a place in a block. There are soft rules encoded in most clients that define minimum fees per kilobyte to relay or mine a transaction (mostly to prevent *DoS* and *spam*). Typically, the fee affects the priority of a transaction. As of September 5, 2013 average fees are below 1 BTC per block. See also *Reward*.
+Also known as "miners' fee", an amount that an author of transaction pays to a miner who will include the transaction in a block. The fee is expressed as difference between the sum of all *input* amounts and a sum of all *output* amounts. Unlike traditional payment systems, miners do not explicitly require fees and most miners allow free transactions. All miners are competing between each other for the fees and all transactions are competing for a place in a block. There are soft rules encoded in most clients that define minimum fees per kilobyte to relay or mine a transaction (mostly to prevent *DoS* and *spam*). Typically, the fee affects the priority of a transaction. As of July 27, 2014 average fee per block is below 0.1 BTC. See also *Reward*.
 
 
 ### Transaction Input
