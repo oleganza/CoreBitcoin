@@ -51,24 +51,27 @@ void BTCDataClear(NSMutableData* data);
 
 // Core hash functions that we need.
 // If the argument is nil, returns nil.
-NSData* BTCSHA1(NSData* data);
-NSData* BTCSHA256(NSData* data);
-NSData* BTCSHA256Concat(NSData* data1, NSData* data2); // SHA256(data1 || data2)
-NSData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash() in BitcoinQT)
-NSData* BTCHash256Concat(NSData* data1, NSData* data2);  // SHA256(SHA256(data1 || data2))
-NSData* BTCHMACSHA512(NSData* key, NSData* data);
+NSMutableData* BTCSHA1(NSData* data);
+NSMutableData* BTCSHA256(NSData* data);
+NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2); // SHA256(data1 || data2)
+NSMutableData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash() in BitcoinQT)
+NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2);  // SHA256(SHA256(data1 || data2))
+
+// Standard HMAC-SHA256 and HMAC-SHA512 functions.
+NSMutableData* BTCHMACSHA256(NSData* key, NSData* data);
+NSMutableData* BTCHMACSHA512(NSData* key, NSData* data);
 
 #if BTCDataRequiresOpenSSL
 // RIPEMD160 today is provided only by OpenSSL. SHA1 and SHA2 are provided by CommonCrypto framework.
-NSData* BTCRIPEMD160(NSData* data);
-NSData* BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash160 in BitcoinQT)
+NSMutableData* BTCRIPEMD160(NSData* data);
+NSMutableData* BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash160 in BitcoinQT)
 #endif
 
 // 160-bit zero string
-NSData* BTCZero160();
+NSMutableData* BTCZero160();
 
 // 256-bit zero string
-NSData* BTCZero256();
+NSMutableData* BTCZero256();
 
 // Pointer to a static array of zeros (256 bits long).
 const unsigned char* BTCZeroString256();

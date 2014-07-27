@@ -255,23 +255,23 @@ void BTCDataClear(NSMutableData* self)
     [self resetBytesInRange:NSMakeRange(0, self.length)];
 }
 
-NSData* BTCSHA1(NSData* data)
+NSMutableData* BTCSHA1(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     CC_SHA1([data bytes], (CC_LONG)[data length], digest);
-    return [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
+    return [NSMutableData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
 }
 
-NSData* BTCSHA256(NSData* data)
+NSMutableData* BTCSHA256(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256([data bytes], (CC_LONG)[data length], digest);
-    return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    return [NSMutableData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
-NSData* BTCSHA256Concat(NSData* data1, NSData* data2)
+NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2)
 {
     if (!data1 || !data2) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
@@ -281,20 +281,23 @@ NSData* BTCSHA256Concat(NSData* data1, NSData* data2)
     CC_SHA256_Update(&ctx, [data1 bytes], (CC_LONG)[data1 length]);
     CC_SHA256_Update(&ctx, [data2 bytes], (CC_LONG)[data2 length]);
     CC_SHA256_Final(digest, &ctx);
-    return [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    return [NSMutableData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
 }
 
-NSData* BTCHash256(NSData* data)
+NSMutableData* BTCHash256(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    NSMutableData* result = [NSMutableData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    BTCSecureMemset(digest1, 0, CC_SHA256_DIGEST_LENGTH);
+    BTCSecureMemset(digest2, 0, CC_SHA256_DIGEST_LENGTH);
+    return result;
 }
 
-NSData* BTCHash256Concat(NSData* data1, NSData* data2)
+NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2)
 {
     if (!data1 || !data2) return nil;
     
@@ -306,19 +309,22 @@ NSData* BTCHash256Concat(NSData* data1, NSData* data2)
     CC_SHA256_Update(&ctx, [data1 bytes], (CC_LONG)[data1 length]);
     CC_SHA256_Update(&ctx, [data2 bytes], (CC_LONG)[data2 length]);
     CC_SHA256_Final(digest1, &ctx);
-
     CC_SHA256(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    return [NSData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    
+    NSMutableData* result = [NSMutableData dataWithBytes:digest2 length:CC_SHA256_DIGEST_LENGTH];
+    BTCSecureMemset(digest1, 0, CC_SHA256_DIGEST_LENGTH);
+    BTCSecureMemset(digest2, 0, CC_SHA256_DIGEST_LENGTH);
+    return result;
 }
 
-NSData* BTCZero160()
+NSMutableData* BTCZero160()
 {
-    return [NSData dataWithBytes:_BTCZeroString256 length:20];
+    return [NSMutableData dataWithBytes:_BTCZeroString256 length:20];
 }
 
-NSData* BTCZero256()
+NSMutableData* BTCZero256()
 {
-    return [NSData dataWithBytes:_BTCZeroString256 length:32];
+    return [NSMutableData dataWithBytes:_BTCZeroString256 length:32];
 }
 
 const unsigned char* BTCZeroString256()
@@ -326,33 +332,46 @@ const unsigned char* BTCZeroString256()
     return _BTCZeroString256;
 }
 
-NSData* BTCHMACSHA512(NSData* key, NSData* data)
+NSMutableData* BTCHMACSHA256(NSData* key, NSData* data)
+{
+    if (!key) return nil;
+    if (!data) return nil;
+    unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, key.bytes, key.length, data.bytes, data.length, digest);
+    NSMutableData* result = [NSMutableData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    BTCSecureMemset(digest, 0, CC_SHA256_DIGEST_LENGTH);
+    return result;
+}
+
+NSMutableData* BTCHMACSHA512(NSData* key, NSData* data)
 {
     if (!key) return nil;
     if (!data) return nil;
     unsigned char digest[CC_SHA512_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA512, key.bytes, key.length, data.bytes, data.length, digest);
-    return [NSData dataWithBytes:digest length:CC_SHA512_DIGEST_LENGTH];
+    NSMutableData* result = [NSMutableData dataWithBytes:digest length:CC_SHA512_DIGEST_LENGTH];
+    BTCSecureMemset(digest, 0, CC_SHA512_DIGEST_LENGTH);
+    return result;
 }
 
 #if BTCDataRequiresOpenSSL
 
-NSData* BTCRIPEMD160(NSData* data)
+NSMutableData* BTCRIPEMD160(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest[RIPEMD160_DIGEST_LENGTH];
     RIPEMD160([data bytes], (size_t)[data length], digest);
-    return [NSData dataWithBytes:digest length:RIPEMD160_DIGEST_LENGTH];
+    return [NSMutableData dataWithBytes:digest length:RIPEMD160_DIGEST_LENGTH];
 }
 
-NSData* BTCHash160(NSData* data)
+NSMutableData* BTCHash160(NSData* data)
 {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[RIPEMD160_DIGEST_LENGTH];
     CC_SHA256([data bytes], (CC_LONG)[data length], digest1);
     RIPEMD160(digest1, CC_SHA256_DIGEST_LENGTH, digest2);
-    NSData* result = [NSData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
+    NSMutableData* result = [NSMutableData dataWithBytes:digest2 length:RIPEMD160_DIGEST_LENGTH];
     BTCSecureMemset(digest1, 0, CC_SHA256_DIGEST_LENGTH);
     BTCSecureMemset(digest2, 0, RIPEMD160_DIGEST_LENGTH);
     return result;
