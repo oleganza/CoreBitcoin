@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-// Encrypted message is a versatile format inspired by Bitmessage.
+// Encrypted message is a very compact format inspired by Bitmessage.
 // Messages are encrypted with recipient's public key (Bitcoin-compatible, that is secp256k1)
 // and may contain none to full recipient information (hash of their public key) depending on your application's needs.
 // Also allows attaching an optional proof-of-work that is extremely fast to evaluate.
@@ -54,7 +54,7 @@ typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
 // UNIX timestamp. Only needed for DoS prevention. For anonymity may be randomized within past hour (depends on application).
 @property(nonatomic) uint32_t timestamp;
 
-// Length of the address field in bits.
+// Length of the address field in bits (0...160).
 @property(nonatomic) uint8_t addressLength;
 
 // The full or partial address. Note that only first 'addressLength' bits are meaningful, the rest is just a byte padding.
