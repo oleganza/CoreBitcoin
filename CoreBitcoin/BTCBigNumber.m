@@ -9,7 +9,7 @@
     @package
     BIGNUM _bignum;
     
-    // Used as a guard in case a private setter is called on immutable instance.
+    // Used as a guard in case a private setter is called on immutable instance after initialization.
     BOOL _immutable;
 }
 
