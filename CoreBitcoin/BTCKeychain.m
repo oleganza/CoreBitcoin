@@ -11,9 +11,9 @@
 #define BTCKeychainPublicExtendedKeyVersion  0x0488B21E
 
 @interface BTCKeychain ()
-@property(nonatomic, readwrite) NSData* chainCode;
-@property(nonatomic, readwrite) NSData* extendedPublicKey;
-@property(nonatomic, readwrite) NSData* extendedPrivateKey;
+@property(nonatomic, readwrite) NSMutableData* chainCode;
+@property(nonatomic, readwrite) NSMutableData* extendedPublicKey;
+@property(nonatomic, readwrite) NSMutableData* extendedPrivateKey;
 @property(nonatomic, readwrite) NSData* identifier;
 @property(nonatomic, readwrite) uint32_t fingerprint;
 @property(nonatomic, readwrite) uint32_t parentFingerprint;
@@ -21,13 +21,26 @@
 @property(nonatomic, readwrite) uint8_t depth;
 @property(nonatomic, readwrite) BOOL hardened;
 
-@property(nonatomic) NSData* privateKey;
-@property(nonatomic) NSData* publicKey;
+@property(nonatomic) NSMutableData* privateKey;
+@property(nonatomic) NSMutableData* publicKey;
 @end
 
-@implementation BTCKeychain {
-    NSData* _chainCode;
+@implementation BTCKeychain
+
+- (void)dealloc
+{
+    [self clear];
 }
+
+- (void) clear
+{
+    BTCDataClear(_chainCode);
+    BTCDataClear(_extendedPublicKey);
+    BTCDataClear(_extendedPrivateKey);
+    BTCDataClear(_privateKey);
+    BTCDataClear(_publicKey);
+}
+
 
 - (id) initWithSeed:(NSData*)seed
 {
@@ -35,9 +48,10 @@
     {
         if (!seed) return nil;
         
-        NSData* hmac = BTCHMACSHA512([@"Bitcoin seed" dataUsingEncoding:NSASCIIStringEncoding], seed);
-        _privateKey = [hmac subdataWithRange:NSMakeRange(0, 32)];
-        _chainCode  = [hmac subdataWithRange:NSMakeRange(32, 32)];
+        NSMutableData* hmac = BTCHMACSHA512([@"Bitcoin seed" dataUsingEncoding:NSASCIIStringEncoding], seed);
+        _privateKey = BTCDataRange(hmac, NSMakeRange(0, 32));
+        _chainCode  = BTCDataRange(hmac, NSMakeRange(32, 32));
+        BTCDataClear(hmac);
     }
     return self;
 }
@@ -57,13 +71,13 @@
         {
             // Should have 0-prefixed private key (1 + 32 bytes).
             if (keyprefix != 0) return nil;
-            _privateKey = [extendedKey subdataWithRange:NSMakeRange(46, 32)];
+            _privateKey = BTCDataRange(extendedKey, NSMakeRange(46, 32));
         }
         else
         {
             // Should have a 33-byte public key with non-zero first byte.
             if (keyprefix == 0) return nil;
-            _publicKey = [extendedKey subdataWithRange:NSMakeRange(45, 33)];
+            _publicKey = BTCDataRange(extendedKey, NSMakeRange(45, 33));
         }
 
         _depth = *(bytes + 4);
@@ -76,7 +90,7 @@
             _hardened = YES;
         }
         
-        _chainCode = [extendedKey subdataWithRange:NSMakeRange(13, 32)];
+        _chainCode = BTCDataRange(extendedKey,NSMakeRange(13, 32));
     }
     return self;
 }
@@ -247,7 +261,7 @@
     
     if (factorOut) *factorOut = factor;
     
-    derivedKeychain.chainCode = [digest subdataWithRange:NSMakeRange(32, 32)];
+    derivedKeychain.chainCode = BTCDataRange(digest, NSMakeRange(32, 32));
     
     if (_privateKey)
     {
@@ -257,8 +271,10 @@
         // Check for invalid derivation.
         if ([pkNumber isEqual:[BTCBigNumber zero]]) return nil;
         
-        derivedKeychain.privateKey = pkNumber.unsignedData;
+        NSData* pkData = pkNumber.unsignedData;
+        derivedKeychain.privateKey = [pkData mutableCopy];
         
+        BTCDataClear(pkData);
         [pkNumber clear];
     }
     else
@@ -269,7 +285,10 @@
         // Check for invalid derivation.
         if ([point isInfinity]) return nil;
         
-        derivedKeychain.publicKey = point.data;
+        NSData* pointData = point.data;
+        derivedKeychain.publicKey = [pointData mutableCopy];
+        BTCDataClear(pointData);
+        [point clear];
     }
     
     derivedKeychain.depth = _depth + 1;
@@ -293,8 +312,8 @@
 {
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
     
-    keychain.chainCode = self.chainCode;
-    keychain.publicKey = self.publicKey;
+    keychain.chainCode = [self.chainCode mutableCopy];
+    keychain.publicKey = [self.publicKey mutableCopy];
     keychain.parentFingerprint = self.parentFingerprint;
     keychain.index = self.index;
     keychain.depth = self.depth;
@@ -302,13 +321,6 @@
     
     return keychain;
 }
-
-- (void) clear
-{
-#warning FIXME: keep privateKey in NSMutableData, also add BTCSubdataWithRange(data, range) that returns mutable data (so it's zeroable).
-//  BTCDataClear(_privateKey);
-}
-
 
 
 #pragma mark - NSObject
@@ -318,9 +330,9 @@
 {
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
     
-    keychain.chainCode = self.chainCode;
-    keychain.privateKey = self.privateKey;
-    if (!_privateKey) keychain.publicKey = self.publicKey;
+    keychain.chainCode = [self.chainCode mutableCopy];
+    keychain.privateKey = [self.privateKey mutableCopy];
+    if (!_privateKey) keychain.publicKey = [self.publicKey mutableCopy];
     keychain.parentFingerprint = self.parentFingerprint;
     keychain.index = self.index;
     keychain.depth = self.depth;

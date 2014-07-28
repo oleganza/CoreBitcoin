@@ -19,42 +19,45 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 @class BTCBigNumber;
 @interface BTCKeychain : NSObject<NSCopying>
 
-// The root key of the keychain. If this is a public-only keychain, key does not have a private key.
-@property(nonatomic, readonly) BTCKey* rootKey;
-
-// Chain code associated with the key.
-@property(nonatomic, readonly) NSData* chainCode;
-
-// Serialized extended public key.
-// Use BTCBase58CheckStringWithData() to convert to Base58 form.
-@property(nonatomic, readonly) NSData* extendedPublicKey;
-
-// Serialized extended private key or nil if the receiver is public-only keychain.
-// Use BTCBase58CheckStringWithData() to convert to Base58 form.
-@property(nonatomic, readonly) NSData* extendedPrivateKey;
-
-// 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
-@property(nonatomic, readonly) NSData* identifier;
-
-// Fingerprint of the keychain.
-@property(nonatomic, readonly) uint32_t fingerprint;
-
-// Fingerprint of the parent keychain. For master keychain it is always 0.
-@property(nonatomic, readonly) uint32_t parentFingerprint;
-
-// Index in the parent keychain.
-// If this is a master keychain, index is 0.
-@property(nonatomic, readonly) uint32_t index;
-
-// Depth. Master keychain has depth = 0.
-@property(nonatomic, readonly) uint8_t depth;
-
 // Initializes master keychain from a seed. This is the "root" keychain of the entire hierarchy.
 - (id) initWithSeed:(NSData*)seed;
 
 // Initializes keychain with a serialized extended key.
 // Use BTCDataFromBase58Check() to convert from Base58 string.
 - (id) initWithExtendedKey:(NSData*)extendedKey;
+
+// Clears all sensitive data from keychain (keychain becomes invalid)
+- (void) clear;
+
+// The root key of the keychain. If this is a public-only keychain, key does not have a private key.
+- (BTCKey*) rootKey;
+
+// Chain code associated with the key.
+- (NSData*) chainCode;
+
+// Serialized extended public key.
+// Use BTCBase58CheckStringWithData() to convert to Base58 form.
+- (NSData*) extendedPublicKey;
+
+// Serialized extended private key or nil if the receiver is public-only keychain.
+// Use BTCBase58CheckStringWithData() to convert to Base58 form.
+- (NSData*) extendedPrivateKey;
+
+// 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
+- (NSData*) identifier;
+
+// Fingerprint of the keychain.
+- (uint32_t) fingerprint;
+
+// Fingerprint of the parent keychain. For master keychain it is always 0.
+- (uint32_t) parentFingerprint;
+
+// Index in the parent keychain.
+// If this is a master keychain, index is 0.
+- (uint32_t) index;
+
+// Depth. Master keychain has depth = 0.
+- (uint8_t) depth;
 
 // Returns YES if the keychain can derive private keys.
 - (BOOL) isPrivate;
@@ -87,8 +90,6 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (BTCKey*) keyAtIndex:(uint32_t)index;
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
-// Clears sensitive data from keychain
-- (void) clear;
 
 @end
 
