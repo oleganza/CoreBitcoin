@@ -388,7 +388,7 @@
     
     if (BN_cmp(&bn, &bn0) == 0)
     {
-        resultData = (NSMutableData*)[NSData dataWithBytes:"0" length:1];
+        resultData = [NSMutableData dataWithBytes:"0" length:1];
     }
     else
     {
