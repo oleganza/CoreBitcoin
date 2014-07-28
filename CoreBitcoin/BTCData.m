@@ -9,26 +9,6 @@
 
 static const unsigned char _BTCZeroString256[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-// Use this subclass to make sure data is zeroed
-@implementation BTCMutableDataZeroedOnDealloc : NSMutableData
-+ (instancetype) dataWithData:(NSData *)data
-{
-    if (!data) return nil;
-    
-    return [NSMutableData dataWithData:data];
-    
-//    BTCMutableDataZeroedOnDealloc* result = [[BTCMutableDataZeroedOnDealloc alloc] initWithBytes:data.bytes length:data.length];
-    BTCMutableDataZeroedOnDealloc* result = [[BTCMutableDataZeroedOnDealloc alloc] init];
-    [result appendBytes:data.bytes length:data.length];
-    return result;
-}
-- (void) dealloc
-{
-    [self resetBytesInRange:NSMakeRange(0, self.length)];
-}
-@end
-
-
 // This is designed to be not optimized out by compiler like memset
 void *BTCSecureMemset(void *v, unsigned char c, size_t n)
 {
@@ -67,11 +47,11 @@ void *BTCCreateRandomBytesOfLength(size_t length)
 }
 
 // Returns data with securely random bytes of the specified length. Uses /dev/random.
-NSData* BTCRandomDataWithLength(NSUInteger length)
+NSMutableData* BTCRandomDataWithLength(NSUInteger length)
 {
     void *bytes = BTCCreateRandomBytesOfLength(length);
     if (!bytes) return nil;
-    return [[NSData alloc] initWithBytesNoCopy:bytes length:length];
+    return [[NSMutableData alloc] initWithBytesNoCopy:bytes length:length];
 }
 
 // Returns data produced by flipping the coin as proposed by Dan Kaminsky:
@@ -250,9 +230,26 @@ void BTCDataReverse(NSMutableData* self)
 }
 
 // Clears contents of the data to prevent leaks through swapping or buffer-overflow attacks.
-void BTCDataClear(NSMutableData* self)
+BOOL BTCDataClear(NSData* data)
 {
-    [self resetBytesInRange:NSMakeRange(0, self.length)];
+    if ([data isKindOfClass:[NSMutableData class]])
+    {
+        [(NSMutableData*)data resetBytesInRange:NSMakeRange(0, data.length)];
+        return YES;
+    }
+    return NO;
+}
+
+NSMutableData* BTCDataRange(NSData* data, NSRange range)
+{
+    NSCAssert(range.location != NSNotFound, @"range location should be correct");
+    NSCAssert(range.location + range.length <= data.length, @"range should be within bounds of data");
+    
+    if (range.location == NSNotFound) return nil;
+    if (range.length == 0) return [NSMutableData data];
+    if (range.location + range.length > data.length) return nil;
+    
+    return [NSMutableData dataWithBytes:((unsigned char*)data.bytes) + range.location length:range.length];
 }
 
 NSMutableData* BTCSHA1(NSData* data)

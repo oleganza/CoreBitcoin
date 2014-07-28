@@ -5,11 +5,6 @@
 // Change to 0 to disable code that requires OpenSSL (if you need some of these routines in your own project and you don't need OpenSSL)
 #define BTCDataRequiresOpenSSL 1
 
-// Use this subclass to make sure data is zeroed
-@interface BTCMutableDataZeroedOnDealloc : NSMutableData
-+ (instancetype) dataWithData:(NSData *)data;
-@end
-
 // Securely overwrites memory buffer with a specified character.
 void *BTCSecureMemset(void *v, unsigned char c, size_t n);
 
@@ -17,7 +12,7 @@ void *BTCSecureMemset(void *v, unsigned char c, size_t n);
 void BTCSecureClearCString(char *s);
 
 // Returns data with securely random bytes of the specified length. Uses /dev/random.
-NSData* BTCRandomDataWithLength(NSUInteger length);
+NSMutableData* BTCRandomDataWithLength(NSUInteger length);
 
 // Returns random string with securely random bytes of the specified length. Uses /dev/random.
 // Caller should use free() to release the memory occupied by the buffer.
@@ -46,8 +41,13 @@ NSMutableData* BTCReversedMutableData(NSData* data);
 // Reverses byte order in the internal buffer of mutable data object.
 void BTCDataReverse(NSMutableData* data);
 
-// Clears contents of the data to prevent leaks through swapping or buffer-overflow attacks.
-void BTCDataClear(NSMutableData* data);
+// If NSData is NSMutableData clears contents of the data to prevent leaks through swapping or buffer-overflow attacks. Returns YES.
+// If NSData is actually an immutable data, does nothing and returns NO.
+BOOL BTCDataClear(NSData* data);
+
+// Returns a subdata with a given range.
+// If range is invalid, returns nil.
+NSMutableData* BTCDataRange(NSData* data, NSRange range);
 
 // Core hash functions that we need.
 // If the argument is nil, returns nil.
