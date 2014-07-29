@@ -80,8 +80,8 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index;
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
-// If factorOut is not NULL, it will be contain a number that is being added to the private key.
-// This is useful when BIP32 is used in blind signatures protocol.
+// If factorOut is not NULL, it will contain a number that is being added to the private key.
+// This feature is used in BTCBlindSignature protocol.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut;
 
 // Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].rootKey
