@@ -27,7 +27,7 @@
 {
     if (!clientKeychain || !custodianKeychain) return nil;
     
-    // Sanity check: client keychain must be private and custodian one must be public.
+    // Sanity check: client keychain must be private and custodian keychain must be public.
     if (!clientKeychain.isPrivate) return nil;
     if (custodianKeychain.isPrivate) return nil;
 
@@ -89,6 +89,7 @@
 }
 
 // Steps 7-8: Alice blinds her message and sends it to Bob.
+// Note: the index will be encoded in the blinded hash so you don't need to carry it to Bob separately.
 - (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index
 {
     if (!hash) return nil;
@@ -104,15 +105,25 @@
     [b clear];
     [h1 clear];
     
-    return h2.unsignedData;
+    index = OSSwapHostToBigInt32(index);
+    
+    NSMutableData* result = [NSMutableData dataWithBytes:&index length:4];
+    [result appendData:h2.unsignedData];
+    
+    return result;
 }
 
 // Step 9-10: Bob computes a signature for Alice.
-- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash index:(uint32_t)index
+// Note: the index is encoded in the blinded hash and blind signature so we don't need to carry it back and forth.
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash
 {
     if (!blindedHash) return nil;
+    if (blindedHash.length != (4 + 32)) return nil; // blinded hash must contain 32-bit index and 256-bit hash.
     
-    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:blindedHash];
+    uint32_t index = *((uint32_t*)blindedHash.bytes);
+    index = OSSwapBigToHostInt32(index);
+    
+    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:[blindedHash subdataWithRange:NSMakeRange(4, blindedHash.length - 4)]];
     
     //    From
     //      P = p^-1·G = (w + x)·G (where x is a factor in ND(W, 2·i + 0))
@@ -146,16 +157,31 @@
     [q clear];
     [h2 clear];
     
-    return s1.unsignedData;
+    // Return signature with index in the front.
+    index = OSSwapHostToBigInt32(index);
+    
+    NSMutableData* result = [NSMutableData dataWithBytes:&index length:4];
+    [result appendData:s1.unsignedData];
+    
+    return result;
 }
 
 // Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
 // Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
-- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature index:(uint32_t)index
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature
+{
+    return [self unblindedSignatureForBlindSignature:blindSignature verifyHash:nil];
+}
+
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature verifyHash:(NSData*)hashToVerify
 {
     if (!blindSignature) return nil;
+    if (blindSignature.length < 5) return nil;
     
-    BTCBigNumber* s1 = [[BTCBigNumber alloc] initWithUnsignedData:blindSignature];
+    uint32_t index = *((uint32_t*)blindSignature.bytes);
+    index = OSSwapBigToHostInt32(index);
+
+    BTCBigNumber* s1 = [[BTCBigNumber alloc] initWithUnsignedData:[blindSignature subdataWithRange:NSMakeRange(4, blindSignature.length - 4)]];
 
     BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
     BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
@@ -180,7 +206,7 @@
     NSData* sig = [self aliceCompleteSignatureForKx:K.x unblindedSignature:s2];
 
     NSAssert(sig, @"sanity check");
-
+    
     [K clear];
     [s2 clear];
     [s1 clear];
@@ -188,6 +214,19 @@
     [b clear];
     [c clear];
     [d clear];
+    
+    // Verify signature
+    if (hashToVerify)
+    {
+        BTCKey* pubkey = [self publicKeyAtIndex:index];
+    
+        if (![pubkey isValidSignature:sig hash:hashToVerify])
+        {
+            sig = nil;
+        }
+        
+        [pubkey clear];
+    }
     
     return sig;
 }

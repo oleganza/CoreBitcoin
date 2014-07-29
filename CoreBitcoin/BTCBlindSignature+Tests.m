@@ -110,11 +110,11 @@
         NSAssert(blindedHash, @"sanity check");
         
         // Bob computes the signature for Alice and sends it back to her.
-        NSData* blindSig = [bob blindSignatureForBlindedHash:blindedHash index:i];
+        NSData* blindSig = [bob blindSignatureForBlindedHash:blindedHash];
         NSAssert(blindSig, @"sanity check");
         
         // Alice receives the blind signature and computes the complete ECDSA signature ready to use in a redeeming transaction.
-        NSData* finalSig = [alice unblindedSignatureForBlindSignature:blindSig index:i];
+        NSData* finalSig = [alice unblindedSignatureForBlindSignature:blindSig verifyHash:hash];
         NSAssert(finalSig, @"sanity check");
         
         NSAssert([pubkey isValidSignature:finalSig hash:hash], @"Check that the resulting signature is valid for our original hash and pubkey.");

@@ -90,14 +90,18 @@
 - (BTCKey*) publicKeyAtIndex:(uint32_t)index;
 
 // Steps 7-8: Alice blinds her message and sends it to Bob.
+// Note: the index will be encoded in the blinded hash so you don't need to carry it to Bob separately.
 - (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index;
 
 // Step 9-10: Bob computes a signature for Alice.
-- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash index:(uint32_t)index;
+// Note: the index is encoded in the blinded hash and blind signature so we don't need to carry it back and forth.
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash;
 
 // Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
+// If optional hash is not nil, method will verify that the signature is valid for the hash and corresponding public key.
 // Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
-- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature index:(uint32_t)index;
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature;
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature verifyHash:(NSData*)hash;
 
 
 // Core Algorithm
