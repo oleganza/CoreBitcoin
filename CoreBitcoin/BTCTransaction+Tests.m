@@ -42,9 +42,9 @@ typedef enum : NSUInteger {
     
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:privateKey];
     
-    NSLog(@"Address: %@", key.publicKeyAddress);
+    NSLog(@"Address: %@", key.compressedPublicKeyAddress);
     
-    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.publicKeyAddress.base58String])
+    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.compressedPublicKeyAddress.base58String])
     {
         NSLog(@"WARNING: incorrect private key is supplied");
         return;
@@ -53,7 +53,7 @@ typedef enum : NSUInteger {
     NSError* error = nil;
     BTCTransaction* transaction = [self transactionSpendingFromPrivateKey:privateKey
                                                                        to:[BTCPublicKeyAddress addressWithBase58String:@"1A3tnautz38PZL15YWfxTeh8MtuMDhEPVB"]
-                                                                   change:key.publicKeyAddress // send change to the same address
+                                                                   change:key.compressedPublicKeyAddress // send change to the same address
                                                                    amount:100000
                                                                       fee:0
                                                                       api:btcAPI
@@ -102,19 +102,19 @@ typedef enum : NSUInteger {
     switch (btcApi) {
         case BTCAPIBlockchain: {
             BTCBlockchainInfo* bci = [[BTCBlockchainInfo alloc] init];
-            utxos = [bci unspentOutputsWithAddresses:@[ key.publicKeyAddress ] error:&error];
+            utxos = [bci unspentOutputsWithAddresses:@[ key.compressedPublicKeyAddress ] error:&error];
             break;
         }
         case BTCAPIChain: {
             BTCChainCom* chain = [[BTCChainCom alloc] initWithToken:@"Free API Token form chain.com"];
-            utxos = [chain unspentOutputsWithAddress:key.publicKeyAddress error:&error];
+            utxos = [chain unspentOutputsWithAddress:key.compressedPublicKeyAddress error:&error];
             break;
         }
         default:
             break;
     }
     
-    NSLog(@"UTXOs for %@: %@ %@", key.publicKeyAddress, utxos, error);
+    NSLog(@"UTXOs for %@: %@ %@", key.compressedPublicKeyAddress, utxos, error);
 
     // Can't download unspent outputs - return with error.
     if (!utxos)

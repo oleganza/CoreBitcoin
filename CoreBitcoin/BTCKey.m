@@ -229,7 +229,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return [NSMutableData dataWithData:[self publicKeyCached]];
 }
 
-- (NSData*) publicKeyCached
+- (NSMutableData*) publicKeyCached
 {
     if (!_publicKey)
     {
@@ -464,6 +464,20 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (BTCPublicKeyAddress*) publicKeyAddress
 {
     NSData* pubkey = [self publicKeyCached];
+    if (pubkey.length == 0) return nil;
+    return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
+}
+
+- (BTCPublicKeyAddress*) compressedPublicKeyAddress
+{
+    NSData* pubkey = [self compressedPublicKey];
+    if (pubkey.length == 0) return nil;
+    return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
+}
+
+- (BTCPublicKeyAddress*) uncompressedPublicKeyAddress
+{
+    NSData* pubkey = [self uncompressedPublicKey];
     if (pubkey.length == 0) return nil;
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
 }

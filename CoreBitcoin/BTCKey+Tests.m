@@ -109,7 +109,7 @@
         
         BTCKey* key = [BTCKey verifySignature:signature forMessage:@"Test message"];
         NSAssert([key isValidSignature:signature forMessage:@"Test message"], @"Should validate signature");
-        NSAssert([key.publicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
+        NSAssert([key.compressedPublicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
     }
     
 }

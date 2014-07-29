@@ -68,11 +68,17 @@
 // Instantiate with a private key in a form of address. Also takes care about compressing pubkey if needed.
 - (id) initWithPrivateKeyAddress:(BTCPrivateKeyAddress*)privateKeyAddress;
 
-// Public key hash. Refers to a compressed public key if was initialized with private key serialization marked with "private" flag.
-// See -publicKeyCompressed property.
-@property(nonatomic, readonly) BTCPublicKeyAddress* publicKeyAddress;
+// Public key hash. Refers to a compressed public key if was initialized with
+// private key serialization marked with "private" flag. See -publicKeyCompressed property.
+// This is deprecated because actual result depends on a separate flag (-publicKeyCompressed)
+// forgetting about which may cause confusion and hard to trace bugs.
+@property(nonatomic, readonly) BTCPublicKeyAddress* publicKeyAddress DEPRECATED_ATTRIBUTE;
 
-// Private key encoded as an address.
+// Returns address for a public key (Hash160(pubkey)).
+@property(nonatomic, readonly) BTCPublicKeyAddress* uncompressedPublicKeyAddress;
+@property(nonatomic, readonly) BTCPublicKeyAddress* compressedPublicKeyAddress;
+
+// Private key encoded in sipa format (base58 with compression flag).
 @property(nonatomic, readonly) BTCPrivateKeyAddress* privateKeyAddress;
 
 

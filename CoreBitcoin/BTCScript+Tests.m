@@ -204,7 +204,7 @@
     
     {
     	BTCKey* key = [[BTCKey alloc] init];
-        NSString *addressB58 = key.publicKeyAddress.base58String;
+        NSString *addressB58 = key.compressedPublicKeyAddress.base58String;
         NSString *privKeyB58 = key.privateKeyAddress.base58String;
         
         NSLog(@"Address1: %@", addressB58);
@@ -232,7 +232,7 @@
         NSLog(@"Address2: %@", pubkeyAddress.base58String);
         NSLog(@"PrivKey2: %@", privkeyAddress.base58String);
         
-        NSString *address2 = key2.publicKeyAddress.base58String;
+        NSString *address2 = key2.compressedPublicKeyAddress.base58String;
         NSLog(@"Address1 %@ Equal Address2", [addressB58 isEqualToString:address2] ? @"is": @"is NOT");
     }
     
