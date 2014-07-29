@@ -89,6 +89,7 @@
     NSString* message = @"Test message";
     NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
+    key.publicKeyCompressed = NO;
     //key.publicKeyCompressed = YES;
     //NSLog(@"Pubkey 1: %@ (%d bytes)", key.publicKey, (int)key.publicKey.length);
     
@@ -109,7 +110,7 @@
         
         BTCKey* key = [BTCKey verifySignature:signature forMessage:@"Test message"];
         NSAssert([key isValidSignature:signature forMessage:@"Test message"], @"Should validate signature");
-        NSAssert([key.compressedPublicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
+        NSAssert([key.uncompressedPublicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
     }
     
 }
