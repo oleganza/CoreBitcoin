@@ -6,6 +6,7 @@
 #import "BTCCurvePoint.h"
 #import "BTCBigNumber.h"
 #import "BTCBase58.h"
+#import "BTCAddress.h"
 
 #define BTCKeychainPrivateExtendedKeyVersion 0x0488ADE4
 #define BTCKeychainPublicExtendedKeyVersion  0x0488B21E
@@ -321,6 +322,107 @@
     
     return keychain;
 }
+
+// Scans child keys till one is found that matches the given address.
+// Only BTCPublicKeyAddress and BTCPrivateKeyAddress are supported. For others nil is returned.
+// Limit is maximum number of keys to scan. If no key is found, returns nil.
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened limit:(NSUInteger)limit
+{
+    return [self findKeychainForAddress:address hardened:hardened from:0 limit:limit];
+}
+
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
+{
+    if (!address) return nil;
+    if (!self.isPrivate) return nil;
+    
+    if ([address isKindOfClass:[BTCPrivateKeyAddress class]])
+    {
+        BTCPrivateKeyAddress* privkeyAddress = (BTCPrivateKeyAddress*)address;
+        BTCKey* key = privkeyAddress.key;
+        NSMutableData* privkeyData = key.privateKey;
+        
+        BTCKeychain* result = nil;
+        
+        for (uint32_t i = startIndex; i < (startIndex + limit); i++)
+        {
+            BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
+            
+            if ([keychain.privateKey isEqual:privkeyData])
+            {
+                result = keychain;
+                break;
+            }
+            
+            [keychain clear];
+        }
+        
+        [key clear];
+        BTCDataClear(privkeyData);
+        
+        return result;
+    }
+    
+    if ([address isKindOfClass:[BTCPublicKeyAddress class]])
+    {
+        NSData* hash160 = ((BTCPublicKeyAddress*)address).data;
+        
+        BTCKeychain* result = nil;
+        
+        for (uint32_t i = startIndex; i < (startIndex + limit); i++)
+        {
+            BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
+            
+            if ([keychain.identifier isEqual:hash160])
+            {
+                result = keychain;
+                break;
+            }
+            
+            [keychain clear];
+        }
+        
+        return result;
+    }
+    
+    return nil;
+}
+
+
+// Scans child keys till one is found that matches the given public key.
+// Limit is maximum number of keys to scan. If no key is found, returns nil.
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened limit:(NSUInteger)limit
+{
+    return [self findKeychainForPublicKey:pubkey hardened:hardened from:0 limit:limit];
+}
+
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
+{
+    if (!pubkey) return nil;
+    if (!self.isPrivate) return nil;
+    
+    NSData* data = pubkey.compressedPublicKey;
+    
+    BTCKeychain* result = nil;
+    
+    for (uint32_t i = startIndex; i < (startIndex + limit); i++)
+    {
+        BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
+        
+        if ([keychain.publicKey isEqual:data])
+        {
+            result = keychain;
+            break;
+        }
+        
+        [keychain clear];
+    }
+    
+    BTCDataClear(data);
+    
+    return result;
+}
+
 
 
 #pragma mark - NSObject

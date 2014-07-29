@@ -17,6 +17,7 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 
 @class BTCKey;
 @class BTCBigNumber;
+@class BTCAddress;
 @interface BTCKeychain : NSObject<NSCopying>
 
 // Initializes master keychain from a seed. This is the "root" keychain of the entire hierarchy.
@@ -90,6 +91,21 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (BTCKey*) keyAtIndex:(uint32_t)index;
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
+
+// Scanning methods.
+
+// Scans child keys till one is found that matches the given address.
+// Only BTCPublicKeyAddress and BTCPrivateKeyAddress are supported. For others nil is returned.
+// Limit is maximum number of keys to scan. If no key is found, returns nil.
+// Returns nil if the receiver does not contain private key.
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened limit:(NSUInteger)limit;
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit;
+
+// Scans child keys till one is found that matches the given public key.
+// Limit is maximum number of keys to scan. If no key is found, returns nil.
+// Returns nil if the receiver does not contain private key.
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened limit:(NSUInteger)limit;
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit;
 
 @end
 
