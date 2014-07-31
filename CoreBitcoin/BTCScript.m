@@ -1106,11 +1106,11 @@
     
     if (self.isOpcode)
     {
-        if (opcode == OP_0) return @"0";
-        if (opcode == OP_1NEGATE) return @"-1";
+        if (opcode == OP_0) return @"OP_0";
+        if (opcode == OP_1NEGATE) return @"OP_1NEGATE";
         if (opcode >= OP_1 && opcode <= OP_16)
         {
-            return [NSString stringWithFormat:@"%u", ((int)opcode + 1 - (int)OP_1)];
+            return [NSString stringWithFormat:@"OP_%u", ((int)opcode + 1 - (int)OP_1)];
         }
         else
         {
@@ -1125,7 +1125,7 @@
         // Empty data is encoded as OP_0.
         if (data.length == 0)
         {
-            string = @"0";
+            string = @"OP_0";
         }
         else if ([self isASCIIData:data])
         {
