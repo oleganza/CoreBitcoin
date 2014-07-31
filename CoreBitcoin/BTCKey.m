@@ -120,7 +120,17 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     // By default, k is chosen randomly on interval [0, n - 1].
     // But this makes signatures harder to test and allows faulty or backdoored RNGs to leak private keys from ECDSA signatures.
     // To avoid these issues, we'll generate k = Hash256(hash || privatekey) and make all computations by hand.
-    
+    //
+    // Note: if one day you think it's a good idea to mix in some extra entropy as an option,
+    //       ask yourself why Hash(message || privkey) is not unpredictable enough.
+    //       IMHO, it is as predictable as privkey and making it any stronger has no point since
+    //       guessing the privkey allows anyone to do the same as guessing the k: sign any
+    //       other transaction with that key. Also, the same hash function is used for computing
+    //       the message hash and needs to be preimage resistant. If it's weak, anyone can recover the
+    //       private key from a few observed signatures. Using the same function to derive k therefore
+    //       does not make the signature any less secure.
+    //
+   
     ECDSA_SIG sigValue;
     ECDSA_SIG *sig = NULL;
     
