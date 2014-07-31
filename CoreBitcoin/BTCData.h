@@ -31,6 +31,10 @@ NSData* BTCDataWithHexString(NSString* hexString);
 // Init with zero-terminated hex string (lower- or uppercase, with optional 0x prefix)
 NSData* BTCDataWithHexCString(const char* hexString);
 
+// Converts data to a hex string
+NSString* BTCHexStringFromData(NSData* data);
+NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than calling -uppercaseString on a lower-case result.
+
 // Returns a copy of data with reversed byte order.
 // This is useful in Bitcoin: things get reversed here and there all the time.
 NSData* BTCReversedData(NSData* data);
@@ -76,9 +80,6 @@ NSMutableData* BTCZero256();
 // Pointer to a static array of zeros (256 bits long).
 const unsigned char* BTCZeroString256();
 
-// Converts data to a hex string
-NSString* BTCHexStringFromData(NSData* data);
-NSString* BTCUppercaseHexStringFromData(NSData* data); // more efficient than calling -uppercaseString on a lower-case result.
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 256-bit blocks).
 // Actual number of hash function computations is a number of rounds multiplied by a number of 256-bit blocks.

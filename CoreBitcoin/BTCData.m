@@ -195,6 +195,34 @@ NSData* BTCDataWithHexCString(const char* hexCString)
     return [[NSData alloc] initWithBytesNoCopy:buf length:len/2];
 }
 
+
+NSString* BTCHexStringFromDataWithFormat(NSData* data, const char* format)
+{
+    if (!data) return nil;
+    
+    NSUInteger length = data.length;
+    if (length == 0) return @"";
+    
+    NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
+    char *dest = resultdata.mutableBytes;
+    unsigned const char *src = data.bytes;
+    for (int i = 0; i < length; ++i)
+    {
+        sprintf(dest + i*2, format, (unsigned int)(src[i]));
+    }
+    return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
+}
+
+NSString* BTCHexStringFromData(NSData* data)
+{
+    return BTCHexStringFromDataWithFormat(data, "%02x");
+}
+
+NSString* BTCUppercaseHexStringFromData(NSData* data)
+{
+    return BTCHexStringFromDataWithFormat(data, "%02X");
+}
+
 NSData* BTCReversedData(NSData* data)
 {
     return BTCReversedMutableData(data);
@@ -391,32 +419,6 @@ NSMutableData* BTCHash160(NSData* data)
 
 
 
-NSString* BTCHexStringFromDataWithFormat(NSData* data, const char* format)
-{
-    if (!data) return nil;
-    
-    NSUInteger length = data.length;
-    if (length == 0) return @"";
-    
-    NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
-    char *dest = resultdata.mutableBytes;
-    unsigned const char *src = data.bytes;
-    for (int i = 0; i < length; ++i)
-    {
-        sprintf(dest + i*2, format, (unsigned int)(src[i]));
-    }
-    return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
-}
-
-NSString* BTCHexStringFromData(NSData* data)
-{
-    return BTCHexStringFromDataWithFormat(data, "%02x");
-}
-
-NSString* BTCUppercaseHexStringFromData(NSData* data)
-{
-    return BTCHexStringFromDataWithFormat(data, "%02X");
-}
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 256-bit blocks).
 // Actual number of hash function computations is a number of rounds multiplied by a number of 256-bit blocks.
