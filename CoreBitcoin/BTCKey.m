@@ -220,6 +220,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     
     return signature;
     
+    // This code is simpler but it produces random signatures and does not canonicalize S as done above.
+    // 
     //    unsigned int sigSize = ECDSA_size(_key);
     //    NSMutableData* signature = [NSMutableData dataWithLength:sigSize];
     //
