@@ -27,3 +27,17 @@
 + add aggregate header CoreBitcoin.h with all non-test and non-category methods.
 + add aggregate header CoreBitcoin+Categories.h that includes categories on standard classes.
 + add openssl dependency in cocoapods (we can specify the exact hash for security). If openssl cocoapods does not have fat iOS build, that needs to be fixed.
+
+
+Peer-to-peer connectivity features:
+
+1. Support for Bitcoin network message would allow:
+    - SPV
+    - full node implementation
+    - experiments with compact full node implementations (partial block storage, partial UTXO)
+
+2. Support for multi-peer connectivity and Bluetooth:
+    - to push tx directly to a recipient (e.g. while in roaming or where 3G connection is poor).
+    - to enable 2-factor signing (e.g. from a phone and from a laptop).
+    - enable in-person contract signing without intermediary app or service.
+
