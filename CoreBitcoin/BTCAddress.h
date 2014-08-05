@@ -3,10 +3,17 @@
 #import <Foundation/Foundation.h>
 
 // Addresses are Base58-encoded pieces of data representing various objects:
-// 1. Public key address. Example: 19FGfswVqxNubJbh1NW8A4t51T9x9RDVWQ.
-// 2. Private key for uncompressed public key (the one most used). Example: 5KQntKuhYWSRXNqp2yhdXzjekYAR7US3MT1715Mbv5CyUKV6hVe.
+//
+// 1. Public key (actually, a hash of a public key) address. Example: 19FGfswVqxNubJbh1NW8A4t51T9x9RDVWQ.
+// 2. Private key for uncompressed public key. Example: 5KQntKuhYWSRXNqp2yhdXzjekYAR7US3MT1715Mbv5CyUKV6hVe.
 // 3. Private key for compressed public key. Example: L3p8oAcQTtuokSCRHQ7i4MhjWc9zornvpJLfmg62sYpLRJF9woSu.
 // 4. Script address (P2SH). Example: 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8.
+//
+// Testnet addresses are also supported with the following subclasses:
+//   BTCPublicKeyAddressTestnet, 
+//   BTCPrivateKeyAddressTestnet, 
+//   BTCScriptHashAddressTestnet.
+//
 @class BTCKey;
 @interface BTCAddress : NSObject
 
