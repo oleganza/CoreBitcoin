@@ -13,9 +13,9 @@ void BTC256TestChunkSize()
 
 void BTC256TestNull()
 {
-    NSCAssert([NSStringFromBTC160(BTC160Null) isEqualTo:@"82963d5edd842f1e6bd2b6bc2e9a97a40a7d8652"], @"null hash should be correct");
-    NSCAssert([NSStringFromBTC256(BTC256Null) isEqualTo:@"d1007a1fe826e95409e21595845f44c3b9411d5285b6b5982285aabfa5999a5e"], @"null hash should be correct");
-    NSCAssert([NSStringFromBTC512(BTC512Null) isEqualTo:@"62ce64dd92836e6e99d83eee3f623652f6049cf8c22272f295b262861738f0363e01b5d7a53c4a2e5a76d283f3e4a04d28ab54849c6e3e874ca31128bcb759e1"], @"null hash should be correct");
+    NSCAssert([NSStringFromBTC160(BTC160Null) isEqual:@"82963d5edd842f1e6bd2b6bc2e9a97a40a7d8652"], @"null hash should be correct");
+    NSCAssert([NSStringFromBTC256(BTC256Null) isEqual:@"d1007a1fe826e95409e21595845f44c3b9411d5285b6b5982285aabfa5999a5e"], @"null hash should be correct");
+    NSCAssert([NSStringFromBTC512(BTC512Null) isEqual:@"62ce64dd92836e6e99d83eee3f623652f6049cf8c22272f295b262861738f0363e01b5d7a53c4a2e5a76d283f3e4a04d28ab54849c6e3e874ca31128bcb759e1"], @"null hash should be correct");
 }
 
 void BTC256TestOne()
@@ -121,11 +121,11 @@ void BTC256TestXOR()
 void BTC256TestConcat()
 {
     BTC512 concat = BTC512Concat(BTC256Null, BTC256Max);
-    NSCAssert([NSStringFromBTC512(concat) isEqualTo:@"d1007a1fe826e95409e21595845f44c3b9411d5285b6b5982285aabfa5999a5e"
+    NSCAssert([NSStringFromBTC512(concat) isEqual:@"d1007a1fe826e95409e21595845f44c3b9411d5285b6b5982285aabfa5999a5e"
                "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"], @"should concatenate properly");
     
     concat = BTC512Concat(BTC256Max, BTC256Null);
-    NSCAssert([NSStringFromBTC512(concat) isEqualTo:@"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    NSCAssert([NSStringFromBTC512(concat) isEqual:@"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
                "d1007a1fe826e95409e21595845f44c3b9411d5285b6b5982285aabfa5999a5e"], @"should concatenate properly");
     
 }
@@ -153,10 +153,10 @@ void BTC256TestConvertToString()
     NSCAssert(chunk.words64[2] == OSSwapBigToHostConstInt64(0xa5999a5e845f44c3), @"parse correctly");
     NSCAssert(chunk.words64[3] == OSSwapBigToHostConstInt64(0xb9411d5d1007a1b1), @"parse correctly");
     
-    NSCAssert([NSStringFromBTC256(chunk) isEqualTo:@"000095409e215952"
-                                                    "85b6b5982285aabf"
-                                                    "a5999a5e845f44c3"
-                                                    "b9411d5d1007a1b1"], @"should serialize to the same string");
+    NSCAssert([NSStringFromBTC256(chunk) isEqual:@"000095409e215952"
+                                                  "85b6b5982285aabf"
+                                                  "a5999a5e845f44c3"
+                                                  "b9411d5d1007a1b1"], @"should serialize to the same string");
 }
 
 
