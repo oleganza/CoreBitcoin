@@ -105,7 +105,7 @@
     
     if (data.length < (varIntLength + length)) return nil;
     
-    if (lengthOut) *lengthOut = varIntLength + length;
+    if (lengthOut) *lengthOut = varIntLength + (NSUInteger)length;
     
     return [data subdataWithRange:NSMakeRange(varIntLength, (NSUInteger)length)];
 }
