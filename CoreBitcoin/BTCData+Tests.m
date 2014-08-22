@@ -49,15 +49,14 @@
     NSAssert([[BTCDataWithHexString(@"00c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827") base58CheckString] isEqualToString:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Encodes base58 with checksum");
     
     
-    // Memory hard KDF
+    // Memory-hard KDF
     
-    return;
 
-    NSLog(@"Generating key with BTCJerk256...");
+    NSLog(@"Generating key with BTCLocustKDF256...");
     NSDate* t1 = [NSDate date];
-    NSData* key1 = BTCJerk256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+    NSData* key1 = BTCLocustKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      128*1024*1024 // memory required
+                                      100*1024*1024 // memory required
                                       );
     NSLog(@"Generated key = %@ [%f sec]", key1, -[t1 timeIntervalSinceNow]);
     
@@ -67,7 +66,7 @@
     NSData* key2 = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
                                       BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
                                       20, // number of rounds
-                                      2*1024*1024 // memory required
+                                      4*1024*1024 // memory required
                                       );
     NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
 

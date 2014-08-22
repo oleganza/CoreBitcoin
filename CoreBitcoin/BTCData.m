@@ -655,127 +655,174 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
 
 
 // Probabilistic memory-hard KDF with 256-bit output and only one difficulty parameter - amount of memory.
-// Actual amount of memory is rounded to a whole number of 256-bit blocks.
+// Actual amount of memory is rounded to a whole number of 512-bit blocks.
 // Uses SHA512 as internal hash function.
 // Computational time is proportional to amount of memory.
-// Brutefore with half the memory raises amount of hash computations quadratically.
-NSMutableData* BTCJerk256(NSData* password, NSData* salt, unsigned int numberOfBytes)
+// Brutefore with half the memory raises amount of hash computations at least quadratically.
+NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberOfBytes, unsigned int outputLength)
 {
     @autoreleasepool {
         
-        const unsigned int blockSize = CC_SHA512_DIGEST_LENGTH / 2;
+        if (outputLength == 0) return [NSMutableData data];
+        
+        const unsigned maxJumps = 4;
+        const unsigned int blockSize = CC_SHA512_DIGEST_LENGTH;
         
         // Round up the required memory to integral number of blocks.
         // Minimum size is 512 bits.
-        {
-            if (numberOfBytes < blockSize*2) numberOfBytes = blockSize*2;
-            unsigned int numberOfBlocks = numberOfBytes / blockSize;
-            if (numberOfBytes % blockSize) numberOfBlocks++;
-            numberOfBytes = numberOfBlocks * blockSize;
-        }
+        numberOfBytes = (numberOfBytes / blockSize) * blockSize + ((numberOfBytes % blockSize) ? blockSize : 0);
+        if (numberOfBytes < 2*blockSize) numberOfBytes = 2*blockSize;
+        
+        // Cap output to the total space length.
+        outputLength = MIN(numberOfBytes, outputLength);
         
         // Context for computing hashes.
         CC_SHA512_CTX ctx;
         
         // Allocate the required memory
-        NSMutableData* space = [NSMutableData dataWithLength:numberOfBytes + blockSize]; // a bit of extra memory for temporary storage of SHA512
+        NSMutableData* space = [NSMutableData dataWithLength:numberOfBytes];
         unsigned char* spaceBytes = space.mutableBytes;
         
-        // Initial two blocks = SHA512(password + salt)
+        // Initial two blocks:
+        // 1. SHA512(password + salt)
+        // 2. SHA512(SHA512(password + salt))
+        
         CC_SHA512_Init(&ctx);
         CC_SHA512_Update(&ctx, password.bytes, (CC_LONG)password.length);
         CC_SHA512_Update(&ctx, salt.bytes, (CC_LONG)salt.length);
         CC_SHA512_Final(spaceBytes, &ctx);
         
-        // Take first 256 bits as a key to mix in during hashing below.
-        NSData* key = [NSData dataWithBytes:spaceBytes length:blockSize];
-        const unsigned char* keyBytes = key.bytes;
+        CC_SHA512_Init(&ctx);
+        CC_SHA512_Update(&ctx, spaceBytes, blockSize);
+        CC_SHA512_Final(spaceBytes + blockSize, &ctx);
         
-        // At each step we try reinforce memory requirement while spending as little time as possible.
-        // Making each step fast allows us to require more memory in the same amount of time.
+        // At each step we try to reinforce memory requirement while spending a constant amount of time.
         // Some applications wouldn't like to waste more than 100 ms on KDF, some are okay to spend 5 sec.
         // Yet, the more memory we can use in that period of time, the better.
         
-        // We start with just 2 blocks of data. It's pointless to waste time filling in the whole space.
+        // We start with just 2 blocks of data. It's pointless to waste time filling the whole space.
         // It's also pointless to use any of the remaining space. The only source of entropy we have is in the very beginning.
-        // We use the initial state to produce the next block and at the same time we pseudo-randomly mutate that space to force attacker to keep the result around.
+        // We use pseudo-random locations in the initial state to produce the next block therefore forcing the attacker to keep the result around.
         
-        // On step two we will have slightly more material, so we'll use that. As we go further in the space,
-        // amount of generated data grows, but the amount of computations per step is the same.
+        // When we arrive at the end, we take the last 256 bits and return them as a result.
         
-        // When we arrive at the end, we simply take the last 256 bits as a result.
+        uint64_t buf[8] = {0};
+        uint64_t a;
+        uint64_t b;
         
         for (unsigned long i = 2*blockSize; i < numberOfBytes; i += blockSize)
         {
             // A = previous block (filled).
-            // B = next block (empty).
-            // A is composed of little-endian 64-bit numbers: {A1, A2, A3, A4}.
-            // 64-bit chunk C1 will be pointed at by A1 mod (i - 7).
-            // 64-bit chunk C2 will be pointed at by (C1 ^ A2) mod (i - 7).
-            // 64-bit chunk C3 will be pointed at by (C2 ^ A3) mod (i - 7).
-            // Compute hash H = SHA512(C1 ++ C2 ++ C3 ++ A4 ++ key) = {R, H1, H2, H3, H4}, where R - 256-bit block and H1,H2,H3,H4 are 64-bit numbers.
-            // Copy H1 to C1, H2 to C2, H3 to C3 and H4 to A1.
-            // Copy R into B.
-            // Increase i by the block size and repeat.
-            // Note that A1 is completely replaced by a hash, so it's hard to quickly find a chain of blocks C1, C2 and C3 that are updated and also affect B.
-            // 64-bit hidden pointer is not a big deal, but it increases burden for the attacker significantly without adding much overhead to computing the hash function.
-            // Remember that we try to be as fast as possible to cover as much memory as possible in a scarce amount of time.
+            // A is composed of 8 64-bit numbers: {A1, A2, A3, A4, A5, A6, A7, A8}.
+            // Each number is treated as a byte pointer to a 64-bit word located between the beginning and
+            // the previous block (i.e. modulo i - blockSize - wordSize). Offset is counted in bytes, not in number
+            // of words which produces better diffusion.
             
-            // Security analysis:
+            // Security analysis (work in progress):
             // Lets say attacker wants to reduce amount of memory by a factor of 2.
-            // He will complete 50% of needed computations with the available memory.
-            // Then, to continue he will have to overwrite some bytes to continue hashing.
-            // Attacker may figure out which bytes will be used in the very next step, so he may avoid overwriting them, but
-            // he cannot know yet which ones will be used on the step after the next one.
-            // So he will have a chance that one, two or three 64-bit blocks needed are overwritten.
-            // That chance grows as more and more bytes are being overwritten.
-            // We do not count cost of tracking overwritten blocks; assuming it's zero (although in practice it is not).
-            // The cost of a missing 64-bit block is in the need to replay hashing from that position which involves two problems:
+            // He will complete 50% of necessary computations with the available memory.
+            // Then he would have to overwrite some previous results with new data.
+            // One possible attack is to throw away every second block (or word). This way if the pointer arrives on a missing
+            // word, it can be quickly recomputed from the previous data. However that data will also cause touching missing words
+            // with overwhelming probability (we have 8 pseudo-random jumps K times).
             //
-
-            uint64_t a1 = *((uint64_t*)(spaceBytes + i - 32));
-            uint64_t a2 = *((uint64_t*)(spaceBytes + i - 24));
-            uint64_t a3 = *((uint64_t*)(spaceBytes + i - 16));
-            uint64_t a4 = *((uint64_t*)(spaceBytes + i - 8));
+            // Amount of memory is M words.
+            // Amount of space at step N is 8*N words.
+            // Amount of pseudo-random jumps is 8*K.
+            // Probability for one jump to arrive within stored words is R = M/(8*N).
+            // Probability for 8*K jumps to arrive within stored words is R^(8*K).
+            // Probability that one will need some thrown away block is (1 - R)^(8*K)) which for K = 2 and R < 0.5 is close to 99.99%.
+            // We need to compute a probability of one specific word not being used over total N iterations.
+            // For word number n is not used until n/8 steps performed.
+            // At each step s from n/8 till N we have this probability that the word will not be used: (1 - 1/(8*s))
+            // Total probability that a specific word n won't be used throughout entire computation is ∏(1 - 1/(8*s)) over s = n/8 till N.
+            // This probability converges to a not very small probability mostly defined by the first terms.
+            // Lets for simplicity define an upper bound for this probability as 1 - 1/(8*s) and see how it goes for multiple words.
+            //
+            // The real model is when we throw away some words after X steps.
+            // We need to compute real cost for throwing these words away and prove that it'll surpass any winnings or make computation impractically slower.
+            // One approach would be like this: each miss requires some amount of temporary memory.
+            // At some number of misses amount of temporary memory may reach the amount of memory being thrown away (on average).
+            // If that so, it is not important how slower the computation becomes: memory requirement still holds.
             
-            uint64_t* pc1 = (uint64_t*)(spaceBytes + (a1 % (i - 7)));
-            uint64_t* pc2 = (uint64_t*)(spaceBytes + (((*pc1) ^ a2) % (i - 7)));
-            uint64_t* pc3 = (uint64_t*)(spaceBytes + (((*pc2) ^ a3) % (i - 7)));
+            // B = block size of memory
+            // pi = probability of miss of a block
+            // miss_cost(n) = (B*miss_prob(n) + miss_prob(n)*miss_cost(n+1)) = miss_prob(n)*(Block + 8*miss_cost(n+1))
+            //
+            
+            uint64_t *src = (uint64_t*)(spaceBytes + i - blockSize);
+            
+            for (int w = 0; w < 8; w++) { buf[w] = *(src+w); }
+            
+            // We have several rounds of jumps to make sure it's costlier to throw away previously computed values.
+            for (int jumps = 0; jumps < maxJumps; jumps++)
+            {
+                // At each round of jumps we split the recently computed 512-bit block in 8 words (64 bit each).
+                // Each word acts as a random offset in the space before current block.
+                // The word at which we arrive is interpreted as another offset for next round of jumps.
+                for (int w = 0; w < 8; w++)
+                {
+                    a = buf[w];
+                    // Initial step modulo: (2*64 - 64 - 8 + 1) = 64-8 = 57. So the max offset is 56 and the whole last byte of the prev block can be consumed. This as
+                    b = *(uint64_t *)(spaceBytes + (a % (i - blockSize - 8 + 1)));
+                    
+                    // Make this jump unique so this word b does not always point to the same location.
+                    // So attacker cannot predict which blocks are less likely to be hit.
+                    // SHA512 guarantees lack of correlation between input (b) and hash value (a)
+                    // therefore XORing them should not introduce bias.
+                    buf[w] = b ^ a;
+                }
+            }
             
             CC_SHA512_Init(&ctx);
-            CC_SHA512_Update(&ctx, pc1, 8);
-            CC_SHA512_Update(&ctx, pc2, 8);
-            CC_SHA512_Update(&ctx, pc3, 8);
-            CC_SHA512_Update(&ctx, &a1, 8);
-            CC_SHA512_Update(&ctx, &a2, 8);
-            CC_SHA512_Update(&ctx, &a3, 8);
-            CC_SHA512_Update(&ctx, &a4, 8);
-            CC_SHA512_Update(&ctx, keyBytes, blockSize);
-            CC_SHA512_Final(spaceBytes + i, &ctx); // put the results in the space so we don't need any extra memory for it. We'll take H1,H2,H3,H4 from spaceBytes[i + 32].
-
-            // H1 -> C1
-            *pc1 = *((uint64_t*)(spaceBytes + i + 32 + 0 ));
             
-            // H2 -> C2
-            *pc2 = *((uint64_t*)(spaceBytes + i + 32 + 8 ));
+            // Hash all the resulting words after jumping and XORing.
+            CC_SHA512_Update(&ctx, buf, 8*sizeof(uint64_t));
             
-            // H3 -> C3
-            *pc3 = *((uint64_t*)(spaceBytes + i + 32 + 16));
+            // Hash also the entire previous block.
+            // This guarantees us security level of PBKDF2 with equivalent number of rounds.
+            // Even if we have bias due to jumps at some point, this will give us a well-diffused hash value.
+            CC_SHA512_Update(&ctx, spaceBytes + i - blockSize, blockSize);
             
-            // H4 -> A1
-            *((uint64_t*)(spaceBytes + i - 32)) = *((uint64_t*)(spaceBytes + i + 32 + 24));
+            CC_SHA512_Final(spaceBytes + i, &ctx);
         }
         
         // The resulting key is simply the remaining bits of the data space.
         
-        NSMutableData* result =  [NSMutableData dataWithBytes:spaceBytes + numberOfBytes - blockSize length:blockSize];
+        NSMutableData* result =  [NSMutableData dataWithBytes:spaceBytes + numberOfBytes - outputLength length:outputLength];
+        
+        // Clear sensitive data from memory.
         
         BTCSecureMemset(&ctx,       0, sizeof(ctx));
         BTCSecureMemset(spaceBytes, 0, space.length);
+        BTCSecureMemset(buf,        0, sizeof(buf));
+        a = 0;
+        b = 0;
         
         return result;
     }
 }
+
+NSMutableData* BTCLocustKDF128(NSData* password, NSData* salt, unsigned int numberOfBytes)
+{
+    return BTCLocustKDF(password, salt, numberOfBytes, 16);
+}
+
+NSMutableData* BTCLocustKDF160(NSData* password, NSData* salt, unsigned int numberOfBytes)
+{
+    return BTCLocustKDF(password, salt, numberOfBytes, 20);
+}
+
+NSMutableData* BTCLocustKDF256(NSData* password, NSData* salt, unsigned int numberOfBytes)
+{
+    return BTCLocustKDF(password, salt, numberOfBytes, 32);
+}
+
+NSMutableData* BTCLocustKDF512(NSData* password, NSData* salt, unsigned int numberOfBytes)
+{
+    return BTCLocustKDF(password, salt, numberOfBytes, 64);
+}
+
 
 
 

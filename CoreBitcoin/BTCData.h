@@ -100,7 +100,10 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
 // Uses SHA512 as internal hash function.
 // Computational time is proportional to amount of memory.
 // Brutefore with half the memory raises amount of hash computations quadratically.
-NSMutableData* BTCJerk256(NSData* password, NSData* salt, unsigned int numberOfBytes);
+NSMutableData* BTCLocustKDF128(NSData* password, NSData* salt, unsigned int numberOfBytes);
+NSMutableData* BTCLocustKDF160(NSData* password, NSData* salt, unsigned int numberOfBytes);
+NSMutableData* BTCLocustKDF256(NSData* password, NSData* salt, unsigned int numberOfBytes);
+NSMutableData* BTCLocustKDF512(NSData* password, NSData* salt, unsigned int numberOfBytes);
 
-
-
+// Makes arbitrary-length output.
+NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberOfBytes, unsigned int outputLength);
