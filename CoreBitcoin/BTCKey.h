@@ -120,6 +120,22 @@
 - (BOOL) isValidSignature:(NSData*)signature forBinaryMessage:(NSData*)data;
 
 
+// Canonical checks
+
+// Used by BitcoinQT within OP_CHECKSIG to not relay transactions with non-canonical signature or a public key.
+// Normally, signatures and pubkeys are encoded in a canonical form and majority of the transactions are good.
+// Unfortunately, sometimes OpenSSL segfaults on some garbage data in place of a signature or a pubkey.
+// Read more on that here: https://bitcointalk.org/index.php?topic=8392.80
+
+// Note: non-canonical pubkey could still be valid for EC internals of OpenSSL and thus accepted by Bitcoin nodes.
++ (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut;
+
+// Checks if the script signature is canonical.
+// The signature is assumed to include hash type byte (see BTCSignatureHashType).
++ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut;
+
+
+
 
 @end
 

@@ -49,7 +49,7 @@ typedef enum : NSUInteger {
 //            NSData* sigWithHashtype = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
 //            
 //            NSError* error = nil;
-//            if (![BTCScript isCanonicalSignature:sigWithHashtype verifyEvenS:YES error:&error])
+//            if (![BTCKey isCanonicalSignatureWithHashType:sigWithHashtype verifyEvenS:YES error:&error])
 //            {
 //                NSLog(@"Chunk not canonical! %@", error);
 //            }

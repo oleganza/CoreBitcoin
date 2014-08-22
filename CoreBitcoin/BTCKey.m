@@ -6,6 +6,7 @@
 #import "BTCCurvePoint.h"
 #import "BTCBigNumber.h"
 #import "BTCProtocolSerialization.h"
+#import "BTCErrors.h"
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
@@ -669,6 +670,185 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     BTCKey* key = [[self class] verifySignature:signature forBinaryMessage:data];
     return [key isEqual:self];
 }
+
+
+
+
+
+
+
+#pragma mark - Canonical Checks
+
+
+
+// Note: non-canonical pubkey could still be valid for EC internals of OpenSSL and thus accepted by Bitcoin nodes.
++ (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut
+{
+    NSUInteger length = data.length;
+    const char* bytes = [data bytes];
+    
+    // Non-canonical public key: too short
+    if (length < 33)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalPublicKey userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical public key: too short.", @"")}];
+        return NO;
+    }
+    
+    if (bytes[0] == 0x04)
+    {
+        // Length of uncompressed key must be 65 bytes.
+        if (length == 65) return YES;
+        
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalPublicKey userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical public key: length of uncompressed key must be 65 bytes.", @"")}];
+        
+        return NO;
+    }
+    else if (bytes[0] == 0x02 || bytes[0] == 0x03)
+    {
+        // Length of compressed key must be 33 bytes.
+        if (length == 33) return YES;
+        
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalPublicKey userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical public key: length of compressed key must be 33 bytes.", @"")}];
+        
+        return NO;
+    }
+    
+    // Unknown public key format.
+    if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalPublicKey userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unknown non-canonical public key.", @"")}];
+    
+    return NO;
+}
+
+
+
++ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut
+{
+    // See https://bitcointalk.org/index.php?topic=8392.msg127623#msg127623
+    // A canonical signature exists of: <30> <total len> <02> <len R> <R> <02> <len S> <S> <hashtype>
+    // Where R and S are not negative (their first byte has its highest bit not set), and not
+    // excessively padded (do not start with a 0 byte, unless an otherwise negative number follows,
+    // in which case a single 0 byte is necessary and even required).
+    
+    NSInteger length = data.length;
+    const unsigned char* bytes = data.bytes;
+    
+    // Non-canonical signature: too short
+    if (length < 9)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: too short.", @"")}];
+        return NO;
+    }
+    
+    // Non-canonical signature: too long
+    if (length > 73)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: too long.", @"")}];
+        return NO;
+    }
+    
+    unsigned char nHashType = bytes[length - 1] & (~(SIGHASH_ANYONECANPAY));
+    
+    if (nHashType < SIGHASH_ALL || nHashType > SIGHASH_SINGLE)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: unknown hashtype byte.", @"")}];
+        return NO;
+    }
+    
+    if (bytes[0] != 0x30)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: wrong type.", @"")}];
+        return NO;
+    }
+    
+    if (bytes[1] != length-3)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: wrong length marker.", @"")}];
+        return NO;
+    }
+    
+    unsigned int nLenR = bytes[3];
+    
+    if (5 + nLenR >= length)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S length misplaced.", @"")}];
+        return NO;
+    }
+    
+    unsigned int nLenS = bytes[5+nLenR];
+    
+    if ((unsigned long)(nLenR+nLenS+7) != length)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R+S length mismatch", @"")}];
+        return NO;
+    }
+    
+    const unsigned char *R = &bytes[4];
+    if (R[-2] != 0x02)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R value type mismatch", @"")}];
+        return NO;
+    }
+    if (nLenR == 0)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R length is zero", @"")}];
+        return NO;
+    }
+    
+    if (R[0] & 0x80)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R value negative", @"")}];
+        return NO;
+    }
+    
+    if (nLenR > 1 && (R[0] == 0x00) && !(R[1] & 0x80))
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R value excessively padded", @"")}];
+        return NO;
+    }
+    
+    const unsigned char *S = &bytes[6+nLenR];
+    if (S[-2] != 0x02)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value type mismatch", @"")}];
+        return NO;
+    }
+    
+    if (nLenS == 0)
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S length is zero", @"")}];
+        return NO;
+    }
+    
+    if (S[0] & 0x80)
+    {
+        return NO;
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value is negative", @"")}];
+    }
+    
+    if (nLenS > 1 && (S[0] == 0x00) && !(S[1] & 0x80))
+    {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value excessively padded", @"")}];
+        return NO;
+    }
+    
+    if (verifyEvenS)
+    {
+        if (S[nLenS-1] & 1)
+        {
+            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value is odd", @"")}];
+            return NO;
+        }
+    }
+    
+    return true;
+}
+
+
+
+
+
+
+
 
 
 

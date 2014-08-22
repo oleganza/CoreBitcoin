@@ -1016,13 +1016,13 @@
                 BOOL failed = NO;
                 if (_verificationFlags & BTCScriptVerificationStrictEncoding)
                 {
-                    if (![BTCScript isCanonicalPublicKey:pubkeyData error:&sigerror])
+                    if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror])
                     {
                         failed = YES;
                     }
-                    if (!failed && ![BTCScript isCanonicalSignature:signature
-                                                        verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
-                                                              error:&sigerror])
+                    if (!failed && ![BTCKey isCanonicalSignatureWithHashType:signature
+                                                                 verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                                       error:&sigerror])
                     {
                         failed = YES;
                     }
@@ -1150,13 +1150,13 @@
                     NSError* sigerror = nil;
                     if (_verificationFlags & BTCScriptVerificationStrictEncoding)
                     {
-                        if (![BTCScript isCanonicalPublicKey:pubkeyData error:&sigerror])
+                        if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror])
                         {
                             validMatch = NO;
                         }
-                        if (validMatch && ![BTCScript isCanonicalSignature:signature
-                                                            verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
-                                                                  error:&sigerror])
+                        if (validMatch && ![BTCKey isCanonicalSignatureWithHashType:signature
+                                                                        verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                                              error:&sigerror])
                         {
                             validMatch = NO;
                         }
