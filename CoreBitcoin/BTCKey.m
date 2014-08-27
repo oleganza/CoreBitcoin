@@ -721,7 +721,12 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 
 
-+ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyEvenS error:(NSError**)errorOut
++ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyEvenS:(BOOL)verifyLowerS error:(NSError**)errorOut // deprecated
+{
+    return [self isCanonicalSignatureWithHashType:data verifyLowerS:verifyLowerS error:errorOut];
+}
+
++ (BOOL) isCanonicalSignatureWithHashType:(NSData*)data verifyLowerS:(BOOL)verifyLowerS error:(NSError**)errorOut
 {
     // See https://bitcointalk.org/index.php?topic=8392.msg127623#msg127623
     // A canonical signature exists of: <30> <total len> <02> <len R> <R> <02> <len S> <S> <hashtype>
@@ -766,17 +771,17 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         return NO;
     }
     
-    unsigned int nLenR = bytes[3];
+    unsigned int lenR = bytes[3];
     
-    if (5 + nLenR >= length)
+    if (5 + lenR >= length)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S length misplaced.", @"")}];
         return NO;
     }
     
-    unsigned int nLenS = bytes[5+nLenR];
+    unsigned int lenS = bytes[5+lenR];
     
-    if ((unsigned long)(nLenR+nLenS+7) != length)
+    if ((unsigned long)(lenR+lenS+7) != length)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R+S length mismatch", @"")}];
         return NO;
@@ -788,7 +793,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R value type mismatch", @"")}];
         return NO;
     }
-    if (nLenR == 0)
+    if (lenR == 0)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R length is zero", @"")}];
         return NO;
@@ -800,20 +805,20 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         return NO;
     }
     
-    if (nLenR > 1 && (R[0] == 0x00) && !(R[1] & 0x80))
+    if (lenR > 1 && (R[0] == 0x00) && !(R[1] & 0x80))
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: R value excessively padded", @"")}];
         return NO;
     }
     
-    const unsigned char *S = &bytes[6+nLenR];
+    const unsigned char *S = &bytes[6+lenR];
     if (S[-2] != 0x02)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value type mismatch", @"")}];
         return NO;
     }
     
-    if (nLenS == 0)
+    if (lenS == 0)
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S length is zero", @"")}];
         return NO;
@@ -825,17 +830,21 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value is negative", @"")}];
     }
     
-    if (nLenS > 1 && (S[0] == 0x00) && !(S[1] & 0x80))
+    if (lenS > 1 && (S[0] == 0x00) && !(S[1] & 0x80))
     {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value excessively padded", @"")}];
         return NO;
     }
     
-    if (verifyEvenS)
+    if (verifyLowerS)
     {
-        if (S[nLenS-1] & 1)
+        // In little-endian encoding
+        if (S[lenS-1] & 1)
         {
-            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value is odd", @"")}];
+            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
+                                                          code:BTCErrorNonCanonicalScriptSignature
+                                                      userInfo:@{NSLocalizedDescriptionKey:
+                                                                     NSLocalizedString(@"Non-canonical signature: S value is not below curve halforder", @"")}];
             return NO;
         }
     }

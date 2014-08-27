@@ -1021,7 +1021,7 @@
                         failed = YES;
                     }
                     if (!failed && ![BTCKey isCanonicalSignatureWithHashType:signature
-                                                                 verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                                 verifyLowerS:!!(_verificationFlags & BTCScriptVerificationEvenS)
                                                                        error:&sigerror])
                     {
                         failed = YES;
@@ -1155,7 +1155,7 @@
                             validMatch = NO;
                         }
                         if (validMatch && ![BTCKey isCanonicalSignatureWithHashType:signature
-                                                                        verifyEvenS:!!(_verificationFlags & BTCScriptVerificationEvenS)
+                                                                        verifyLowerS:!!(_verificationFlags & BTCScriptVerificationEvenS)
                                                                               error:&sigerror])
                         {
                             validMatch = NO;

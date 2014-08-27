@@ -4,7 +4,7 @@
 
 typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
     BTCScriptVerificationStrictEncoding = (1U << 1), // enforce strict conformance to DER and SEC2 for signatures and pubkeys (aka SCRIPT_VERIFY_STRICTENC)
-    BTCScriptVerificationEvenS          = (1U << 2), // enforce even S values in signatures (aka SCRIPT_VERIFY_EVEN_S, depends on STRICTENC)
+    BTCScriptVerificationEvenS          = (1U << 2), // enforce lower S values (below curve halforder) in signatures (aka SCRIPT_VERIFY_EVEN_S, depends on STRICTENC)
 };
 
 @class BTCScript;

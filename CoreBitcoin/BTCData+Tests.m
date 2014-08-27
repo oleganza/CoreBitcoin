@@ -51,6 +51,13 @@
     
     // Memory-hard KDF
     
+    return;
+    return;
+    return;
+    return;
+    return;
+    return;
+    
 
     NSLog(@"Generating key with BTCLocustKDF256...");
     NSDate* t1 = [NSDate date];

@@ -62,6 +62,41 @@ typedef enum : NSUInteger {
 //    
 //    NSLog(@"txin = %@", txin.dictionaryRepresentation);
 //    NSLog(@"tx = %@", tx.dictionaryRepresentation);
+
+
+
+// August 27, 2014
+//    NSData* txdata = BTCDataWithHexString(@"0100000001e747745839862500858934b36f1b5381c0ad6a79fa041af5a5b9d1d2b83dedbe010000008b483045022100ad26b03e24e3d9e0de36b6057b561755ab52a35c72e108d3aa13543cf2f52f5f022033d4c42126faa2bea1902e87d4cbef1d8c00ceeef87b014b20260270c6b1074f014104dc68295bbcac5784c1a462a4c11b2b009aaa606374c96ffff57a43a543334d633eee9829cabeda95e484f23adc655e3b33e9c334891ef0f594ec82964dcb9cadffffffff02a08601000000000017a914a96881c5f467e9d2d1d52ef36d2519cf967fcce18728f73000000000001976a9145d55d8f9c520e402dfbd4d3d9af63a30407299d788ac00000000");
+//
+//    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
+//
+//    BTCTransactionInput* txin = tx.inputs.firstObject;
+//
+//    BTCScript* script = txin.signatureScript;
+//
+//    for (BTCScriptChunk* chunk in script.scriptChunks)
+//    {
+//        NSLog(@"chunk = %@", BTCHexStringFromData(chunk.pushdata));
+//        if (chunk.pushdata.length > 0)
+//        {
+//            NSData* sigWithHashtype = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
+//
+//            NSError* error = nil;
+//            if (![BTCKey isCanonicalSignatureWithHashType:sigWithHashtype verifyEvenS:YES error:&error])
+//            {
+//                NSLog(@"Chunk not canonical! %@", error);
+//            }
+//            else
+//            {
+//                NSLog(@"Chunk is canonical.");
+//            }
+//        }
+//    }
+//
+//    NSLog(@"txin = %@", txin.dictionaryRepresentation);
+//    NSLog(@"tx = %@", tx.dictionaryRepresentation);
+
+
 }
 
 
