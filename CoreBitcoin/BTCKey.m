@@ -17,7 +17,8 @@
 #define BTCCompressedPubkeyLength   (33)
 #define BTCUncompressedPubkeyLength (65)
 
-static BOOL    BTCCheckPrivateKeyRange(const unsigned char *secret);
+static BOOL    BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length);
+static BOOL    BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half);
 static int     BTCRegenerateKey(EC_KEY *eckey, BIGNUM *priv_key);
 static NSData* BTCSignatureHashForBinaryMessage(NSData* data);
 static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const unsigned char *msg, int msglen, int recid, int check);
@@ -385,7 +386,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     unsigned char* bytes = secret.mutableBytes;
     do {
         RAND_bytes(bytes, 32);
-    } while (!BTCCheckPrivateKeyRange(bytes));
+    } while (!BTCKeyCheckPrivateKeyRange(bytes, 32));
     [self setPrivateKey:secret];
     BTCDataClear(secret);
 }
@@ -838,13 +839,12 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     
     if (verifyLowerS)
     {
-        // In little-endian encoding
-        if (S[lenS-1] & 1)
+        if (!BTCKeyCheckSignatureElement(S, lenS, YES))
         {
             if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain
                                                           code:BTCErrorNonCanonicalScriptSignature
                                                       userInfo:@{NSLocalizedDescriptionKey:
-                                                                     NSLocalizedString(@"Non-canonical signature: S value is not below curve halforder", @"")}];
+                                                                     NSLocalizedString(@"Non-canonical signature: S value is unnecessarily high", @"")}];
             return NO;
         }
     }
@@ -865,32 +865,61 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 
 
-static BOOL BTCCheckPrivateKeyRange(const unsigned char *secret)
+// Order of secp256k1's generator minus 1.
+static const unsigned char BTCKeyMaxModOrder[32] = {
+    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
+    0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,
+    0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x40
+};
+
+// Half of the order of secp256k1's generator minus 1.
+static const unsigned char BTCKeyMaxModHalfOrder[32] = {
+    0x7F,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+    0x5D,0x57,0x6E,0x73,0x57,0xA4,0x50,0x1D,
+    0xDF,0xE9,0x2F,0x46,0x68,0x1B,0x20,0xA0
+};
+
+static const unsigned char BTCKeyZero[0] = {};
+
+NSComparisonResult BTCKeyCompareBigEndian(const unsigned char *c1, size_t c1len,
+                                          const unsigned char *c2, size_t c2len)
 {
-    // Do not convert to OpenSSL's data structures for range-checking keys,
-    // it's easy enough to do directly.
-    static const unsigned char maxPrivateKey[32] = {
-        0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
-        0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x40
-    };
-    BOOL isZero = YES;
-    for (int i = 0; i < 32 && isZero; i++)
+    while (c1len > c2len)
     {
-        if (secret[i] != 0)
-        {
-            isZero = NO;
-        }
+        if (*c1 > 0) return NSOrderedDescending;
+        c1++;
+        c1len--;
     }
-    if (isZero) return NO;
-    
-    for (int i = 0; i < 32; i++)
+    while (c2len > c1len)
     {
-        if (secret[i] < maxPrivateKey[i]) return YES;
-        if (secret[i] > maxPrivateKey[i]) return NO;
+        if (*c2 > 0) return NSOrderedAscending;
+        c2++;
+        c2len--;
     }
-    return YES;
+    while (c1len > 0)
+    {
+        if (*c1 > *c2) return NSOrderedDescending;
+        if (*c2 > *c1) return NSOrderedAscending;
+        c1++;
+        c2++;
+        c1len--;
+    }
+    return NSOrderedSame;
 }
 
+static BOOL BTCKeyCheckPrivateKeyRange(const unsigned char *secret, size_t length)
+{
+    return BTCKeyCompareBigEndian(secret, length, BTCKeyZero, 0) > 0 &&
+           BTCKeyCompareBigEndian(secret, length, BTCKeyMaxModOrder, 32) <= 0;
+}
+
+static BOOL BTCKeyCheckSignatureElement(const unsigned char *bytes, int length, BOOL half)
+{
+    return BTCKeyCompareBigEndian(bytes, length, BTCKeyZero, 0) > 0 &&
+           BTCKeyCompareBigEndian(bytes, length, half ? BTCKeyMaxModHalfOrder : BTCKeyMaxModOrder, 32) <= 0;
+}
 
 static NSData* BTCSignatureHashForBinaryMessage(NSData* msg)
 {
