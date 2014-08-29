@@ -66,37 +66,93 @@ typedef enum : NSUInteger {
 
 
 // August 27, 2014
-//    NSData* txdata = BTCDataWithHexString(@"0100000001e747745839862500858934b36f1b5381c0ad6a79fa041af5a5b9d1d2b83dedbe010000008b483045022100ad26b03e24e3d9e0de36b6057b561755ab52a35c72e108d3aa13543cf2f52f5f022033d4c42126faa2bea1902e87d4cbef1d8c00ceeef87b014b20260270c6b1074f014104dc68295bbcac5784c1a462a4c11b2b009aaa606374c96ffff57a43a543334d633eee9829cabeda95e484f23adc655e3b33e9c334891ef0f594ec82964dcb9cadffffffff02a08601000000000017a914a96881c5f467e9d2d1d52ef36d2519cf967fcce18728f73000000000001976a9145d55d8f9c520e402dfbd4d3d9af63a30407299d788ac00000000");
-//
-//    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
-//
-//    BTCTransactionInput* txin = tx.inputs.firstObject;
-//
-//    BTCScript* script = txin.signatureScript;
-//
-//    for (BTCScriptChunk* chunk in script.scriptChunks)
-//    {
-//        NSLog(@"chunk = %@", BTCHexStringFromData(chunk.pushdata));
-//        if (chunk.pushdata.length > 0)
-//        {
-//            NSData* sigWithHashtype = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
-//
-//            NSError* error = nil;
-//            if (![BTCKey isCanonicalSignatureWithHashType:sigWithHashtype verifyEvenS:YES error:&error])
+    NSData* txdata = BTCDataWithHexString(@"010000000470f391618f92098591f6f362ff71b2da80c53da20886d59e91f82993ef8d22ab010000006a47304402206b9ee432d0452f0f4a3459f6559072ac3e2d4c19cce28067329ccae0bd29b53002207cac7460949714e2f68f9b98cbe32bbcad66d8b959965ee6f14d845e5dd5acbd012103a61fda0fb5615942a7c22a8c9f70cb683021951fc6d0fd61596a02dfc65ff87dffffffff56dbee00e8f12a41b9c9e45f0f97f13a24cd7df7e0f3e3ee4aeec94b025ff2dd000000006b483045022100e7b15d2490c71459c659c0fb1b6b4d0a554c469619beb0a21ede91452d127d530220770218c04bca0a305a875d8d2d5bc72bd3ced7828ffff0c9916ea2c92aaba07e012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffffe8f24ee413786c39d6ee034efed3f429645c5d6f3ce59b6d8cb4273d6f769dd7010000006b4830450221009f247975662e2f25fe693a94d224711f1c03a761c59502ef7ea83974fa2393370220533c41d16595851a033340eb3c6ee1f8d762cb3fb8ac3c86099bd387fc4c3ec3012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff739e752dd9f0b5a0c237d7f1c1e3e9f4acffbc2e187b1c9a7cc0c6e838e785e7010000006b483045022100c84adc31c47e6edfc785919368a6bd54baaff9052f67bea304ae685592c934650220691e7bec0f72f67e406dc915bdf346169ead144234bbeea76fa1e8359ad87c41012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff030100000000000000166a144b184e318c886e179b847398bd1cd0ac5f9cf2ea54150000000000001976a914ccaf5b88620ed28c1d9621fac271a928c0ac6b0c88ac838a00000000000017a9148ce0e2794443d26bd2c1dbea8157e42734667e168700000000");
+
+    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
+
+    NSLog(@"txdata size = %d", (int)txdata.length);
+    
+    int idx = 0;
+    for (BTCTransactionInput* txin in tx.inputs)
+    {
+        BTCScript* script = txin.signatureScript;
+        
+        NSLog(@"INPUT[%d] script = %@", idx, script.string);
+        
+        NSLog(@"INPUT[%d] txin = %@", idx, txin.dictionaryRepresentation);
+        
+        for (BTCScriptChunk* chunk in script.scriptChunks)
+        {
+            NSLog(@"chunk = %@", BTCHexStringFromData(chunk.pushdata));
+            if (chunk.pushdata.length > 0)
+            {
+                NSData* pushdata = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
+                
+                NSError* error = nil;
+                if (![BTCKey isCanonicalSignatureWithHashType:pushdata verifyLowerS:YES error:&error])
+                {
+                    NSString* sigFailure = error.localizedDescription;
+                    if (![BTCKey isCanonicalPublicKey:pushdata error:&error])
+                    {
+                        NSLog(@"Chunk is not canonical! 1) %@ 2) %@", sigFailure, error.localizedDescription);
+                    }
+                    else
+                    {
+                        NSLog(@"Chunk is canonical pubkey.");
+                    }
+                }
+                else
+                {
+                    NSLog(@"Chunk is canonical signature.");
+                }
+            }
+        }
+        idx++;
+    }
+    
+    idx = 0;
+    for (BTCTransactionOutput* txout in tx.outputs)
+    {
+        BTCScript* script = txout.script;
+        
+        NSLog(@"OUTPUT[%d] script = %@", idx, script.string);
+        
+        NSLog(@"OUTPUT[%d] txout = %@", idx, txout.dictionaryRepresentation);
+        
+        for (BTCScriptChunk* chunk in script.scriptChunks)
+        {
+            //NSLog(@"           chunk = %@", BTCHexStringFromData(chunk.string));
+//            if (chunk.pushdata.length > 1)
 //            {
-//                NSLog(@"Chunk not canonical! %@", error);
+//                NSData* pushdata = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
+//                
+//                NSError* error = nil;
+//                if (![BTCKey isCanonicalSignatureWithHashType:pushdata verifyLowerS:YES error:&error])
+//                {
+//                    NSString* sigFailure = error.localizedDescription;
+//                    if (![BTCKey isCanonicalPublicKey:pushdata error:&error])
+//                    {
+//                        NSLog(@"Chunk is not canonical! 1) %@ 2) %@", sigFailure, error.localizedDescription);
+//                    }
+//                    else
+//                    {
+//                        NSLog(@"Chunk is canonical pubkey.");
+//                    }
+//                }
+//                else
+//                {
+//                    NSLog(@"Chunk is canonical signature.");
+//                }
 //            }
-//            else
-//            {
-//                NSLog(@"Chunk is canonical.");
-//            }
-//        }
-//    }
-//
-//    NSLog(@"txin = %@", txin.dictionaryRepresentation);
-//    NSLog(@"tx = %@", tx.dictionaryRepresentation);
+        }
+        idx++;
+    }
+    
+    //NSLog(@"tx = %@", tx.dictionaryRepresentation);
 
 
+    
+    
 }
 
 

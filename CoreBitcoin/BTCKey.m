@@ -852,15 +852,6 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return true;
 }
 
-
-
-
-
-
-
-
-
-
 @end
 
 
