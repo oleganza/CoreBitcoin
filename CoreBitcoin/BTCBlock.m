@@ -4,6 +4,10 @@
 
 @implementation BTCBlock
 
+- (void) updateMerkleTree
+{
+    
+}
 
 
 @end
