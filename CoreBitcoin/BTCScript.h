@@ -5,7 +5,8 @@
 #import "BTCSignatureHashType.h"
 
 @class BTCAddress;
-
+@class BTCScriptHashAddress;
+@class BTCScriptHashAddressTestnet;
 @interface BTCScriptChunk : NSObject
 
 // Return YES if it is not a pushdata chunk, that is a single byte opcode without data.
@@ -101,6 +102,14 @@
 // Returns BTCPublicKeyAddress or BTCScriptHashAddress if the script is a standard output script for these addresses.
 // If the script is something different, returns nil.
 - (BTCAddress*) standardAddress;
+
+// Wraps the recipient into an output P2SH script (OP_HASH160 <20-byte hash of the recipient> OP_EQUAL).
+- (BTCScript*) scriptHashScript;
+
+// Returns BTCScriptHashAddress that hashes this script.
+// Equivalent to [[script scriptHashScript] standardAddress] or [BTCScriptHashAddress addressWithData:BTCHash160(script.data)]
+- (BTCScriptHashAddress*) scriptHashAddress;
+- (BTCScriptHashAddressTestnet*) scriptHashAddressTestnet;
 
 
 #pragma mark - Modification API

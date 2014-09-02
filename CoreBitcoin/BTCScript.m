@@ -664,6 +664,26 @@
 }
 
 
+// Wraps the recipient into an output P2SH script (OP_HASH160 <20-byte hash of the recipient> OP_EQUAL).
+- (BTCScript*) scriptHashScript
+{
+    return [[BTCScript alloc] initWithAddress:[self scriptHashAddress]];
+}
+
+// Returns BTCScriptHashAddress that hashes this script.
+// Equivalent to [[script scriptHashScript] standardAddress] or [BTCScriptHashAddress addressWithData:BTCHash160(script.data)]
+- (BTCScriptHashAddress*) scriptHashAddress
+{
+    return [BTCScriptHashAddress addressWithData:BTCHash160(self.data)];
+}
+
+- (BTCScriptHashAddressTestnet*) scriptHashAddressTestnet
+{
+    return [BTCScriptHashAddressTestnet addressWithData:BTCHash160(self.data)];
+}
+
+
+
 
 #pragma mark - Modification
 
