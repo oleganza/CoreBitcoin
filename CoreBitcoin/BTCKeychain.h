@@ -11,7 +11,7 @@
 // Keychain has two modes of operation:
 // - "normal derivation" which allows to derive public keys separately from the private ones (internally i below 0x80000000).
 // - "hardened derivation" which derives only private keys (for i >= 0x80000000).
-// Derivation can be treated as a single key or as an new branch of keychains.
+// Derivation can be treated as a single key or as a new branch of keychains.
 
 static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 

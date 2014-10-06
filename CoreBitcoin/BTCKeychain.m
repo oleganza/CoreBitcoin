@@ -181,8 +181,8 @@
 {
     if (_fingerprint == 0)
     {
-        const uint32_t* bytes = self.identifier.bytes;
-        _fingerprint = OSSwapBigToHostInt32(bytes[0]);
+        const uint32_t* words = self.identifier.bytes;
+        _fingerprint = OSSwapBigToHostInt32(words[0]);
     }
     return _fingerprint;
 }

@@ -4,6 +4,7 @@
 #import "BTCData.h"
 #import "BTCBase58.h"
 #import "BTCKey.h"
+#import "BTCAddress.h"
 
 @implementation BTCKeychain (Tests)
 
@@ -41,7 +42,12 @@
         NSData* seed = BTCDataWithHexCString("000102030405060708090a0b0c0d0e0f");
         
         BTCKeychain* masterChain = [[BTCKeychain alloc] initWithSeed:seed];
-        
+
+        NSAssert([masterChain.rootKey.compressedPublicKeyAddress.base58String isEqualToString:@"15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma"], @"");
+
+        //NSLog(@"identifier: %@ fingerprint: %@", masterChain.identifier, @(masterChain.fingerprint));
+        NSAssert([masterChain.identifier isEqual:BTCDataWithHexString(@"3442193e1bb70916e914552172cd4e2dbc9df811")], @"");
+        NSAssert(masterChain.fingerprint == 876747070, @"");
         NSAssert(masterChain.parentFingerprint == 0, @"");
         NSAssert(masterChain.depth == 0, @"");
         NSAssert(masterChain.index == 0, @"");
@@ -122,7 +128,16 @@
         NSData* seed = BTCDataWithHexCString("fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542");
         
         BTCKeychain* masterChain = [[BTCKeychain alloc] initWithSeed:seed];
-        
+
+        //NSLog(@"identifier: %@ fingerprint: %@", masterChain.identifier, @(masterChain.fingerprint));
+        NSAssert([masterChain.identifier isEqual:BTCDataWithHexString(@"bd16bee53961a47d6ad888e29545434a89bdfe95")], @"");
+        NSAssert(masterChain.fingerprint == 3172384485, @"");
+        NSAssert(masterChain.parentFingerprint == 0, @"");
+        NSAssert(masterChain.depth == 0, @"");
+        NSAssert(masterChain.index == 0, @"");
+        NSAssert(masterChain.isHardened == NO, @"");
+
+
         NSAssert([@"xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMSgv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPublicKey)], @"");
         NSAssert([@"xprv9s21ZrQH143K31xYSDQpPDxsXRTUcvj2iNHm5NUtrGiGG5e2DtALGdso3pGz6ssrdK4PFmM8NSpSBHNqPqm55Qn3LqFtT2emdEXVYsCzC2U" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPrivateKey)], @"");
         
