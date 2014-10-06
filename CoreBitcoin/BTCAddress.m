@@ -267,7 +267,7 @@ enum
 }
 
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
-// that derived pubkey must be compressed (as this affects  the pubkey address).
+// that derived pubkey must be compressed (as this affects the pubkey address).
 - (BOOL) isPublicKeyCompressed
 {
     return _publicKeyCompressed;
