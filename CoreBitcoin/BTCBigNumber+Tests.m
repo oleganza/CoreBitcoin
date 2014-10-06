@@ -27,6 +27,7 @@
     {
         BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt64:0xdeadf00ddeadbeef];
         NSData* data = bn.littleEndianData;
+        NSAssert([@"efbeadde0df0adde00" isEqualToString:BTCHexStringFromData(data)], @"littleEndianData should be little-endian with trailing zero byte");
         BTCBigNumber* bn2 = [[BTCBigNumber alloc] initWithLittleEndianData:data];
         NSAssert([@"deadf00ddeadbeef" isEqualToString:bn2.hexString], @"converting to and from data should give the same result");
     }
@@ -58,6 +59,19 @@
     // Experiments:
 
     return;
+
+    {
+        //BTCBigNumber* bn = [BTCBigNumber zero];
+        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:BTCDataWithHexString(@"00")];
+        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedData, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
+    }
+
+    {
+        //BTCBigNumber* bn = [BTCBigNumber one];
+        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:BTCDataWithHexString(@"01")];
+        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedData, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
+    }
+
     {
         BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt32:0xdeadf00dL];
         NSLog(@"bn = %@ (%@) 0x%@ b36:%@", bn, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);

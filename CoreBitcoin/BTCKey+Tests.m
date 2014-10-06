@@ -9,9 +9,22 @@
 
 + (void) runAllTests
 {
+    [self testCanonicality];
     [self testRandomKeys];
     [self testBasicSigning];
+    [self testECDSA];
     [self testBitcoinSignedMessage];
+}
+
++ (void) testCanonicality
+{
+    NSData* data = BTCDataWithHexString(@"304402207f5561ac3cfb05743cab6ca914f7eb93c489f276f10cdf4549e7f0b0ef4e85cd02200191c0c2fd10f10158973a0344fdaf2438390e083a509d2870bcf2b05445612b01");
+
+    NSError* error = nil;
+    if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
+    {
+        NSLog(@"error: %@", error);
+    }
 }
 
 + (void) testRandomKeys
@@ -32,6 +45,25 @@
     }
 }
 
++ (void) testECDSA
+{
+    for (int n = 0; n < 1000; n++)
+    {
+        NSString* message = [NSString stringWithFormat:@"Test message %d", n];
+        NSData* messageData = [message dataUsingEncoding:NSUTF8StringEncoding];
+        NSData* messageHash = messageData.SHA256;
+        
+        NSData* secret = [[NSString stringWithFormat:@"Key %d", n] dataUsingEncoding:NSUTF8StringEncoding].SHA256;
+        BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
+        key.publicKeyCompressed = YES;
+        
+        NSData* signature = [key signatureForHash:messageHash];
+        
+        BTCKey* key2 = [[BTCKey alloc] initWithPublicKey:key.publicKey];
+        NSAssert([key2 isValidSignature:signature hash:messageHash], @"Signature must be valid");
+    }
+}
+
 + (void) testBasicSigning
 {
     NSString* message = @"Test message";
@@ -40,9 +72,14 @@
     
     NSAssert(secret.length == 32, @"secret must be 32 bytes long");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
+    key.publicKeyCompressed = NO;
+    
+    //NSLog(@"key.publicKey = %@", key.publicKey);
     
     BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:[key.publicKey BTCHash160]];
     BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key.privateKey];
+    
+    //NSLog(@"pubkeyAddress.base58String = %@", pubkeyAddress.base58String);
     
     NSAssert([pubkeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"");
     NSAssert([privkeyAddress.base58String isEqual:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"], @"");

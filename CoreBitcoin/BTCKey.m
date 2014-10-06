@@ -147,7 +147,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         
         BTCBigNumber* n = [BTCCurvePoint curveOrder];
 
-        NSMutableData* kdata = BTCHash256Concat(hash, privkeyData);
+        NSMutableData* kdata = BTCHMACSHA256(privkeyData, hash);
         BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedData:kdata];
         [k mod:n]; // make sure k belongs to [0, n - 1]
         
@@ -163,6 +163,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         
         BTCBigNumber* signatureBN = [[[privkeyBN multiply:Kx mod:n] add:hashBN mod:n] multiply:[k inverseMod:n] mod:n];
         
+        //NSLog(@"ECDSA: r = %@", Kx.hexString);
+        //NSLog(@"ECDSA: s = %@", signatureBN.hexString);
         BIGNUM r; BN_init(&r); BN_copy(&r, Kx.BIGNUM);
         BIGNUM s; BN_init(&s); BN_copy(&s, signatureBN.BIGNUM);
         
@@ -219,6 +221,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     {
         [signature appendBytes:&hashType length:sizeof(hashType)];
     }
+
     
     return signature;
     
@@ -849,7 +852,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         }
     }
     
-    return true;
+    return YES;
 }
 
 @end
