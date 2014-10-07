@@ -485,6 +485,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
 }
 
+- (BTCPublicKeyAddress*) address
+{
+    NSData* pubkey = [self publicKeyCached];
+    if (pubkey.length == 0) return nil;
+    return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
+}
+
 - (BTCPublicKeyAddress*) compressedPublicKeyAddress
 {
     NSData* pubkey = [self compressedPublicKey];
