@@ -21,7 +21,7 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     if (cstring == NULL) return nil;
     
     // empty string -> empty data.
-    if (cstring[0] == '\0') return [NSData data];
+    if (cstring[0] == '\0') return [NSMutableData data];
     
     NSMutableData* result = nil;
     
@@ -56,7 +56,7 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
             break;
         }
         
-        BN_set_word(&bnChar, p1 - BTCBase58Alphabet);
+        BN_set_word(&bnChar, (BN_ULONG)(p1 - BTCBase58Alphabet));
         
         if (!BN_mul(&bn, &bn, &bn58, pctx))
         {

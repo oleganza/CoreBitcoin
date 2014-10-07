@@ -318,7 +318,7 @@
     };
     
     BN_CTX* pctx = NULL;
-    BIGNUM bnBase; BN_init(&bnBase); BN_set_word(&bnBase, base);
+    BIGNUM bnBase; BN_init(&bnBase); BN_set_word(&bnBase, (BN_ULONG)base);
     
     while (1)
     {
@@ -377,7 +377,7 @@
     NSMutableData* resultData = nil;
     
     BN_CTX* pctx = BN_CTX_new();
-    BIGNUM bnBase; BN_init(&bnBase); BN_set_word(&bnBase, base);
+    BIGNUM bnBase; BN_init(&bnBase); BN_set_word(&bnBase, (BN_ULONG)base);
     BIGNUM bn0;    BN_init(&bn0);    BN_zero(&bn0);
     BIGNUM bn;     BN_init(&bn);     BN_copy(&bn, &_bignum);
     
