@@ -2,6 +2,7 @@
 
 #import "BTCMnemonic.h"
 #import "BTCData.h"
+#import "BTCKeychain.h"
 #import "BTCProtocolSerialization.h"
 #include <CommonCrypto/CommonKeyDerivation.h>
 
@@ -12,6 +13,7 @@
 @property(nonatomic, readwrite) NSArray* words;
 @property(nonatomic, readwrite) NSString* password;
 @property(nonatomic, readwrite) NSData* seed;
+@property(nonatomic, readwrite) BTCKeychain* keychain;
 
 @end
 
@@ -218,6 +220,16 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     return _seed;
 }
 
+// Root keychain instantiated with a given seed.
+- (BTCKeychain*) keychain
+{
+    if (!_keychain)
+    {
+        _keychain = [[BTCKeychain alloc] initWithSeed:self.seed];
+    }
+    return _keychain;
+}
+
 - (NSData*) data
 {
     return [self dataWithSeed:NO];
@@ -276,6 +288,8 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 {
     BTCDataClear(_entropy);
     BTCDataClear(_seed);
+    [_keychain clear];
+    _keychain = nil;
     _entropy = nil;
     _seed = nil;
 }

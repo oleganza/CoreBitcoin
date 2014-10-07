@@ -10,6 +10,8 @@ typedef NS_ENUM(int8_t, BTCMnemonicWordListType) {
     BTCMnemonicWordListTypeUnknown = -1,
 };
 
+@class BTCKeychain;
+
 // Implementation of BIP39: Mnemonic code for generating deterministic keys.
 @interface BTCMnemonic : NSObject
 
@@ -30,6 +32,9 @@ typedef NS_ENUM(int8_t, BTCMnemonicWordListType) {
 // Note: The name "seed" means an input for the external key derivation scheme (e.g. BIP32),
 // not to this mnemonic implementation. Input for the mnemonic is `entropy`, `password` and `wordListType`.
 @property(nonatomic, readonly) NSData* seed;
+
+// Root keychain instantiated with a given seed.
+@property(nonatomic, readonly) BTCKeychain* keychain;
 
 // Inits mnemonic with a raw entropy buffer, optional password and a wordlist.
 // If `password` is nil, it is treated as an empty string.
