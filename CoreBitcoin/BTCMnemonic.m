@@ -78,13 +78,23 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 {
     if (!words) return nil;
 
+    if (words.count != 12 &&
+        words.count != 15 &&
+        words.count != 18 &&
+        words.count != 21 &&
+        words.count != 24)
+    {
+        // Words count should be between 12 and 24 and be divisible by 13.
+        return nil;
+    }
+
     if (self = [super init])
     {
         _words = words;
         _password = password ?: @"";
         _wordListType = wordListType;
 
-        // If the list is given, get the entropy from it and 
+        // If the list is given, get the entropy from it
         if (wordListType != BTCMnemonicWordListTypeUnknown)
         {
             _entropy = [self entropyFromWords:_words wordListType:wordListType];

@@ -7,6 +7,7 @@
 + (void) runAllTests
 {
     [self testStandardTestVectors];
+    [self testMnemonicsWithoutPassword];
 }
 
 + (void) testStandardTestVectors
@@ -112,7 +113,7 @@
 
             NSAssert(mnemonic, @"Sanity check");
             NSAssert([mnemonic.entropy isEqual:entropy], @"Entropy should be extracted from mnemonic.");
-            NSAssert([mnemonic.words isEqual:words], @"Should contain the same word list with the entropy.");
+            NSAssert([mnemonic.words isEqual:words], @"Should contain the same words with the entropy.");
             NSAssert([mnemonic.seed isEqual:seed], @"Should create correct seed from the words.");
         }
 
@@ -122,8 +123,74 @@
 
             NSAssert(mnemonic, @"Sanity check");
             NSAssert([mnemonic.entropy isEqual:entropy], @"Entropy should be extracted from mnemonic.");
-            NSAssert([mnemonic.words isEqual:words], @"Should contain the same word list with the entropy.");
+            NSAssert([mnemonic.words isEqual:words], @"Should contain the same words with the entropy.");
             NSAssert(![mnemonic.seed isEqual:seed], @"Should not have the correct seed since password is missing");
+        }
+
+        // Test when using words without a full wordlist
+        {
+            BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:@"TREZOR" wordListType:BTCMnemonicWordListTypeUnknown];
+
+            NSAssert(mnemonic, @"Sanity check");
+            NSAssert(mnemonic.entropy == nil, @"Entropy should not be extracted from mnemonic.");
+            NSAssert([mnemonic.words isEqual:words], @"Should contain the same words with the entropy.");
+            NSAssert([mnemonic.seed isEqual:seed], @"Should generate a correct seed without consulting a full wordlist.");
+        }
+    }
+}
+
++ (void) testMnemonicsWithoutPassword
+{
+    NSArray* words = [@"degree rain vendor coffee push math onion inside pyramid blush stick treat" componentsSeparatedByString:@" "];
+    NSData* seed = BTCDataWithHexString(@"a359cf47a6ddcc581f28133062dbc4cfacfbd79703e167b2a61438bf9f89efe5f2f12f8d39aea44709a5913965be93a5f805c6c614dcbfe620bceb161f0018c4");
+
+    BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeUnknown];
+
+    NSAssert(mnemonic, @"Sanity check");
+    NSAssert([mnemonic.words isEqual:words], @"Should contain the same words.");
+    NSAssert([mnemonic.seed isEqual:seed], @"Should generate a correct seed.");
+}
+
++ (void) testInvalidWords
+{
+    {
+        NSArray* phrases = @[
+                             // invalid checksum
+                             @"rain degree vendor coffee push math onion inside pyramid blush stick treat",
+                             // invalid checksum
+                             @"legal winner thank year wave sausage worth useful legal winner thank winner",
+                             // invalid words
+                             @"olegandreev rain vendor coffee push math onion inside pyramid blush stick treat"
+                             ];
+
+        for (NSString* phrase in phrases)
+        {
+            NSArray* words = [phrase componentsSeparatedByString:@" "];
+
+            BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeEnglish];
+
+            NSAssert(mnemonic, @"Sanity check");
+            NSAssert(mnemonic.entropy == nil, @"Entropy should not be extracted from mnemonic because it's invalid.");
+        }
+    }
+
+    // invalid word count
+    {
+        NSArray* phrases = @[
+                             @"",
+                             @"degree rain",
+                             @"degree rain vendor coffee push math onion inside pyramid blush stick",
+                             @"zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo",
+                             @"zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo vote vote vote",
+                             ];
+
+        for (NSString* phrase in phrases)
+        {
+            NSArray* words = [phrase componentsSeparatedByString:@" "];
+
+            BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeEnglish];
+
+            NSAssert(mnemonic == nil, @"Should not instantiate with incorrect word count");
         }
     }
 }
