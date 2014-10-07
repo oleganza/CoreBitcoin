@@ -92,6 +92,32 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened;
 
 
+// BIP44 methods.
+// These methods are meant to be chained like so:
+// ```
+// invoiceAddress = [[rootKeychain.bitcoinMainnetKeychain keychainForAccount:1] externalKeyAtIndex:123].address
+// ```
+
+// Returns a subchain with path m/44'/0'
+- (BTCKeychain*) bitcoinMainnetKeychain;
+
+// Returns a subchain with path m/44'/1'
+- (BTCKeychain*) bitcoinTestnetKeychain;
+
+// Returns a hardened derivation for the given account index.
+// Equivalent to [keychain derivedKeychainAtIndex:accountIndex hardened:YES]
+- (BTCKeychain*) keychainForAccount:(uint32_t)accountIndex;
+
+// Returns a key from an external chain (/0/i).
+// BTCKey may be public-only if the receiver is public-only keychain.
+- (BTCKey*) externalKeyAtIndex:(uint32_t)index;
+
+// Returns a key from an internal (change) chain (/1/i).
+// BTCKey may be public-only if the receiver is public-only keychain.
+- (BTCKey*) changeKeyAtIndex:(uint32_t)index;
+
+
+
 // Scanning methods.
 
 // Scans child keys till one is found that matches the given address.

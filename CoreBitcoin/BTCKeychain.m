@@ -323,6 +323,53 @@
     return keychain;
 }
 
+
+
+// BIP44 methods.
+// These methods are meant to be chained like so:
+// ```
+// invoiceAddress = [[rootKeychain.bitcoinMainnetKeychain keychainForAccount:1] externalKeyAtIndex:123].address
+// ```
+
+
+// Returns a subchain with path m/44'/0'
+- (BTCKeychain*) bitcoinMainnetKeychain
+{
+    return [[self derivedKeychainAtIndex:44 hardened:YES] derivedKeychainAtIndex:0 hardened:YES];
+}
+
+// Returns a subchain with path m/44'/1'
+- (BTCKeychain*) bitcoinTestnetKeychain
+{
+    return [[self derivedKeychainAtIndex:44 hardened:YES] derivedKeychainAtIndex:1 hardened:YES];
+}
+
+// Returns a hardened derivation for the given account index.
+// Equivalent to [keychain derivedKeychainAtIndex:accountIndex hardened:YES]
+- (BTCKeychain*) keychainForAccount:(uint32_t)accountIndex
+{
+    return [self derivedKeychainAtIndex:accountIndex hardened:YES];
+}
+
+// Returns a key from an external chain (/0/i).
+// BTCKey may be public-only if the receiver is public-only keychain.
+- (BTCKey*) externalKeyAtIndex:(uint32_t)index
+{
+    return [[self derivedKeychainAtIndex:0 hardened:NO] keyAtIndex:index hardened:NO];
+}
+
+// Returns a key from an internal (change) chain (/1/i).
+// BTCKey may be public-only if the receiver is public-only keychain.
+- (BTCKey*) changeKeyAtIndex:(uint32_t)index
+{
+    return [[self derivedKeychainAtIndex:1 hardened:NO] keyAtIndex:index hardened:NO];
+}
+
+
+
+#pragma mark - Scanning methods.
+
+
 // Scans child keys till one is found that matches the given address.
 // Only BTCPublicKeyAddress and BTCPrivateKeyAddress are supported. For others nil is returned.
 // Limit is maximum number of keys to scan. If no key is found, returns nil.
