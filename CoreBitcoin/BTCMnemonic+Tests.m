@@ -105,6 +105,21 @@
             NSAssert([mnemonic.entropy isEqual:entropy], @"Entropy should be available as a property.");
             NSAssert([mnemonic.words isEqual:words], @"Should create proper words list from entropy.");
             NSAssert([mnemonic.seed isEqual:seed], @"Should create correct seed from the words.");
+
+            NSAssert(mnemonic.data.length > 1, @"Should have reasonable payload encoding");
+            NSAssert(mnemonic.dataWithSeed.length >= mnemonic.data.length + 64, @"Should have seed encoded");
+
+            BTCMnemonic* mnemonic2 = [[BTCMnemonic alloc] initWithData:mnemonic.data];
+            NSAssert(mnemonic2, @"Sanity check");
+            NSAssert([mnemonic2.entropy isEqual:entropy], @"Entropy should be available as a property.");
+            NSAssert([mnemonic2.words isEqual:words], @"Should create proper words list from entropy.");
+            NSAssert([mnemonic2.seed isEqual:seed], @"Should create correct seed from the words.");
+
+            BTCMnemonic* mnemonic3 = [[BTCMnemonic alloc] initWithData:mnemonic.dataWithSeed];
+            NSAssert(mnemonic3, @"Sanity check");
+            NSAssert([mnemonic3.entropy isEqual:entropy], @"Entropy should be available as a property.");
+            NSAssert([mnemonic3.words isEqual:words], @"Should create proper words list from entropy.");
+            NSAssert([mnemonic3.seed isEqual:seed], @"Should create correct seed from the words.");
         }
 
         // Test when using words
