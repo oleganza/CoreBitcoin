@@ -86,6 +86,11 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return self;
 }
 
+- (void) dealloc
+{
+    [self clear];
+}
+
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash
 {
