@@ -19,6 +19,8 @@ Features
 - Scripts
 - Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
 - BIP32 hierarchical deterministic wallets (BTCKeychain).
+- BIP39 implementation (BTCMnemonic).
+- BIP44 implementation (BTCKeychain).
 - Blind signatures implementation.
 - Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points.
 - Various cryptographic primitives like hash functions and AES encryption.
@@ -30,7 +32,7 @@ Not done yet:
 - Full blockchain verification procedure and storage.
 - Importing BitcoinQT, Electrum and Blockchain.info wallets.
 - SPV mode.
-- Various BIPs (BIP39, BIP44, BIP70 etc.)
+- Various BIPs (BIP38, BIP70 etc.)
 
 The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Ladies and gentlemen, send me your pull requests.
 

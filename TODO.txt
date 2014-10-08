@@ -3,10 +3,11 @@
 - support for network messages
 - support for SPV like in Bitcoinj
 - add aggregate header CoreBitcoinTests.h with tests
-- deterministic ECDSA (where nonce is derived from privkey and message hash)
++ deterministic ECDSA (where nonce is derived from privkey and message hash)
 + support for HD wallets
 
-- Scrypt wrapper API where fixed number of rounds and memory usage can be specified (and not computed from current machine capabilities) [bounty 0.1 BTC by @oleganza]
++ Scrypt wrapper API where fixed number of rounds and memory usage can be specified (and not computed from current machine capabilities) [bounty 0.1 BTC by @oleganza]
+ - Done in a separate BTCScrypt repository (https://github.com/oleganza/BTCScrypt)
 
 - BitcoinQT wallet reader.
 - Blockchain.info wallet reader.
