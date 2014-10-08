@@ -137,7 +137,7 @@
 
     BTCBigNumber* order = [BTCCurvePoint curveOrder];
     
-    BTCBigNumber* w = [[BTCBigNumber alloc] initWithUnsignedData:_custodianKeychain.rootKey.privateKey];
+    BTCBigNumber* w = [[BTCBigNumber alloc] initWithUnsignedData:_custodianKeychain.key.privateKey];
     
     BTCBigNumber* x = nil;
     BTCBigNumber* y = nil;
@@ -238,7 +238,7 @@
     
     NSAssert(derivedKC, @"sanity check");
     
-    BTCKey* key = derivedKC.rootKey;
+    BTCKey* key = derivedKC.key;
     
     NSAssert(key, @"sanity check");
     
@@ -261,7 +261,7 @@
     
     NSAssert(derivedKC, @"sanity check");
     
-    BTCKey* key = derivedKC.rootKey;
+    BTCKey* key = derivedKC.key;
     
     NSAssert(key, @"sanity check");
     
