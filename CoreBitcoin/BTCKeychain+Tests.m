@@ -53,8 +53,8 @@
         NSAssert(masterChain.index == 0, @"");
         NSAssert(masterChain.isHardened == NO, @"");
         
-        NSAssert([@"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPublicKeyData)], @"");
-        NSAssert([@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi" isEqualToString:BTCBase58CheckStringWithData(masterChain.extendedPrivateKeyData)], @"");
+        NSAssert([@"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8" isEqualToString:masterChain.extendedPublicKey], @"");
+        NSAssert([@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi" isEqualToString:masterChain.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:masterChain];
         
@@ -65,8 +65,8 @@
         NSAssert(m0prv.index == 0, @"");
         NSAssert(m0prv.isHardened == YES, @"");
 
-        NSAssert([@"xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LHhwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw" isEqualToString:BTCBase58CheckStringWithData(m0prv.extendedPublicKeyData)], @"");
-        NSAssert([@"xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7" isEqualToString:BTCBase58CheckStringWithData(m0prv.extendedPrivateKeyData)], @"");
+        NSAssert([@"xpub68Gmy5EdvgibQVfPdqkBBCHxA5htiqg55crXYuXoQRKfDBFA1WEjWgP6LHhwBZeNK1VTsfTFUHCdrfp1bgwQ9xv5ski8PX9rL2dZXvgGDnw" isEqualToString:m0prv.extendedPublicKey], @"");
+        NSAssert([@"xprv9uHRZZhk6KAJC1avXpDAp4MDc3sQKNxDiPvvkX8Br5ngLNv1TxvUxt4cV1rGL5hj6KCesnDYUhd7oWgT11eZG7XnxHrnYeSvkzY7d2bhkJ7" isEqualToString:m0prv.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:m0prv];
 
@@ -77,8 +77,8 @@
         NSAssert(m0prv1pub.index == 1, @"");
         NSAssert(m0prv1pub.isHardened == NO, @"");
 
-        NSAssert([@"xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkNAWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub.extendedPublicKeyData)], @"");
-        NSAssert([@"xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu53Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs" isEqualToString:BTCBase58CheckStringWithData(m0prv1pub.extendedPrivateKeyData)], @"");
+        NSAssert([@"xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkNAWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ" isEqualToString:m0prv1pub.extendedPublicKey], @"");
+        NSAssert([@"xprv9wTYmMFdV23N2TdNG573QoEsfRrWKQgWeibmLntzniatZvR9BmLnvSxqu53Kw1UmYPxLgboyZQaXwTCg8MSY3H2EU4pWcQDnRnrVA1xe8fs" isEqualToString:m0prv1pub.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:m0prv1pub];
 
@@ -168,8 +168,8 @@
         [self testDeserializationWithKeychain:m0pubFFprv1pubFEprv];
         
         BTCKeychain* m0pubFFprv1pubFEprv2 = [m0pubFFprv1pubFEprv derivedKeychainAtIndex:2];
-        NSAssert([@"xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsApME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv1pubFEprv2.extendedPublicKeyData)], @"");
-        NSAssert([@"xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38EGfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j" isEqualToString:BTCBase58CheckStringWithData(m0pubFFprv1pubFEprv2.extendedPrivateKeyData)], @"");
+        NSAssert([@"xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsApME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt" isEqualToString:m0pubFFprv1pubFEprv2.extendedPublicKey], @"");
+        NSAssert([@"xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38EGfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j" isEqualToString:m0pubFFprv1pubFEprv2.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:m0pubFFprv1pubFEprv2];
         
@@ -185,6 +185,7 @@
     
     NSAssert(![pubchain isEqual:keychain], @"Public-only chain is not equal to private chain with the same parameters");
     NSAssert([prvchain isEqual:keychain], @"Private chain is equal to private chain with the same parameters");
+    NSAssert([prvchain.extendedPublicKey isEqual:pubchain.extendedPublicKey], @"Private and public chains should have the same extended public keys");
     NSAssert([prvchain.extendedPublicKeyData isEqual:pubchain.extendedPublicKeyData], @"Private and public chains should have the same extended public keys");
     
     NSAssert([[prvchain keyAtIndex:123] isEqual:[pubchain keyAtIndex:123]], @"both chains should be able to derive the same key");

@@ -57,9 +57,9 @@
     return self;
 }
 
-- (id) initWithExtendedKey:(NSData*)extendedKeyData
+- (id) initWithExtendedKey:(NSString*)extkey
 {
-    return [self initWithExtendedKeyData:extendedKeyData];
+    return [self initWithExtendedKeyData:BTCDataFromBase58Check(extkey)];
 }
 
 - (id) initWithExtendedKeyData:(NSData*)extendedKeyData
@@ -111,16 +111,14 @@
     return self.key;
 }
 
-// deprecated
-- (NSData*) extendedPrivateKey
+- (NSString*) extendedPrivateKey
 {
-    return [self extendedPrivateKeyData];
+    return BTCBase58CheckStringWithData([self extendedPrivateKeyData]);
 }
 
-// deprecated
-- (NSData*) extendedPublicKey
+- (NSString*) extendedPublicKey
 {
-    return [self extendedPublicKeyData];
+    return BTCBase58CheckStringWithData([self extendedPublicKeyData]);
 }
 
 
