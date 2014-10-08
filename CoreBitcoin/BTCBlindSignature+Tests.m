@@ -80,7 +80,7 @@
 {
     BTCKeychain* aliceKeychain = [[BTCKeychain alloc] initWithSeed:[@"Alice" dataUsingEncoding:NSUTF8StringEncoding]];
     BTCKeychain* bobKeychain = [[BTCKeychain alloc] initWithSeed:[@"Bob" dataUsingEncoding:NSUTF8StringEncoding]];
-    BTCKeychain* bobPublicKeychain = [[BTCKeychain alloc] initWithExtendedKey:bobKeychain.extendedPublicKey];
+    BTCKeychain* bobPublicKeychain = [[BTCKeychain alloc] initWithExtendedKeyData:bobKeychain.extendedPublicKeyData];
 
     NSAssert(aliceKeychain, @"sanity check");
     NSAssert(bobKeychain, @"sanity check");

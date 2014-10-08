@@ -13,8 +13,8 @@
 
 @interface BTCKeychain ()
 @property(nonatomic, readwrite) NSMutableData* chainCode;
-@property(nonatomic, readwrite) NSMutableData* extendedPublicKey;
-@property(nonatomic, readwrite) NSMutableData* extendedPrivateKey;
+@property(nonatomic, readwrite) NSMutableData* extendedPublicKeyData;
+@property(nonatomic, readwrite) NSMutableData* extendedPrivateKeyData;
 @property(nonatomic, readwrite) NSData* identifier;
 @property(nonatomic, readwrite) uint32_t fingerprint;
 @property(nonatomic, readwrite) uint32_t parentFingerprint;
@@ -36,8 +36,8 @@
 - (void) clear
 {
     BTCDataClear(_chainCode);
-    BTCDataClear(_extendedPublicKey);
-    BTCDataClear(_extendedPrivateKey);
+    BTCDataClear(_extendedPublicKeyData);
+    BTCDataClear(_extendedPrivateKeyData);
     BTCDataClear(_privateKey);
     BTCDataClear(_publicKey);
 }
@@ -57,13 +57,18 @@
     return self;
 }
 
-- (id) initWithExtendedKey:(NSData*)extendedKey
+- (id) initWithExtendedKey:(NSData*)extendedKeyData
+{
+    return [self initWithExtendedKeyData:extendedKeyData];
+}
+
+- (id) initWithExtendedKeyData:(NSData*)extendedKeyData
 {
     if (self = [super init])
     {
-        if (extendedKey.length != 78) return nil;
+        if (extendedKeyData.length != 78) return nil;
 
-        const uint8_t* bytes = extendedKey.bytes;
+        const uint8_t* bytes = extendedKeyData.bytes;
         uint32_t version = OSSwapBigToHostInt32(*((uint32_t*)bytes));
 
         uint32_t keyprefix = bytes[45];
@@ -72,13 +77,13 @@
         {
             // Should have 0-prefixed private key (1 + 32 bytes).
             if (keyprefix != 0) return nil;
-            _privateKey = BTCDataRange(extendedKey, NSMakeRange(46, 32));
+            _privateKey = BTCDataRange(extendedKeyData, NSMakeRange(46, 32));
         }
         else
         {
             // Should have a 33-byte public key with non-zero first byte.
             if (keyprefix == 0) return nil;
-            _publicKey = BTCDataRange(extendedKey, NSMakeRange(45, 33));
+            _publicKey = BTCDataRange(extendedKeyData, NSMakeRange(45, 33));
         }
 
         _depth = *(bytes + 4);
@@ -91,7 +96,7 @@
             _hardened = YES;
         }
         
-        _chainCode = BTCDataRange(extendedKey,NSMakeRange(13, 32));
+        _chainCode = BTCDataRange(extendedKeyData,NSMakeRange(13, 32));
     }
     return self;
 }
@@ -100,7 +105,26 @@
 #pragma mark - Properties
 
 
+// deprecated
 - (BTCKey*) rootKey
+{
+    return self.key;
+}
+
+// deprecated
+- (NSData*) extendedPrivateKey
+{
+    return [self extendedPrivateKeyData];
+}
+
+// deprecated
+- (NSData*) extendedPublicKey
+{
+    return [self extendedPublicKeyData];
+}
+
+
+- (BTCKey*) key
 {
     if (_privateKey)
     {
@@ -114,11 +138,11 @@
     }
 }
 
-- (NSData*) extendedPrivateKey
+- (NSData*) extendedPrivateKeyData
 {
     if (!_privateKey) return nil;
     
-    if (!_extendedPrivateKey)
+    if (!_extendedPrivateKeyData)
     {
         NSMutableData* data = [self extendedKeyPrefixWithVersion:BTCKeychainPrivateExtendedKeyVersion];
         
@@ -126,14 +150,14 @@
         [data appendBytes:&padding length:1];
         [data appendData:_privateKey];
         
-        _extendedPrivateKey = data;
+        _extendedPrivateKeyData = data;
     }
-    return _extendedPrivateKey;
+    return _extendedPrivateKeyData;
 }
 
-- (NSData*) extendedPublicKey
+- (NSData*) extendedPublicKeyData
 {
-    if (!_extendedPublicKey)
+    if (!_extendedPublicKeyData)
     {
         NSData* pubkey = self.publicKey;
         
@@ -143,9 +167,9 @@
         
         [data appendData:pubkey];
         
-        _extendedPublicKey = data;
+        _extendedPublicKeyData = data;
     }
-    return _extendedPublicKey;
+    return _extendedPublicKeyData;
 }
 
 - (NSMutableData*) extendedKeyPrefixWithVersion:(uint32_t)version
@@ -306,7 +330,7 @@
 }
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened
 {
-    return [[self derivedKeychainAtIndex:index hardened:hardened] rootKey];
+    return [[self derivedKeychainAtIndex:index hardened:hardened] key];
 }
 
 - (BTCKeychain*) publicKeychain
@@ -521,7 +545,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<%@:0x%p %@>", [self class], self, BTCBase58CheckStringWithData(self.extendedPublicKey)];
+    return [NSString stringWithFormat:@"<%@:0x%p %@>", [self class], self, BTCBase58CheckStringWithData(self.extendedPublicKeyData)];
 }
 
 - (NSString*) debugDescription
