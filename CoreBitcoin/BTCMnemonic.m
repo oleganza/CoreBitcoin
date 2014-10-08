@@ -139,7 +139,6 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
             return nil;
         }
 
-
         NSUInteger encodedEntropyLength = 0;
         _entropy = [BTCProtocolSerialization
                     readVarStringFromData:[data subdataWithRange:NSMakeRange(offset, data.length - offset)]
@@ -187,13 +186,8 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
             if (!_seed)
             {
-                NSLog(@"ERROR: BTCMnemonic failed to read encoded seed from mnemonic payload. Will recompute it.");
+                NSLog(@"ERROR: BTCMnemonic failed to read encoded seed from mnemonic payload. Will recompute it lazily when needed.");
             }
-        }
-
-        if (!_seed)
-        {
-            _seed = [self seedForWords:self.words password:self.password];
         }
     }
     return self;
