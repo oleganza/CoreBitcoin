@@ -11,6 +11,7 @@
 + (void) runAllTests
 {
     [self testStandardTestVectors];
+    [self testZeroPaddedPrivateKeys];
 }
 
 + (void) testStandardTestVectors
@@ -189,6 +190,33 @@
     NSAssert([prvchain.extendedPublicKeyData isEqual:pubchain.extendedPublicKeyData], @"Private and public chains should have the same extended public keys");
     
     NSAssert([[prvchain keyAtIndex:123] isEqual:[pubchain keyAtIndex:123]], @"both chains should be able to derive the same key");
+}
+
++ (void) testZeroPaddedPrivateKeys
+{
+    BTCKeychain* keychain = [[BTCKeychain alloc] initWithSeed:[@"stress test" dataUsingEncoding:NSUTF8StringEncoding]];
+    for (int i = 0; i < 2*256; i++)
+    {
+        //#puts i # i=70 yields a zero-prefixed private key.
+        BTCKey* key = [keychain keyAtIndex:i hardened:YES];
+
+        NSAssert(key.privateKey.length == 32, @"privkey must be 32 bytes long");
+        NSAssert(key.publicKey.length == 33, @"pubkey must be 33 bytes long");
+
+//        if (((uint8_t*)[key.privateKey bytes])[0] == 0)
+//        {
+//            NSLog(@"i = %@ address: %@", @(i), key.address.base58String);
+//        }
+    }
+
+    // Same as BIP32.org
+    NSAssert([[keychain keyAtIndex:70  hardened:YES].address.base58String isEqualToString:@"1FZQfsXwAoUcn9WVwbfRb4jMMkPJEozLWH"], @"");
+    NSAssert(((uint8_t*)[keychain keyAtIndex:70  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
+    NSAssert([[keychain keyAtIndex:227 hardened:YES].address.base58String isEqualToString:@"1LRbeWJC3sLGRk7ob82djVYTNhsH2UdR4f"], @"");
+    NSAssert(((uint8_t*)[keychain keyAtIndex:227  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
+    NSAssert([[keychain keyAtIndex:455 hardened:YES].address.base58String isEqualToString:@"1HSr4B5Hr3hc7vAzNHbp7SV7rsFzUhQSeF"], @"");
+    NSAssert(((uint8_t*)[keychain keyAtIndex:455  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
+
 }
 
 @end
