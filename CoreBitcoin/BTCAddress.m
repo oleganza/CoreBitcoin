@@ -140,6 +140,11 @@ enum
     return [NSString stringWithCString:cstr encoding:NSASCIIStringEncoding];
 }
 
+- (BTCAddress*) publicAddress
+{
+    return self;
+}
+
 - (void) clear
 {
     BTCSecureClearCString(_cstring);
@@ -264,6 +269,11 @@ enum
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:self.data];
     key.publicKeyCompressed = self.isPublicKeyCompressed;
     return key;
+}
+
+- (BTCAddress*) publicAddress
+{
+    return [BTCPublicKeyAddress addressWithData:BTCHash160(self.key.publicKey)];
 }
 
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate

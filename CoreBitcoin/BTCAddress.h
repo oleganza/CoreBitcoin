@@ -38,6 +38,12 @@
 // Returns representation in base58 encoding.
 - (NSString*) base58String;
 
+/*!
+ * Returns a public version of this address. By default it's receiver itself.
+ * PrivateKeyAddress returns appropriate PublicKeyAddress.
+ */
+- (BTCAddress*) publicAddress;
+
 // Clears contents of the data to prevent leaks.
 - (void) clear;
 
@@ -51,7 +57,7 @@
 @end
 
 
-// Private key in Base58 format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC...)
+// Private key in WIF format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC..., base58-encoded)
 @interface BTCPrivateKeyAddress : BTCAddress
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
 // that derived pubkey must be compressed (as this affects the address derived from pubkey).

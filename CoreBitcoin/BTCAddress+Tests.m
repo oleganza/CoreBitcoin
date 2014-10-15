@@ -18,7 +18,8 @@
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPublicKeyAddress class]], @"Address should be an instance of BTCPublicKeyAddress");
     NSAssert([@"c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827" isEqualToString:[addr.data hexString]], @"Must decode hash160 correctly.");
-    
+    NSAssert([addr isEqualTo:addr.publicAddress], @"Address should be equal to its publicAddress");
+
     BTCPublicKeyAddress* addr2 = [BTCPublicKeyAddress addressWithData:BTCDataWithHexString(@"c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827")];
     NSAssert(addr2, @"Address should be created");
     NSAssert([@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T" isEqualToString:addr2.base58String], @"Must encode hash160 correctly.");
@@ -31,6 +32,7 @@
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
     NSAssert(!addr.isPublicKeyCompressed, @"Address should be not compressed");
     NSAssert([@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a" isEqualToString:[addr.data hexString]], @"Must decode secret key correctly.");
+    NSAssert([[[addr publicAddress] base58String] isEqualTo:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"must provide proper public address");
     
     BTCPrivateKeyAddress* addr2 = [BTCPrivateKeyAddress addressWithData:BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a")];
     NSAssert(addr2, @"Address should be created");
@@ -44,7 +46,8 @@
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
     NSAssert(addr.isPublicKeyCompressed, @"Address should be compressed");
     NSAssert([@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a" isEqualToString:[addr.data hexString]], @"Must decode secret key correctly.");
-    
+    NSAssert([[[addr publicAddress] base58String] isEqualTo:@"1C7zdTfnkzmr13HfA2vNm5SJYRK6nEKyq8"], @"must provide proper public address");
+
     BTCPrivateKeyAddress* addr2 = [BTCPrivateKeyAddress addressWithData:BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a")];
     NSAssert(addr2, @"Address should be created");
     addr2.publicKeyCompressed = YES;
@@ -59,7 +62,8 @@
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCScriptHashAddress class]], @"Address should be an instance of BTCScriptHashAddress");
     NSAssert([@"e8c300c87986efa84c37c0519929019ef86eb5b4" isEqualToString:addr.data.hexString], @"Must decode hash160 correctly.");
-    
+    NSAssert([addr isEqualTo:addr.publicAddress], @"Address should be equal to its publicAddress");
+
     BTCScriptHashAddress* addr2 = [BTCScriptHashAddress addressWithData:BTCDataWithHexString(@"e8c300c87986efa84c37c0519929019ef86eb5b4")];
     NSAssert(addr2, @"Address should be created");
     NSAssert([@"3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8" isEqualToString:addr2.base58String], @"Must encode hash160 correctly.");
