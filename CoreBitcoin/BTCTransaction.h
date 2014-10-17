@@ -9,13 +9,37 @@ static const uint32_t BTCTransactionCurrentVersion = 1;
 @class BTCScript;
 @class BTCTransactionInput;
 @class BTCTransactionOutput;
+
+/*!
+ * Converts string transaction ID (reversed tx hash in hex format) to transaction hash.
+ */
+NSData* BTCTransactionHashFromID(NSString* txid);
+
+/*!
+ * Converts hash of the transaction to its string ID (reversed tx hash in hex format).
+ */
+NSString* BTCTransactionIDFromHash(NSData* txhash);
+
+
+/*!
+ * BTCTransaction represents a Bitcoin transaction structure which contains
+ * inputs, outputs and additional metadata.
+ */
 @interface BTCTransaction : NSObject<NSCopying>
 
 // Raw transaction hash SHA256(SHA256(payload))
 @property(nonatomic, readonly) NSData* transactionHash;
 
-// Reversed hex representation of -hash
-@property(nonatomic, readonly) NSString* displayTransactionHash;
+/*!
+ * Hex representation of reversed `-transactionHash`.
+ * This property is deprecated. Use `-transactionID` instead.
+ */
+@property(nonatomic, readonly) NSString* displayTransactionHash DEPRECATED_ATTRIBUTE;
+
+/*!
+ * Hex representation of reversed `-transactionHash`. Also known as "txid".
+ */
+@property(nonatomic, readonly) NSString* transactionID;
 
 // Array of BTCTransactionInput objects
 @property(nonatomic, readonly) NSArray* inputs;
