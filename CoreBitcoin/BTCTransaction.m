@@ -36,6 +36,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         _lockTime = 0;
         _inputs = @[];
         _outputs = @[];
+        _blockHeight = 0;
     }
     return self;
 }

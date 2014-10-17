@@ -57,6 +57,19 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 // Default is 0.
 @property(nonatomic) uint32_t lockTime; // aka "lock_time"
 
+// Informational property, could be set by some APIs that fetch transactions.
+// Note: unconfirmed transactions may be marked with -1 block height.
+// Default is 0.
+@property(nonatomic) NSInteger blockHeight;
+
+// Date and time of the block if specified by the API that returns this transaction.
+// Default is nil.
+@property(nonatomic) NSDate* blockDate;
+
+// Arbitrary information attached to this instance.
+// Default is nil.
+@property(nonatomic) NSDictionary* userInfo;
+
 // Parses tx from data buffer.
 - (id) initWithData:(NSData*)data;
 
