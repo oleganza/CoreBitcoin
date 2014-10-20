@@ -95,6 +95,7 @@
     txout.index = _index;
     txout.transactionHash = _transactionHash; // so we don't copy transaction.transactionHash.
     txout.transaction = _transaction;
+    txout.blockHeight = _blockHeight;
     txout.confirmations = _confirmations;
 
     return txout;
