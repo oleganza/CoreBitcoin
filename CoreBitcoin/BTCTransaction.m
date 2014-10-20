@@ -37,6 +37,8 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         _inputs = @[];
         _outputs = @[];
         _blockHeight = 0;
+        _blockDate = nil;
+        _confirmations = NSNotFound;
     }
     return self;
 }
@@ -144,6 +146,13 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     }
     tx.version = self.version;
     tx.lockTime = self.lockTime;
+
+    // Copy informational properties as is.
+    tx.blockHeight   = self.blockHeight;
+    tx.blockDate     = self.blockDate;
+    tx.confirmations = self.confirmations;
+    tx.userInfo      = self.userInfo;
+
     return tx;
 }
 

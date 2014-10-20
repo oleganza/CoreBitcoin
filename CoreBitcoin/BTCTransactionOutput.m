@@ -90,6 +90,13 @@
     BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
     txout.value = self.value;
     txout.script = [self.script copy];
+
+    // Copy informational properties:
+    txout.index = _index;
+    txout.transactionHash = _transactionHash; // so we don't copy transaction.transactionHash.
+    txout.transaction = _transaction;
+    txout.confirmations = _confirmations;
+
     return txout;
 }
 

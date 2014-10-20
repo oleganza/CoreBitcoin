@@ -66,6 +66,9 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 // Default is nil.
 @property(nonatomic) NSDate* blockDate;
 
+// Number of confirmations. Default is NSNotFound.
+@property(nonatomic) NSUInteger confirmations;
+
 // Arbitrary information attached to this instance.
 // Default is nil.
 @property(nonatomic) NSDictionary* userInfo;
