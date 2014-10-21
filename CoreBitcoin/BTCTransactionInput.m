@@ -7,7 +7,6 @@
 #import "BTCData.h"
 
 @interface BTCTransactionInput ()
-@property(nonatomic, readwrite) NSData* data;
 @end
 
 static const uint32_t BTCInvalidIndex = 0xFFFFFFFF; // aka "(unsigned int) -1" in BitcoinQT.
@@ -102,18 +101,12 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     txin.previousIndex = self.previousIndex;
     txin.signatureScript = [self.signatureScript copy];
     txin.sequence = self.sequence;
-    txin.data = [self.data copy];
     return txin;
 }
 
 - (NSData*) data
 {
     return [self computePayload];
-//    if (!_data)
-//    {
-//        _data = [self computePayload];
-//    }
-//    return _data;
 }
 
 - (NSData*) computePayload
@@ -134,8 +127,16 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
 - (void) invalidatePayload
 {
-    _data = nil;
-    [_transaction invalidatePayload];
+}
+
+- (NSString*) previousTransactionID
+{
+    return BTCTransactionIDFromHash(self.previousHash);
+}
+
+- (void) setPreviousTransactionID:(NSString *)previousTransactionID
+{
+    self.previousHash = BTCTransactionHashFromID(previousTransactionID);
 }
 
 - (void) setPreviousHash:(NSData *)previousHash

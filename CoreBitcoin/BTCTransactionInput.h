@@ -14,6 +14,9 @@
 // Hash of the previous transaction.
 @property(nonatomic) NSData* previousHash;
 
+// Transaction ID referenced by this input (reversed previousHash in hex).
+@property(nonatomic) NSString* previousTransactionID;
+
 // Index of the previous transaction's output.
 @property(nonatomic) uint32_t previousIndex;
 
