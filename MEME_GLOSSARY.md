@@ -11,15 +11,27 @@ If you find an inaccuracy, please report it to oleganza@gmail.com or clone this 
 
 ### Dogecoin
 
+### Govcoin, Fedcoin
+
 ### Goxcoin
 
 ### Goxxed
+
+### HODL
+
+### Hold, spartans
 
 ### I am pretty confident we are the new wealthy elite, gentlemen.
 
 ### In two weeks
 
+### It's actually good news
+
 ### Supernintendo Lawsky
+
+### Soonish
+
+### This time it's different
 
 ### To the moon
 
