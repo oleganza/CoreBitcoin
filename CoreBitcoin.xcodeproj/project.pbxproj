@@ -338,6 +338,7 @@
 		20148C9B183643AB00E68E9C /* libCoreBitcoinOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCoreBitcoinOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		20148C9F183643AB00E68E9C /* CoreBitcoinOSXlib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinOSXlib-Prefix.pch"; sourceTree = "<group>"; };
 		20148CA8183643AB00E68E9C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MEME_GLOSSARY.md; sourceTree = "<group>"; };
 		2037AB1317D3BFF900DB248C /* BTCScript+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCScript+Tests.h"; sourceTree = "<group>"; };
 		2037AB1417D3BFF900DB248C /* BTCScript+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCScript+Tests.m"; sourceTree = "<group>"; };
 		2037AB1617D3D1F900DB248C /* BTCBase58+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCBase58+Tests.h"; sourceTree = "<group>"; };
@@ -636,6 +637,7 @@
 				2084DD9417B8FF7E005AC9E6 /* README.md */,
 				204F8A801845FAF8002649CE /* TODO.txt */,
 				2039DB0117E2ED2B0051177B /* GLOSSARY.md */,
+				20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */,
 				209818911839688D00541747 /* LICENSE.txt */,
 				2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */,
 				209818921839694000541747 /* CoreBitcoin.podspec */,
