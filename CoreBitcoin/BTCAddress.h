@@ -44,6 +44,11 @@
  */
 - (BTCAddress*) publicAddress;
 
+/*!
+ * Returns YES if this address is intended for testnet.
+ */
+- (BOOL) isTestnet;
+
 // Clears contents of the data to prevent leaks.
 - (void) clear;
 

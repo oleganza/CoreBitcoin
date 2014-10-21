@@ -145,6 +145,11 @@ enum
     return self;
 }
 
+- (BOOL) isTestnet
+{
+    return NO;
+}
+
 - (void) clear
 {
     BTCSecureClearCString(_cstring);
@@ -209,6 +214,11 @@ enum
 - (unsigned char) versionByte
 {
     return BTCPublicKeyAddressVersionTestnet;
+}
+
+- (BOOL) isTestnet
+{
+    return YES;
 }
 
 @end
@@ -320,6 +330,16 @@ enum
     return BTCPrivateKeyAddressVersionTestnet;
 }
 
+- (BTCAddress*) publicAddress
+{
+    return [BTCPublicKeyAddressTestnet addressWithData:BTCHash160(self.key.publicKey)];
+}
+
+- (BOOL) isTestnet
+{
+    return YES;
+}
+
 @end
 
 
@@ -381,6 +401,11 @@ enum
 - (unsigned char) versionByte
 {
     return BTCScriptHashAddressVersionTestnet;
+}
+
+- (BOOL) isTestnet
+{
+    return YES;
 }
 
 @end
