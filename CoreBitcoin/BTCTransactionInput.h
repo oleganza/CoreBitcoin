@@ -4,6 +4,7 @@
 
 @class BTCScript;
 @class BTCTransaction;
+@class BTCOutpoint;
 
 // Transaction input (aka "txin") represents a reference to another transaction's output.
 // Reference is defined by tx hash + tx output index.
@@ -19,6 +20,9 @@
 
 // Index of the previous transaction's output.
 @property(nonatomic) uint32_t previousIndex;
+
+// Outpoint of this input (previous hash and output index). Corresponds to COutPoint class in bitcoind.
+@property(nonatomic) BTCOutpoint* outpoint;
 
 // Script that proves ownership of the previous transaction output.
 @property(nonatomic) BTCScript* signatureScript;
@@ -48,5 +52,23 @@
 
 // Returns YES if this txin generates new coins.
 - (BOOL) isCoinbase;
+
+@end
+
+
+@interface BTCOutpoint : NSObject <NSCopying>
+
+// Hash of the previous transaction.
+@property(nonatomic) NSData* txHash;
+
+// Transaction ID referenced by this input (reversed txHash in hex).
+@property(nonatomic) NSString* txID;
+
+// Index of the previous transaction's output.
+@property(nonatomic) uint32_t index;
+
+- (id) initWithHash:(NSData*)hash index:(uint32_t)index;
+
+- (id) initWithTxID:(NSString*)txid index:(uint32_t)index;
 
 @end

@@ -12,6 +12,7 @@
 static const uint32_t BTCInvalidIndex = 0xFFFFFFFF; // aka "(unsigned int) -1" in BitcoinQT.
 static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
+
 @implementation BTCTransactionInput
 
 - (id) init
@@ -125,8 +126,15 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     return payload;
 }
 
-- (void) invalidatePayload
+- (BTCOutpoint*) outpoint
 {
+    return [[BTCOutpoint alloc] initWithHash:self.previousHash index:self.previousIndex];
+}
+
+- (void) setOutpoint:(BTCOutpoint *)outpoint
+{
+    self.previousHash = outpoint.txHash;
+    self.previousIndex = outpoint.index;
 }
 
 - (NSString*) previousTransactionID
@@ -137,34 +145,6 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 - (void) setPreviousTransactionID:(NSString *)previousTransactionID
 {
     self.previousHash = BTCTransactionHashFromID(previousTransactionID);
-}
-
-- (void) setPreviousHash:(NSData *)previousHash
-{
-    if (_previousHash == previousHash) return;
-    _previousHash = previousHash;
-    [self invalidatePayload];
-}
-
-- (void) setPreviousIndex:(uint32_t)previousIndex
-{
-    if (_previousIndex == previousIndex) return;
-    _previousIndex = previousIndex;
-    [self invalidatePayload];
-}
-
-- (void) setSignatureScript:(BTCScript *)signatureScript
-{
-    if (_signatureScript == signatureScript) return;
-    _signatureScript = signatureScript;
-    [self invalidatePayload];
-}
-
-- (void) setSequence:(uint32_t)sequence
-{
-    if (_sequence == sequence) return;
-    _sequence = sequence;
-    [self invalidatePayload];
 }
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
@@ -249,5 +229,57 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
             0 == memcmp(BTCZeroString256(), _previousHash.bytes, 32);
 }
 
+
+@end
+
+
+
+#pragma mark - Outpoint Implementation
+
+
+@implementation BTCOutpoint
+
+- (id) initWithHash:(NSData*)hash index:(uint32_t)index
+{
+    if (hash.length != 32) return nil;
+    if (self = [super init])
+    {
+        _txHash = hash;
+        _index = index;
+    }
+    return self;
+}
+
+- (id) initWithTxID:(NSString*)txid index:(uint32_t)index
+{
+    NSData* hash = BTCTransactionHashFromID(txid);
+    return [self initWithHash:hash index:index];
+}
+
+- (NSString*) txID
+{
+    return BTCTransactionIDFromHash(self.txHash);
+}
+
+- (void) setTxID:(NSString *)txID
+{
+    self.txHash = BTCTransactionHashFromID(txID);
+}
+
+- (NSUInteger) hash
+{
+    const uint32_t* words = _txHash.bytes;
+    return words[0];
+}
+
+- (BOOL) isEqual:(BTCOutpoint*)object
+{
+    return [self.txHash isEqual:object.txHash] && self.index == object.index;
+}
+
+- (id) copyWithZone:(NSZone *)zone
+{
+    return [[BTCOutpoint alloc] initWithHash:_txHash index:_index];
+}
 
 @end
