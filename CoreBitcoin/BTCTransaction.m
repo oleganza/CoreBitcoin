@@ -148,10 +148,10 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     tx.lockTime = self.lockTime;
 
     // Copy informational properties as is.
-    tx.blockHeight   = self.blockHeight;
-    tx.blockDate     = self.blockDate;
-    tx.confirmations = self.confirmations;
-    tx.userInfo      = self.userInfo;
+    tx.blockHeight   = _blockHeight;
+    tx.blockDate     = _blockDate;
+    tx.confirmations = _confirmations;
+    tx.userInfo      = _userInfo;
 
     return tx;
 }

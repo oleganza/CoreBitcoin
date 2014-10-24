@@ -70,6 +70,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 @property(nonatomic) NSUInteger confirmations;
 
 // Arbitrary information attached to this instance.
+// The reference is copied when this instance is copied.
 // Default is nil.
 @property(nonatomic) NSDictionary* userInfo;
 

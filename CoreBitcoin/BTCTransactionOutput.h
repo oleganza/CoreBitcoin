@@ -44,6 +44,11 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // Identifier of the transaction. Default is nil.
 @property(nonatomic) NSData* transactionHash;
 
+// Arbitrary information attached to this instance.
+// The reference is copied when this instance is copied.
+// Default is nil.
+@property(nonatomic) NSDictionary* userInfo;
+
 // Parses tx output from a data buffer.
 - (id) initWithData:(NSData*)data;
 

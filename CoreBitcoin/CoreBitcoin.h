@@ -21,4 +21,5 @@
 #import <CoreBitcoin/BTCTransaction.h>
 #import <CoreBitcoin/BTCTransactionInput.h>
 #import <CoreBitcoin/BTCTransactionOutput.h>
+#import <CoreBitcoin/BTCOutpoint.h>
 #import <CoreBitcoin/BTCUnitsAndLimits.h>

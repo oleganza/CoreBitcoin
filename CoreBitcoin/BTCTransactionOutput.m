@@ -92,11 +92,12 @@
     txout.script = [self.script copy];
 
     // Copy informational properties:
-    txout.index = _index;
-    txout.transactionHash = _transactionHash; // so we don't copy transaction.transactionHash.
-    txout.transaction = _transaction;
-    txout.blockHeight = _blockHeight;
-    txout.confirmations = _confirmations;
+    txout.index           = _index;
+    txout.transactionHash = _transactionHash; // copy bare ivar, so we don't copy transaction.transactionHash which may be derived from _transaction.
+    txout.transaction     = _transaction;
+    txout.blockHeight     = _blockHeight;
+    txout.confirmations   = _confirmations;
+    txout.userInfo        = _userInfo;
 
     return txout;
 }

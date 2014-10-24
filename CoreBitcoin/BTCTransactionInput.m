@@ -5,6 +5,7 @@
 #import "BTCScript.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCData.h"
+#import "BTCOutpoint.h"
 
 @interface BTCTransactionInput ()
 @end
@@ -102,6 +103,9 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     txin.previousIndex = self.previousIndex;
     txin.signatureScript = [self.signatureScript copy];
     txin.sequence = self.sequence;
+
+    txin.userInfo = self.userInfo;
+
     return txin;
 }
 
@@ -232,54 +236,3 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
 @end
 
-
-
-#pragma mark - Outpoint Implementation
-
-
-@implementation BTCOutpoint
-
-- (id) initWithHash:(NSData*)hash index:(uint32_t)index
-{
-    if (hash.length != 32) return nil;
-    if (self = [super init])
-    {
-        _txHash = hash;
-        _index = index;
-    }
-    return self;
-}
-
-- (id) initWithTxID:(NSString*)txid index:(uint32_t)index
-{
-    NSData* hash = BTCTransactionHashFromID(txid);
-    return [self initWithHash:hash index:index];
-}
-
-- (NSString*) txID
-{
-    return BTCTransactionIDFromHash(self.txHash);
-}
-
-- (void) setTxID:(NSString *)txID
-{
-    self.txHash = BTCTransactionHashFromID(txID);
-}
-
-- (NSUInteger) hash
-{
-    const uint32_t* words = _txHash.bytes;
-    return words[0];
-}
-
-- (BOOL) isEqual:(BTCOutpoint*)object
-{
-    return [self.txHash isEqual:object.txHash] && self.index == object.index;
-}
-
-- (id) copyWithZone:(NSZone *)zone
-{
-    return [[BTCOutpoint alloc] initWithHash:_txHash index:_index];
-}
-
-@end

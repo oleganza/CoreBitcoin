@@ -38,6 +38,12 @@
 // Set when input is added via [tx addInput:input]
 @property(weak, nonatomic) BTCTransaction* transaction;
 
+// Arbitrary information attached to this instance.
+// The reference is copied when this instance is copied.
+// Default is nil.
+@property(nonatomic) NSDictionary* userInfo;
+
+
 // Parses tx input from a data buffer.
 - (id) initWithData:(NSData*)data;
 
@@ -55,20 +61,3 @@
 
 @end
 
-
-@interface BTCOutpoint : NSObject <NSCopying>
-
-// Hash of the previous transaction.
-@property(nonatomic) NSData* txHash;
-
-// Transaction ID referenced by this input (reversed txHash in hex).
-@property(nonatomic) NSString* txID;
-
-// Index of the previous transaction's output.
-@property(nonatomic) uint32_t index;
-
-- (id) initWithHash:(NSData*)hash index:(uint32_t)index;
-
-- (id) initWithTxID:(NSString*)txid index:(uint32_t)index;
-
-@end
