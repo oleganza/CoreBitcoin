@@ -192,11 +192,18 @@
 {
     BTCScript *script = [[BTCScript alloc] initWithData:BTCDataWithHexString(@"76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac")];
     
-    //NSLog(@"TEST: String: %@\nIs Hash160 Script: %d", script.string, script.isHash160Script);
+    //NSLog(@"TEST: String: %@\nIs P2PKH Script: %d", script.string, script.isPayToPublicKeyHashScript);
     
-    NSAssert([script isHash160Script], @"should be regular hash160 script");
- 
-    
+    NSAssert([script isPayToPublicKeyHashScript], @"should be regular hash160 script");
+
+    {
+        NSData* simsigData = [script simulatedSignatureScriptWithOptions:BTCScriptSimulationDefault].data;
+        NSAssert(simsigData.length == 1 + (72 + 1) + 1 + 65, @"Simulated sigscript for p2pkh should contain signature, hashtype and an uncompressed pubkey");
+
+        NSData* simsigData2 = [script simulatedSignatureScriptWithOptions:BTCScriptSimulationCompressedPublicKeys].data;
+        NSAssert(simsigData2.length == 1 + (72 + 1) + 1 + 33, @"Simulated sigscript for p2pkh with compressed pubkey option should contain signature, hashtype and a compressed pubkey");
+    }
+
     NSString* base58address = [[script standardAddress] base58String];
     //NSLog(@"TEST: address: %@", base58address);
     

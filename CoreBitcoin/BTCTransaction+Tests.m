@@ -347,7 +347,7 @@ typedef enum : NSUInteger {
     
     for (BTCTransactionOutput* txout in utxos)
     {
-        if (txout.value > (totalAmount + dustThreshold) && txout.script.isHash160Script)
+        if (txout.value > (totalAmount + dustThreshold) && txout.script.isPayToPublicKeyHashScript)
         {
             txouts = @[ txout ];
             break;

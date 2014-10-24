@@ -489,7 +489,7 @@
 
 - (BOOL) isStandard
 {
-    return [self isHash160Script]
+    return [self isPayToPublicKeyHashScript]
         || [self isPayToScriptHashScript]
         || [self isPublicKeyScript]
         || [self isStandardMultisignatureScript];
@@ -503,6 +503,11 @@
 }
 
 - (BOOL) isHash160Script
+{
+    return [self isPayToPublicKeyHashScript];
+}
+
+- (BOOL) isPayToPublicKeyHashScript
 {
     if (_chunks.count != 5) return NO;
     
@@ -638,7 +643,7 @@
 
 - (BTCAddress*) standardAddress
 {
-    if ([self isHash160Script])
+    if ([self isPayToPublicKeyHashScript])
     {
         if (_chunks.count != 5) return nil;
         
@@ -685,6 +690,126 @@
 
 
 
+#pragma mark - Simulation
+
+
+
+- (BTCScript*) simulatedSignatureScriptWithOptions:(BTCScriptSimulationOptions)opts
+{
+    if ([self isPayToPublicKeyHashScript])
+    {
+        BTCScript* script = [BTCScript new];
+        [script appendData:[BTCScript simulatedSignatureWithHashType:SIGHASH_ALL]];
+        [script appendData:(opts & BTCScriptSimulationCompressedPublicKeys) ? [BTCScript simulatedCompressedPubkey] : [BTCScript simulatedUncompressedPubkey]];
+        return script;
+    }
+    else if ([self isPublicKeyScript])
+    {
+        return [[BTCScript new] appendData:[BTCScript simulatedSignatureWithHashType:SIGHASH_ALL]];
+    }
+    else if ([self isPayToScriptHashScript])
+    {
+        // Check if allowed to simulate input for P2SH as 2-of-3 multisig.
+        if (opts & BTCScriptSimulationMultisigP2SH)
+        {
+            // This is a wild approximation, but works well if most p2sh scripts are 2-of-3 multisig scripts.
+            BTCScript* script = [BTCScript new];
+            [script appendOpcode:OP_0];
+            [script appendData:[BTCScript simulatedSignatureWithHashType:SIGHASH_ALL]];
+            [script appendData:[BTCScript simulatedSignatureWithHashType:SIGHASH_ALL]];
+            [script appendData:[BTCScript simulatedMultisigScriptWithSignaturesCount:2 pubkeysCount:3
+                                          compressedPubkeys:(opts & BTCScriptSimulationCompressedPublicKeys)].data];
+            return script;
+        }
+        else
+        {
+            // Can't figure how to simulate signature script for P2SH as it can be anything.
+            return nil;
+        }
+    }
+    else if ([self isMultisignatureScript])
+    {
+        BTCScript* script = [BTCScript new];
+        [script appendOpcode:OP_0];
+        for (NSInteger i = 0; i < _multisigSignaturesRequired; i++)
+        {
+            [script appendData:[BTCScript simulatedSignatureWithHashType:SIGHASH_ALL]];
+        }
+        return script;
+    }
+
+    // Any other type of script is not supported yet.
+    // However, it'd be fun to simulate those based on reverse-playback of the script opcodes.
+    return nil;
+}
+
+// Returns a simulated signature without a hashtype byte.
++ (NSData*) simulatedSignature
+{
+    // "\x30" + "\xff"*71
+    NSMutableData* sig = [NSMutableData dataWithLength:1 + 71];
+    memset(sig.mutableBytes, 0x30, 1);
+    memset(sig.mutableBytes + 1, 0xFF, 71);
+    return sig;
+}
+
+// Returns a simulated signature with a hashtype byte attached.
++ (NSData*) simulatedSignatureWithHashType:(BTCSignatureHashType)hashtype
+{
+    // "\x30" + "\xff"*71 + encode_uint8(hashtype)
+    NSMutableData* sig = [NSMutableData dataWithLength:1 + 71 + 1];
+    memset(sig.mutableBytes, 0x30, 1);
+    memset(sig.mutableBytes + 1, 0xFF, 71);
+    memset(sig.mutableBytes + 1 + 71, hashtype, 1);
+    return sig;
+}
+
+// Returns a dummy uncompressed pubkey (65 bytes).
++ (NSData*) simulatedUncompressedPubkey
+{
+    // "\x04" + "\xff"*64
+    NSMutableData* sig = [NSMutableData dataWithLength:1 + 64];
+    memset(sig.mutableBytes, 0x04, 1);
+    memset(sig.mutableBytes + 1, 0xFF, 64);
+    return sig;
+}
+
+// Returns a dummy compressed pubkey (33 bytes).
++ (NSData*) simulatedCompressedPubkey
+{
+    // "\x02" + "\xff"*32
+    NSMutableData* sig = [NSMutableData dataWithLength:1 + 32];
+    memset(sig.mutableBytes, 0x02, 1);
+    memset(sig.mutableBytes + 1, 0xFF, 32);
+    return sig;
+}
+
+// Returns a dummy script that simulates m-of-n multisig script
++ (BTCScript*) simulatedMultisigScriptWithSignaturesCount:(NSInteger)m pubkeysCount:(NSInteger)n compressedPubkeys:(BOOL)compressedPubkeys
+{
+    /*
+     Script.new <<
+     Opcode.opcode_for_small_integer(m) <<
+     [simulated_uncompressed_pubkey]*n  << # assuming non-compressed pubkeys to be conservative
+     Opcode.opcode_for_small_integer(n) <<
+     OP_CHECKMULTISIG
+     */
+    BTCScript* multisig = [BTCScript new];
+    [multisig appendOpcode:BTCOpcodeForSmallInteger(m)];
+    NSData* pubkey = compressedPubkeys ? [BTCScript simulatedCompressedPubkey] : [BTCScript simulatedUncompressedPubkey];
+    for (NSInteger i = 0; i < n; i++)
+    {
+        [multisig appendData:pubkey];
+    }
+    [multisig appendOpcode:BTCOpcodeForSmallInteger(n)];
+    return multisig;
+}
+
+
+
+
+
+
 #pragma mark - Modification
 
 
@@ -697,7 +822,7 @@
     _multisigPublicKeys = nil;
 }
 
-- (void) appendOpcode:(BTCOpcode)opcode
+- (BTCScript*) appendOpcode:(BTCOpcode)opcode
 {
     NSMutableData* scriptData = [self.data mutableCopy] ?: [NSMutableData data];
     
@@ -712,11 +837,13 @@
     for (BTCScriptChunk* chunk in _chunks) chunk.scriptData = scriptData;
     
     [self invalidateSerialization];
+
+    return self;
 }
 
-- (void) appendData:(NSData*)data
+- (BTCScript*) appendData:(NSData*)data
 {
-    if (data.length == 0) return;
+    if (data.length == 0) return self;
     
     NSMutableData* scriptData = [self.data mutableCopy] ?: [NSMutableData data];
     
@@ -732,11 +859,13 @@
     for (BTCScriptChunk* chunk in _chunks) chunk.scriptData = scriptData;
     
     [self invalidateSerialization];
+
+    return self;
 }
 
-- (void) appendScript:(BTCScript*)otherScript
+- (BTCScript*) appendScript:(BTCScript*)otherScript
 {
-    if (!otherScript) return;
+    if (!otherScript) return self;
     
     NSMutableData* scriptData = [self.data mutableCopy] ?: [NSMutableData data];
     
@@ -756,7 +885,47 @@
     for (BTCScriptChunk* chunk in _chunks) chunk.scriptData = scriptData;
 
     [self invalidateSerialization];
+
+    return self;
 }
+
+- (BTCScript*) deleteOccurrencesOfData:(NSData*)data
+{
+    if (data.length == 0) return self;
+    
+    NSMutableData* md = [NSMutableData data];
+    
+    for (BTCScriptChunk* chunk in _chunks)
+    {
+        if (![chunk.pushdata isEqual:data])
+        {
+            [md appendData:chunk.chunkData];
+        }
+    }
+    
+    _chunks = [self parseData:md];
+
+    return self;
+}
+
+- (BTCScript*) deleteOccurrencesOfOpcode:(BTCOpcode)opcode
+{
+    NSMutableData* md = [NSMutableData data];
+    
+    for (BTCScriptChunk* chunk in _chunks)
+    {
+        if (chunk.opcode != opcode)
+        {
+            [md appendData:chunk.chunkData];
+        }
+    }
+    
+    _chunks = [self parseData:md];
+
+    return self;
+}
+
+
 
 - (BTCScript*) subScriptFromIndex:(NSUInteger)index
 {
@@ -778,6 +947,8 @@
     return [[BTCScript alloc] initWithData:md];
 }
 
+
+
 - (id) copyWithZone:(NSZone *)zone
 {
     return [[BTCScript alloc] initWithData:self.data];
@@ -787,40 +958,6 @@
 {
     return [NSString stringWithFormat:@"<%@:0x%p \"%@\">", [self class], self, self.string];
 }
-
-- (void) deleteOccurrencesOfData:(NSData*)data
-{
-    if (data.length == 0) return;
-    
-    NSMutableData* md = [NSMutableData data];
-    
-    for (BTCScriptChunk* chunk in _chunks)
-    {
-        if (![chunk.pushdata isEqual:data])
-        {
-            [md appendData:chunk.chunkData];
-        }
-    }
-    
-    _chunks = [self parseData:md];
-}
-
-- (void) deleteOccurrencesOfOpcode:(BTCOpcode)opcode
-{
-    NSMutableData* md = [NSMutableData data];
-    
-    for (BTCScriptChunk* chunk in _chunks)
-    {
-        if (chunk.opcode != opcode)
-        {
-            [md appendData:chunk.chunkData];
-        }
-    }
-    
-    _chunks = [self parseData:md];
-}
-
-
 
 
 

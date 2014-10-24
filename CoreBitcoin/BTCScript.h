@@ -4,6 +4,17 @@
 #import "BTCOpcode.h"
 #import "BTCSignatureHashType.h"
 
+typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
+    // Default is strict conservative simulation (uncompressed pubkeys, no P2SH interpretation)
+    BTCScriptSimulationDefault = 0,
+
+    // Use compressed pubkeys instead of uncompressed ones.
+    BTCScriptSimulationCompressedPublicKeys = 1 << 0,
+
+    // Instead of failing on P2SH, assume it is 2-of-3 multisig (the most popular one).
+    BTCScriptSimulationMultisigP2SH = 1 << 1,
+};
+
 @class BTCAddress;
 @class BTCScriptHashAddress;
 @class BTCScriptHashAddressTestnet;
@@ -71,15 +82,18 @@
 // a pubkey and send money to this key. However, this method is almost never used for security reasons.
 - (BOOL) isPublicKeyScript;
 
-// Returns YES if the script is "OP_DUP OP_HASH160 <20-byte hash> OP_EQUALVERIFY OP_CHECKSIG"
-// This is the most popular type that is used to pay to "addresses" (e.g. 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG).
-- (BOOL) isHash160Script;
+// Deprecated. Use -isPayToPublicKeyHashScript instead.
+- (BOOL) isHash160Script DEPRECATED_ATTRIBUTE;
 
-// Returns YES if the script is "OP_HASH160 <20-byte hash> OP_EQUAL"
+// Returns YES if the script is "OP_DUP OP_HASH160 <20-byte hash> OP_EQUALVERIFY OP_CHECKSIG" (aka P2PKH)
+// This is the most popular type that is used to pay to "addresses" (e.g. 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG).
+- (BOOL) isPayToPublicKeyHashScript;
+
+// Returns YES if the script is "OP_HASH160 <20-byte hash> OP_EQUAL" (aka P2SH)
 // This is later added script type that allows sender not to worry about complex redemption scripts (and not pay tx fees).
 // Recipient must provide a serialized script which matches the hash to redeem the output.
 // P2SH base58-encoded addresses start with "3" (e.g. "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8").
-- (BOOL) isPayToScriptHashScript; // aka P2SH
+- (BOOL) isPayToScriptHashScript;
 
 // Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" where N is up to 3.
 // Scripts with up to 3 signatures are considered standard and relayed quickly, but you can create more complex ones.
@@ -112,18 +126,57 @@
 - (BTCScriptHashAddressTestnet*) scriptHashAddressTestnet;
 
 
+
+#pragma mark - Simulated Scripts
+
+
+// Returns a dummy script matching this script on the input with
+// the same size as an intended signature script.
+// Only a few standard script types are supported.
+// Returns nil if could not determine a matching script.
+- (BTCScript*) simulatedSignatureScriptWithOptions:(BTCScriptSimulationOptions)opts;
+
+// Returns a simulated signature without a hashtype byte.
++ (NSData*) simulatedSignature;
+
+// Returns a simulated signature with a hashtype byte attached.
++ (NSData*) simulatedSignatureWithHashType:(BTCSignatureHashType)hashtype;
+
+// Returns a dummy uncompressed pubkey (65 bytes).
++ (NSData*) simulatedUncompressedPubkey;
+
+// Returns a dummy compressed pubkey (33 bytes).
++ (NSData*) simulatedCompressedPubkey;
+
+// Returns a dummy script that simulates m-of-n multisig script
++ (BTCScript*) simulatedMultisigScriptWithSignaturesCount:(NSInteger)m pubkeysCount:(NSInteger)n compressedPubkeys:(BOOL)compressedPubkeys;
+
+
+
+
 #pragma mark - Modification API
 
 
 // Adds an opcode to the script.
-- (void) appendOpcode:(BTCOpcode)opcode;
+// Returns self.
+- (BTCScript*) appendOpcode:(BTCOpcode)opcode;
 
 // Adds arbitrary data to the script. nil does nothing, empty data is allowed.
-- (void) appendData:(NSData*)data;
+// Returns self.
+- (BTCScript*) appendData:(NSData*)data;
 
 // Adds opcodes and data from another script.
 // If script is nil, does nothing.
-- (void) appendScript:(BTCScript*)otherScript;
+// Returns self.
+- (BTCScript*) appendScript:(BTCScript*)otherScript;
+
+// Removes pushdata chunks containing the specified data.
+// Returns self.
+- (BTCScript*) deleteOccurrencesOfData:(NSData*)data;
+
+// Removes chunks with an opcode.
+// Returns self.
+- (BTCScript*) deleteOccurrencesOfOpcode:(BTCOpcode)opcode;
 
 // Returns a sub-script from the specified index (inclusively).
 // Raises an exception if index is accessed out of bounds.
@@ -134,12 +187,6 @@
 // Raises an exception if index is accessed out of bounds.
 // Returns an empty subscript if the index is 0.
 - (BTCScript*) subScriptToIndex:(NSUInteger)index;
-
-// Removes pushdata chunks containing the specified data.
-- (void) deleteOccurrencesOfData:(NSData*)data;
-
-// Removes chunks with an opcode.
-- (void) deleteOccurrencesOfOpcode:(BTCOpcode)opcode;
 
 // DEPRECATION WARNING: These methods were moved to BTCKey class.
 + (BOOL) isCanonicalPublicKey:(NSData*)data error:(NSError**)errorOut DEPRECATED_ATTRIBUTE;
