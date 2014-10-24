@@ -214,18 +214,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     return payload;
 }
 
-- (void) invalidatePayload
-{
-    // obsolete method
-}
-
-- (void) setLockTime:(uint32_t)lockTime
-{
-    if (_lockTime == lockTime) return;
-    _lockTime = lockTime;
-    [self invalidatePayload];
-}
-
 
 #pragma mark - Methods
 
@@ -242,7 +230,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     }
     input.transaction = self;
     _inputs = [_inputs arrayByAddingObject:input];
-    [self invalidatePayload];
 }
 
 // Adds output script
@@ -259,25 +246,24 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     output.transactionHash = nil; // can't be reliably set here because transaction may get updated.
     output.transaction = self;
     _outputs = [_outputs arrayByAddingObject:output];
-    [self invalidatePayload];
 }
 
 - (void) removeAllInputs
 {
+    for (BTCTransactionInput* txin in _inputs)
+    {
+        txin.transaction = nil;
+    }
     _inputs = @[];
-    [self invalidatePayload];
 }
 
 - (void) removeAllOutputs
 {
     for (BTCTransactionOutput* txout in _outputs)
     {
-        txout.index = BTCTransactionOutputIndexUnknown;
-        txout.transactionHash = nil;
         txout.transaction = nil;
     }
     _outputs = @[];
-    [self invalidatePayload];
 }
 
 - (BOOL) isCoinbase
@@ -338,8 +324,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     }
     
     if ([stream read:(uint8_t*)&_lockTime maxLength:sizeof(_lockTime)] != sizeof(_lockTime)) return NO;
-    
-    [self invalidatePayload];
     
     return YES;
 }
@@ -452,8 +436,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         [tx removeAllInputs];
         [tx addInput:input];
     }
-    
-    [tx invalidatePayload];
     
     // Important: we have to hash transaction together with its hash type.
     // Hash type is appended as little endian uint32 unlike 1-byte suffix of the signature.

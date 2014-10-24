@@ -8,7 +8,6 @@
 #import "BTCProtocolSerialization.h"
 
 @interface BTCTransactionOutput ()
-@property(nonatomic, readwrite) NSData* data;
 @end
 
 @implementation BTCTransactionOutput
@@ -105,11 +104,6 @@
 - (NSData*) data
 {
     return [self computePayload];
-//    if (!_data)
-//    {
-//        _data = [self computePayload];
-//    }
-//    return _data;
 }
 
 - (NSData*) computePayload
@@ -123,26 +117,6 @@
     [payload appendData:scriptData];
     
     return payload;
-}
-
-- (void) invalidatePayload
-{
-    _data = nil;
-    [_transaction invalidatePayload];
-}
-
-- (void) setValue:(BTCSatoshi)value
-{
-    if (_value == value) return;
-    _value = value;
-    [self invalidatePayload];
-}
-
-- (void) setScript:(BTCScript *)script
-{
-    if (_script == script) return;
-    _script = script;
-    [self invalidatePayload];
 }
 
 - (NSString*) description

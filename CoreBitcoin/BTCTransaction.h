@@ -105,6 +105,11 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 // Returns YES if this txin generates new coins.
 - (BOOL) isCoinbase;
 
+
+
+// These fee methods need to be reviewed. They are for validating incoming transactions, not for
+// calculating a fee for a new transaction.
+
 // Minimum fee to relay the transaction
 - (BTCSatoshi) minimumRelayFee;
 
@@ -119,7 +124,5 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 + (BTCSatoshi) minimumRelayFee;
 + (void) setMinimumRelayFee:(BTCSatoshi)fee;
 
-// Used by inputs and outputs to invalidate cached payload.
-- (void) invalidatePayload;
 
 @end
