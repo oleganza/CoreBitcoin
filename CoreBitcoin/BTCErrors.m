@@ -1,3 +1,3 @@
 #import "BTCErrors.h"
 
-NSString* const BTCErrorDomain = @"BTCErrorDomain";
+NSString* const BTCErrorDomain = @"com.oleganza.CoreBitcoin";
