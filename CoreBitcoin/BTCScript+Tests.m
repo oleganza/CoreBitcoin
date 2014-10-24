@@ -212,8 +212,8 @@
         NSString *addressB58 = key.compressedPublicKeyAddress.base58String;
         NSString *privKeyB58 = key.privateKeyAddress.base58String;
         
-        NSLog(@"Address1: %@", addressB58);
-        NSLog(@"PrivKey1: %@", privKeyB58);
+        //NSLog(@"Address1: %@", addressB58);
+        //NSLog(@"PrivKey1: %@", privKeyB58);
         
         // get address from private key
 
@@ -231,14 +231,15 @@
         NSAssert([privkey isEqual:key.privateKey], @"private key should be the same");
         
         BTCKey* key2 = [[BTCKey alloc] initWithPrivateKey:privkey];
-        BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:BTCHash160(key2.publicKey)];
-        BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key2.privateKey];
-        
-        NSLog(@"Address2: %@", pubkeyAddress.base58String);
-        NSLog(@"PrivKey2: %@", privkeyAddress.base58String);
+//        BTCAddress* pubkeyAddress = [BTCPublicKeyAddress addressWithData:BTCHash160(key2.publicKey)];
+//        BTCAddress* privkeyAddress = [BTCPrivateKeyAddress addressWithData:key2.privateKey];
+
+        //NSLog(@"Address2: %@", pubkeyAddress.base58String);
+        //NSLog(@"PrivKey2: %@", privkeyAddress.base58String);
         
         NSString *address2 = key2.compressedPublicKeyAddress.base58String;
-        NSLog(@"Address1 %@ Equal Address2", [addressB58 isEqualToString:address2] ? @"is": @"is NOT");
+        //NSLog(@"Address1 %@ Equal Address2", [addressB58 isEqualToString:address2] ? @"is": @"is NOT");
+        NSAssert([addressB58 isEqualToString:address2], @"addresses must be equal");
     }
     
 }
