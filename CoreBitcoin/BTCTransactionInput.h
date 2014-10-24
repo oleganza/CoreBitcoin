@@ -3,8 +3,9 @@
 #import <Foundation/Foundation.h>
 
 @class BTCScript;
-@class BTCTransaction;
 @class BTCOutpoint;
+@class BTCTransaction;
+@class BTCTransactionOutput;
 
 // Transaction input (aka "txin") represents a reference to another transaction's output.
 // Reference is defined by tx hash + tx output index.
@@ -37,6 +38,9 @@
 
 // Set when input is added via [tx addInput:input]
 @property(weak, nonatomic) BTCTransaction* transaction;
+
+// Optional reference to a corresponding output, typically an unspent output in a context of building a new transaction.
+@property(nonatomic) BTCTransactionOutput* transactionOutput;
 
 // Arbitrary information attached to this instance.
 // The reference is copied when this instance is copied.

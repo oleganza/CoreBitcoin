@@ -104,7 +104,8 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     txin.signatureScript = [self.signatureScript copy];
     txin.sequence = self.sequence;
 
-    txin.userInfo = self.userInfo;
+    txin.transactionOutput = _transactionOutput;
+    txin.userInfo = _userInfo;
 
     return txin;
 }
