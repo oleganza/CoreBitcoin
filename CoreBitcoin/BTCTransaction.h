@@ -44,16 +44,16 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 @property(nonatomic, readonly) NSString* transactionID;
 
 // Array of BTCTransactionInput objects
-@property(nonatomic, readonly) NSArray* inputs;
+@property(nonatomic) NSArray* inputs;
 
 // Array of BTCTransactionOutput objects
-@property(nonatomic, readonly) NSArray* outputs;
+@property(nonatomic) NSArray* outputs;
 
 // Binary representation on tx ready to be sent over the wire (aka "payload")
 @property(nonatomic, readonly) NSData* data;
 
 // Version. Default is 1.
-@property(nonatomic, readonly) uint32_t version;
+@property(nonatomic) uint32_t version;
 
 // Lock time. Either a block height or a unix timestamp.
 // Default is 0.

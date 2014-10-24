@@ -18,11 +18,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     return BTCHexStringFromData(BTCReversedData(txhash));
 }
 
-
 @interface BTCTransaction ()
-@property(nonatomic, readwrite) NSArray* inputs;
-@property(nonatomic, readwrite) NSArray* outputs;
-@property(nonatomic, readwrite) uint32_t version;
 @end
 
 @implementation BTCTransaction
@@ -134,8 +130,8 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 - (id) copyWithZone:(NSZone *)zone
 {
     BTCTransaction* tx = [[BTCTransaction alloc] init];
-    tx.inputs = [[NSArray alloc] initWithArray:self.inputs copyItems:YES]; // so each element is copied individually
-    tx.outputs = [[NSArray alloc] initWithArray:self.outputs copyItems:YES]; // so each element is copied individually
+    tx->_inputs = [[NSArray alloc] initWithArray:self.inputs copyItems:YES]; // so each element is copied individually
+    tx->_outputs = [[NSArray alloc] initWithArray:self.outputs copyItems:YES]; // so each element is copied individually
     for (BTCTransactionInput* txin in tx.inputs)
     {
         txin.transaction = self;
@@ -246,6 +242,24 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     output.transactionHash = nil; // can't be reliably set here because transaction may get updated.
     output.transaction = self;
     _outputs = [_outputs arrayByAddingObject:output];
+}
+
+- (void) setInputs:(NSArray *)inputs
+{
+    [self removeAllInputs];
+    for (BTCTransactionInput* txin in inputs)
+    {
+        [self addInput:txin];
+    }
+}
+
+- (void) setOutputs:(NSArray *)outputs
+{
+    [self removeAllOutputs];
+    for (BTCTransactionOutput* txout in outputs)
+    {
+        [self addOutput:txout];
+    }
 }
 
 - (void) removeAllInputs
