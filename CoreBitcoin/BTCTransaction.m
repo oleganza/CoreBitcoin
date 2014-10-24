@@ -460,6 +460,40 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 #pragma mark - Fees
 
 
+
+// Computes estimated fee for this tx size using default fee rate.
+// @see BTCTransactionDefaultFeeRate.
+- (BTCSatoshi) estimatedFee
+{
+    return [self estimatedFeeWithRate:BTCTransactionDefaultFeeRate];
+}
+
+// Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
+- (BTCSatoshi) estimatedFeeWithRate:(BTCSatoshi)feePerK
+{
+    return [BTCTransaction estimateFeeForSize:self.data.length feeRate:feePerK];
+}
+
+// Computes estimated fee for the given tx size using specified fee rate (satoshis per 1000 bytes).
++ (BTCSatoshi) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCSatoshi)feePerK
+{
+    if (feePerK <= 0) return 0;
+    BTCSatoshi fee = 0;
+    while (txsize > 0) // add fee rate for each (even incomplete) 1K byte chunk
+    {
+        txsize -= 1000;
+        fee += feePerK;
+    }
+    return fee;
+}
+
+
+
+
+// TO BE REVIEWED:
+
+
+
 // Minimum base fee to send a transaction.
 + (BTCSatoshi) minimumFee
 {
