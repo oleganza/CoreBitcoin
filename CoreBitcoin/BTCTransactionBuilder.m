@@ -5,6 +5,7 @@
 #import "BTCAddress.h"
 #import "BTCScript.h"
 #import "BTCKey.h"
+#import "BTCData.h"
 
 NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.TransactionBuilder";
 

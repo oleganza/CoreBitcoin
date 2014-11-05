@@ -1,4 +1,5 @@
 #import "BTCBitcoinURL.h"
+#import "BTCAddress.h"
 #import "BTCNumberFormatter.h"
 
 @implementation BTCBitcoinURL

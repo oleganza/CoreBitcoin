@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "BTCUnitsAndLimits.h"
 
 // TODO: support arbitrary keys and values.
 // TODO: support handling URL from UIApplicationDelegate.
@@ -7,6 +8,7 @@
  * Class to compose and handle various Bitcoin URLs according to BIP21.
  * See: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
  */
+@class BTCAddress;
 @interface BTCBitcoinURL : NSObject
 
 /*!

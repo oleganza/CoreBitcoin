@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-
+#import "BTCUnitsAndLimits.h"
 extern NSString* const BTCTransactionBuilderErrorDomain;
 
 typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
@@ -14,6 +14,9 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
     BTCTransactionBuilderInsufficientFunds = 3,
 };
 
+@class BTCKey;
+@class BTCScript;
+@class BTCAddress;
 @class BTCTransaction;
 @class BTCTransactionInput;
 @class BTCTransactionOutput;

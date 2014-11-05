@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "BTCUnitsAndLimits.h"
 
 typedef NS_ENUM(NSInteger, BTCNumberFormatterUnit) {
     BTCNumberFormatterUnitSatoshi  = 0, // satoshis = 0.00000001 BTC
