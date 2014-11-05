@@ -20,6 +20,7 @@ Features
 - Convenient and safe transaction builder to fetch inputs, compute fees and change and sign transactions easily.
 - Utils to parse and compose bitcoin URL and payment requests.
 - Flexible bitcoin currency formatter with support for BTC, mBTC, bits, satoshis.
+- Flexible currency converter (not linked to any exchange) with support for various methods to calculate exchange rate.
 - Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
 - BIP32 hierarchical deterministic wallets (BTCKeychain).
 - BIP39 implementation (BTCMnemonic).
