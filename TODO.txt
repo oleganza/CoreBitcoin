@@ -7,7 +7,6 @@ TODO:
 - support for SPV like in Bitcoinj
 - add aggregate header CoreBitcoinTests.h with tests
 - QR code support (rendering and scanning) for OS X and iOS
-- number formatter for various btc units
 - currency converter to have a common codebase not linked to any exchange
 - BitcoinQT wallet reader.
 - Blockchain.info wallet reader.
@@ -29,6 +28,7 @@ Peer-to-peer connectivity features:
 
 Done:
 
++ number formatter for various btc units
 + bitcoin URL support (parsing and composing)
 + configurable and extensible transaction builder
 

@@ -19,6 +19,7 @@ Features
 - Script evaluation machine to actually validate individual transactions.
 - Convenient and safe transaction builder to fetch inputs, compute fees and change and sign transactions easily.
 - Utils to parse and compose bitcoin URL and payment requests.
+- Flexible bitcoin currency formatter with support for BTC, mBTC, bits, satoshis.
 - Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
 - BIP32 hierarchical deterministic wallets (BTCKeychain).
 - BIP39 implementation (BTCMnemonic).
