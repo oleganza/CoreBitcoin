@@ -139,6 +139,6 @@ You can also donate to a specific bounty. The amount will be reserved for that b
 License
 -------
 
-Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. No contributor to CoreBitcoin will ever be able to drag you in court if you do not mention CoreBitcoin in your legalese. Crediting authors or contributing improvements is voluntary and would be appreciated. Have a nice day.
+Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. No contributor to CoreBitcoin will ever be able to drag you in court if you do not mention CoreBitcoin in your legalese. Crediting authors and improving library is voluntary and highly appreciated. Have a nice day.
 
 
