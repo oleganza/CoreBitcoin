@@ -14,9 +14,11 @@ Features
 --------
 
 - EC keys and signatures for binary and Bitcoin text messages.
-- Addresses
-- Transactions
-- Scripts
+- Addresses: P2PK, P2PKH, P2SH, WIF format.
+- Transaction building blocks: inputs, outputs, scripts.
+- Script evaluation machine to actually validate individual transactions.
+- Convenient and safe transaction builder to fetch inputs, compute fees and change and sign transactions easily.
+- Utils to parse and compose bitcoin URL and payment requests.
 - Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
 - BIP32 hierarchical deterministic wallets (BTCKeychain).
 - BIP39 implementation (BTCMnemonic).
