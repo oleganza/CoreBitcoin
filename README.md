@@ -21,6 +21,7 @@ Features
 - Utils to parse and compose bitcoin URL and payment requests.
 - Flexible bitcoin currency formatter with support for BTC, mBTC, bits, satoshis.
 - Flexible currency converter (not linked to any exchange) with support for various methods to calculate exchange rate.
+- QR Code generator and scanner in a unified API (iOS only for now).
 - Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
 - BIP32 hierarchical deterministic wallets (BTCKeychain).
 - BIP39 implementation (BTCMnemonic).

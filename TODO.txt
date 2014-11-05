@@ -6,7 +6,7 @@ TODO:
 - support for network messages
 - support for SPV like in Bitcoinj
 - add aggregate header CoreBitcoinTests.h with tests
-- QR code support (rendering and scanning) for OS X and iOS
+- QR code support (rendering and scanning) for OS X
 - BitcoinQT wallet reader.
 - Blockchain.info wallet reader.
 - Modern unit test suite in Xcode 5 (currently asserts work good enough; if you want to improve that, do it yourself).
@@ -27,6 +27,7 @@ Peer-to-peer connectivity features:
 
 Done:
 
++ QR code support (rendering and scanning) for iOS
 + currency converter to have a common codebase not linked to any exchange
 + number formatter for various btc units
 + bitcoin URL support (parsing and composing)
