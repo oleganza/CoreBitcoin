@@ -14,6 +14,8 @@
 #include <openssl/bn.h>
 #include <openssl/rand.h>
 
+#define CHECK_IF_CLEARED if (_cleared) { [[NSException exceptionWithName:@"BTCKey: instance was already cleared." reason:@"" userInfo:nil] raise]; }
+
 #define BTCCompressedPubkeyLength   (33)
 #define BTCUncompressedPubkeyLength (65)
 
@@ -27,6 +29,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 @end
 
 @implementation BTCKey {
+    BOOL _cleared;
     EC_KEY* _key;
     NSMutableData* _publicKey;
     BOOL _publicKeyCompressed;
@@ -91,9 +94,27 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     [self clear];
 }
 
+- (void) clear
+{
+    BTCDataClear(_publicKey);
+    _publicKey = nil;
+
+    // I couldn't find how to clear sensitive key data in OpenSSL,
+    // so I just replace existing key with a new one.
+    // Correct me if I'm doing it wrong.
+    if (!_cleared) [self generateKeyPair];
+
+    if (_key) EC_KEY_free(_key);
+    _key = NULL;
+
+    _cleared = YES;
+}
+
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash
 {
+    CHECK_IF_CLEARED;
+
     if (hash.length == 0 || signature.length == 0) return NO;
     
     // -1 = error, 0 = bad sig, 1 = good
@@ -121,6 +142,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSData*)signatureForHash:(NSData*)hash appendHashType:(BOOL)appendHashType hashType:(BTCSignatureHashType)hashType
 {
+    CHECK_IF_CLEARED;
+
     // ECDSA signature is a pair of numbers: (Kx, s)
     // Where Kx = x coordinate of k*G mod n (n is the order of secp256k1).
     // And s = (k^-1)*(h + Kx*privkey).
@@ -248,11 +271,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSMutableData*) publicKey
 {
+    CHECK_IF_CLEARED;
     return [NSMutableData dataWithData:[self publicKeyCached]];
 }
 
 - (NSMutableData*) publicKeyCached
 {
+    CHECK_IF_CLEARED;
     if (!_publicKey)
     {
         _publicKey = [self publicKeyWithCompression:_publicKeyCompressed];
@@ -273,6 +298,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSMutableData*) publicKeyWithCompression:(BOOL)compression
 {
+    CHECK_IF_CLEARED;
     if (!_key) return nil;
     EC_KEY_set_conv_form(_key, compression ? POINT_CONVERSION_COMPRESSED : POINT_CONVERSION_UNCOMPRESSED);
     int length = i2o_ECPublicKey(_key, NULL);
@@ -286,6 +312,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCCurvePoint*) curvePoint
 {
+    CHECK_IF_CLEARED;
     const EC_POINT* ecpoint = EC_KEY_get0_public_key(_key);
     BTCCurvePoint* cp = [[BTCCurvePoint alloc] initWithEC_POINT:ecpoint];
     return cp;
@@ -293,6 +320,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSMutableData*) DERPrivateKey
 {
+    CHECK_IF_CLEARED;
     if (!_key) return nil;
     int length = i2d_ECPrivateKey(_key, NULL);
     if (!length) return nil;
@@ -304,6 +332,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSMutableData*) privateKey
 {
+    CHECK_IF_CLEARED;
     const BIGNUM *bignum = EC_KEY_get0_private_key(_key);
     if (!bignum) return nil;
     int num_bytes = BN_num_bytes(bignum);
@@ -315,6 +344,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (void) setPublicKey:(NSData *)publicKey
 {
+    CHECK_IF_CLEARED;
     if (publicKey.length == 0) return;
     _publicKey = [NSMutableData dataWithData:publicKey];
     
@@ -332,6 +362,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (void) setDERPrivateKey:(NSData *)DERPrivateKey
 {
+    CHECK_IF_CLEARED;
     if (!DERPrivateKey) return;
     
     BTCDataClear(_publicKey); _publicKey = nil;
@@ -346,6 +377,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (void) setPrivateKey:(NSData *)privateKey
 {
+    CHECK_IF_CLEARED;
     if (!privateKey) return;
     
     BTCDataClear(_publicKey); _publicKey = nil;
@@ -363,32 +395,20 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BOOL) isPublicKeyCompressed
 {
+    CHECK_IF_CLEARED;
     return _publicKeyCompressed;
 }
 
 - (void) setPublicKeyCompressed:(BOOL)flag
 {
+    CHECK_IF_CLEARED;
     _publicKey = nil;
     _publicKeyCompressed = flag;
 }
 
-- (void) clear
-{
-    BTCDataClear(_publicKey);
-    _publicKey = nil;
-    
-    // I couldn't find how to clear sensitive key data in OpenSSL,
-    // so I just replace existing key with a new one.
-    // Correct me if I'm doing it wrong.
-    [self generateKeyPair];
-    
-    if (_key) EC_KEY_free(_key);
-    _key = NULL;
-}
-
-
 - (void) generateKeyPair
 {
+    CHECK_IF_CLEARED;
     [self prepareKeyIfNeeded];
     NSMutableData* secret = [NSMutableData dataWithLength:32];
     unsigned char* bytes = secret.mutableBytes;
@@ -401,6 +421,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (void) prepareKeyIfNeeded
 {
+    CHECK_IF_CLEARED;
     if (_key) return;
     _key = EC_KEY_new_by_curve_name(NID_secp256k1);
     if (!_key)
@@ -418,6 +439,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (id) copy
 {
+    CHECK_IF_CLEARED;
     BTCKey* newKey = [[BTCKey alloc] initWithNewKeyPair:NO];
     if (_key) newKey->_key = EC_KEY_dup(_key);
     return newKey;
@@ -425,12 +447,14 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BOOL) isEqual:(BTCKey*)otherKey
 {
+    CHECK_IF_CLEARED;
     if (![otherKey isKindOfClass:[self class]]) return NO;
     return [self.publicKeyCached isEqual:otherKey.publicKeyCached];
 }
 
 - (NSUInteger) hash
 {
+    CHECK_IF_CLEARED;
     return [self.publicKeyCached hash];
 }
 
@@ -460,6 +484,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BOOL) isValidPubKey:(NSData*)data
 {
+    CHECK_IF_CLEARED;
     NSUInteger length = data.length;
     return length > 0 && [self lengthOfPubKey:data] == length;
 }
@@ -485,6 +510,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCPublicKeyAddress*) publicKeyAddress
 {
+    CHECK_IF_CLEARED;
     NSData* pubkey = [self publicKeyCached];
     if (pubkey.length == 0) return nil;
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
@@ -492,6 +518,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCPublicKeyAddress*) address
 {
+    CHECK_IF_CLEARED;
     NSData* pubkey = [self publicKeyCached];
     if (pubkey.length == 0) return nil;
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
@@ -499,6 +526,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCPublicKeyAddress*) compressedPublicKeyAddress
 {
+    CHECK_IF_CLEARED;
     NSData* pubkey = [self compressedPublicKey];
     if (pubkey.length == 0) return nil;
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
@@ -506,6 +534,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCPublicKeyAddress*) uncompressedPublicKeyAddress
 {
+    CHECK_IF_CLEARED;
     NSData* pubkey = [self uncompressedPublicKey];
     if (pubkey.length == 0) return nil;
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
@@ -513,6 +542,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (BTCPrivateKeyAddress*) privateKeyAddress
 {
+    CHECK_IF_CLEARED;
     NSMutableData* privkey = [self privateKey];
     if (privkey.length == 0) return nil;
     
@@ -543,6 +573,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 //                  add 0x04 for compressed keys.
 - (NSData*) compactSignatureForHash:(NSData*)hash
 {
+    CHECK_IF_CLEARED;
     NSMutableData* sigdata = [NSMutableData dataWithLength:65];
     unsigned char* sigbytes = sigdata.mutableBytes;
     const unsigned char* hashbytes = hash.bytes;
@@ -628,6 +659,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 // Verifies signature of the hash with its public key.
 - (BOOL) isValidCompactSignature:(NSData*)signature forHash:(NSData*)hash
 {
+    CHECK_IF_CLEARED;
     BTCKey* key = [[self class] verifyCompactSignature:signature forHash:hash];
     return [key isEqual:self];
 }

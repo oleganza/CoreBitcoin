@@ -8,6 +8,8 @@
 #import "BTCBase58.h"
 #import "BTCAddress.h"
 
+#define CHECK_IF_CLEARED if (_cleared) { [[NSException exceptionWithName:@"BTCKeychain: instance was already cleared." reason:@"" userInfo:nil] raise]; }
+
 #define BTCKeychainPrivateExtendedKeyVersion 0x0488ADE4
 #define BTCKeychainPublicExtendedKeyVersion  0x0488B21E
 
@@ -26,7 +28,9 @@
 @property(nonatomic) NSMutableData* publicKey;
 @end
 
-@implementation BTCKeychain
+@implementation BTCKeychain {
+    BOOL _cleared;
+}
 
 - (void)dealloc
 {
@@ -40,6 +44,7 @@
     BTCDataClear(_extendedPrivateKeyData);
     BTCDataClear(_privateKey);
     BTCDataClear(_publicKey);
+    _cleared = YES;
 }
 
 
@@ -113,17 +118,21 @@
 
 - (NSString*) extendedPrivateKey
 {
+    CHECK_IF_CLEARED;
     return BTCBase58CheckStringWithData([self extendedPrivateKeyData]);
 }
 
 - (NSString*) extendedPublicKey
 {
+    CHECK_IF_CLEARED;
     return BTCBase58CheckStringWithData([self extendedPublicKeyData]);
 }
 
 
 - (BTCKey*) key
 {
+    CHECK_IF_CLEARED;
+
     if (_privateKey)
     {
         BTCKey* key = [[BTCKey alloc] initWithPrivateKey:_privateKey];
@@ -138,6 +147,8 @@
 
 - (NSData*) extendedPrivateKeyData
 {
+    CHECK_IF_CLEARED;
+
     if (!_privateKey) return nil;
     
     if (!_extendedPrivateKeyData)
@@ -155,6 +166,8 @@
 
 - (NSData*) extendedPublicKeyData
 {
+    CHECK_IF_CLEARED;
+
     if (!_extendedPublicKeyData)
     {
         NSData* pubkey = self.publicKey;
@@ -172,6 +185,8 @@
 
 - (NSMutableData*) extendedKeyPrefixWithVersion:(uint32_t)version
 {
+    CHECK_IF_CLEARED;
+
     NSMutableData* data = [NSMutableData data];
     
     version = OSSwapHostToBigInt32(version);
@@ -192,6 +207,8 @@
 
 - (NSData*) identifier
 {
+    CHECK_IF_CLEARED;
+
     if (!_identifier)
     {
         _identifier = BTCHash160(self.publicKey);
@@ -201,6 +218,8 @@
 
 - (uint32_t) fingerprint
 {
+    CHECK_IF_CLEARED;
+
     if (_fingerprint == 0)
     {
         const uint32_t* words = self.identifier.bytes;
@@ -211,6 +230,8 @@
 
 - (NSData*) publicKey
 {
+    CHECK_IF_CLEARED;
+
     if (!_publicKey)
     {
         _publicKey = [[[BTCKey alloc] initWithPrivateKey:_privateKey] compressedPublicKey];
@@ -220,11 +241,13 @@
 
 - (BOOL) isPrivate
 {
+    CHECK_IF_CLEARED;
     return !!_privateKey;
 }
 
 - (BOOL) isHardened
 {
+    CHECK_IF_CLEARED;
     return _hardened;
 }
 
@@ -240,6 +263,8 @@
 
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut
 {
+    CHECK_IF_CLEARED;
+
     // As we use explicit parameter "hardened", do not allow higher bit set.
     if ((0x80000000 & index) != 0)
     {
@@ -333,6 +358,8 @@
 
 - (BTCKeychain*) publicKeychain
 {
+    CHECK_IF_CLEARED;
+
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
     
     keychain.chainCode = [self.chainCode mutableCopy];
@@ -402,6 +429,8 @@
 
 - (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
 {
+    CHECK_IF_CLEARED;
+
     if (!address) return nil;
     if (!self.isPrivate) return nil;
     
@@ -467,6 +496,8 @@
 
 - (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
 {
+    CHECK_IF_CLEARED;
+
     if (!pubkey) return nil;
     if (!self.isPrivate) return nil;
     
@@ -499,6 +530,8 @@
 
 - (id) copyWithZone:(NSZone *)zone
 {
+    CHECK_IF_CLEARED;
+
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
     
     keychain.chainCode = [self.chainCode mutableCopy];
@@ -514,6 +547,8 @@
 
 - (BOOL) isEqual:(BTCKeychain*)other
 {
+    CHECK_IF_CLEARED;
+
     if (self == other) return YES;
     
     if (self.isPrivate != other.isPrivate) return NO;
