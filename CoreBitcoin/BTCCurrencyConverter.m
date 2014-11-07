@@ -121,18 +121,18 @@
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
-            if (!_averageRate) return 0;
+            if (!_averageRate || [_averageRate longLongValue] == 0) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_averageRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
         case BTCCurrencyConverterModeBuy:
-            if (!_buyRate) return 0;
+            if (!_buyRate || [_buyRate longLongValue] == 0) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_buyRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
         case BTCCurrencyConverterModeSell:
-            if (!_sellRate) return 0;
+            if (!_sellRate || [_sellRate longLongValue] == 0) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_sellRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
-        // TODO: add order book modes
+            // TODO: add order book modes
 
         default:
             [[NSException exceptionWithName:@"BTCCurrencyConverter Not supported Mode" reason:@"This mode is not supported yet" userInfo:nil] raise];
@@ -146,23 +146,23 @@
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
-            if (!_averageRate) return nil;
+            if (!_averageRate || [_averageRate longLongValue] == 0) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_averageRate];
 
         case BTCCurrencyConverterModeBuy:
-            if (!_buyRate) return nil;
+            if (!_buyRate || [_buyRate longLongValue] == 0) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_buyRate];
 
         case BTCCurrencyConverterModeSell:
-            if (!_sellRate) return nil;
+            if (!_sellRate || [_sellRate longLongValue] == 0) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_sellRate];
 
-        // TODO: add order book modes
+            // TODO: add order book modes
 
         default:
             [[NSException exceptionWithName:@"BTCCurrencyConverter Not supported Mode" reason:@"This mode is not supported yet" userInfo:nil] raise];
     }
-
+    
     return nil;
 }
 
