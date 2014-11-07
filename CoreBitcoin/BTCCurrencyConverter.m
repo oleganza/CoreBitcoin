@@ -121,15 +121,15 @@
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
-            if (!_averageRate || [_averageRate longLongValue] == 0) return 0;
+            if ([self isZero:_averageRate]) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_averageRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
         case BTCCurrencyConverterModeBuy:
-            if (!_buyRate || [_buyRate longLongValue] == 0) return 0;
+            if ([self isZero:_buyRate]) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_buyRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
         case BTCCurrencyConverterModeSell:
-            if (!_sellRate || [_sellRate longLongValue] == 0) return 0;
+            if ([self isZero:_sellRate]) return 0;
             return BTCAmountFromDecimalNumber([[fiatAmount decimalNumberByDividingBy:_sellRate] decimalNumberByMultiplyingByPowerOf10:8]);
 
             // TODO: add order book modes
@@ -146,15 +146,15 @@
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
-            if (!_averageRate || [_averageRate longLongValue] == 0) return nil;
+            if ([self isZero:_averageRate]) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_averageRate];
 
         case BTCCurrencyConverterModeBuy:
-            if (!_buyRate || [_buyRate longLongValue] == 0) return nil;
+            if ([self isZero:_buyRate]) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_buyRate];
 
         case BTCCurrencyConverterModeSell:
-            if (!_sellRate || [_sellRate longLongValue] == 0) return nil;
+            if ([self isZero:_sellRate]) return nil;
             return [[NSDecimalNumber decimalNumberWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0] decimalNumberByMultiplyingBy:_sellRate];
 
             // TODO: add order book modes
@@ -164,6 +164,13 @@
     }
     
     return nil;
+}
+
+- (BOOL) isZero:(NSDecimalNumber*)dn
+{
+    if (!dn) return YES;
+    if ([dn isEqual:[NSDecimalNumber zero]]) return YES;
+    return NO;
 }
 
 - (id) copyWithZone:(NSZone *)zone
