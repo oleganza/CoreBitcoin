@@ -23,3 +23,8 @@
 #import <CoreBitcoin/BTCTransactionOutput.h>
 #import <CoreBitcoin/BTCOutpoint.h>
 #import <CoreBitcoin/BTCUnitsAndLimits.h>
+#import <CoreBitcoin/BTCNumberFormatter.h>
+#import <CoreBitcoin/BTCQRCode.h>
+#import <CoreBitcoin/BTCCurrencyConverter.h>
+#import <CoreBitcoin/BTCBitcoinURL.h>
+#import <CoreBitcoin/BTCTransactionBuilder.h>
