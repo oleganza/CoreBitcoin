@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CoreBitcoin"
-  s.version      = "0.5.0"
+  s.version      = "0.5.1"
   s.summary      = "CoreBitcoin is an implementation of Bitcoin protocol in Objective-C."
   s.description  = <<-DESC
                    CoreBitcoin is a complete toolkit to work with Bitcoin data structures.
@@ -15,5 +15,7 @@ Pod::Spec.new do |s|
   s.exclude_files = 'CoreBitcoin/**/*+Tests.{h,m}'
   s.requires_arc = true
   s.framework    = 'Foundation'
+  s.ios.framework = 'UIKit'
+  s.osx.framework = 'AppKit'
   s.dependency 'OpenSSL-Universal', '1.0.1.h'
 end
