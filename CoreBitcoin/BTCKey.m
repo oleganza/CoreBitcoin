@@ -874,8 +874,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     
     if (S[0] & 0x80)
     {
-        return NO;
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorNonCanonicalScriptSignature userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Non-canonical signature: S value is negative", @"")}];
+        return NO;
     }
     
     if (lenS > 1 && (S[0] == 0x00) && !(S[1] & 0x80))
