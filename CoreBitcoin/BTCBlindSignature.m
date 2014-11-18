@@ -208,6 +208,7 @@
     NSAssert(sig, @"sanity check");
     
     [K clear];
+    [T clear];
     [s2 clear];
     [s1 clear];
     [a clear];
