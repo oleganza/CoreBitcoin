@@ -606,18 +606,18 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
         }
         else // OpenSSL implementation
         {
-            EVP_CIPHER_CTX evpctx;
-            int outlen1, outlen2;
-            
-            EVP_EncryptInit(&evpctx, EVP_aes_256_cbc(), key, iv);
-            EVP_EncryptUpdate(&evpctx, spaceBytes, &outlen1, spaceBytes, (int)numberOfBytes);
-            EVP_EncryptFinal(&evpctx, spaceBytes + outlen1, &outlen2);
-            
-            if (outlen1 != numberOfBytes || outlen2 != blockSize)
-            {
-                failed = YES;
-                break;
-            }
+//            EVP_CIPHER_CTX evpctx;
+//            int outlen1, outlen2;
+//            
+//            EVP_EncryptInit(&evpctx, EVP_aes_256_cbc(), key, iv);
+//            EVP_EncryptUpdate(&evpctx, spaceBytes, &outlen1, spaceBytes, (int)numberOfBytes);
+//            EVP_EncryptFinal(&evpctx, spaceBytes + outlen1, &outlen2);
+//            
+//            if (outlen1 != numberOfBytes || outlen2 != blockSize)
+//            {
+//                failed = YES;
+//                break;
+//            }
         }
 
         // iv2 = SHA256(iv1 + tail)

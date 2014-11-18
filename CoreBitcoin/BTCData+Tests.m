@@ -50,85 +50,85 @@
     
     
     // Memory-hard KDF
-    
-    return;
-    return;
-    return;
-    return;
-    return;
-    return;
-    
-
-    NSLog(@"Generating key with BTCLocustKDF256...");
-    NSDate* t1 = [NSDate date];
-    NSData* key1 = BTCLocustKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
-                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      100*1024*1024 // memory required
-                                      );
-    NSLog(@"Generated key = %@ [%f sec]", key1, -[t1 timeIntervalSinceNow]);
-    
-
-    NSLog(@"Generating key with BTCMemoryHardKDF256...");
-    NSDate* t2 = [NSDate date];
-    NSData* key2 = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
-                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      20, // number of rounds
-                                      4*1024*1024 // memory required
-                                      );
-    NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
-
-    
-    NSLog(@"Generating key with BTCMemoryHardAESKDF...");
-    NSDate* t3 = [NSDate date];
-    NSData* key3 = BTCMemoryHardAESKDF([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
-                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
-                                      20, // number of rounds
-                                      16*1024*1024 // memory required
-                                      );
-    NSLog(@"Generated key = %@ [%f sec]", key3, -[t3 timeIntervalSinceNow]);
-
-    // Random number generators
-    if (0)
-    {
-        const int length = 1024*16;
-        double maxdeviation = 0.15;
-        
-        NSData* data = BTCCoinFlipDataWithLength(length);
-        
-        const int slots = 16;
-
-        const unsigned char* bytes = data.bytes;
-        int distribution[slots] = {0};
-        for (int i = 0; i < data.length; i++)
-        {
-            unsigned char c = bytes[i];
-            distribution[c % slots]++;
-        }
-        double max = 0;
-        double min = 99999999;
-        double avg = 0;
-        for (int i = 0; i < slots; i++)
-        {
-            avg += distribution[i];
-            max = MAX(max, distribution[i]);
-            min = MIN(min, distribution[i]);
-        }
-        avg /= slots;
-        
-        double deviation = (max - min) / avg;
-        NSLog(@"BTCCoinFlipDataWithLength: Deviation: %f", deviation);
-        
-        NSAssert(min > 0, @"Sanity check");
-        NSAssert(max > min, @"Sanity check");
-        NSAssert(deviation < maxdeviation, @"Deviation should be small enough");
-
-        for (int i = 0; i < slots; i++)
-        {
-            NSLog(@"distribution[%02d] = %d", i, distribution[i]);
-        }
-
-        NSLog(@"BTCCoinFlipDataWithLength: %@", [data subdataWithRange:NSMakeRange(0, 32)].hexString);
-    }
+//    
+//    return;
+//    return;
+//    return;
+//    return;
+//    return;
+//    return;
+//    
+//
+//    NSLog(@"Generating key with BTCLocustKDF256...");
+//    NSDate* t1 = [NSDate date];
+//    NSData* key1 = BTCLocustKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+//                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+//                                      100*1024*1024 // memory required
+//                                      );
+//    NSLog(@"Generated key = %@ [%f sec]", key1, -[t1 timeIntervalSinceNow]);
+//    
+//
+//    NSLog(@"Generating key with BTCMemoryHardKDF256...");
+//    NSDate* t2 = [NSDate date];
+//    NSData* key2 = BTCMemoryHardKDF256([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+//                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+//                                      20, // number of rounds
+//                                      4*1024*1024 // memory required
+//                                      );
+//    NSLog(@"Generated key = %@ [%f sec]", key2, -[t2 timeIntervalSinceNow]);
+//
+//    
+//    NSLog(@"Generating key with BTCMemoryHardAESKDF...");
+//    NSDate* t3 = [NSDate date];
+//    NSData* key3 = BTCMemoryHardAESKDF([@"secret" dataUsingEncoding:NSUTF8StringEncoding],
+//                                      BTCDataWithHexCString("2441399593e166d12e33265ddbef31b6ddf8644108ec3fe216ed13d1eb7024f3"),
+//                                      20, // number of rounds
+//                                      16*1024*1024 // memory required
+//                                      );
+//    NSLog(@"Generated key = %@ [%f sec]", key3, -[t3 timeIntervalSinceNow]);
+//
+//    // Random number generators
+//    if ((0))
+//    {
+//        const int length = 1024*16;
+//        double maxdeviation = 0.15;
+//        
+//        NSData* data = BTCCoinFlipDataWithLength(length);
+//        
+//        const int slots = 16;
+//
+//        const unsigned char* bytes = data.bytes;
+//        int distribution[slots] = {0};
+//        for (int i = 0; i < data.length; i++)
+//        {
+//            unsigned char c = bytes[i];
+//            distribution[c % slots]++;
+//        }
+//        double max = 0;
+//        double min = 99999999;
+//        double avg = 0;
+//        for (int i = 0; i < slots; i++)
+//        {
+//            avg += distribution[i];
+//            max = MAX(max, distribution[i]);
+//            min = MIN(min, distribution[i]);
+//        }
+//        avg /= slots;
+//        
+//        double deviation = (max - min) / avg;
+//        NSLog(@"BTCCoinFlipDataWithLength: Deviation: %f", deviation);
+//        
+//        NSAssert(min > 0, @"Sanity check");
+//        NSAssert(max > min, @"Sanity check");
+//        NSAssert(deviation < maxdeviation, @"Deviation should be small enough");
+//
+//        for (int i = 0; i < slots; i++)
+//        {
+//            NSLog(@"distribution[%02d] = %d", i, distribution[i]);
+//        }
+//
+//        NSLog(@"BTCCoinFlipDataWithLength: %@", [data subdataWithRange:NSMakeRange(0, 32)].hexString);
+//    }
 }
 
 @end
