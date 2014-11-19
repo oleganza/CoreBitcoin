@@ -5,7 +5,9 @@
 
 @class BTCCurvePoint;
 @class BTCPublicKeyAddress;
+@class BTCPublicKeyAddressTestnet;
 @class BTCPrivateKeyAddress;
+@class BTCPrivateKeyAddressTestnet;
 
 // BTCKey encapsulates EC public and private keypair (or only public part) on curve secp256k1.
 // You can sign data and verify signatures.
@@ -23,9 +25,14 @@
 // Initializes public key using a point on elliptic curve secp256k1.
 - (id) initWithCurvePoint:(BTCCurvePoint*)curvePoint;
 
-// Instantiates a key with either a DER private key (279 bytes) or a secret parameter (32 bytes).
-// Usually only secret parameter is used and private key is derived from it on the fly because other parameters are known (curve secp256k1).
+// Instantiates a key with secret parameter (32 bytes).
 - (id) initWithPrivateKey:(NSData*)privateKey;
+
+// Instantiates with a WIF-encoded private key (52 bytes like 5znkrJzL5GTFCaXWufUCUaPzDmLj2Pe2pWtAcSzg4hRUVxS2XqHa).
+// See also -initWithPrivateKeyAddress.
+- (id) initWithWIF:(NSString*)wifString;
+
+// Instantiates with a DER-encoded private key (279 bytes).
 - (id) initWithDERPrivateKey:(NSData*)DERPrivateKey;
 
 // These properties return mutable copy of data so you can clear it if needed.
@@ -36,8 +43,16 @@
 // These are returning explicitly compressed or uncompressed copies of the public key.
 @property(nonatomic, readonly) NSMutableData* compressedPublicKey;
 @property(nonatomic, readonly) NSMutableData* uncompressedPublicKey;
-@property(nonatomic, readonly) NSMutableData* privateKey; // 32-byte secret parameter. That's all you need to get full key pair on secp256k1
-@property(nonatomic, readonly) NSMutableData* DERPrivateKey; // 279-byte private key including secret and all curve parameters.
+
+/// 32-byte secret parameter. That's all you need to get full key pair on secp256k1
+@property(nonatomic, readonly) NSMutableData* privateKey;
+
+/// DER-encoded private key (279-byte) that includes secret and all curve parameters.
+@property(nonatomic, readonly) NSMutableData* DERPrivateKey;
+
+/// Base58-encoded private key (or nil if privkey is not available).
+@property(nonatomic, readonly) NSString* WIF;
+@property(nonatomic, readonly) NSString* WIFTestnet;
 
 // When you set public key, this property reflects whether it is compressed or not.
 // To set this property you must have private counterpart. Then, -publicKey will be compressed/uncompressed accordingly.
@@ -75,6 +90,7 @@
 // Public key hash.
 // IMPORTANT: resulting address depends on whether `publicKeyCompressed` is YES or NO.
 @property(nonatomic, readonly) BTCPublicKeyAddress* address;
+@property(nonatomic, readonly) BTCPublicKeyAddressTestnet* addressTestnet;
 
 // Returns address for a public key (Hash160(pubkey)).
 @property(nonatomic, readonly) BTCPublicKeyAddress* uncompressedPublicKeyAddress;
@@ -82,6 +98,7 @@
 
 // Private key encoded in sipa format (base58 with compression flag).
 @property(nonatomic, readonly) BTCPrivateKeyAddress* privateKeyAddress;
+@property(nonatomic, readonly) BTCPrivateKeyAddressTestnet* privateKeyAddressTestnet;
 
 
 

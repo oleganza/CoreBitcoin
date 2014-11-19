@@ -71,6 +71,16 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return self;
 }
 
+- (id) initWithWIF:(NSString*)wifString
+{
+    BTCPrivateKeyAddress* addr = [BTCPrivateKeyAddress addressWithBase58String:wifString];
+    if (![addr isKindOfClass:[BTCPrivateKeyAddress class]])
+    {
+        return nil;
+    }
+    return [self initWithPrivateKeyAddress:addr];
+}
+
 - (id) initWithDERPrivateKey:(NSData*)DERPrivateKey
 {
     if (self = [super init])
@@ -333,6 +343,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (NSMutableData*) privateKey
 {
     CHECK_IF_CLEARED;
+    if (!_key) return nil;
     const BIGNUM *bignum = EC_KEY_get0_private_key(_key);
     if (!bignum) return nil;
     int num_bytes = BN_num_bytes(bignum);
@@ -340,6 +351,18 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     int copied_bytes = BN_bn2bin(bignum, &data.mutableBytes[32 - num_bytes]);
     if (copied_bytes != num_bytes) return nil;
     return data;
+}
+
+- (NSString*) WIF
+{
+    if (!self.privateKey) return nil;
+    return [self privateKeyAddress].base58String;
+}
+
+- (NSString*) WIFTestnet
+{
+    if (!self.privateKey) return nil;
+    return [self privateKeyAddressTestnet].base58String;
 }
 
 - (void) setPublicKey:(NSData *)publicKey
@@ -524,6 +547,14 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     return [BTCPublicKeyAddress addressWithData:BTCHash160(pubkey)];
 }
 
+- (BTCPublicKeyAddressTestnet*) addressTestnet
+{
+    CHECK_IF_CLEARED;
+    NSData* pubkey = [self publicKeyCached];
+    if (pubkey.length == 0) return nil;
+    return [BTCPublicKeyAddressTestnet addressWithData:BTCHash160(pubkey)];
+}
+
 - (BTCPublicKeyAddress*) compressedPublicKeyAddress
 {
     CHECK_IF_CLEARED;
@@ -543,10 +574,22 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (BTCPrivateKeyAddress*) privateKeyAddress
 {
     CHECK_IF_CLEARED;
-    NSMutableData* privkey = [self privateKey];
+    NSMutableData* privkey = self.privateKey;
     if (privkey.length == 0) return nil;
     
-    BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey publicKeyCompressed:[self isPublicKeyCompressed]];
+    BTCPrivateKeyAddress* result = [BTCPrivateKeyAddress addressWithData:privkey publicKeyCompressed:self.isPublicKeyCompressed];
+    BTCDataClear(privkey);
+    return result;
+}
+
+
+- (BTCPrivateKeyAddressTestnet*) privateKeyAddressTestnet
+{
+    CHECK_IF_CLEARED;
+    NSMutableData* privkey = self.privateKey;
+    if (privkey.length == 0) return nil;
+
+    BTCPrivateKeyAddressTestnet* result = [BTCPrivateKeyAddressTestnet addressWithData:privkey publicKeyCompressed:self.isPublicKeyCompressed];
     BTCDataClear(privkey);
     return result;
 }
