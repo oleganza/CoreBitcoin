@@ -19,11 +19,11 @@
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-+ (id) addressWithBase58String:(NSString*)string;
++ (instancetype) addressWithBase58String:(NSString*)string;
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-+ (id) addressWithBase58CString:(const char*)cstring;
++ (instancetype) addressWithBase58CString:(const char*)cstring;
 
 // Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
 + (instancetype) addressWithData:(NSData*)data;
