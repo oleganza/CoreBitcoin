@@ -44,13 +44,13 @@
 @property(nonatomic, readonly) NSMutableData* compressedPublicKey;
 @property(nonatomic, readonly) NSMutableData* uncompressedPublicKey;
 
-/// 32-byte secret parameter. That's all you need to get full key pair on secp256k1
+// 32-byte secret parameter. That's all you need to get full key pair on secp256k1
 @property(nonatomic, readonly) NSMutableData* privateKey;
 
-/// DER-encoded private key (279-byte) that includes secret and all curve parameters.
+// DER-encoded private key (279-byte) that includes secret and all curve parameters.
 @property(nonatomic, readonly) NSMutableData* DERPrivateKey;
 
-/// Base58-encoded private key (or nil if privkey is not available).
+// Base58-encoded private key (or nil if privkey is not available).
 @property(nonatomic, readonly) NSString* WIF;
 @property(nonatomic, readonly) NSString* WIFTestnet;
 
