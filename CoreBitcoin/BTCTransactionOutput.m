@@ -18,17 +18,17 @@
     return [self initWithValue:-1 script:[[BTCScript alloc] init]];
 }
 
-- (id) initWithValue:(BTCSatoshi)value
+- (id) initWithValue:(BTCAmount)value
 {
     return [self initWithValue:value script:[[BTCScript alloc] init]];
 }
 
-- (id) initWithValue:(BTCSatoshi)value address:(BTCAddress*)address
+- (id) initWithValue:(BTCAmount)value address:(BTCAddress*)address
 {
     return [self initWithValue:value script:[[BTCScript alloc] initWithAddress:address]];
 }
 
-- (id) initWithValue:(BTCSatoshi)value script:(BTCScript*)script
+- (id) initWithValue:(BTCAmount)value script:(BTCScript*)script
 {
     if (self = [super init])
     {
@@ -130,7 +130,7 @@
             (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %d confirmations", (unsigned int)_confirmations])];
 }
 
-- (NSString*) formattedBTCValue:(BTCSatoshi)value
+- (NSString*) formattedBTCValue:(BTCAmount)value
 {
     return [NSString stringWithFormat:@"%lld.%@", value / BTCCoin, [NSString stringWithFormat:@"%08lld", value % BTCCoin]];
 }

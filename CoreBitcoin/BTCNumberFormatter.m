@@ -11,7 +11,7 @@ NSString* const BTCNumberFormatterSymbolMilliBTC = @"mɃ";
 NSString* const BTCNumberFormatterSymbolBit      = @"ƀ";
 NSString* const BTCNumberFormatterSymbolSatoshi  = @"ṡ";
 
-BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num)
+BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
 {
     if ([num isKindOfClass:[NSDecimalNumber class]])
     {
@@ -26,7 +26,7 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num)
                                                                                             raiseOnDivideByZero:YES];
         num = [dnum decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
     }
-    BTCSatoshi sat = [num longLongValue];
+    BTCAmount sat = [num longLongValue];
     return sat;
 }
 
@@ -221,7 +221,7 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num)
     }
 }
 
-- (NSNumber*) numberFromSatoshis:(BTCSatoshi)satoshis
+- (NSNumber*) numberFromSatoshis:(BTCAmount)satoshis
 {
     switch (_bitcoinUnit)
     {
@@ -239,7 +239,7 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num)
     }
 }
 
-- (BTCSatoshi) satoshisFromNumber:(NSNumber*)number
+- (BTCAmount) satoshisFromNumber:(NSNumber*)number
 {
     switch (_bitcoinUnit)
     {
@@ -274,12 +274,12 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num)
     return [dn decimalNumberByMultiplyingByPowerOf10:power];
 }
 
-- (NSString *) stringFromAmount:(BTCSatoshi)amount
+- (NSString *) stringFromAmount:(BTCAmount)amount
 {
     return [self stringFromNumber:[self numberFromSatoshis:amount]];
 }
 
-- (BTCSatoshi) amountFromString:(NSString *)string
+- (BTCAmount) amountFromString:(NSString *)string
 {
     return [self satoshisFromNumber:[self numberFromString:string]];
 }

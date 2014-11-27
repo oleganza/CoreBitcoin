@@ -107,12 +107,12 @@ typedef NS_ENUM(NSInteger, BTCCurrencyConverterMode) {
 /*!
  * Converts fiat amount to bitcoin amount in satoshis using specified mode.
  */
-- (BTCSatoshi) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount;
+- (BTCAmount) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount;
 
 /*!
  * Converts bitcoin amount to fiat amount using specified mode.
  */
-- (NSDecimalNumber*) fiatFromBitcoin:(BTCSatoshi)satoshis;
+- (NSDecimalNumber*) fiatFromBitcoin:(BTCAmount)satoshis;
 
 /*!
  * Serializes state into a plist/json dictionary.

@@ -96,13 +96,13 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 // ---------------------------------
 
 // Fee per 1000 bytes. Default is BTCTransactionDefaultFeeRate.
-@property(nonatomic) BTCSatoshi feeRate;
+@property(nonatomic) BTCAmount feeRate;
 
 // Minimum amount of change below which transaction is not composed.
 // If change amount is non-zero and below this value, more unspent outputs are used.
 // If change amount is zero, change output is not even created and this property is not used.
 // Default value equals feeRate.
-@property(nonatomic) BTCSatoshi minimumChange;
+@property(nonatomic) BTCAmount minimumChange;
 
 
 // Amount of change that can be forgone as a mining fee if there are no more
@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 // This means builder will never fail with BTCTransactionBuilderErrorInsufficientFunds just because it could not
 // find enough unspents for big enough change. In worst case (not enough unspent to bump change) it will forgo the change
 // as a part of the mining fee. Set to 0 to avoid forgoing a single satoshi.
-@property(nonatomic) BTCSatoshi dustChange;
+@property(nonatomic) BTCAmount dustChange;
 
 // Whether this builder should even attempt to sign transaction.
 // Set to NO if you want a lightweight decision if there are enough funds etc
@@ -141,13 +141,13 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 
 // Complete fee this transaction pays to miners.
 // Equals (inputsAmount - outputsAmount).
-@property(nonatomic, readonly) BTCSatoshi fee;
+@property(nonatomic, readonly) BTCAmount fee;
 
 // Complete amount on the inputs.
-@property(nonatomic, readonly) BTCSatoshi inputsAmount;
+@property(nonatomic, readonly) BTCAmount inputsAmount;
 
 // Complete amount on the outputs.
-@property(nonatomic, readonly) BTCSatoshi outputsAmount;
+@property(nonatomic, readonly) BTCAmount outputsAmount;
 
 @end
 

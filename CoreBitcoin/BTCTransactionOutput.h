@@ -18,7 +18,7 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 @property(nonatomic, readonly) NSData* data;
 
 // Value of output in satoshis.
-@property(nonatomic) BTCSatoshi value;
+@property(nonatomic) BTCAmount value;
 
 // Script defining redemption rules for this output (aka scriptPubKey or pk_script)
 @property(nonatomic) BTCScript* script;
@@ -59,13 +59,13 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 - (id) initWithDictionary:(NSDictionary*)dictionary;
 
 // Makes tx output with a certain amount of coins on the output.
-- (id) initWithValue:(BTCSatoshi)value;
+- (id) initWithValue:(BTCAmount)value;
 
 // Makes tx output with a standard script redeeming to an address (pubkey hash or P2SH).
-- (id) initWithValue:(BTCSatoshi)value address:(BTCAddress*)address;
+- (id) initWithValue:(BTCAmount)value address:(BTCAddress*)address;
 
 // Makes tx output with a given script.
-- (id) initWithValue:(BTCSatoshi)value script:(BTCScript*)script;
+- (id) initWithValue:(BTCAmount)value script:(BTCScript*)script;
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation;

@@ -274,8 +274,8 @@ typedef enum : NSUInteger {
 + (BTCTransaction*) transactionSpendingFromPrivateKey:(NSData*)privateKey
                                          to:(BTCPublicKeyAddress*)destinationAddress
                                      change:(BTCPublicKeyAddress*)changeAddress
-                                     amount:(BTCSatoshi)amount
-                                                  fee:(BTCSatoshi)fee
+                                     amount:(BTCAmount)amount
+                                                  fee:(BTCAmount)fee
                                                   api:(BTCAPI)btcApi
                                                 error:(NSError**)errorOut
 {
@@ -316,8 +316,8 @@ typedef enum : NSUInteger {
     
     
     // Find enough outputs to spend the total amount.
-    BTCSatoshi totalAmount = amount + fee;
-    BTCSatoshi dustThreshold = 100000; // don't want less than 1mBTC in the change.
+    BTCAmount totalAmount = amount + fee;
+    BTCAmount dustThreshold = 100000; // don't want less than 1mBTC in the change.
     
     // We need to avoid situation when change is very small. In such case we should leave smallest coin alone and add some bigger one.
     // Ideally, we need to maintain more-or-less binary distribution of coins: having 0.001, 0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024 etc.
@@ -366,7 +366,7 @@ typedef enum : NSUInteger {
     // Create a new transaction
     BTCTransaction* tx = [[BTCTransaction alloc] init];
     
-    BTCSatoshi spentCoins = 0;
+    BTCAmount spentCoins = 0;
     
     // Add all outputs as inputs
     for (BTCTransactionOutput* txout in txouts)

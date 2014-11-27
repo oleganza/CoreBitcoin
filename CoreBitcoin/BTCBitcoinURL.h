@@ -19,7 +19,7 @@
 /*!
  * Amount in satoshis. Default is 0.
  */
-@property(nonatomic) BTCSatoshi amount;
+@property(nonatomic) BTCAmount amount;
 
 /*!
  * Label. Default is nil.
@@ -38,7 +38,7 @@
  * @param amount  Amount in satoshis. Note that URI scheme dictates to render this amount as a decimal number in BTC.
  * @param label   Optional label.
  */
-+ (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCSatoshi)amount label:(NSString*)label;
++ (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCAmount)amount label:(NSString*)label;
 
 /*!
  * Instantiates if URL is a valid bitcoin: URL.

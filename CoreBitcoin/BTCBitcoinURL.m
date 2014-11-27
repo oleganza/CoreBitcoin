@@ -4,7 +4,7 @@
 
 @implementation BTCBitcoinURL
 
-+ (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCSatoshi)amount label:(NSString*)label
++ (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCAmount)amount label:(NSString*)label
 {
     if (!address || amount <= 0) return nil;
 
@@ -63,12 +63,12 @@
     return nil;
 }
 
-+ (NSString*) formatAmount:(BTCSatoshi)amount
++ (NSString*) formatAmount:(BTCAmount)amount
 {
     return [NSString stringWithFormat:@"%d.%08d", (int)(amount / BTCCoin), (int)(amount % BTCCoin)];
 }
 
-+ (BTCSatoshi) parseAmount:(NSString*)string
++ (BTCAmount) parseAmount:(NSString*)string
 {
     NSLocale* locale = [[NSLocale localeWithLocaleIdentifier:@"en_US"] copy]; // uses period (".") as a decimal point.
     NSAssert([[locale objectForKey:NSLocaleDecimalSeparator] isEqual:@"."], @"must be point as a decimal separator");

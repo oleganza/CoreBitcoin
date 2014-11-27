@@ -33,7 +33,7 @@ enum
 
 // Returns an object of a specific subclass depending on version number.
 // For unsupported addresses returns nil.
-+ (id) addressWithBase58String:(NSString*)string
++ (instancetype) addressWithBase58String:(NSString*)string
 {
     return [self addressWithBase58CString:[string cStringUsingEncoding:NSASCIIStringEncoding]];
 }

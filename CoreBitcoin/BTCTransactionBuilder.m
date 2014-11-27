@@ -12,9 +12,9 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 @interface BTCTransactionBuilderResult ()
 @property(nonatomic, readwrite) BTCTransaction* transaction;
 @property(nonatomic, readwrite) NSIndexSet* unsignedInputsIndexes;
-@property(nonatomic, readwrite) BTCSatoshi fee;
-@property(nonatomic, readwrite) BTCSatoshi inputsAmount;
-@property(nonatomic, readwrite) BTCSatoshi outputsAmount;
+@property(nonatomic, readwrite) BTCAmount fee;
+@property(nonatomic, readwrite) BTCAmount inputsAmount;
+@property(nonatomic, readwrite) BTCAmount outputsAmount;
 @end
 
 @implementation BTCTransactionBuilder
@@ -136,9 +136,9 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
             continue;
         }
 
-        BTCSatoshi fee = [self computeFeeForTransaction:result.transaction];
+        BTCAmount fee = [self computeFeeForTransaction:result.transaction];
 
-        BTCSatoshi change = result.inputsAmount - result.outputsAmount - fee;
+        BTCAmount change = result.inputsAmount - result.outputsAmount - fee;
 
         if (change >= self.minimumChange)
         {
@@ -218,7 +218,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 }
 
 
-- (BTCSatoshi) computeFeeForTransaction:(BTCTransaction*)tx
+- (BTCAmount) computeFeeForTransaction:(BTCTransaction*)tx
 {
     // Compute fees for this tx by composing a tx with properly sized dummy signatures.
     BTCTransaction* simtx = [tx copy];
@@ -421,13 +421,13 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     return nil;
 }
 
-- (BTCSatoshi) minimumChange
+- (BTCAmount) minimumChange
 {
     if (_minimumChange < 0) return self.feeRate;
     return _minimumChange;
 }
 
-- (BTCSatoshi) dustChange
+- (BTCAmount) dustChange
 {
     if (_dustChange < 0) return self.minimumChange;
     return _dustChange;

@@ -6,13 +6,26 @@
 // The smallest unit in Bitcoin is 1 satoshi.
 // Satoshis are 64-bit signed integers.
 // The value is signed to allow special value -1 in BTCTransactionOutput.
-typedef int64_t BTCSatoshi;
+typedef int64_t BTCAmount;
+
+// This is a deprecated alias to BTCAmount.
+// It was a mistake to call amount type by a value unit
+// (like using "Kilogram" instead of "Mass").
+// This will be deprecated and then reused as a constant value 1 alongside BTCCoin and BTCCent.
+typedef int64_t BTCSatoshi DEPRECATED_ATTRIBUTE;
 
 // 100 mln satoshis is one Bitcoin
-static const BTCSatoshi BTCCoin = 100000000;
+static const BTCAmount BTCCoin = 100000000;
 
 // Bitcent is 0.01 BTC
-static const BTCSatoshi BTCCent = 1000000;
+static const BTCAmount BTCCent = 1000000;
+
+// Bit is 0.000001 BTC (100 satoshis)
+static const BTCAmount BTCBit = 100;
+
+// Satoshi is the smallest unit representable in bitcoin transactions.
+// IMPORTANT: This will be uncommented when we retire BTCSatoshi type declaration above.
+// static const BTCAmount BTCSatoshi = 1;
 
 
 
@@ -25,7 +38,7 @@ static const unsigned int BTC_MAX_BLOCK_SIZE = 1000000;
 static const unsigned int BTC_MAX_BLOCK_SIGOPS = BTC_MAX_BLOCK_SIZE/50;
 
 // No amount larger than this (in satoshi) is valid
-static const BTCSatoshi BTC_MAX_MONEY = 21000000 * BTCCoin;
+static const BTCAmount BTC_MAX_MONEY = 21000000 * BTCCoin;
 
 // Coinbase transaction outputs can only be spent after this number of new blocks
 static const int BTC_COINBASE_MATURITY = 100;

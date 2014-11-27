@@ -477,22 +477,22 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 
 // Computes estimated fee for this tx size using default fee rate.
 // @see BTCTransactionDefaultFeeRate.
-- (BTCSatoshi) estimatedFee
+- (BTCAmount) estimatedFee
 {
     return [self estimatedFeeWithRate:BTCTransactionDefaultFeeRate];
 }
 
 // Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
-- (BTCSatoshi) estimatedFeeWithRate:(BTCSatoshi)feePerK
+- (BTCAmount) estimatedFeeWithRate:(BTCAmount)feePerK
 {
     return [BTCTransaction estimateFeeForSize:self.data.length feeRate:feePerK];
 }
 
 // Computes estimated fee for the given tx size using specified fee rate (satoshis per 1000 bytes).
-+ (BTCSatoshi) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCSatoshi)feePerK
++ (BTCAmount) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCAmount)feePerK
 {
     if (feePerK <= 0) return 0;
-    BTCSatoshi fee = 0;
+    BTCAmount fee = 0;
     while (txsize > 0) // add fee rate for each (even incomplete) 1K byte chunk
     {
         txsize -= 1000;
@@ -509,28 +509,28 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 
 
 // Minimum base fee to send a transaction.
-+ (BTCSatoshi) minimumFee
++ (BTCAmount) minimumFee
 {
     NSNumber* n = [[NSUserDefaults standardUserDefaults] objectForKey:@"BTCTransactionMinimumFee"];
     if (!n) return 10000;
-    return (BTCSatoshi)[n longLongValue];
+    return (BTCAmount)[n longLongValue];
 }
 
-+ (void) setMinimumFee:(BTCSatoshi)fee
++ (void) setMinimumFee:(BTCAmount)fee
 {
     fee = MIN(fee, BTC_MAX_MONEY);
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:fee] forKey:@"BTCTransactionMinimumFee"];
 }
 
 // Minimum base fee to relay a transaction.
-+ (BTCSatoshi) minimumRelayFee
++ (BTCAmount) minimumRelayFee
 {
     NSNumber* n = [[NSUserDefaults standardUserDefaults] objectForKey:@"BTCTransactionMinimumRelayFee"];
     if (!n) return 10000;
-    return (BTCSatoshi)[n longLongValue];
+    return (BTCAmount)[n longLongValue];
 }
 
-+ (void) setMinimumRelayFee:(BTCSatoshi)fee
++ (void) setMinimumRelayFee:(BTCAmount)fee
 {
     fee = MIN(fee, BTC_MAX_MONEY);
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:fee] forKey:@"BTCTransactionMinimumRelayFee"];
@@ -538,18 +538,18 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 
 
 // Minimum fee to relay the transaction
-- (BTCSatoshi) minimumRelayFee
+- (BTCAmount) minimumRelayFee
 {
     return [self minimumFeeForSending:NO];
 }
 
 // Minimum fee to send the transaction
-- (BTCSatoshi) minimumSendFee
+- (BTCAmount) minimumSendFee
 {
     return [self minimumFeeForSending:YES];
 }
 
-- (BTCSatoshi) minimumFeeForSending:(BOOL)sending
+- (BTCAmount) minimumFeeForSending:(BOOL)sending
 {
     // See also CTransaction::GetMinFee in BitcoinQT and calculate_minimum_fee in bitcoin-ruby
     
@@ -558,10 +558,10 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     // BitcoinQT has some complex formulas to determine when we shouldn't allow free txs. To be done later.
     BOOL allowFree = YES;
     
-    BTCSatoshi baseFee = sending ? [BTCTransaction minimumFee] : [BTCTransaction minimumRelayFee];
+    BTCAmount baseFee = sending ? [BTCTransaction minimumFee] : [BTCTransaction minimumRelayFee];
     NSUInteger txSize = self.data.length;
     NSUInteger newBlockSize = baseBlockSize + txSize;
-    BTCSatoshi minFee = (1 + txSize / 1000) * baseFee;
+    BTCAmount minFee = (1 + txSize / 1000) * baseFee;
     
     if (allowFree)
     {

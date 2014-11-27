@@ -25,7 +25,7 @@ extern NSString* const BTCNumberFormatterSymbolSatoshi;  // ṡ
  * Rounds the decimal number and returns its longLongValue.
  * Do not use NSDecimalNumber.longLongValue as it will return 0 on iOS 8.0.2 if the number is not rounded first.
  */
-BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num);
+BTCAmount BTCAmountFromDecimalNumber(NSNumber* num);
 
 @interface BTCNumberFormatter : NSNumberFormatter
 
@@ -54,7 +54,7 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num);
 /*!
  * Formats the amount according to units and current formatting style.
  */
-- (NSString *) stringFromAmount:(BTCSatoshi)amount;
+- (NSString *) stringFromAmount:(BTCAmount)amount;
 
 /*!
  * Returns a matching bitcoin symbol. 
@@ -67,16 +67,16 @@ BTCSatoshi BTCAmountFromDecimalNumber(NSNumber* num);
  * To handle that case, use `-[NSNumberFormatter numberFromString:]`, but keep in mind
  * that NSNumber* will be in specified units, not in satoshis.
  */
-- (BTCSatoshi) amountFromString:(NSString *)string;
+- (BTCAmount) amountFromString:(NSString *)string;
 
 /*!
  * Converts satoshis to a number in specified units (BTC, mBTC etc).
  */
-- (NSNumber*) numberFromSatoshis:(BTCSatoshi)satoshis;
+- (NSNumber*) numberFromSatoshis:(BTCAmount)satoshis;
 
 /*!
  * Converts number in specified units (BTC, mBTC etc) to satoshis.
  */
-- (BTCSatoshi) satoshisFromNumber:(NSNumber*)number;
+- (BTCAmount) satoshisFromNumber:(NSNumber*)number;
 
 @end

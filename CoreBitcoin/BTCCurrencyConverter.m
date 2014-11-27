@@ -117,7 +117,7 @@
 }
 
 
-- (BTCSatoshi) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount
+- (BTCAmount) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
@@ -142,7 +142,7 @@
     return 0;
 }
 
-- (NSDecimalNumber*) fiatFromBitcoin:(BTCSatoshi)satoshis
+- (NSDecimalNumber*) fiatFromBitcoin:(BTCAmount)satoshis
 {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:

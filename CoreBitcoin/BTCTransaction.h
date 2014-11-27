@@ -5,7 +5,7 @@
 #import "BTCSignatureHashType.h"
 
 static const uint32_t BTCTransactionCurrentVersion = 1;
-static const BTCSatoshi BTCTransactionDefaultFeeRate = 10000; // 10K satoshis per 1000 bytes
+static const BTCAmount BTCTransactionDefaultFeeRate = 10000; // 10K satoshis per 1000 bytes
 
 
 @class BTCScript;
@@ -109,31 +109,31 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 
 // Computes estimated fee for this tx size using default fee rate.
 // @see BTCTransactionDefaultFeeRate.
-- (BTCSatoshi) estimatedFee;
+- (BTCAmount) estimatedFee;
 
 // Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
-- (BTCSatoshi) estimatedFeeWithRate:(BTCSatoshi)feePerK;
+- (BTCAmount) estimatedFeeWithRate:(BTCAmount)feePerK;
 
 // Computes estimated fee for the given tx size using specified fee rate (satoshis per 1000 bytes).
-+ (BTCSatoshi) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCSatoshi)feePerK;
++ (BTCAmount) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCAmount)feePerK;
 
 
 // These fee methods need to be reviewed. They are for validating incoming transactions, not for
 // calculating a fee for a new transaction.
 
 // Minimum fee to relay the transaction
-- (BTCSatoshi) minimumRelayFee;
+- (BTCAmount) minimumRelayFee;
 
 // Minimum fee to send the transaction
-- (BTCSatoshi) minimumSendFee;
+- (BTCAmount) minimumSendFee;
 
 // Minimum base fee to send a transaction.
-+ (BTCSatoshi) minimumFee;
-+ (void) setMinimumFee:(BTCSatoshi)fee;
++ (BTCAmount) minimumFee;
++ (void) setMinimumFee:(BTCAmount)fee;
 
 // Minimum base fee to relay a transaction.
-+ (BTCSatoshi) minimumRelayFee;
-+ (void) setMinimumRelayFee:(BTCSatoshi)fee;
++ (BTCAmount) minimumRelayFee;
++ (void) setMinimumRelayFee:(BTCAmount)fee;
 
 
 @end
