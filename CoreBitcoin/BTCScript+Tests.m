@@ -258,7 +258,7 @@
         }
         
         // However, if we assign intermediate object to a variable, everything works fine. Need to investigate.
-        BTCPrivateKeyAddress* pkaddr = [BTCAddress addressWithBase58String:privKeyB58];
+        BTCPrivateKeyAddress* pkaddr = [BTCPrivateKeyAddress addressWithBase58String:privKeyB58];
         NSData *privkey = pkaddr.data;
         
         NSAssert([privkey isEqual:key.privateKey], @"private key should be the same");
