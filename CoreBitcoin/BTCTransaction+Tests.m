@@ -43,6 +43,7 @@ typedef enum : NSUInteger {
     for (int i = 0; i < 10; i++)
     {
         BTCTransactionInput* txin = [BTCTransactionInput new];
+        txin.previousIndex = 0;
         txin.signatureScript = [BTCScript new];
         [txin.signatureScript appendData:BTCDataWithUTF8String("A very long text simulating a signature script inside the transaction input.")];
         [tx addInput:txin];

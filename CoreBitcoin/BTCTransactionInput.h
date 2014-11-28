@@ -26,7 +26,12 @@
 @property(nonatomic) BTCOutpoint* outpoint;
 
 // Script that proves ownership of the previous transaction output.
+// This property is nil for coinbase inputs. See `coinbaseData` for raw binary data.
 @property(nonatomic) BTCScript* signatureScript;
+
+// Raw coinbase data if this input is coinbase.
+// If `coinbaseData` is not nil, then `signatureScript` is nil.
+@property(nonatomic) NSData* coinbaseData;
 
 // Input sequence. Default is maximum value 0xFFFFFFFF.
 // Sequence is used to update a timelocked tx stored in memory of the nodes. It is only relevant when tx lockTime > 0.

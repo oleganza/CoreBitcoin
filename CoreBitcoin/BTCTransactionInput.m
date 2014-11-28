@@ -60,7 +60,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
         
         if (dictionary[@"coinbase"])
         {
-            _signatureScript = [[BTCScript alloc] initWithData:BTCDataWithHexString(dictionary[@"coinbase"])];
+            _coinbaseData = BTCDataWithHexString(dictionary[@"coinbase"]);
         }
         else
         {
@@ -122,10 +122,18 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     
     [payload appendData:_previousHash];
     [payload appendBytes:&_previousIndex length:4];
-    
-    NSData* scriptData = _signatureScript.data;
-    [payload appendData:[BTCProtocolSerialization dataForVarInt:scriptData.length]];
-    [payload appendData:scriptData];
+
+    if (self.isCoinbase)
+    {
+        [payload appendData:[BTCProtocolSerialization dataForVarInt:self.coinbaseData.length]];
+        [payload appendData:self.coinbaseData];
+    }
+    else
+    {
+        NSData* scriptData = _signatureScript.data;
+        [payload appendData:[BTCProtocolSerialization dataForVarInt:scriptData.length]];
+        [payload appendData:scriptData];
+    }
     
     [payload appendBytes:&_sequence length:4];
     
@@ -164,7 +172,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     
     if ([self isCoinbase])
     {
-        dict[@"coinbase"] = BTCHexStringFromData(_signatureScript.data);
+        dict[@"coinbase"] = BTCHexStringFromData(_coinbaseData);
     }
     else
     {
@@ -217,9 +225,17 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if ([stream read:(uint8_t*)(&_previousIndex) maxLength:sizeof(_previousIndex)] != sizeof(_previousIndex)) return NO;
     
     // Read signature script
-    NSData* signatureScriptData = [BTCProtocolSerialization readVarStringFromStream:stream];
-    if (!signatureScriptData) return NO;
-    _signatureScript = [[BTCScript alloc] initWithData:signatureScriptData];
+    NSData* scriptdata = [BTCProtocolSerialization readVarStringFromStream:stream];
+    if (!scriptdata) return NO;
+
+    if ([self isCoinbase])
+    {
+        _coinbaseData = scriptdata;
+    }
+    else
+    {
+        _signatureScript = [[BTCScript alloc] initWithData:scriptdata];
+    }
     
     // Read sequence
     if ([stream read:(uint8_t*)(&_sequence) maxLength:sizeof(_sequence)] != sizeof(_sequence)) return NO;
