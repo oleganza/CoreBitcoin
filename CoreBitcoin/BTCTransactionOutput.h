@@ -42,10 +42,15 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // Index of this output in its transaction. Default is BTCTransactionOutputIndexUnknown
 @property(nonatomic) uint32_t index;
 
-// Height of the block in which this transaction output is included.
+// Hash of the block in which this transaction output is included.
 // Unconfirmed transaction outputs have nil block hash.
 // Default is transaction.blockHash or nil.
 @property(nonatomic) NSData* blockHash;
+
+// ID of the block in which this transaction output is included.
+// Unconfirmed transaction outputs have nil block ID.
+// Default is transaction.blockHash or nil.
+@property(nonatomic) NSString* blockID;
 
 // Informational property, could be set by some APIs that fetch transactions.
 // Note: unconfirmed transactions may be marked with -1 block height.

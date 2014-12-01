@@ -65,10 +65,13 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 // These are set by external APIs such as Chain.com.
 
 
-// Height of the block in which this transaction is included.
-// Unconfirmed transactions have nil block hash.
-// Default is nil;
+// Hash of the block in which transaction is included.
+// Default is nil.
 @property(nonatomic) NSData* blockHash;
+
+// ID of the block in which transaction is included.
+// Default is nil.
+@property(nonatomic) NSString* blockID;
 
 // Height of the block in which this transaction is included.
 // Unconfirmed transactions may be marked with -1 block height.

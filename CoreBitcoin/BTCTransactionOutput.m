@@ -221,6 +221,15 @@
 #pragma mark - Informational Properties
 
 
+- (NSString*) blockID
+{
+    return BTCIDFromHash(self.blockHash);
+}
+
+- (void) setBlockID:(NSString *)blockID
+{
+    self.blockHash = BTCHashFromID(blockID);
+}
 
 - (NSData*) blockHash
 {
