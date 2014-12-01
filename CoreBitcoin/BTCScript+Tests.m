@@ -97,8 +97,8 @@
         BTCScript* signatureScript = [[BTCScript alloc] init];
         
         [signatureScript appendOpcode:OP_0]; // always prepend dummy OP_0 because OP_CHECKMULTISIG pops one too many items from the stack.
-        [signatureScript appendData:[alice signatureForHash:hash withHashType:hashtype]];
-        [signatureScript appendData:[bob signatureForHash:hash withHashType:hashtype]];
+        [signatureScript appendData:[alice signatureForHash:hash hashType:hashtype]];
+        [signatureScript appendData:[bob signatureForHash:hash hashType:hashtype]];
         
         dstTxIn.signatureScript = signatureScript;
         
@@ -128,7 +128,7 @@
         [signatureScript appendOpcode:OP_0];
         for (BTCKey* key in keys)
         {
-            [signatureScript appendData:[key signatureForHash:hash withHashType:hashtype]];
+            [signatureScript appendData:[key signatureForHash:hash hashType:hashtype]];
         }
         
         dstTxIn.signatureScript = signatureScript;
@@ -176,7 +176,7 @@
         [signatureScript appendOpcode:OP_0];
         for (BTCKey* key in keys)
         {
-            [signatureScript appendData:[key signatureForHash:hash withHashType:hashtype]];
+            [signatureScript appendData:[key signatureForHash:hash hashType:hashtype]];
         }
         
         dstTxIn.signatureScript = signatureScript;

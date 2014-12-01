@@ -26,9 +26,11 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 // Reference to owning transaction. Set on [tx addOutput:...] and reset to nil on [tx removeAllOutputs].
 @property(weak, nonatomic) BTCTransaction* transaction;
 
-// Identifier of the transaction. Default is nil.
+// Hash of the transaction. Default is nil.
 @property(nonatomic) NSData* transactionHash;
 
+// Identifier of the transaction. Default is nil.
+@property(nonatomic) NSString* transactionID;
 
 // Informational properties
 // ------------------------

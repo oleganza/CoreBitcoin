@@ -9,6 +9,7 @@
 #import <CoreBitcoin/BTCCurvePoint.h>
 #import <CoreBitcoin/BTCData.h>
 #import <CoreBitcoin/BTCErrors.h>
+#import <CoreBitcoin/BTCHashID.h>
 #import <CoreBitcoin/BTCKey.h>
 #import <CoreBitcoin/BTCKeychain.h>
 #import <CoreBitcoin/BTCMnemonic.h>

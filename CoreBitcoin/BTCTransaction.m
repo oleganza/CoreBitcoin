@@ -7,15 +7,16 @@
 #import "BTCData.h"
 #import "BTCScript.h"
 #import "BTCErrors.h"
+#import "BTCHashID.h"
 
 NSData* BTCTransactionHashFromID(NSString* txid)
 {
-    return BTCReversedData(BTCDataWithHexString(txid));
+    return BTCHashFromID(txid);
 }
 
 NSString* BTCTransactionIDFromHash(NSData* txhash)
 {
-    return BTCHexStringFromData(BTCReversedData(txhash));
+    return BTCIDFromHash(txhash);
 }
 
 @interface BTCTransaction ()
@@ -171,7 +172,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 
 - (NSString*) transactionID
 {
-    return BTCTransactionIDFromHash(self.transactionHash);
+    return BTCIDFromHash(self.transactionHash);
 }
 
 - (NSData*) data

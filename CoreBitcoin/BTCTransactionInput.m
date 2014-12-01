@@ -6,6 +6,7 @@
 #import "BTCScript.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCData.h"
+#import "BTCHashID.h"
 #import "BTCOutpoint.h"
 
 @interface BTCTransactionInput ()
@@ -155,12 +156,12 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 
 - (NSString*) previousTransactionID
 {
-    return BTCTransactionIDFromHash(self.previousHash);
+    return BTCIDFromHash(self.previousHash);
 }
 
 - (void) setPreviousTransactionID:(NSString *)previousTransactionID
 {
-    self.previousHash = BTCTransactionHashFromID(previousTransactionID);
+    self.previousHash = BTCHashFromID(previousTransactionID);
 }
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.

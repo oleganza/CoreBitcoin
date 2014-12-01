@@ -69,7 +69,8 @@
 - (NSData*)signatureForHash:(NSData*)hash;
 
 // Same as above, but also appends a hash type byte to the signature.
-- (NSData*)signatureForHash:(NSData*)hash withHashType:(BTCSignatureHashType)hashType;
+- (NSData*)signatureForHash:(NSData*)hash hashType:(BTCSignatureHashType)hashType;
+- (NSData*)signatureForHash:(NSData*)hash withHashType:(BTCSignatureHashType)hashType DEPRECATED_ATTRIBUTE;
 
 // Clears all key data from memory making receiver invalid.
 - (void) clear;

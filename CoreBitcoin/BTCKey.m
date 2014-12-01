@@ -145,6 +145,11 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 }
 
 // Same as above, but also appends a hash type byte to the signature.
+- (NSData*)signatureForHash:(NSData*)hash hashType:(BTCSignatureHashType)hashType
+{
+   return [self signatureForHash:hash appendHashType:YES hashType:hashType];
+}
+
 - (NSData*)signatureForHash:(NSData*)hash withHashType:(BTCSignatureHashType)hashType
 {
     return [self signatureForHash:hash appendHashType:YES hashType:hashType];

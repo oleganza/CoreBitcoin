@@ -15,12 +15,12 @@ static const BTCAmount BTCTransactionDefaultFeeRate = 10000; // 10K satoshis per
 /*!
  * Converts string transaction ID (reversed tx hash in hex format) to transaction hash.
  */
-NSData* BTCTransactionHashFromID(NSString* txid);
+NSData* BTCTransactionHashFromID(NSString* txid) DEPRECATED_ATTRIBUTE;
 
 /*!
  * Converts hash of the transaction to its string ID (reversed tx hash in hex format).
  */
-NSString* BTCTransactionIDFromHash(NSData* txhash);
+NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 
 
 /*!

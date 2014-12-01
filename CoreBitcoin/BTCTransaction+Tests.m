@@ -430,7 +430,7 @@ typedef enum : NSUInteger {
             return nil;
         }
         
-        NSData* signatureForScript = [key signatureForHash:hash withHashType:hashtype];
+        NSData* signatureForScript = [key signatureForHash:hash hashType:hashtype];
         [sigScript appendData:signatureForScript];
         [sigScript appendData:key.publicKey];
         

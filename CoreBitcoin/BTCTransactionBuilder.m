@@ -351,7 +351,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         BTCScript* p2cpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(cpk)]];
         if ([outputScript.data isEqual:p2cpkhScript.data])
         {
-            txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash withHashType:hashtype]] appendData:cpk];
+            txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:cpk];
             return YES;
         }
 
@@ -359,7 +359,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         BTCScript* p2ucpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(ucpk)]];
         if ([outputScript.data isEqual:p2ucpkhScript.data])
         {
-            txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash withHashType:hashtype]] appendData:ucpk];
+            txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:ucpk];
             return YES;
         }
 
@@ -369,7 +369,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         if ([outputScript.data isEqual:p2cpkScript] ||
             [outputScript.data isEqual:p2ucpkScript])
         {
-            txin.signatureScript = [[BTCScript new] appendData:[key signatureForHash:sighash withHashType:hashtype]];
+            txin.signatureScript = [[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]];
             return YES;
         }
         else

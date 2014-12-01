@@ -5,6 +5,7 @@
 #import "BTCScript.h"
 #import "BTCAddress.h"
 #import "BTCData.h"
+#import "BTCHashID.h"
 #import "BTCProtocolSerialization.h"
 
 @interface BTCTransactionOutput ()
@@ -170,6 +171,15 @@
     return nil;
 }
 
+- (NSString*) transactionID
+{
+    return BTCIDFromHash(self.transactionHash);
+}
+
+- (void) setTransactionID:(NSString *)transactionID
+{
+    self.transactionHash = BTCHashFromID(transactionID);
+}
 
 
 

@@ -2,6 +2,7 @@
 
 #import "BTCOutpoint.h"
 #import "BTCTransaction.h"
+#import "BTCHashID.h"
 
 @implementation BTCOutpoint
 
@@ -18,18 +19,18 @@
 
 - (id) initWithTxID:(NSString*)txid index:(uint32_t)index
 {
-    NSData* hash = BTCTransactionHashFromID(txid);
+    NSData* hash = BTCHashFromID(txid);
     return [self initWithHash:hash index:index];
 }
 
 - (NSString*) txID
 {
-    return BTCTransactionIDFromHash(self.txHash);
+    return BTCIDFromHash(self.txHash);
 }
 
 - (void) setTxID:(NSString *)txID
 {
-    self.txHash = BTCTransactionHashFromID(txID);
+    self.txHash = BTCHashFromID(txID);
 }
 
 - (NSUInteger) hash
