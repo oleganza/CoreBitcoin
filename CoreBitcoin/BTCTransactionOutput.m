@@ -32,10 +32,13 @@
 {
     if (self = [super init])
     {
-        _index = BTCTransactionOutputIndexUnknown;
-        _confirmations = NSNotFound;
         _value = value;
         _script = script;
+
+        _index = BTCTransactionOutputIndexUnknown;
+        _confirmations = NSNotFound;
+        _spent = NO;
+        _spentConfirmations = NSNotFound;
     }
     return self;
 }
@@ -200,6 +203,49 @@
     
     return YES;
 }
+
+
+
+
+
+#pragma mark - Informational Properties
+
+
+
+- (NSData*) blockHash
+{
+    return _blockHash ?: self.transaction.blockHash;
+}
+
+- (NSInteger) blockHeight
+{
+    if (_blockHeight != 0) {
+        return _blockHeight;
+    }
+    if (self.transaction) {
+        return self.transaction.blockHeight;
+    }
+    return _blockHeight;
+}
+
+- (NSDate*) blockDate
+{
+    return _blockDate ?: self.transaction.blockDate;
+}
+
+- (NSUInteger) confirmations
+{
+    if (_confirmations != NSNotFound) {
+        return _confirmations;
+    }
+    if (self.transaction) {
+        return self.transaction.confirmations;
+    }
+    return NSNotFound;
+}
+
+
+
 
 
 @end

@@ -59,8 +59,19 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 // Default is 0.
 @property(nonatomic) uint32_t lockTime; // aka "lock_time"
 
-// Informational property, could be set by some APIs that fetch transactions.
-// Note: unconfirmed transactions may be marked with -1 block height.
+
+// Informational properties
+// ------------------------
+// These are set by external APIs such as Chain.com.
+
+
+// Height of the block in which this transaction is included.
+// Unconfirmed transactions have nil block hash.
+// Default is nil;
+@property(nonatomic) NSData* blockHash;
+
+// Height of the block in which this transaction is included.
+// Unconfirmed transactions may be marked with -1 block height.
 // Default is 0.
 @property(nonatomic) NSInteger blockHeight;
 
@@ -70,6 +81,20 @@ NSString* BTCTransactionIDFromHash(NSData* txhash);
 
 // Number of confirmations. Default is NSNotFound.
 @property(nonatomic) NSUInteger confirmations;
+
+// Mining fee paid by this transaction.
+// If set, `inputs_amount` is updated as (`outputs_amount` + `fee`).
+// Default is -1.
+@property(nonatomic) BTCAmount fee;
+
+// If available, returns total amount of all inputs.
+// If set, `fee` is updated as (`inputsAmount` - `outputsAmount`).
+// Default is -1.
+@property(nonatomic) BTCAmount inputsAmount;
+
+// Total amount on all outputs (not including fees).
+// Always available since outputs contain their amounts.
+@property(nonatomic, readonly) BTCAmount outputsAmount;
 
 // Arbitrary information attached to this instance.
 // The reference is copied when this instance is copied.

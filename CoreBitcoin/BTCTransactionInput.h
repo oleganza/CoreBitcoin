@@ -41,11 +41,21 @@
 // Serialized binary representation of the txin.
 @property(nonatomic, readonly) NSData* data;
 
+
+// Informational properties
+// ------------------------
+// These are set by external APIs such as Chain.com.
+
+
 // Set when input is added via [tx addInput:input]
 @property(weak, nonatomic) BTCTransaction* transaction;
 
 // Optional reference to a corresponding output, typically an unspent output in a context of building a new transaction.
 @property(nonatomic) BTCTransactionOutput* transactionOutput;
+
+// Value in the corresponding output.
+// Default is transactionOutput.value or -1.
+@property(nonatomic) BTCAmount value;
 
 // Arbitrary information attached to this instance.
 // The reference is copied when this instance is copied.

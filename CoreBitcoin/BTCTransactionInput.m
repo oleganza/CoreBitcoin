@@ -2,6 +2,7 @@
 
 #import "BTCTransaction.h"
 #import "BTCTransactionInput.h"
+#import "BTCTransactionOutput.h"
 #import "BTCScript.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCData.h"
@@ -24,6 +25,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
         _previousIndex = BTCInvalidIndex;
         _signatureScript = [[BTCScript alloc] init];
         _sequence = BTCMaxSequence; // max
+        _value = -1;
     }
     return self;
 }
@@ -249,6 +251,23 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     return (_previousIndex == BTCInvalidIndex) &&
             _previousHash.length == 32 &&
             0 == memcmp(BTCZeroString256(), _previousHash.bytes, 32);
+}
+
+
+
+#pragma mark - Informational Properties
+
+
+
+- (BTCAmount) value
+{
+    if (_value != -1) {
+        return _value;
+    }
+    if (_transactionOutput) {
+        return _transactionOutput.value;
+    }
+    return -1;
 }
 
 

@@ -35,6 +35,8 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         _blockHeight = 0;
         _blockDate = nil;
         _confirmations = NSNotFound;
+        _fee = -1;
+        _inputsAmount = -1;
     }
     return self;
 }
@@ -467,6 +469,79 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     
     return hash;
 }
+
+
+
+
+
+
+#pragma mark - Amounts and fee
+
+
+
+@synthesize fee=_fee;
+@synthesize inputsAmount=_inputsAmount;
+
+- (void) setFee:(BTCAmount)fee
+{
+    _fee = fee;
+    _inputsAmount = -1; // will be computed from fee or inputs.map(&:value)
+}
+
+- (BTCAmount) fee
+{
+    if (_fee != -1) {
+        return _fee;
+    }
+
+    BTCAmount ia = self.inputsAmount;
+    if (ia != -1) {
+        return ia - self.outputsAmount;
+    }
+
+    return -1;
+}
+
+- (void) setInputsAmount:(BTCAmount)inputsAmount
+{
+    _inputsAmount = inputsAmount;
+    _fee = -1; // will be computed from inputs and outputs amount on the fly.
+}
+
+- (BTCAmount) inputsAmount
+{
+    if (_inputsAmount != -1) {
+        return _inputsAmount;
+    }
+
+    if (_fee != -1) {
+        return _fee + self.outputsAmount;
+    }
+
+    // Try to figure the total amount from amounts on inputs.
+    // If all of them are non-nil, we have a valid amount.
+
+    BTCAmount total = 0;
+    for (BTCTransactionInput* txin in self.inputs) {
+        BTCAmount v = txin.value;
+        if (v == -1) {
+            return -1;
+        }
+        total += v;
+    }
+    return total;
+}
+
+- (BTCAmount) outputsAmount
+{
+    BTCAmount a = 0;
+    for (BTCTransactionOutput* txout in self.outputs) {
+        a += txout.value;
+    }
+    return a;
+}
+
+
 
 
 

@@ -59,9 +59,14 @@ typedef enum : NSUInteger {
 {
     //NSLog(@"EMPTY TX: %@", BTCHexStringFromData([[BTCTransaction alloc] init].transactionHash));
 
-    NSData* txdata = BTCDataWithHexString(@"0100000001d4892a82fb1f52fd0800a24ca05b458d469e97a3683510c99acb06edc7b96cf2000000006b48304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e01012103b1150ff04256ef70780c653ace93e06cdd5156de9febb2a088eed497834c88ecffffffff0270170000000000001976a91445d3218a63aac22b4a8077eedc10e0283f42dcf188acc0030f00000000001976a91445d3218a63aac22b4a8077eedc10e0283f42dcf188ac00000000");
+    NSData* txdata = BTCDataWithHexString(@"010000000150869eb405cdd81ac4a1ccfa74f256a176f3139dece7e36e038c8b38cdfee6a4020000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88acffffffff03a0860100000000001976a9149c7bce1f45e6743fa1fde9e507f768cb3de3fbd988aca0860100000000001976a91424b70bbd9f4c75e9a6f7f30abf183d15d3bab87188acf035a601000000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88ac00000000");
 
     BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
+
+    BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"n3ZRkPLZZLdjWi4Wn3AazjqWBw7WWXWtVb"]];
+    NSData* sighash = [tx signatureHashForScript:outputScript inputIndex:0 hashType:SIGHASH_ALL error:nil];
+
+    NSLog(@"sighash = %@ (%@)", BTCHexStringFromData(sighash), sighash);
 
     BTCTransactionInput* txin = tx.inputs.firstObject;
 
