@@ -2,6 +2,7 @@
 
 #import "BTCBlockHeader.h"
 #import "BTCData.h"
+#import "BTCHashID.h"
 
 @implementation BTCBlockHeader
 
@@ -21,11 +22,11 @@
         _time = 0;
         _difficultyTarget = 0;
         _nonce = 0;
+        _confirmations = NSNotFound;
     }
     return self;
 }
 
-// Parses tx from data buffer.
 - (id) initWithData:(NSData*)data
 {
     if (self = [self init])
@@ -35,7 +36,6 @@
     return self;
 }
 
-// Parses input stream (useful when parsing many transactions from a single source, e.g. a block).
 - (id) initWithStream:(NSInputStream*)stream
 {
     if (self = [self init])
@@ -45,9 +45,34 @@
     return self;
 }
 
+- (NSString*) previousBlockID
+{
+    return BTCIDFromHash(self.previousBlockHash);
+}
+
+- (void) setPreviousBlockID:(NSString *)previousBlockID
+{
+    self.previousBlockHash = BTCHashFromID(previousBlockID);
+}
+
 - (NSData*) blockHash
 {
     return BTCHash256(self.data);
+}
+
+- (NSString*) blockID
+{
+    return BTCIDFromHash(self.blockHash);
+}
+
+- (NSDate*) date
+{
+    return [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)self.time];
+}
+
+- (void) setDate:(NSDate *)date
+{
+    _time = (uint32_t)round(date.timeIntervalSince1970);
 }
 
 - (NSData*) data
@@ -92,5 +117,21 @@
     return YES;
 }
 
+- (id) copyWithZone:(NSZone *)zone
+{
+    BTCBlockHeader* bh = [[BTCBlockHeader alloc] init];
+    bh.version = self->_version;
+    bh.previousBlockHash = [self->_previousBlockHash copy];
+    bh.merkleRootHash = [self->_merkleRootHash copy];
+    bh.time = self->_time;
+    bh.difficultyTarget = self->_difficultyTarget;
+    bh.nonce = self->_nonce;
+
+    bh.height = self->_height;
+    bh.confirmations = self->_confirmations;
+    bh.userInfo = self->_userInfo;
+    
+    return bh;
+}
 
 @end
