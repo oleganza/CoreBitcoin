@@ -18,6 +18,14 @@
     return self;
 }
 
+- (id) initWithHeader:(BTCBlockHeader*)header
+{
+    if (self = [super init]) {
+        self.header = header;
+    }
+    return self;
+}
+
 - (id) initWithData:(NSData*)data
 {
     if (self = [super init])

@@ -52,7 +52,7 @@
 
 - (void) setPreviousBlockID:(NSString *)previousBlockID
 {
-    self.previousBlockHash = BTCHashFromID(previousBlockID);
+    self.previousBlockHash = BTCHashFromID(previousBlockID) ?: BTCZero256();
 }
 
 - (NSData*) blockHash
@@ -87,8 +87,8 @@
     int32_t version = OSSwapHostToLittleInt32(_version);
     [data appendBytes:&version length:sizeof(version)];
     
-    [data appendData:self.previousBlockHash];
-    [data appendData:self.merkleRootHash];
+    [data appendData:self.previousBlockHash ?: BTCZero256()];
+    [data appendData:self.merkleRootHash ?: BTCZero256()];
     
     uint32_t time = OSSwapHostToLittleInt32(_time);
     [data appendBytes:&time length:sizeof(time)];

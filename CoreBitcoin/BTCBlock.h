@@ -35,4 +35,7 @@
 // Equivalent to `block.header.merkleRootHash = [block computeMerkleRootHash]`.
 - (void) updateMerkleTree;
 
+// Instantiates an empty block with a given header.
+- (id) initWithHeader:(BTCBlockHeader*)header;
+
 @end
