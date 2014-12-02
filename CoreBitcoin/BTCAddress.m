@@ -169,8 +169,15 @@ enum
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<%@: %@>", [self class], [self base58String]];
+    return [NSString stringWithFormat:@"<%@: %@>", [self class], self.string];
 }
+
+- (BOOL) isEqual:(BTCAddress*)other
+{
+    if (![other isKindOfClass:[BTCAddress class]]) return NO;
+    return [self.string isEqualToString:other.string];
+}
+
 @end
 
 
