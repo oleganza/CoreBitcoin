@@ -58,7 +58,7 @@
 
 - (NSString*) blockID
 {
-    return BTCIDFromHash(self.blockHash);
+    return self.header.blockID;
 }
 
 - (NSData*) data

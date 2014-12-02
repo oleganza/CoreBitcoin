@@ -19,11 +19,12 @@
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
+// DEPRECATED! Use `-addressWithString:` instead.
 + (instancetype) addressWithBase58String:(NSString*)string;
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-+ (instancetype) addressWithBase58CString:(const char*)cstring;
++ (instancetype) addressWithString:(NSString*)string;
 
 // Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
 + (instancetype) addressWithData:(NSData*)data;
@@ -32,10 +33,11 @@
 // 20 bytes for hashes, 32 bytes for private key.
 - (NSMutableData*) data;
 
-// Returns representation in base58 encoding in plain C string (with zero terminator).
-- (const char*) base58CString;
+// Returns representation in base58 encoding.
+@property(nonatomic, readonly) NSString* string;
 
 // Returns representation in base58 encoding.
+// DEPRECATED! Use -string instead.
 - (NSString*) base58String;
 
 /*!

@@ -35,6 +35,11 @@ enum
 // For unsupported addresses returns nil.
 + (instancetype) addressWithBase58String:(NSString*)string
 {
+    return [self addressWithString:string];
+}
+
++ (instancetype) addressWithString:(NSString*)string
+{
     return [self addressWithBase58CString:[string cStringUsingEncoding:NSASCIIStringEncoding]];
 }
 
@@ -133,11 +138,17 @@ enum
     return _cstring;
 }
 
-- (NSString*) base58String
+// Returns representation in base58 encoding.
+- (NSString*) string
 {
     const char* cstr = [self base58CString];
     if (!cstr) return nil;
     return [NSString stringWithCString:cstr encoding:NSASCIIStringEncoding];
+}
+
+- (NSString*) base58String
+{
+    return [self string];
 }
 
 - (BTCAddress*) publicAddress
