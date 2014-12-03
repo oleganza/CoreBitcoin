@@ -24,7 +24,7 @@
 
 
 // Returns YES if this network is testnet3 (used to tweak certain validation rules).
-- (BOOL) isTestnet;
+@property(nonatomic, readonly) BOOL isTestnet;
 
 // Hash of the genesis block.
 @property(nonatomic) NSData* genesisBlockHash;

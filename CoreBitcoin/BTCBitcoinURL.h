@@ -31,6 +31,10 @@
  */
 @property(nonatomic) NSString* message;
 
+/*!
+ * Complete URL built from the individual properties.
+ */
+@property(nonatomic, readonly) NSURL* URL;
 
 /*!
  * Makes a URL in form "bitcoin:<address>?amount=1.2345&label=<label>.
@@ -44,10 +48,5 @@
  * Instantiates if URL is a valid bitcoin: URL.
  */
 - (id) initWithURL:(NSURL*)url;
-
-/*!
- * Builds a URL using the properties.
- */
-- (NSURL*) URL;
 
 @end

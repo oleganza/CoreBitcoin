@@ -167,6 +167,11 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation
 {
+    return self.dictionary;
+}
+
+- (NSDictionary*) dictionary
+{
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     dict[@"prev_out"] = @{
                         @"hash": BTCHexStringFromData(BTCReversedData(_previousHash)), // transaction hashes are reversed

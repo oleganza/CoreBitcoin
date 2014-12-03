@@ -99,6 +99,8 @@ static uint32_t const BTCTransactionOutputIndexUnknown = 0xffffffff;
 - (id) initWithValue:(BTCAmount)value script:(BTCScript*)script;
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
-- (NSDictionary*) dictionaryRepresentation;
+@property(nonatomic, readonly) NSDictionary* dictionary;
+
+- (NSDictionary*) dictionaryRepresentation DEPRECATED_ATTRIBUTE;
 
 @end

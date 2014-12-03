@@ -19,7 +19,7 @@
 @property(nonatomic, readonly) const EC_POINT* EC_POINT;
 
 // Returns YES if the point is at infinity.
-@property(nonatomic, readonly, getter=isInfinity) BOOL infinity;
+@property(nonatomic, readonly) BOOL isInfinity;
 
 // Coordinates of the point
 @property(nonatomic, readonly) BTCBigNumber* x;

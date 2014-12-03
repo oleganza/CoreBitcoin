@@ -49,7 +49,7 @@
 /*!
  * Returns YES if this address is intended for testnet.
  */
-@property(nonatomic, readonly, getter=isTestnet) BOOL testnet;
+@property(nonatomic, readonly) BOOL isTestnet;
 
 /*!
  * Clears contents of the data to prevent leaks.

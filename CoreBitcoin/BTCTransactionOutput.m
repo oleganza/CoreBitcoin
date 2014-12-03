@@ -13,7 +13,6 @@
 
 @implementation BTCTransactionOutput
 
-
 - (id) init
 {
     return [self initWithValue:-1 script:[[BTCScript alloc] init]];
@@ -141,6 +140,11 @@
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation
+{
+    return self.dictionary;
+}
+
+- (NSDictionary*) dictionary
 {
     return @{
              @"value": [self formattedBTCValue:_value],

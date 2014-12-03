@@ -104,6 +104,11 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 // Default is nil.
 @property(nonatomic) NSDictionary* userInfo;
 
+// Returns a dictionary representation suitable for encoding in JSON or Plist.
+@property(nonatomic, readonly) NSDictionary* dictionary;
+
+- (NSDictionary*) dictionaryRepresentation DEPRECATED_ATTRIBUTE;
+
 // Parses tx from data buffer.
 - (id) initWithData:(NSData*)data;
 
@@ -112,9 +117,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 
 // Constructs transaction from its dictionary representation
 - (id) initWithDictionary:(NSDictionary*)dictionary;
-
-// Returns a dictionary representation suitable for encoding in JSON or Plist.
-- (NSDictionary*) dictionaryRepresentation;
 
 // Hash for signing a transaction.
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
@@ -133,11 +135,11 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 - (void) removeAllOutputs;
 
 // Returns YES if this txin generates new coins.
-- (BOOL) isCoinbase;
+@property(nonatomic, readonly) BOOL isCoinbase;
 
 // Computes estimated fee for this tx size using default fee rate.
 // @see BTCTransactionDefaultFeeRate.
-- (BTCAmount) estimatedFee;
+@property(nonatomic, readonly) BTCAmount estimatedFee;
 
 // Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
 - (BTCAmount) estimatedFeeWithRate:(BTCAmount)feePerK;

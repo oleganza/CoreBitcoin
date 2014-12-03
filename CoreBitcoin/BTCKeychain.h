@@ -34,58 +34,58 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 - (void) clear;
 
 // Deprecated because of the badly chosen name. See `-key`.
-- (BTCKey*) rootKey DEPRECATED_ATTRIBUTE;
+@property(nonatomic, readonly) BTCKey* rootKey DEPRECATED_ATTRIBUTE;
 
 // Instance of BTCKey that is a "head" of this keychain.
 // If the keychain is public-only, key does not have a private component.
-- (BTCKey*) key;
+@property(nonatomic, readonly) BTCKey* key;
 
 // Chain code associated with the key.
-- (NSData*) chainCode;
+@property(nonatomic, readonly) NSData* chainCode;
 
 // Base58-encoded extended public key.
-- (NSString*) extendedPublicKey;
+@property(nonatomic, readonly) NSString* extendedPublicKey;
 
 // Base58-encoded extended private key.
 // Returns nil if this is a public-only keychain.
-- (NSString*) extendedPrivateKey;
+@property(nonatomic, readonly) NSString* extendedPrivateKey;
 
 // Raw binary data for serialized extended public key.
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
-- (NSData*) extendedPublicKeyData;
+@property(nonatomic, readonly) NSData* extendedPublicKeyData;
 
 // Raw binary data for serialized extended private key.
 // Returns nil if the receiver is public-only keychain.
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
-- (NSData*) extendedPrivateKeyData;
+@property(nonatomic, readonly) NSData* extendedPrivateKeyData;
 
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
-- (NSData*) identifier;
+@property(nonatomic, readonly) NSData* identifier;
 
 // Fingerprint of the keychain.
-- (uint32_t) fingerprint;
+@property(nonatomic, readonly) uint32_t fingerprint;
 
 // Fingerprint of the parent keychain. For master keychain it is always 0.
-- (uint32_t) parentFingerprint;
+@property(nonatomic, readonly) uint32_t parentFingerprint;
 
 // Index in the parent keychain.
 // If this is a master keychain, index is 0.
-- (uint32_t) index;
+@property(nonatomic, readonly) uint32_t index;
 
 // Depth. Master keychain has depth = 0.
-- (uint8_t) depth;
+@property(nonatomic, readonly) uint8_t depth;
 
 // Returns YES if the keychain can derive private keys.
-- (BOOL) isPrivate;
+@property(nonatomic, readonly) BOOL isPrivate;
 
 // Returns YES if the keychain was derived via hardened derivation from its parent.
 // This means internally parameter i = 0x80000000 | self.index
 // For the master keychain index is zero and isHardened=NO.
-- (BOOL) isHardened;
+@property(nonatomic, readonly) BOOL isHardened;
 
 // Returns a copy of the keychain stripped of the private key.
 // Equivalent to [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPublicKey]
-- (BTCKeychain*) publicKeychain;
+@property(nonatomic, readonly) BTCKeychain* publicKeychain;
 
 // Returns a derived keychain.
 // If hardened = YES, uses hardened derivation (possible only when private key is present; otherwise returns nil).
@@ -114,10 +114,10 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // ```
 
 // Returns a subchain with path m/44'/0'
-- (BTCKeychain*) bitcoinMainnetKeychain;
+@property(nonatomic, readonly) BTCKeychain* bitcoinMainnetKeychain;
 
 // Returns a subchain with path m/44'/1'
-- (BTCKeychain*) bitcoinTestnetKeychain;
+@property(nonatomic, readonly) BTCKeychain* bitcoinTestnetKeychain;
 
 // Returns a hardened derivation for the given account index.
 // Equivalent to [keychain derivedKeychainAtIndex:accountIndex hardened:YES]

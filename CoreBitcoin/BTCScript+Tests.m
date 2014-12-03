@@ -39,7 +39,7 @@
 
 //    NSLog(@"p2sh = %@", outputScript.string);
 //    NSLog(@"p2sh inner = %@", redeemScript.string);
-//    NSLog(@"tx = %@", tx.dictionaryRepresentation);
+//    NSLog(@"tx = %@", tx.dictionary);
 
     for (uint32_t i = 0; i < tx.inputs.count; i++)
     {

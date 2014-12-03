@@ -73,10 +73,12 @@
 - (id) initWithDictionary:(NSDictionary*)dictionary;
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
-- (NSDictionary*) dictionaryRepresentation;
+@property(nonatomic, readonly) NSDictionary* dictionary;
 
 // Returns YES if this txin generates new coins.
-- (BOOL) isCoinbase;
+@property(nonatomic, readonly) BOOL isCoinbase;
+
+- (NSDictionary*) dictionaryRepresentation DEPRECATED_ATTRIBUTE;
 
 @end
 

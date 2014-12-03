@@ -58,53 +58,53 @@ typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
 
 
 // Binary representation
-- (NSData*) data;
+@property(nonatomic, readonly) NSData* data;
 
 // Space-separated hex-encoded commands and data.
 // Small integers (data fitting in 4 bytes) incuding OP_<N> are represented with decimal digits.
 // Other opcodes are represented with their names.
 // Other data is hex-encoded.
 // This representation is inherently ambiguous, so don't use it for anything serious.
-- (NSString*) string;
+@property(nonatomic, readonly) NSString* string;
 
 // List of parsed chunks of the script (BTCScriptChunk)
-- (NSArray*) scriptChunks;
+@property(nonatomic, readonly) NSArray* scriptChunks;
 
 // Returns YES if the script is considered standard and can be relayed and mined normally by enough nodes.
 // Non-standard scripts are still valid if appear in blocks, but default nodes and miners will reject them.
 // Some miners do mine non-standard transactions, so it's just a matter of the higher delay.
 // Today standard = isPublicKey || isHash160 || isP2SH || isStandardMultisig
-- (BOOL) isStandard;
+@property(nonatomic, readonly) BOOL isStandard;
 
 // Returns YES if the script is "<pubkey> OP_CHECKSIG".
 // This is old-style script mostly replaced by a more compact "Hash160" one.
 // It is used for "send to IP" transactions. You connect to an IP address, receive
 // a pubkey and send money to this key. However, this method is almost never used for security reasons.
-- (BOOL) isPublicKeyScript;
+@property(nonatomic, readonly) BOOL isPublicKeyScript;
 
 // Deprecated. Use -isPayToPublicKeyHashScript instead.
-- (BOOL) isHash160Script DEPRECATED_ATTRIBUTE;
+@property(nonatomic, readonly) BOOL isHash160Script DEPRECATED_ATTRIBUTE;
 
 // Returns YES if the script is "OP_DUP OP_HASH160 <20-byte hash> OP_EQUALVERIFY OP_CHECKSIG" (aka P2PKH)
 // This is the most popular type that is used to pay to "addresses" (e.g. 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG).
-- (BOOL) isPayToPublicKeyHashScript;
+@property(nonatomic, readonly) BOOL isPayToPublicKeyHashScript;
 
 // Returns YES if the script is "OP_HASH160 <20-byte hash> OP_EQUAL" (aka P2SH)
 // This is later added script type that allows sender not to worry about complex redemption scripts (and not pay tx fees).
 // Recipient must provide a serialized script which matches the hash to redeem the output.
 // P2SH base58-encoded addresses start with "3" (e.g. "3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8").
-- (BOOL) isPayToScriptHashScript;
+@property(nonatomic, readonly) BOOL isPayToScriptHashScript;
 
 // Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" where N is up to 3.
 // Scripts with up to 3 signatures are considered standard and relayed quickly, but you can create more complex ones.
-- (BOOL) isStandardMultisignatureScript;
+@property(nonatomic, readonly) BOOL isStandardMultisignatureScript;
 
 // Returns YES if the script is "<M> <pubkey1> ... <pubkeyN> <N> OP_CHECKMULTISIG" with any valid N or M.
-- (BOOL) isMultisignatureScript;
+@property(nonatomic, readonly) BOOL isMultisignatureScript;
 
 // Returns YES if the script consists of push data operations only (including OP_<N>). Aka isPushOnly in BitcoinQT.
 // Used in BIP16 (P2SH).
-- (BOOL) isDataOnly;
+@property(nonatomic, readonly) BOOL isDataOnly;
 
 // Enumerates all available operations.
 //   opIndex - index of the current operation: 0..(N-1) where N is number of ops.
@@ -115,15 +115,15 @@ typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
 
 // Returns BTCPublicKeyAddress or BTCScriptHashAddress if the script is a standard output script for these addresses.
 // If the script is something different, returns nil.
-- (BTCAddress*) standardAddress;
+@property(nonatomic, readonly) BTCAddress* standardAddress;
 
 // Wraps the recipient into an output P2SH script (OP_HASH160 <20-byte hash of the recipient> OP_EQUAL).
-- (BTCScript*) scriptHashScript;
+@property(nonatomic, readonly) BTCScript* scriptHashScript;
 
 // Returns BTCScriptHashAddress that hashes this script.
-// Equivalent to [[script scriptHashScript] standardAddress] or [BTCScriptHashAddress addressWithData:BTCHash160(script.data)]
-- (BTCScriptHashAddress*) scriptHashAddress;
-- (BTCScriptHashAddressTestnet*) scriptHashAddressTestnet;
+// Equivalent to script.scriptHashScript.standardAddress or [BTCScriptHashAddress addressWithData:BTCHash160(script.data)]
+@property(nonatomic, readonly) BTCScriptHashAddress* scriptHashAddress;
+@property(nonatomic, readonly) BTCScriptHashAddressTestnet* scriptHashAddressTestnet;
 
 
 

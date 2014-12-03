@@ -36,6 +36,12 @@ typedef NS_ENUM(int8_t, BTCMnemonicWordListType) {
 // Root keychain instantiated with a given seed.
 @property(nonatomic, readonly) BTCKeychain* keychain;
 
+// Compact binary representation of the mnemonic.
+@property(nonatomic, readonly) NSData* data;
+
+// Binary representation of the mnemonic with computed seed appended (so it can be cached).
+@property(nonatomic, readonly) NSData* dataWithSeed;
+
 // Inits mnemonic with a raw entropy buffer, optional password and a wordlist.
 // If `password` is nil, it is treated as an empty string.
 // `entropy` length in bits must be divisible by 32 (128, 160, 192, 224, 256 bits).
@@ -52,12 +58,6 @@ typedef NS_ENUM(int8_t, BTCMnemonicWordListType) {
 // (which contains wordlist type, raw entropy, password and optional computed seed).
 // If the data was produced by `-dataWithSeed` method, seed will not be recomputed.
 - (id) initWithData:(NSData*)data;
-
-// Compact binary representation of the mnemonic.
-- (NSData*) data;
-
-// Binary representation of the mnemonic with computed seed appended (so it can be cached).
-- (NSData*) dataWithSeed;
 
 // Clears all sensitive information from memory.
 - (void) clear;

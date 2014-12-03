@@ -102,6 +102,11 @@ typedef NS_ENUM(NSInteger, BTCCurrencyConverterMode) {
 /*!
  * Serializes state into a plist/json dictionary.
  */
+@property(nonatomic, readonly) NSDictionary* dictionary;
+
+/*!
+ * Serializes state into a plist/json dictionary.
+ */
 - (id) initWithDictionary:(NSDictionary*)dict;
 
 /*!
@@ -114,9 +119,5 @@ typedef NS_ENUM(NSInteger, BTCCurrencyConverterMode) {
  */
 - (NSDecimalNumber*) fiatFromBitcoin:(BTCAmount)satoshis;
 
-/*!
- * Serializes state into a plist/json dictionary.
- */
-- (NSDictionary*) dictionary;
 
 @end

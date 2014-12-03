@@ -94,6 +94,11 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
 - (NSDictionary*) dictionaryRepresentation
 {
+    return self.dictionary;
+}
+
+- (NSDictionary*) dictionary
+{
     return @{
       @"hash":      self.transactionID,
       @"ver":       @(_version),
@@ -101,8 +106,8 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
       @"vout_sz":   @(_outputs.count),
       @"lock_time": @(_lockTime),
       @"size":      @(self.data.length),
-      @"in":        [_inputs valueForKey:@"dictionaryRepresentation"],
-      @"out":       [_outputs valueForKey:@"dictionaryRepresentation"],
+      @"in":        [_inputs valueForKey:@"dictionary"],
+      @"out":       [_outputs valueForKey:@"dictionary"],
     };
 }
 
@@ -478,7 +483,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 //    NSLog(@"TX: %@", BTCHexStringFromData(fulldata));
 //    NSLog(@"TX SUBSCRIPT: %@ (%@)", BTCHexStringFromData(subscript.data), subscript);
 //    NSLog(@"TX HASH: %@", BTCHexStringFromData(hash));
-//    NSLog(@"TX PLIST: %@", tx.dictionaryRepresentation);
+//    NSLog(@"TX PLIST: %@", tx.dictionary);
     
     return hash;
 }
