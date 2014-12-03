@@ -18,6 +18,13 @@
 // Underlying data structure in OpenSSL.
 @property(nonatomic, readonly) const EC_POINT* EC_POINT;
 
+// Returns YES if the point is at infinity.
+@property(nonatomic, readonly, getter=isInfinity) BOOL infinity;
+
+// Coordinates of the point
+@property(nonatomic, readonly) BTCBigNumber* x;
+@property(nonatomic, readonly) BTCBigNumber* y;
+
 // Returns the generator point. Same as [BTCCurvePoint alloc] init].
 + (instancetype) generator;
 
@@ -30,9 +37,6 @@
 // Initializes point with OpenSSL EC_POINT.
 - (id) initWithEC_POINT:(const EC_POINT*)ecpoint;
 
-// Returns YES if the point is at infinity.
-- (BOOL) isInfinity;
-
 // These modify the receiver and return self (or nil in case of error). To create another point use -copy: [[point copy] multiply:number]
 - (instancetype) multiply:(BTCBigNumber*)number;
 - (instancetype) add:(BTCCurvePoint*)point;
@@ -40,11 +44,7 @@
 // Efficiently adds n*G to the receiver. Equivalent to [point add:[[G copy] multiply:number]]
 - (instancetype) addGeneratorMultipliedBy:(BTCBigNumber*)number;
 
-// Coordinates of the point
-- (BTCBigNumber*) x;
-- (BTCBigNumber*) y;
-
-// Re-declared copy to provide exact return type.
+// Re-declared `-copy` to provide exact return type.
 - (BTCCurvePoint*) copy;
 
 // Clears internal point data.

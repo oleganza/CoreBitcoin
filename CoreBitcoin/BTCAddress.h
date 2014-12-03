@@ -19,39 +19,41 @@
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-// DEPRECATED! Use `-addressWithString:` instead.
-+ (instancetype) addressWithBase58String:(NSString*)string;
-
-// Returns an instance of a specific subclass depending on version number.
-// Returns nil for unsupported addresses.
 + (instancetype) addressWithString:(NSString*)string;
 
 // Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
 + (instancetype) addressWithData:(NSData*)data;
 
+// Returns an instance of a specific subclass depending on version number.
+// Returns nil for unsupported addresses.
+// DEPRECATED! Use `-addressWithString:` instead.
++ (instancetype) addressWithBase58String:(NSString*)string;
+
 // Returns binary contents of an address (without checksums or version number).
 // 20 bytes for hashes, 32 bytes for private key.
-- (NSMutableData*) data;
+@property(nonatomic, readonly) NSData* data;
 
 // Returns representation in base58 encoding.
 @property(nonatomic, readonly) NSString* string;
 
 // Returns representation in base58 encoding.
 // DEPRECATED! Use -string instead.
-- (NSString*) base58String;
+@property(nonatomic, readonly) NSString* base58String;
 
 /*!
  * Returns a public version of this address. By default it's receiver itself.
  * PrivateKeyAddress returns appropriate PublicKeyAddress.
  */
-- (BTCAddress*) publicAddress;
+@property(nonatomic, readonly) BTCAddress* publicAddress;
 
 /*!
  * Returns YES if this address is intended for testnet.
  */
-- (BOOL) isTestnet;
+@property(nonatomic, readonly, getter=isTestnet) BOOL testnet;
 
-// Clears contents of the data to prevent leaks.
+/*!
+ * Clears contents of the data to prevent leaks.
+ */
 - (void) clear;
 
 @end
