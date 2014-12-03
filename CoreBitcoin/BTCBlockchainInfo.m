@@ -41,10 +41,10 @@
         BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
         
         txout.value = [item[@"value"] longLongValue];
-        txout.script = [[BTCScript alloc] initWithData:BTCDataWithHexString(item[@"script"])];
+        txout.script = [[BTCScript alloc] initWithData:BTCDataFromHex(item[@"script"])];
         txout.index = [item[@"tx_output_n"] intValue];
         txout.confirmations = [item[@"confirmations"] unsignedIntegerValue];
-        txout.transactionHash = (BTCDataWithHexString(item[@"tx_hash"])); // unlike many other APIs, here tx_hash is not reversed, but a raw hash in hex.
+        txout.transactionHash = (BTCDataFromHex(item[@"tx_hash"])); // unlike many other APIs, here tx_hash is not reversed, but a raw hash in hex.
         
         [outputs addObject:txout];
     }
@@ -98,7 +98,7 @@
     NSString* urlstring = @"https://blockchain.info/pushtx";
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring]];
     request.HTTPMethod = @"POST";
-    NSString* form = [NSString stringWithFormat:@"tx=%@", BTCHexStringFromData(data)];
+    NSString* form = [NSString stringWithFormat:@"tx=%@", BTCHexFromData(data)];
     request.HTTPBody = [form dataUsingEncoding:NSUTF8StringEncoding];
     return request;
 }

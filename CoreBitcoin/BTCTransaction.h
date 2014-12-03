@@ -49,15 +49,18 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 // Array of BTCTransactionOutput objects
 @property(nonatomic) NSArray* outputs;
 
-// Binary representation on tx ready to be sent over the wire (aka "payload")
-@property(nonatomic, readonly) NSData* data;
-
 // Version. Default is 1.
 @property(nonatomic) uint32_t version;
 
 // Lock time. Either a block height or a unix timestamp.
 // Default is 0.
 @property(nonatomic) uint32_t lockTime; // aka "lock_time"
+
+// Binary representation on tx ready to be sent over the wire (aka "payload")
+@property(nonatomic, readonly) NSData* data;
+
+// Binary representiation in hex.
+@property(nonatomic, readonly) NSString* hex;
 
 
 // Informational properties
@@ -111,6 +114,9 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 
 // Parses tx from data buffer.
 - (id) initWithData:(NSData*)data;
+
+// Parses tx from hex string.
+- (id) initWithHex:(NSString*)hex;
 
 // Parses input stream (useful when parsing many transactions from a single source, e.g. a block).
 - (id) initWithStream:(NSInputStream*)stream;

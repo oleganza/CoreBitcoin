@@ -5,10 +5,10 @@
 
 NSData* BTCHashFromID(NSString* identifier)
 {
-    return BTCReversedData(BTCDataWithHexString(identifier));
+    return BTCReversedData(BTCDataFromHex(identifier));
 }
 
 NSString* BTCIDFromHash(NSData* hash)
 {
-    return BTCHexStringFromData(BTCReversedData(hash));
+    return BTCHexFromData(BTCReversedData(hash));
 }

@@ -126,7 +126,7 @@
 {
     NSData* txhash = self.transactionHash;
     return [NSString stringWithFormat:@"<%@:0x%p%@%@ %@ BTC '%@'%@>", [self class], self,
-            (txhash ? [NSString stringWithFormat:@" %@", BTCHexStringFromData(txhash)]: @""),
+            (txhash ? [NSString stringWithFormat:@" %@", BTCHexFromData(txhash)]: @""),
             (_index == BTCTransactionOutputIndexUnknown ? @"" : [NSString stringWithFormat:@":%d", _index]),
             [self formattedBTCValue:_value],
             _script.string,

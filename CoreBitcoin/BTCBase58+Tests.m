@@ -5,7 +5,7 @@
 
 void BTCAssertHexEncodesToBase58(NSString* hex, NSString* base58)
 {
-    NSData* data = BTCDataWithHexString(hex);
+    NSData* data = BTCDataFromHex(hex);
     
     // Encode
     NSCAssert([BTCBase58StringWithData(data) isEqualToString:base58], @"should encode in base58 correctly");

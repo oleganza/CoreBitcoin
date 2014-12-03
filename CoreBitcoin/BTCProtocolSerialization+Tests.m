@@ -11,7 +11,7 @@
     
     NSData* data = [BTCProtocolSerialization dataForVarInt:number];
     //NSLog(@"data = %@", data);
-    NSAssert([data isEqualToData:BTCDataWithHexString(hexForm)], @"Should encode correctly");
+    NSAssert([data isEqualToData:BTCDataFromHex(hexForm)], @"Should encode correctly");
     uint64_t value = 0;
     NSUInteger len = [BTCProtocolSerialization readVarInt:&value fromData:data];
     NSAssert(len == requiredLength, @"Should read correct number of bytes");

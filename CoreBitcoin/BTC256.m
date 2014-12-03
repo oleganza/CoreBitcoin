@@ -357,17 +357,17 @@ NSString* NSStringFromBTC512(BTC512 chunk)
 // If string is invalid or data is too short, returns BTCHash{160,256,512}Null.
 BTC160 BTC160FromNSString(NSString* string)
 {
-    return BTC160FromNSData(BTCDataWithHexString(string));
+    return BTC160FromNSData(BTCDataFromHex(string));
 }
 
 BTC256 BTC256FromNSString(NSString* string)
 {
-    return BTC256FromNSData(BTCDataWithHexString(string));
+    return BTC256FromNSData(BTCDataFromHex(string));
 }
 
 BTC512 BTC512FromNSString(NSString* string)
 {
-    return BTC512FromNSData(BTCDataWithHexString(string));
+    return BTC512FromNSData(BTCDataFromHex(string));
 }
 
 

@@ -123,15 +123,22 @@ NSData* BTCCoinFlipDataWithLength(NSUInteger length)
     return data;
 }
 
+NSData* BTCDataWithUTF8String(const char* utf8string) { // deprecated
+    return BTCDataWithUTF8CString(utf8string);
+}
 
 // Creates data with zero-terminated string in UTF-8 encoding.
-NSData* BTCDataWithUTF8String(const char* utf8string)
+NSData* BTCDataWithUTF8CString(const char* utf8string)
 {
     return [[NSData alloc] initWithBytes:utf8string length:strlen(utf8string)];
 }
 
+NSData* BTCDataWithHexString(NSString* hexString) { // deprecated
+    return BTCDataFromHex(hexString);
+}
+
 // Init with hex string (lower- or uppercase, with optional 0x prefix)
-NSData* BTCDataWithHexString(NSString* hexString)
+NSData* BTCDataFromHex(NSString* hexString)
 {
     return BTCDataWithHexCString([hexString cStringUsingEncoding:NSASCIIStringEncoding]);
 }
@@ -196,7 +203,7 @@ NSData* BTCDataWithHexCString(const char* hexCString)
 }
 
 
-NSString* BTCHexStringFromDataWithFormat(NSData* data, const char* format)
+NSString* BTCHexFromDataWithFormat(NSData* data, const char* format)
 {
     if (!data) return nil;
     
@@ -213,15 +220,22 @@ NSString* BTCHexStringFromDataWithFormat(NSData* data, const char* format)
     return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
 }
 
-NSString* BTCHexStringFromData(NSData* data)
-{
-    return BTCHexStringFromDataWithFormat(data, "%02x");
+NSString* BTCHexStringFromData(NSData* data) { // deprecated
+    return BTCHexFromDataWithFormat(data, "%02x");
 }
 
-NSString* BTCUppercaseHexStringFromData(NSData* data)
-{
-    return BTCHexStringFromDataWithFormat(data, "%02X");
+NSString* BTCUppercaseHexStringFromData(NSData* data) { // deprecated
+    return BTCHexFromDataWithFormat(data, "%02X");
 }
+
+NSString* BTCHexFromData(NSData* data) {
+    return BTCHexFromDataWithFormat(data, "%02x");
+}
+
+NSString* BTCUppercaseHexFromData(NSData* data) {
+    return BTCHexFromDataWithFormat(data, "%02X");
+}
+
 
 NSData* BTCReversedData(NSData* data)
 {

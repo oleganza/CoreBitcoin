@@ -45,7 +45,7 @@ typedef enum : NSUInteger {
         BTCTransactionInput* txin = [BTCTransactionInput new];
         txin.previousIndex = 0;
         txin.signatureScript = [BTCScript new];
-        [txin.signatureScript appendData:BTCDataWithUTF8String("A very long text simulating a signature script inside the transaction input.")];
+        [txin.signatureScript appendData:BTCDataWithUTF8CString("A very long text simulating a signature script inside the transaction input.")];
         [tx addInput:txin];
     }
 
@@ -57,22 +57,22 @@ typedef enum : NSUInteger {
 
 + (void) testSerialization
 {
-    //NSLog(@"EMPTY TX: %@", BTCHexStringFromData([[BTCTransaction alloc] init].transactionHash));
+    //NSLog(@"EMPTY TX: %@", BTCHexFromData([[BTCTransaction alloc] init].transactionHash));
 
-    NSData* txdata = BTCDataWithHexString(@"010000000150869eb405cdd81ac4a1ccfa74f256a176f3139dece7e36e038c8b38cdfee6a4020000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88acffffffff03a0860100000000001976a9149c7bce1f45e6743fa1fde9e507f768cb3de3fbd988aca0860100000000001976a91424b70bbd9f4c75e9a6f7f30abf183d15d3bab87188acf035a601000000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88ac00000000");
+    NSData* txdata = BTCDataFromHex(@"010000000150869eb405cdd81ac4a1ccfa74f256a176f3139dece7e36e038c8b38cdfee6a4020000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88acffffffff03a0860100000000001976a9149c7bce1f45e6743fa1fde9e507f768cb3de3fbd988aca0860100000000001976a91424b70bbd9f4c75e9a6f7f30abf183d15d3bab87188acf035a601000000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88ac00000000");
 
     BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
 
     BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"n3ZRkPLZZLdjWi4Wn3AazjqWBw7WWXWtVb"]];
     NSData* sighash = [tx signatureHashForScript:outputScript inputIndex:0 hashType:SIGHASH_ALL error:nil];
 
-    NSLog(@"sighash = %@ (%@)", BTCHexStringFromData(sighash), sighash);
+    NSLog(@"sighash = %@ (%@)", BTCHexFromData(sighash), sighash);
 
     BTCTransactionInput* txin = tx.inputs.firstObject;
 
 //    NSLog(@"txin script: %@", txin.signatureScript.string);
 
-//    NSData* sight = BTCDataWithHexString(@"304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e0101");
+//    NSData* sight = BTCDataFromHex(@"304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e0101");
 
 
 
@@ -104,7 +104,7 @@ typedef enum : NSUInteger {
         NSLog(@"tx = %@", tx.dictionary);
 
     }
-//    NSData* txdata = BTCDataWithHexString(@"0100000001f117de362f2d9825659b108f2dd9e6612765fab65c74a1731dae2067e58e52f301000000fd1f0100473044022026be9a250e10a3c2a1686ed485d76e9f87e66a8db022eb0f110519c7d2ec965b02203a67ae8ee70790167c0e747dfd14b833752bc3dc66816c6889cf6e9e65861781014830450221009da95c8c8c8ebae29f1fe8410f18af61e63c6d3e910b7e0ce9fda3516108c374022044b84c8053e18be1975d75c60070af6e1b45993d95c3cf3023ed4062fcd40ee2014c8b52210391e4786b4c7637c160247ad6d5702d9bb2860cbb8130d59b0fd9808a0220d50f2102e191fcff2849099988fbe1592b6788707a61401058c09ef97363c9d96c43a0cf21027f10a51295e8e96d5957f3665168426249a006e548e48cbfa5882d2bf89ab67e2103d39801bafef0cc3c211101a54a47874c0a835efa2c17c47ebbe380c803345a2354aeffffffff0254150000000000002a6a2866666430306265626332343430336464626531363632643934626633386239663463613865663935e48707000000000017a9143497d771b10abc57525200d5676a5ab7901d4a998700000000");
+//    NSData* txdata = BTCDataFromHex(@"0100000001f117de362f2d9825659b108f2dd9e6612765fab65c74a1731dae2067e58e52f301000000fd1f0100473044022026be9a250e10a3c2a1686ed485d76e9f87e66a8db022eb0f110519c7d2ec965b02203a67ae8ee70790167c0e747dfd14b833752bc3dc66816c6889cf6e9e65861781014830450221009da95c8c8c8ebae29f1fe8410f18af61e63c6d3e910b7e0ce9fda3516108c374022044b84c8053e18be1975d75c60070af6e1b45993d95c3cf3023ed4062fcd40ee2014c8b52210391e4786b4c7637c160247ad6d5702d9bb2860cbb8130d59b0fd9808a0220d50f2102e191fcff2849099988fbe1592b6788707a61401058c09ef97363c9d96c43a0cf21027f10a51295e8e96d5957f3665168426249a006e548e48cbfa5882d2bf89ab67e2103d39801bafef0cc3c211101a54a47874c0a835efa2c17c47ebbe380c803345a2354aeffffffff0254150000000000002a6a2866666430306265626332343430336464626531363632643934626633386239663463613865663935e48707000000000017a9143497d771b10abc57525200d5676a5ab7901d4a998700000000");
 //    
 //    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
 //    
@@ -137,7 +137,7 @@ typedef enum : NSUInteger {
 
 
 // August 27, 2014
-//    NSData* txdata = BTCDataWithHexString(@"010000000470f391618f92098591f6f362ff71b2da80c53da20886d59e91f82993ef8d22ab010000006a47304402206b9ee432d0452f0f4a3459f6559072ac3e2d4c19cce28067329ccae0bd29b53002207cac7460949714e2f68f9b98cbe32bbcad66d8b959965ee6f14d845e5dd5acbd012103a61fda0fb5615942a7c22a8c9f70cb683021951fc6d0fd61596a02dfc65ff87dffffffff56dbee00e8f12a41b9c9e45f0f97f13a24cd7df7e0f3e3ee4aeec94b025ff2dd000000006b483045022100e7b15d2490c71459c659c0fb1b6b4d0a554c469619beb0a21ede91452d127d530220770218c04bca0a305a875d8d2d5bc72bd3ced7828ffff0c9916ea2c92aaba07e012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffffe8f24ee413786c39d6ee034efed3f429645c5d6f3ce59b6d8cb4273d6f769dd7010000006b4830450221009f247975662e2f25fe693a94d224711f1c03a761c59502ef7ea83974fa2393370220533c41d16595851a033340eb3c6ee1f8d762cb3fb8ac3c86099bd387fc4c3ec3012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff739e752dd9f0b5a0c237d7f1c1e3e9f4acffbc2e187b1c9a7cc0c6e838e785e7010000006b483045022100c84adc31c47e6edfc785919368a6bd54baaff9052f67bea304ae685592c934650220691e7bec0f72f67e406dc915bdf346169ead144234bbeea76fa1e8359ad87c41012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff030100000000000000166a144b184e318c886e179b847398bd1cd0ac5f9cf2ea54150000000000001976a914ccaf5b88620ed28c1d9621fac271a928c0ac6b0c88ac838a00000000000017a9148ce0e2794443d26bd2c1dbea8157e42734667e168700000000");
+//    NSData* txdata = BTCDataFromHex(@"010000000470f391618f92098591f6f362ff71b2da80c53da20886d59e91f82993ef8d22ab010000006a47304402206b9ee432d0452f0f4a3459f6559072ac3e2d4c19cce28067329ccae0bd29b53002207cac7460949714e2f68f9b98cbe32bbcad66d8b959965ee6f14d845e5dd5acbd012103a61fda0fb5615942a7c22a8c9f70cb683021951fc6d0fd61596a02dfc65ff87dffffffff56dbee00e8f12a41b9c9e45f0f97f13a24cd7df7e0f3e3ee4aeec94b025ff2dd000000006b483045022100e7b15d2490c71459c659c0fb1b6b4d0a554c469619beb0a21ede91452d127d530220770218c04bca0a305a875d8d2d5bc72bd3ced7828ffff0c9916ea2c92aaba07e012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffffe8f24ee413786c39d6ee034efed3f429645c5d6f3ce59b6d8cb4273d6f769dd7010000006b4830450221009f247975662e2f25fe693a94d224711f1c03a761c59502ef7ea83974fa2393370220533c41d16595851a033340eb3c6ee1f8d762cb3fb8ac3c86099bd387fc4c3ec3012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff739e752dd9f0b5a0c237d7f1c1e3e9f4acffbc2e187b1c9a7cc0c6e838e785e7010000006b483045022100c84adc31c47e6edfc785919368a6bd54baaff9052f67bea304ae685592c934650220691e7bec0f72f67e406dc915bdf346169ead144234bbeea76fa1e8359ad87c41012103a7d7efd7238981e2103e564661ed2042055b5216bdcb006d14f7099f8f06168cffffffff030100000000000000166a144b184e318c886e179b847398bd1cd0ac5f9cf2ea54150000000000001976a914ccaf5b88620ed28c1d9621fac271a928c0ac6b0c88ac838a00000000000017a9148ce0e2794443d26bd2c1dbea8157e42734667e168700000000");
 //
 //    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
 //
@@ -154,7 +154,7 @@ typedef enum : NSUInteger {
 //        
 //        for (BTCScriptChunk* chunk in script.scriptChunks)
 //        {
-//            NSLog(@"chunk = %@", BTCHexStringFromData(chunk.pushdata));
+//            NSLog(@"chunk = %@", BTCHexFromData(chunk.pushdata));
 //            if (chunk.pushdata.length > 0)
 //            {
 //                NSData* pushdata = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
@@ -192,7 +192,7 @@ typedef enum : NSUInteger {
 //        
 //        for (BTCScriptChunk* chunk in script.scriptChunks)
 //        {
-//            //NSLog(@"           chunk = %@", BTCHexStringFromData(chunk.string));
+//            //NSLog(@"           chunk = %@", BTCHexFromData(chunk.string));
 ////            if (chunk.pushdata.length > 1)
 ////            {
 ////                NSData* pushdata = chunk.pushdata; //[ subdataWithRange:NSMakeRange(0, chunk.pushdata.length - 1)];
@@ -262,7 +262,7 @@ typedef enum : NSUInteger {
     }
     
     NSLog(@"transaction = %@", transaction.dictionary);
-    NSLog(@"transaction in hex:\n------------------\n%@\n------------------\n", BTCHexStringFromData([transaction data]));
+    NSLog(@"transaction in hex:\n------------------\n%@\n------------------\n", BTCHexFromData([transaction data]));
     
     NSLog(@"Sending in 5 sec...");
     sleep(5);
@@ -382,8 +382,8 @@ typedef enum : NSUInteger {
         txin.previousIndex = txout.index;
         [tx addInput:txin];
         
-        NSLog(@"txhash: http://blockchain.info/rawtx/%@", BTCHexStringFromData(txout.transactionHash));
-        NSLog(@"txhash: http://blockchain.info/rawtx/%@ (reversed)", BTCHexStringFromData(BTCReversedData(txout.transactionHash)));
+        NSLog(@"txhash: http://blockchain.info/rawtx/%@", BTCHexFromData(txout.transactionHash));
+        NSLog(@"txhash: http://blockchain.info/rawtx/%@ (reversed)", BTCHexFromData(BTCReversedData(txout.transactionHash)));
         
         spentCoins += txout.value;
     }
@@ -424,7 +424,7 @@ typedef enum : NSUInteger {
         NSAssert([d1 isEqual:d2], @"Transaction must not change within signatureHashForScript!");
         
         // 134675e153a5df1b8e0e0f0c45db0822f8f681a2eb83a0f3492ea8f220d4d3e4
-        NSLog(@"Hash for input %d: %@", i, BTCHexStringFromData(hash));
+        NSLog(@"Hash for input %d: %@", i, BTCHexFromData(hash));
         if (!hash)
         {
             return nil;

@@ -50,8 +50,8 @@
     NSData* alicePrivateKeyData = BTCHash256([@"alice private key" dataUsingEncoding:NSUTF8StringEncoding]);
     NSData* bobPrivateKeyData = BTCHash256([@"bob private key" dataUsingEncoding:NSUTF8StringEncoding]);
     
-//    NSLog(@"Alice privkey: %@", BTCHexStringFromData(alicePrivateKeyData));
-//    NSLog(@"Bob privkey:   %@", BTCHexStringFromData(bobPrivateKeyData));
+//    NSLog(@"Alice privkey: %@", BTCHexFromData(alicePrivateKeyData));
+//    NSLog(@"Bob privkey:   %@", BTCHexFromData(bobPrivateKeyData));
     
     BTCBigNumber* aliceNumber = [[BTCBigNumber alloc] initWithUnsignedData:alicePrivateKeyData];
     BTCBigNumber* bobNumber = [[BTCBigNumber alloc] initWithUnsignedData:bobPrivateKeyData];

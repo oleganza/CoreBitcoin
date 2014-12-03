@@ -19,7 +19,7 @@
 + (void) testCanonicality
 {
     {
-        NSData* data = BTCDataWithHexString(@"304402207f5561ac3cfb05743cab6ca914f7eb93c489f276f10cdf4549e7f0b0ef4e85cd02200191c0c2fd10f10158973a0344fdaf2438390e083a509d2870bcf2b05445612b01");
+        NSData* data = BTCDataFromHex(@"304402207f5561ac3cfb05743cab6ca914f7eb93c489f276f10cdf4549e7f0b0ef4e85cd02200191c0c2fd10f10158973a0344fdaf2438390e083a509d2870bcf2b05445612b01");
 
         NSError* error = nil;
         if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
@@ -29,7 +29,7 @@
     }
 
     {
-        NSData* data = BTCDataWithHexString(@"3045022100e81a33ac22d0ef25d359a5353977f0f953608b2733141239ec02363237ab6781022045c71237e95b56079e9fa88591060e4c1a4bb02c0cad1ebeb092749d4aa9754701");
+        NSData* data = BTCDataFromHex(@"3045022100e81a33ac22d0ef25d359a5353977f0f953608b2733141239ec02363237ab6781022045c71237e95b56079e9fa88591060e4c1a4bb02c0cad1ebeb092749d4aa9754701");
 
         NSError* error = nil;
         if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
@@ -39,7 +39,7 @@
     }
 
     {
-        NSData* data = BTCDataWithHexString(@"304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e01");
+        NSData* data = BTCDataFromHex(@"304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e01");
 
         NSError* error = nil;
         if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
@@ -57,7 +57,7 @@
     for (int i = 0; i < 32; i++)
     {
         BTCKey* k = [[BTCKey alloc] init];
-        //NSLog(@"key = %@", BTCHexStringFromData(k.privateKey));
+        //NSLog(@"key = %@", BTCHexFromData(k.privateKey));
         
         // Note: this test may fail, but very rarely.
         NSData* subkey = [k.privateKey subdataWithRange:NSMakeRange(0, 4)];
@@ -91,7 +91,7 @@
 {
     NSString* message = @"Test message";
     NSData* messageData = [message dataUsingEncoding:NSUTF8StringEncoding];
-    NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
+    NSData* secret = BTCDataFromHex(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     
     NSAssert(secret.length == 32, @"secret must be 32 bytes long");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
@@ -147,7 +147,7 @@
 + (void) testBitcoinSignedMessage
 {
     NSString* message = @"Test message";
-    NSData* secret = BTCDataWithHexString(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
+    NSData* secret = BTCDataFromHex(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
     key.publicKeyCompressed = NO;
     //key.publicKeyCompressed = YES;
@@ -165,8 +165,8 @@
     }
     
     {
-        NSData* signature = BTCDataWithHexString(@"1B158259BD8EEB198BABBCC4308CDFB8E8068F0A712CAC634257933A072EA6DB7"
-                                                  "BEB3308F4C937D4F397A2A782BF12884045C27430719A2890F0127B4732D9CF0D");
+        NSData* signature = BTCDataFromHex(@"1B158259BD8EEB198BABBCC4308CDFB8E8068F0A712CAC634257933A072EA6DB7"
+                                            "BEB3308F4C937D4F397A2A782BF12884045C27430719A2890F0127B4732D9CF0D");
         
         BTCKey* key = [BTCKey verifySignature:signature forMessage:@"Test message"];
         NSAssert([key isValidSignature:signature forMessage:@"Test message"], @"Should validate signature");

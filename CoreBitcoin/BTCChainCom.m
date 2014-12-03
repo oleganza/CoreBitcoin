@@ -46,7 +46,7 @@
         txout.value = [item[@"value"] longLongValue];
         txout.script = [[BTCScript alloc] initWithString:item[@"script"]];
         txout.index = [item[@"output_index"] intValue];
-        txout.transactionHash = (BTCReversedData(BTCDataWithHexString(item[@"transaction_hash"])));
+        txout.transactionHash = (BTCReversedData(BTCDataFromHex(item[@"transaction_hash"])));
         [outputs addObject:txout];
     }
     
@@ -74,7 +74,7 @@
     NSURL* url = [self  chainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
     
-    NSDictionary *requestDictionary = @{@"hex":BTCHexStringFromData(data)};
+    NSDictionary *requestDictionary = @{@"hex":BTCHexFromData(data)};
     
     NSError *serializationError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestDictionary options:0 error:&serializationError];

@@ -77,6 +77,11 @@
     return self;
 }
 
+- (id) initWithHex:(NSString*)hex
+{
+    return [self initWithData:BTCDataFromHex(hex)];
+}
+
 - (id) initWithString:(NSString*)string
 {
     if (self = [super init])
@@ -196,6 +201,11 @@
         _data = md;
     }
     return _data;
+}
+
+- (NSString*) hex
+{
+    return BTCHexFromData(self.data);
 }
 
 - (NSString*) string
@@ -346,7 +356,7 @@
             if ([scanner scanUpToString:@"]" intoString:&hexstring])
             {
                 // Check if hex string is valid.
-                NSData* data = BTCDataWithHexString(hexstring);
+                NSData* data = BTCDataFromHex(hexstring);
                 
                 if (!data) return nil; // hex string is invalid
                 
@@ -370,7 +380,7 @@
             NSString* hexstring = nil;
             if ([scanner scanUpToCharactersFromSet:whitespaceSet intoString:&hexstring])
             {
-                NSData* data = BTCDataWithHexString(hexstring);
+                NSData* data = BTCDataFromHex(hexstring);
                 
                 if (!data || data.length == 0) return nil; // hex string is invalid
                 
@@ -441,7 +451,7 @@
             
             // 6. Big pushdata in hex
             
-            NSData* data = BTCDataWithHexString(word);
+            NSData* data = BTCDataFromHex(word);
             
             if (!data || data.length == 0) return nil; // hex string is invalid
             
@@ -1149,7 +1159,7 @@
         }
         else
         {
-            string = BTCHexStringFromData(data);
+            string = BTCHexFromData(data);
             
             // Shorter than 128-bit chunks are wrapped in square brackets to avoid ambiguity with big all-decimal numbers.
             if (data.length < 16)

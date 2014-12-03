@@ -57,13 +57,13 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
     if (self = [self init])
     {
         NSString* prevHashString = (dictionary[@"prev_out"] ?: @{})[@"hash"];
-        if (prevHashString) _previousHash = BTCReversedData(BTCDataWithHexString(prevHashString));
+        if (prevHashString) _previousHash = BTCReversedData(BTCDataFromHex(prevHashString));
         NSNumber* prevIndexNumber = (dictionary[@"prev_out"] ?: @{})[@"n"];
         if (prevIndexNumber) _previousIndex = prevIndexNumber.unsignedIntValue;
         
         if (dictionary[@"coinbase"])
         {
-            _coinbaseData = BTCDataWithHexString(dictionary[@"coinbase"]);
+            _coinbaseData = BTCDataFromHex(dictionary[@"coinbase"]);
         }
         else
         {
@@ -78,7 +78,7 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
             {
                 if (scriptSig[@"hex"])
                 {
-                    _signatureScript = [[BTCScript alloc] initWithData:BTCDataWithHexString(scriptSig[@"hex"])];
+                    _signatureScript = [[BTCScript alloc] initWithData:BTCDataFromHex(scriptSig[@"hex"])];
                 }
                 else if (scriptSig[@"asm"])
                 {
@@ -174,13 +174,13 @@ static const uint32_t BTCMaxSequence = 0xFFFFFFFF;
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     dict[@"prev_out"] = @{
-                        @"hash": BTCHexStringFromData(BTCReversedData(_previousHash)), // transaction hashes are reversed
+                        @"hash": BTCHexFromData(BTCReversedData(_previousHash)), // transaction hashes are reversed
                         @"n": @(_previousIndex),
                         };
     
     if ([self isCoinbase])
     {
-        dict[@"coinbase"] = BTCHexStringFromData(_coinbaseData);
+        dict[@"coinbase"] = BTCHexFromData(_coinbaseData);
     }
     else
     {

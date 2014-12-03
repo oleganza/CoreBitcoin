@@ -25,15 +25,24 @@
 #pragma mark - Formatting
 
 
+- (NSString*) hex
+{
+    return BTCHexFromData(self);
+}
+
+- (NSString*) uppercaseHex
+{
+    return BTCUppercaseHexFromData(self);
+}
 
 - (NSString*) hexString
 {
-    return BTCHexStringFromData(self);
+    return BTCHexFromData(self);
 }
 
 - (NSString*) hexUppercaseString
 {
-    return BTCUppercaseHexStringFromData(self);
+    return BTCUppercaseHexFromData(self);
 }
 
 

@@ -488,12 +488,12 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<BTCKey:0x%p %@>", self, BTCHexStringFromData(self.publicKeyCached)];
+    return [NSString stringWithFormat:@"<BTCKey:0x%p %@>", self, BTCHexFromData(self.publicKeyCached)];
 }
 
 - (NSString*) debugDescription
 {
-    return [NSString stringWithFormat:@"<BTCKey:0x%p pubkey:%@ privkey:%@>", self, BTCHexStringFromData(self.publicKeyCached), BTCHexStringFromData(self.privateKey)];
+    return [NSString stringWithFormat:@"<BTCKey:0x%p pubkey:%@ privkey:%@>", self, BTCHexFromData(self.publicKeyCached), BTCHexFromData(self.privateKey)];
 }
 
 

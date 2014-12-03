@@ -89,9 +89,9 @@
 
     for (NSArray* tuple in testVectors)
     {
-        NSData* entropy = BTCDataWithHexString(tuple[0]);
+        NSData* entropy = BTCDataFromHex(tuple[0]);
         NSArray* words = [tuple[1] componentsSeparatedByString:@" "];
-        NSData* seed = BTCDataWithHexString(tuple[2]);
+        NSData* seed = BTCDataFromHex(tuple[2]);
 
         NSAssert(entropy, @"sanity check");
         NSAssert(words, @"sanity check");
@@ -157,7 +157,7 @@
 + (void) testMnemonicsWithoutPassword
 {
     NSArray* words = [@"degree rain vendor coffee push math onion inside pyramid blush stick treat" componentsSeparatedByString:@" "];
-    NSData* seed = BTCDataWithHexString(@"a359cf47a6ddcc581f28133062dbc4cfacfbd79703e167b2a61438bf9f89efe5f2f12f8d39aea44709a5913965be93a5f805c6c614dcbfe620bceb161f0018c4");
+    NSData* seed = BTCDataFromHex(@"a359cf47a6ddcc581f28133062dbc4cfacfbd79703e167b2a61438bf9f89efe5f2f12f8d39aea44709a5913965be93a5f805c6c614dcbfe620bceb161f0018c4");
 
     BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeUnknown];
 

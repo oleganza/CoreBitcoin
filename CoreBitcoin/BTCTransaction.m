@@ -52,6 +52,12 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     return self;
 }
 
+// Parses tx from hex string.
+- (id) initWithHex:(NSString*)hex
+{
+    return [self initWithData:BTCDataFromHex(hex)];
+}
+
 // Parses input stream (useful when parsing many transactions from a single source, e.g. a block).
 - (id) initWithStream:(NSInputStream*)stream
 {
@@ -191,10 +197,14 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     self.blockHash = BTCHashFromID(blockID);
 }
 
-
 - (NSData*) data
 {
     return [self computePayload];
+}
+
+- (NSString*) hex
+{
+    return BTCHexFromData(self.data);
 }
 
 - (NSData*) computePayload
@@ -480,9 +490,9 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     NSData* hash = BTCHash256(fulldata);
     
 //    NSLog(@"\n----------------------\n");
-//    NSLog(@"TX: %@", BTCHexStringFromData(fulldata));
-//    NSLog(@"TX SUBSCRIPT: %@ (%@)", BTCHexStringFromData(subscript.data), subscript);
-//    NSLog(@"TX HASH: %@", BTCHexStringFromData(hash));
+//    NSLog(@"TX: %@", BTCHexFromData(fulldata));
+//    NSLog(@"TX SUBSCRIPT: %@ (%@)", BTCHexFromData(subscript.data), subscript);
+//    NSLog(@"TX HASH: %@", BTCHexFromData(hash));
 //    NSLog(@"TX PLIST: %@", tx.dictionary);
     
     return hash;

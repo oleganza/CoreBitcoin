@@ -48,7 +48,7 @@
 - (id) initWithString:(NSString*)string base:(NSUInteger)base;
 
 // Same as initWithString:base:16
-- (id) initWithHexString:(NSString*)hexString;
+- (id) initWithHexString:(NSString*)hexString DEPRECATED_ATTRIBUTE;
 
 // Same as initWithString:base:10
 - (id) initWithDecimalString:(NSString*)decimalString;

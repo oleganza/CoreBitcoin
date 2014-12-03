@@ -1237,7 +1237,7 @@
     if (!pubkey)
     {
         if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Public key is not valid: %@.", @""),
-                                                     BTCHexStringFromData(pubkeyData)]];
+                                                     BTCHexFromData(pubkeyData)]];
         return NO;
     }
     
@@ -1256,7 +1256,7 @@
     
     NSData* sighash = [_transaction signatureHashForScript:subscript inputIndex:_inputIndex hashType:hashType error:errorOut];
     
-    //NSLog(@"BTCScriptMachine: Hash for input %d [%d]: %@", _inputIndex, hashType, BTCHexStringFromData(sighash));
+    //NSLog(@"BTCScriptMachine: Hash for input %d [%d]: %@", _inputIndex, hashType, BTCHexFromData(sighash));
     
     if (!sighash)
     {

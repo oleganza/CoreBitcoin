@@ -589,9 +589,9 @@
             _hardened ? @" hardened:YES" : @"",
             _parentFingerprint,
             self.fingerprint,
-            [BTCHexStringFromData(self.privateKey) substringToIndex:8],
-            [BTCHexStringFromData(self.publicKey) substringToIndex:8],
-            [BTCHexStringFromData(self.chainCode) substringToIndex:8]
+            [BTCHexFromData(self.privateKey) substringToIndex:8],
+            [BTCHexFromData(self.publicKey) substringToIndex:8],
+            [BTCHexFromData(self.chainCode) substringToIndex:8]
             ];
 }
 

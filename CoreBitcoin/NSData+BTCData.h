@@ -20,8 +20,12 @@
 #endif
 
 // Formats data as a lowercase hex string
-- (NSString*) hexString;
-- (NSString*) hexUppercaseString;
+- (NSString*) hex;
+- (NSString*) uppercaseHex;
+
+- (NSString*) hexString DEPRECATED_ATTRIBUTE;
+- (NSString*) hexUppercaseString DEPRECATED_ATTRIBUTE;
+
 
 // Encrypts/decrypts data using the key.
 // IV should either be nil or at least 128 bits long

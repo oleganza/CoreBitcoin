@@ -33,11 +33,11 @@
     
     //NSLog(@"difficulty: %@ (%x)", [self binaryString32:msg.difficultyTarget], msg.difficultyTarget);
     
-    NSData* encryptedMsg = [msg encryptedDataWithKey:key seed:BTCDataWithHexString(@"deadbeef")];
+    NSData* encryptedMsg = [msg encryptedDataWithKey:key seed:BTCDataFromHex(@"deadbeef")];
     
     NSAssert(msg.difficultyTarget == 0x00FFFFFF, @"check the difficulty target");
     
-    //NSLog(@"encrypted msg = %@   hash: %@...", BTCHexStringFromData(encryptedMsg), BTCHexStringFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
+    //NSLog(@"encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
     
     BTCEncryptedMessage* receivedMsg = [[BTCEncryptedMessage alloc] initWithEncryptedData:encryptedMsg];
     

@@ -266,7 +266,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<BTCCurvePoint:0x%p %@>", self, BTCHexStringFromData(self.data)];
+    return [NSString stringWithFormat:@"<BTCCurvePoint:0x%p %@>", self, BTCHexFromData(self.data)];
 }
 
 

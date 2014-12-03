@@ -47,7 +47,7 @@
         NSAssert([masterChain.key.compressedPublicKeyAddress.base58String isEqualToString:@"15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma"], @"");
 
         //NSLog(@"identifier: %@ fingerprint: %@", masterChain.identifier, @(masterChain.fingerprint));
-        NSAssert([masterChain.identifier isEqual:BTCDataWithHexString(@"3442193e1bb70916e914552172cd4e2dbc9df811")], @"");
+        NSAssert([masterChain.identifier isEqual:BTCDataFromHex(@"3442193e1bb70916e914552172cd4e2dbc9df811")], @"");
         NSAssert(masterChain.fingerprint == 876747070, @"");
         NSAssert(masterChain.parentFingerprint == 0, @"");
         NSAssert(masterChain.depth == 0, @"");
@@ -131,7 +131,7 @@
         BTCKeychain* masterChain = [[BTCKeychain alloc] initWithSeed:seed];
 
         //NSLog(@"identifier: %@ fingerprint: %@", masterChain.identifier, @(masterChain.fingerprint));
-        NSAssert([masterChain.identifier isEqual:BTCDataWithHexString(@"bd16bee53961a47d6ad888e29545434a89bdfe95")], @"");
+        NSAssert([masterChain.identifier isEqual:BTCDataFromHex(@"bd16bee53961a47d6ad888e29545434a89bdfe95")], @"");
         NSAssert(masterChain.fingerprint == 3172384485, @"");
         NSAssert(masterChain.parentFingerprint == 0, @"");
         NSAssert(masterChain.depth == 0, @"");

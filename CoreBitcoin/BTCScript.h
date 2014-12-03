@@ -41,6 +41,9 @@ typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
 // If data is invalid script (e.g. a length prefix is not followed by matching amount of data), nil is returned.
 - (id) initWithData:(NSData*)data;
 
+// Inits with data in hex.
+- (id) initWithHex:(NSString*)hex;
+
 // Initializes script with space-separated hex-encoded commands and data.
 // If script is invalid, nil is returned.
 // Note: the string may be ambigious. You are safe if it does not have 3..5-byte data or integers.
@@ -59,6 +62,9 @@ typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
 
 // Binary representation
 @property(nonatomic, readonly) NSData* data;
+
+// Hex representation
+@property(nonatomic, readonly) NSString* hex;
 
 // Space-separated hex-encoded commands and data.
 // Small integers (data fitting in 4 bytes) incuding OP_<N> are represented with decimal digits.
