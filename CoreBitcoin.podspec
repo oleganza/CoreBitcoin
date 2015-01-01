@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.framework    = 'Foundation'
   s.ios.framework = 'UIKit'
   s.osx.framework = 'AppKit'
-  s.dependency 'OpenSSL-Universal', '1.0.1.h'
+  s.dependency 'OpenSSL-Universal', '1.0.1.j-2'
 end
