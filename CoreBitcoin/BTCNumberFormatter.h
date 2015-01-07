@@ -58,6 +58,11 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num);
 @property(nonatomic, readonly) NSString* standaloneSymbol;
 
 /*!
+ * Returns a matching bitcoin unit code (BTC, mBTC etc) regardless of the symbol style.
+ */
+@property(nonatomic, readonly) NSString* unitCode;
+
+/*!
  * Formats the amount according to units and current formatting style.
  */
 - (NSString *) stringFromAmount:(BTCAmount)amount;

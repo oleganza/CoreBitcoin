@@ -20,7 +20,7 @@
     {
         if (dict[@"mode"])     _mode = [dict[@"mode"] unsignedIntegerValue];
         if (dict[@"currency"]) _currencyCode = dict[@"currency"];
-        if (dict[@"mkt"])      _marketName = dict[@"mkt"];
+        if (dict[@"mkt"])      _sourceName = dict[@"mkt"];
         if (dict[@"t"])        _date = [NSDate dateWithTimeIntervalSince1970:[dict[@"t"] doubleValue]];
         if (dict[@"avg"])      _averageRate = [NSDecimalNumber decimalNumberWithString:dict[@"avg"]];
         if (dict[@"buy"])      _buyRate = [NSDecimalNumber decimalNumberWithString:dict[@"buy"]];
@@ -37,7 +37,7 @@
 
     if (_mode)         dict[@"mode"] = @(_mode);
     if (_currencyCode) dict[@"currency"] = _currencyCode;
-    if (_marketName)   dict[@"mkt"] = _marketName;
+    if (_sourceName)   dict[@"mkt"] = _sourceName;
     if (_date)         dict[@"t"] = @(_date.timeIntervalSince1970);
     if (_averageRate)  dict[@"avg"] = _averageRate.stringValue;
     if (_buyRate)      dict[@"buy"] = _buyRate.stringValue;
@@ -57,6 +57,14 @@
     }
 
     return arr;
+}
+
+- (void) setMarketName:(NSString *)marketName {
+    self.sourceName = marketName;
+}
+
+- (NSString*) marketName {
+    return self.sourceName;
 }
 
 - (void) setAverageRate:(NSDecimalNumber *)averageRate
@@ -162,7 +170,7 @@
         default:
             [[NSException exceptionWithName:@"BTCCurrencyConverter Not supported Mode" reason:@"This mode is not supported yet" userInfo:nil] raise];
     }
-    
+
     return nil;
 }
 

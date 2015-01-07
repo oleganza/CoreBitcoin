@@ -137,7 +137,7 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     NSString* sym = [self bitcoinUnitSymbol];
     if (!sym)
     {
-        sym = [self bitcoinUnitSymbolForStyle:BTCNumberFormatterSymbolStyleCode unit:_bitcoinUnit];
+        sym = [self bitcoinUnitSymbolForUnit:_bitcoinUnit];
     }
     return sym;
 }
@@ -147,6 +147,45 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     return [self bitcoinUnitSymbolForStyle:_symbolStyle unit:_bitcoinUnit];
 }
 
+- (NSString*) unitCode
+{
+    return [self bitcoinUnitCodeForUnit:_bitcoinUnit];
+}
+
+- (NSString*) bitcoinUnitCodeForUnit:(BTCNumberFormatterUnit)unit
+{
+    switch (unit)
+    {
+        case BTCNumberFormatterUnitSatoshi:
+            return NSLocalizedStringFromTable(@"SAT", @"CoreBitcoin", @"");
+        case BTCNumberFormatterUnitBit:
+            return NSLocalizedStringFromTable(@"Bits", @"CoreBitcoin", @"");
+        case BTCNumberFormatterUnitMilliBTC:
+            return NSLocalizedStringFromTable(@"mBTC", @"CoreBitcoin", @"");
+        case BTCNumberFormatterUnitBTC:
+            return NSLocalizedStringFromTable(@"BTC", @"CoreBitcoin", @"");
+        default:
+            [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
+    }
+}
+
+- (NSString*) bitcoinUnitSymbolForUnit:(BTCNumberFormatterUnit)unit
+{
+    switch (unit)
+    {
+        case BTCNumberFormatterUnitSatoshi:
+            return BTCNumberFormatterSymbolSatoshi;
+        case BTCNumberFormatterUnitBit:
+            return BTCNumberFormatterSymbolBit;
+        case BTCNumberFormatterUnitMilliBTC:
+            return BTCNumberFormatterSymbolMilliBTC;
+        case BTCNumberFormatterUnitBTC:
+            return BTCNumberFormatterSymbolBTC;
+        default:
+            [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
+    }
+}
+
 - (NSString*) bitcoinUnitSymbolForStyle:(BTCNumberFormatterSymbolStyle)symbolStyle unit:(BTCNumberFormatterUnit)bitcoinUnit
 {
     switch (symbolStyle)
@@ -154,47 +193,11 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
         case BTCNumberFormatterSymbolStyleNone:
             return nil;
         case BTCNumberFormatterSymbolStyleCode:
-            switch (bitcoinUnit)
-            {
-                case BTCNumberFormatterUnitSatoshi:
-                    return NSLocalizedStringFromTable(@"SAT", @"CoreBitcoin", @"");
-                case BTCNumberFormatterUnitBit:
-                    return NSLocalizedStringFromTable(@"Bits", @"CoreBitcoin", @"");
-                case BTCNumberFormatterUnitMilliBTC:
-                    return NSLocalizedStringFromTable(@"mBTC", @"CoreBitcoin", @"");
-                case BTCNumberFormatterUnitBTC:
-                    return NSLocalizedStringFromTable(@"BTC", @"CoreBitcoin", @"");
-                default:
-                    [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
-            }
+            return [self bitcoinUnitCodeForUnit:bitcoinUnit];
         case BTCNumberFormatterSymbolStyleLowercase:
-            switch (bitcoinUnit)
-            {
-                case BTCNumberFormatterUnitSatoshi:
-                    return [NSLocalizedStringFromTable(@"SAT", @"CoreBitcoin", @"") lowercaseString];
-                case BTCNumberFormatterUnitBit:
-                    return [NSLocalizedStringFromTable(@"Bits", @"CoreBitcoin", @"") lowercaseString];
-                case BTCNumberFormatterUnitMilliBTC:
-                    return [NSLocalizedStringFromTable(@"mBTC", @"CoreBitcoin", @"") lowercaseString];
-                case BTCNumberFormatterUnitBTC:
-                    return [NSLocalizedStringFromTable(@"BTC", @"CoreBitcoin", @"") lowercaseString];
-                default:
-                    [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
-            }
+            return [[self bitcoinUnitCodeForUnit:bitcoinUnit] lowercaseString];
         case BTCNumberFormatterSymbolStyleSymbol:
-            switch (bitcoinUnit)
-            {
-                case BTCNumberFormatterUnitSatoshi:
-                    return BTCNumberFormatterSymbolSatoshi;
-                case BTCNumberFormatterUnitBit:
-                    return BTCNumberFormatterSymbolBit;
-                case BTCNumberFormatterUnitMilliBTC:
-                    return BTCNumberFormatterSymbolMilliBTC;
-                case BTCNumberFormatterUnitBTC:
-                    return BTCNumberFormatterSymbolBTC;
-                default:
-                    [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
-            }
+            return [self bitcoinUnitSymbolForUnit:bitcoinUnit];
         default:
             [[NSException exceptionWithName:@"BTCNumberFormatter: not supported symbol style" reason:@"" userInfo:nil] raise];
     }
