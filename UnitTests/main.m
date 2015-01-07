@@ -15,6 +15,7 @@
 #import "BTCScript+Tests.h"
 #import "BTCTransaction+Tests.h"
 #import "BTCBlockchainInfo+Tests.h"
+#import "BTCPriceSource+Tests.h"
 
 int main(int argc, const char * argv[])
 {
@@ -34,6 +35,7 @@ int main(int argc, const char * argv[])
         [BTCEncryptedMessage runAllTests];
         [BTCScript runAllTests];
         [BTCBlockchainInfo runAllTests];
+        [BTCPriceSource runAllTests];
         [BTCTransaction runAllTests];
         NSLog(@"All tests passed.");
     }
