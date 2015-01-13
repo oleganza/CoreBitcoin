@@ -72,9 +72,19 @@
     return self;
 }
 
+- (void) cleanup
+{
+    [self.session removeOutput:self.session.outputs.firstObject];
+    self.sessionQueue = nil;
+    self.detectionBlock = nil;
+    self.session = nil;
+}
+
 - (void) didMoveToWindow
 {
     [super didMoveToWindow];
+
+    if (!self.sessionQueue) return;
 
     if (self.window)
     {
@@ -150,14 +160,6 @@
 {
     [super layoutSubviews];
     self.previewLayer.frame = self.layer.bounds;
-}
-
-- (void) cleanup
-{
-    [self.session removeOutput:self.session.outputs.firstObject];
-    self.sessionQueue = nil;
-    self.detectionBlock = nil;
-    self.session = nil;
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
