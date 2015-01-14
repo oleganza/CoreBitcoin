@@ -212,16 +212,16 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
 
 - (NSString *) placeholderText
 {
-    NSString* groupSeparator = self.currencyGroupingSeparator ?: @"";
+    //NSString* groupSeparator = self.currencyGroupingSeparator ?: @"";
     NSString* decimalPoint = self.currencyDecimalSeparator ?: @".";
     switch (_bitcoinUnit)
     {
         case BTCNumberFormatterUnitSatoshi:
-            return [NSString stringWithFormat:@"000%@000%@000", groupSeparator, groupSeparator];
+            return @"0";
         case BTCNumberFormatterUnitBit:
-            return [NSString stringWithFormat:@"0%@000%@000%@00", groupSeparator, groupSeparator, decimalPoint];
+            return [NSString stringWithFormat:@"0%@00", decimalPoint];
         case BTCNumberFormatterUnitMilliBTC:
-            return [NSString stringWithFormat:@"0%@000%@00000", groupSeparator, decimalPoint];
+            return [NSString stringWithFormat:@"0%@00000", decimalPoint];
         case BTCNumberFormatterUnitBTC:
             return [NSString stringWithFormat:@"0%@00000000", decimalPoint];
         default:
