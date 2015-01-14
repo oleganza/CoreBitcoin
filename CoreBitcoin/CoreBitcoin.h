@@ -27,5 +27,6 @@
 #import <CoreBitcoin/BTCNumberFormatter.h>
 #import <CoreBitcoin/BTCQRCode.h>
 #import <CoreBitcoin/BTCCurrencyConverter.h>
+#import <CoreBitcoin/BTCPriceSource.h>
 #import <CoreBitcoin/BTCBitcoinURL.h>
 #import <CoreBitcoin/BTCTransactionBuilder.h>

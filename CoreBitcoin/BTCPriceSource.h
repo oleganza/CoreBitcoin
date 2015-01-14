@@ -59,6 +59,15 @@
 // IMPORTANT: this method is called on a private background thread.
 - (BTCPriceSourceResult*) resultFromParsedData:(id)parsedData currencyCode:(NSString*)currencyCode error:(NSError**)errorOut;
 
+// Registered sources indexed by name.
++ (NSDictionary*) sources;
+
+// Returns a registered price source. See `+registerPriceSource:forName:`.
++ (BTCPriceSource*) priceSourceWithName:(NSString*)name;
+
+// Registers a price source to be accessed by its name.
++ (void) registerPriceSource:(BTCPriceSource*)priceSource;
+
 @end
 
 

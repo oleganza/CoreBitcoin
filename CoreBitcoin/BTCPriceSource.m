@@ -3,10 +3,37 @@
 #import "BTCPriceSource.h"
 #import "BTCErrors.h"
 
+
+
 @implementation BTCPriceSourceResult
 @end
 
 @implementation BTCPriceSource
+
++ (NSMutableDictionary*) mutableSources {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary* sources;
+    dispatch_once(&onceToken, ^{
+        sources = [NSMutableDictionary dictionary];
+    });
+    return sources;
+}
+
++ (NSDictionary*) sources {
+    return [self mutableSources];
+}
+
+// Returns a registered price source. See `+registerPriceSource:forName:`.
++ (BTCPriceSource*) priceSourceWithName:(NSString*)name {
+    if (!name) return nil;
+    return [self mutableSources][name];
+}
+
+// Registers a price source with a given name.
++ (void) registerPriceSource:(BTCPriceSource*)priceSource {
+    if (!priceSource) return;
+    [self mutableSources][priceSource.name] = priceSource;
+}
 
 // Name of the source (e.g. "Paymium" or "Coindesk").
 - (NSString*) name {
@@ -130,6 +157,10 @@
 
 @implementation BTCPriceSourceCoindesk
 
++ (void) load {
+    [self registerPriceSource:[[self alloc] init]];
+}
+
 - (NSString*) name { return @"Coindesk"; }
 
 // Full list is here: http://api.coindesk.com/v1/bpi/supported-currencies.json
@@ -157,6 +188,10 @@
 // Winklevoss Bitcoin Index. USD only.
 @implementation BTCPriceSourceWinkdex
 
++ (void) load {
+    [self registerPriceSource:[[self alloc] init]];
+}
+
 - (NSString*) name { return @"Winkdex"; }
 
 - (NSArray*) currencyCodes { return @[@"USD"]; }
@@ -182,6 +217,10 @@
 // Coinbase market price. USD only.
 @implementation BTCPriceSourceCoinbase
 
++ (void) load {
+    [self registerPriceSource:[[self alloc] init]];
+}
+
 - (NSString*) name { return @"Coinbase"; }
 
 - (NSArray*) currencyCodes { return @[@"USD"]; }
@@ -205,6 +244,10 @@
 
 // Paymium market price. EUR only.
 @implementation BTCPriceSourcePaymium
+
++ (void) load {
+    [self registerPriceSource:[[self alloc] init]];
+}
 
 - (NSString*) name { return @"Paymium"; }
 
