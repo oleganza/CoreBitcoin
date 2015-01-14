@@ -30,7 +30,9 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     return sat;
 }
 
-@implementation BTCNumberFormatter
+@implementation BTCNumberFormatter {
+    NSDecimalNumber* _myMultiplier; // because standard multiplier when below 1e-6 leads to a rounding no matter what the settings.
+}
 
 - (id) initWithBitcoinUnit:(BTCNumberFormatterUnit)unit
 {
@@ -83,18 +85,22 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     switch (_bitcoinUnit)
     {
         case BTCNumberFormatterUnitSatoshi:
+            _myMultiplier = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:0 isNegative:NO];
             self.minimumFractionDigits = 0;
             self.maximumFractionDigits = 0;
             break;
         case BTCNumberFormatterUnitBit:
+            _myMultiplier = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:-2 isNegative:NO];
             self.minimumFractionDigits = 0;
             self.maximumFractionDigits = 2;
             break;
         case BTCNumberFormatterUnitMilliBTC:
+            _myMultiplier = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:-5 isNegative:NO];
             self.minimumFractionDigits = 2;
             self.maximumFractionDigits = 5;
             break;
         case BTCNumberFormatterUnitBTC:
+            _myMultiplier = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:-8 isNegative:NO];
             self.minimumFractionDigits = 2;
             self.maximumFractionDigits = 8;
             break;
@@ -123,7 +129,7 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
             // Leave positioning of the currency symbol to locale (in English it'll be prefix, in French it'll be suffix).
             break;
     }
-    self.maximum = @(BTC_MAX_MONEY/(int64_t)pow(10.0, self.maximumFractionDigits));
+    self.maximum = @(BTC_MAX_MONEY);
 
     // Fixup prefix symbol with a no-breaking space. When it's postfix, Foundation puts nobr space already.
     self.positiveFormat = [self.positiveFormat stringByReplacingOccurrencesOfString:@"¤" withString:@"¤" NarrowNbsp "#"];
@@ -224,67 +230,27 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     }
 }
 
-- (NSNumber*) numberFromSatoshis:(BTCAmount)satoshis
-{
-    switch (_bitcoinUnit)
-    {
-        case BTCNumberFormatterUnitSatoshi:
-            return @(satoshis);
-        case BTCNumberFormatterUnitBit:
-            return [[NSDecimalNumber alloc] initWithMantissa:ABS(satoshis) exponent:-2 isNegative:satoshis < 0];
-        case BTCNumberFormatterUnitMilliBTC:
-            return [[NSDecimalNumber alloc] initWithMantissa:ABS(satoshis) exponent:-5 isNegative:satoshis < 0];
-        case BTCNumberFormatterUnitBTC:
-            return [[NSDecimalNumber alloc] initWithMantissa:ABS(satoshis) exponent:-8 isNegative:satoshis < 0];
-        default:
-            [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
-            return nil;
+- (NSString*) stringFromNumber:(NSNumber *)number {
+    if (![number isKindOfClass:[NSDecimalNumber class]]) {
+        number = [NSDecimalNumber decimalNumberWithDecimal:number.decimalValue];
     }
+    return [super stringFromNumber:[(NSDecimalNumber*)number decimalNumberByMultiplyingBy:_myMultiplier]];
 }
 
-- (BTCAmount) satoshisFromNumber:(NSNumber*)number
-{
-    switch (_bitcoinUnit)
-    {
-        case BTCNumberFormatterUnitSatoshi:
-            return BTCAmountFromDecimalNumber(number);
-        case BTCNumberFormatterUnitBit:
-            return BTCAmountFromDecimalNumber([self number:number multipliedByPowerOf10:2]);
-        case BTCNumberFormatterUnitMilliBTC:
-            return BTCAmountFromDecimalNumber([self number:number multipliedByPowerOf10:5]);
-        case BTCNumberFormatterUnitBTC:
-            return BTCAmountFromDecimalNumber([self number:number multipliedByPowerOf10:8]);
-        default:
-            [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
-            return 0;
-    }
-}
-
-- (NSNumber*) number:(NSNumber*)num multipliedByPowerOf10:(int)power
-{
-    if (!num) return nil;
-
-    NSDecimalNumber* dn = nil;
-    if ([num isKindOfClass:[NSDecimalNumber class]])
-    {
-        dn = (id)num;
-    }
-    else
-    {
-        dn = [NSDecimalNumber decimalNumberWithDecimal:num.decimalValue];
-    }
-
-    return [dn decimalNumberByMultiplyingByPowerOf10:power];
+- (NSNumber*) numberFromString:(NSString *)string {
+    // self.generatesDecimalNumbers guarantees NSDecimalNumber here.
+    NSDecimalNumber* number = (NSDecimalNumber*)[super numberFromString:string];
+    return [number decimalNumberByDividingBy:_myMultiplier];
 }
 
 - (NSString *) stringFromAmount:(BTCAmount)amount
 {
-    return [self stringFromNumber:[self numberFromSatoshis:amount]];
+    return [self stringFromNumber:@(amount)];
 }
 
 - (BTCAmount) amountFromString:(NSString *)string
 {
-    return [self satoshisFromNumber:[self numberFromString:string]];
+    return BTCAmountFromDecimalNumber([self numberFromString:string]);
 }
 
 - (id) copyWithZone:(NSZone *)zone

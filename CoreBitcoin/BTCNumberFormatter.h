@@ -74,14 +74,4 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num);
  */
 - (BTCAmount) amountFromString:(NSString *)string;
 
-/*!
- * Converts satoshis to a number in specified units (BTC, mBTC etc).
- */
-- (NSNumber*) numberFromSatoshis:(BTCAmount)satoshis;
-
-/*!
- * Converts number in specified units (BTC, mBTC etc) to satoshis.
- */
-- (BTCAmount) satoshisFromNumber:(NSNumber*)number;
-
 @end
