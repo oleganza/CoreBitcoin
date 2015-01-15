@@ -248,21 +248,28 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
 - (void) addInput:(BTCTransactionInput*)input
 {
     if (!input) return;
-    
+    [self linkInput:input];
+    _inputs = [_inputs arrayByAddingObject:input];
+}
+
+- (void) linkInput:(BTCTransactionInput*)input {
     if (!(input.transaction == nil || input.transaction == self))
     {
         @throw [NSException exceptionWithName:@"BTCTransaction consistency error!" reason:@"Can't add an input to a transaction when it references another transaction." userInfo:nil];
         return;
     }
     input.transaction = self;
-    _inputs = [_inputs arrayByAddingObject:input];
 }
 
 // Adds output script
 - (void) addOutput:(BTCTransactionOutput*)output
 {
     if (!output) return;
-    
+    [self linkOutput:output];
+    _outputs = [_outputs arrayByAddingObject:output];
+}
+
+- (void) linkOutput:(BTCTransactionOutput*)output {
     if (!(output.transaction == nil || output.transaction == self))
     {
         @throw [NSException exceptionWithName:@"BTCTransaction consistency error!" reason:@"Can't add an output to a transaction when it references another transaction." userInfo:nil];
@@ -271,7 +278,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
     output.index = BTCTransactionOutputIndexUnknown; // reset to be recomputed lazily later
     output.transactionHash = nil; // can't be reliably set here because transaction may get updated.
     output.transaction = self;
-    _outputs = [_outputs arrayByAddingObject:output];
 }
 
 - (void) setInputs:(NSArray *)inputs
@@ -348,6 +354,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         {
             BTCTransactionInput* input = [[BTCTransactionInput alloc] initWithStream:stream];
             if (!input) return NO;
+            [self linkInput:input];
             [ins addObject:input];
         }
         _inputs = ins;
@@ -362,6 +369,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash)
         {
             BTCTransactionOutput* output = [[BTCTransactionOutput alloc] initWithStream:stream];
             if (!output) return NO;
+            [self linkOutput:output];
             [outs addObject:output];
         }
         _outputs = outs;
