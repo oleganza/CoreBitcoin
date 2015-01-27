@@ -174,7 +174,8 @@
 - (BTCPriceSourceResult*) resultFromParsedData:(id)parsedData currencyCode:(NSString*)currencyCode error:(NSError**)errorOut {
     // {"time":{"updatedISO":"2015-01-07T10:59:00+00:00",...},"bpi":{"EUR":{"code":"EUR","rate":"241.4845","description":"Euro","rate_float":241.4845}}}
     BTCPriceSourceResult* result = [[BTCPriceSourceResult alloc] init];
-    NSString* rateString = parsedData[@"bpi"][currencyCode][@"rate"];
+    // Coindesk provides exact decimal numbers, but separates thousands by comma which we need to strip to make NSDecimalNumber parse it.
+    NSString* rateString = [parsedData[@"bpi"][currencyCode][@"rate"] stringByReplacingOccurrencesOfString:@"," withString:@""];
     result.averageRate = [NSDecimalNumber decimalNumberWithString:rateString];
     result.currencyCode = currencyCode;
     result.nativeCurrencyCode = @"USD";
