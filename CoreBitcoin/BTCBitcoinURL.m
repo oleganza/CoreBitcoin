@@ -53,6 +53,10 @@
             {
                 self.amount = [[self class] parseAmount:item.value];
             }
+            if ([item.name isEqual:@"label"])
+            {
+                self.label = item.value;
+            }
         }
     }
     return self;
