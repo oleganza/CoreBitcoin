@@ -17,10 +17,16 @@
 @property(nonatomic, readonly) int32_t int32value;
 @property(nonatomic, readonly) uint64_t uint64value;
 @property(nonatomic, readonly) int64_t int64value;
-@property(nonatomic, readonly) NSData* littleEndianData;  // data is reversed before being interpreted as internal state.
-@property(nonatomic, readonly) NSData* unsignedData;
 @property(nonatomic, readonly) NSString* hexString;
 @property(nonatomic, readonly) NSString* decimalString;
+@property(nonatomic, readonly) NSData* signedLittleEndian;
+@property(nonatomic, readonly) NSData* unsignedBigEndian;
+
+// Deprecated. Use `-signedLittleEndian` instead.
+@property(nonatomic, readonly) NSData* littleEndianData DEPRECATED_ATTRIBUTE;
+
+// Deprecated. Use `-unsignedBigEndian` instead.
+@property(nonatomic, readonly) NSData* unsignedData DEPRECATED_ATTRIBUTE;
 
 // Pointer to an internal BIGNUM value. You should not modify it.
 // To modify, use [[bn mutableCopy] mutableBIGNUM] methods.
@@ -38,8 +44,11 @@
 - (id) initWithInt32:(int32_t)value;
 - (id) initWithUInt64:(uint64_t)value;
 - (id) initWithInt64:(int64_t)value;
-- (id) initWithLittleEndianData:(NSData*)data; // data is reversed before being interpreted as internal state.
-- (id) initWithUnsignedData:(NSData*)data;
+- (id) initWithSignedLittleEndian:(NSData*)data;
+- (id) initWithUnsignedBigEndian:(NSData*)data;
+- (id) initWithLittleEndianData:(NSData*)data DEPRECATED_ATTRIBUTE;
+- (id) initWithUnsignedData:(NSData*)data DEPRECATED_ATTRIBUTE;
+
 
 // Initialized with OpenSSL representation of bignum.
 - (id) initWithBIGNUM:(const BIGNUM*)bignum;
@@ -95,10 +104,12 @@
 @property(nonatomic, readwrite) int32_t int32value;
 @property(nonatomic, readwrite) uint64_t uint64value;
 @property(nonatomic, readwrite) int64_t int64value;
-@property(nonatomic, readwrite) NSData* littleEndianData;
-@property(nonatomic, readwrite) NSData* unsignedData;
 @property(nonatomic, readwrite) NSString* hexString;
 @property(nonatomic, readwrite) NSString* decimalString;
+@property(nonatomic, readwrite) NSData* signedLittleEndian;
+@property(nonatomic, readwrite) NSData* unsignedBigEndian;
+@property(nonatomic, readwrite) NSData* littleEndianData DEPRECATED_ATTRIBUTE;
+@property(nonatomic, readwrite) NSData* unsignedData DEPRECATED_ATTRIBUTE;
 
 @property(nonatomic, readonly) BIGNUM* mutableBIGNUM;
 

@@ -97,7 +97,7 @@
     BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
     BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
     
-    BTCBigNumber* h1 = [[BTCBigNumber alloc] initWithUnsignedData:hash];
+    BTCBigNumber* h1 = [[BTCBigNumber alloc] initWithUnsignedBigEndian:hash];
     
     BTCBigNumber* h2 = [self aliceBlindedHashForHash:h1 a:a b:b];
     
@@ -108,7 +108,7 @@
     index = OSSwapHostToBigInt32(index);
     
     NSMutableData* result = [NSMutableData dataWithBytes:&index length:4];
-    [result appendData:h2.unsignedData];
+    [result appendData:h2.unsignedBigEndian];
     
     return result;
 }
@@ -123,7 +123,7 @@
     uint32_t index = *((uint32_t*)blindedHash.bytes);
     index = OSSwapBigToHostInt32(index);
     
-    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedData:[blindedHash subdataWithRange:NSMakeRange(4, blindedHash.length - 4)]];
+    BTCBigNumber* h2 = [[BTCBigNumber alloc] initWithUnsignedBigEndian:[blindedHash subdataWithRange:NSMakeRange(4, blindedHash.length - 4)]];
     
     //    From
     //      P = p^-1·G = (w + x)·G (where x is a factor in ND(W, 2·i + 0))
@@ -137,7 +137,7 @@
 
     BTCBigNumber* order = [BTCCurvePoint curveOrder];
     
-    BTCBigNumber* w = [[BTCBigNumber alloc] initWithUnsignedData:_custodianKeychain.key.privateKey];
+    BTCBigNumber* w = [[BTCBigNumber alloc] initWithUnsignedBigEndian:_custodianKeychain.key.privateKey];
     
     BTCBigNumber* x = nil;
     BTCBigNumber* y = nil;
@@ -161,7 +161,7 @@
     index = OSSwapHostToBigInt32(index);
     
     NSMutableData* result = [NSMutableData dataWithBytes:&index length:4];
-    [result appendData:s1.unsignedData];
+    [result appendData:s1.unsignedBigEndian];
     
     return result;
 }
@@ -181,7 +181,7 @@
     uint32_t index = *((uint32_t*)blindSignature.bytes);
     index = OSSwapBigToHostInt32(index);
 
-    BTCBigNumber* s1 = [[BTCBigNumber alloc] initWithUnsignedData:[blindSignature subdataWithRange:NSMakeRange(4, blindSignature.length - 4)]];
+    BTCBigNumber* s1 = [[BTCBigNumber alloc] initWithUnsignedBigEndian:[blindSignature subdataWithRange:NSMakeRange(4, blindSignature.length - 4)]];
 
     BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
     BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
@@ -247,7 +247,7 @@
     
     NSAssert(privKeyData, @"sanity check");
     
-    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:privKeyData];
+    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedBigEndian:privKeyData];
     
     BTCDataClear(privKeyData);
     [key clear];

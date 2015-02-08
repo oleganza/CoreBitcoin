@@ -18,13 +18,14 @@
 @dynamic int32value;
 @dynamic uint64value;
 @dynamic int64value;
-@dynamic littleEndianData;
-@dynamic unsignedData;
 @dynamic hexString;
 @dynamic decimalString;
+@dynamic signedLittleEndian;
+@dynamic unsignedBigEndian;
+@dynamic littleEndianData; // deprecated
+@dynamic unsignedData; // deprecated
 
-+ (instancetype) zero
-{
++ (instancetype) zero {
     static BTCBigNumber* bn = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -34,8 +35,7 @@
     return bn;
 }
 
-+ (instancetype) one
-{
++ (instancetype) one {
     static BTCBigNumber* bn = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -45,8 +45,7 @@
     return bn;
 }
 
-+ (instancetype) negativeOne
-{
++ (instancetype) negativeOne {
     static BTCBigNumber* bn = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -55,106 +54,100 @@
     return bn;
 }
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         BN_init(&_bignum);
     }
     return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
     BN_clear_free(&_bignum);
 }
 
-- (void) clear
-{
+- (void) clear {
     BN_clear(&_bignum);
 }
 
-- (void) throwIfImmutable
-{
+- (void) throwIfImmutable {
     if (_immutable) {
         @throw [NSException exceptionWithName:@"Immutable BTCBigNumber is modified" reason:@"" userInfo:nil];
     }
 }
 
 // Since we use private setters in the init* methods,
-- (id) initWithCompact:(uint32_t)value
-{
+- (id) initWithCompact:(uint32_t)value {
     if (self = [self init]) self.compact = value;
     _immutable = YES;
     return self;
 }
-- (id) initWithUInt32:(uint32_t)value
-{
+- (id) initWithUInt32:(uint32_t)value {
     if (self = [self init]) self.uint32value = value;
     _immutable = YES;
     return self;
 }
-- (id) initWithInt32:(int32_t)value
-{
+- (id) initWithInt32:(int32_t)value {
     if (self = [self init]) self.int32value = value;
     _immutable = YES;
     return self;
 }
-- (id) initWithUInt64:(uint64_t)value
-{
+- (id) initWithUInt64:(uint64_t)value {
     if (self = [self init]) self.uint64value = value;
     _immutable = YES;
     return self;
 }
-- (id) initWithInt64:(int64_t)value
-{
+- (id) initWithInt64:(int64_t)value {
     if (self = [self init]) self.int64value = value;
     _immutable = YES;
     return self;
 }
-- (id) initWithLittleEndianData:(NSData*)data
-{
+- (id) initWithSignedLittleEndian:(NSData *)data {
     if (!data) return nil;
-    if (self = [self init]) self.littleEndianData = data;
+    if (self = [self init]) self.signedLittleEndian = data;
     _immutable = YES;
     return self;
 }
-- (id) initWithUnsignedData:(NSData *)data
-{
+- (id) initWithUnsignedBigEndian:(NSData *)data {
     if (!data) return nil;
-    if (self = [self init]) self.unsignedData = data;
+    if (self = [self init]) self.unsignedBigEndian = data;
     _immutable = YES;
     return self;
 }
-- (id) initWithString:(NSString*)string base:(NSUInteger)base
-{
+- (id) initWithLittleEndianData:(NSData*)data { // deprecated
+    if (!data) return nil;
+    if (self = [self init]) self.signedLittleEndian = data;
+    _immutable = YES;
+    return self;
+}
+- (id) initWithUnsignedData:(NSData *)data { // deprecated
+    if (!data) return nil;
+    if (self = [self init]) self.unsignedBigEndian = data;
+    _immutable = YES;
+    return self;
+}
+- (id) initWithString:(NSString*)string base:(NSUInteger)base {
     if (!string) return nil;
     if (self = [self init]) [self setString:string base:base];
     _immutable = YES;
     return self;
 }
 
-- (id) initWithHexString:(NSString*)hexString
-{
+- (id) initWithHexString:(NSString*)hexString {
     return [self initWithString:hexString base:16];
 }
 
-- (id) initWithDecimalString:(NSString*)decimalString
-{
+- (id) initWithDecimalString:(NSString*)decimalString {
     return [self initWithString:decimalString base:10];
 }
 
-- (id) initWithBIGNUM:(const BIGNUM*)otherBIGNUM
-{
-    if (self = [self init])
-    {
+- (id) initWithBIGNUM:(const BIGNUM*)otherBIGNUM {
+    if (self = [self init]) {
         BN_copy(&_bignum, otherBIGNUM);
     }
     return self;
 }
 
-- (const BIGNUM*) BIGNUM
-{
+- (const BIGNUM*) BIGNUM {
     return &_bignum;
 }
 
@@ -611,7 +604,7 @@
     BN_mpi2bn(rawMPI, (int)(currentByte - rawMPI), &_bignum);
 }
 
-- (NSData*) littleEndianData
+- (NSData*) signedLittleEndian
 {
     size_t size = BN_bn2mpi(&_bignum, NULL);
     if (size <= 4)
@@ -625,7 +618,7 @@
     return data;
 }
 
-- (void) setLittleEndianData:(NSData *)data
+- (void) setSignedLittleEndian:(NSData *)data
 {
     [self throwIfImmutable];
     NSUInteger size = data.length;
@@ -644,8 +637,16 @@
     BN_mpi2bn(bytes, (int)mdata.length, &_bignum);
 }
 
-- (NSData*) unsignedData
-{
+// deprecated
+- (NSData*) littleEndianData {
+    return self.signedLittleEndian;
+}
+// deprecated
+- (void) setLittleEndianData:(NSData *)data {
+    [self setSignedLittleEndian:data];
+}
+
+- (NSData*) unsignedBigEndian {
     int num_bytes = BN_num_bytes(&_bignum);
     NSMutableData* data = [[NSMutableData alloc] initWithLength:32]; // zeroed data
     int copied_bytes = BN_bn2bin(&_bignum, &data.mutableBytes[32 - num_bytes]); // fill the tail of the data so it's zero-padded to the left
@@ -653,16 +654,22 @@
     return data;
 }
 
-- (void) setUnsignedData:(NSData *)data
-{
+- (void) setUnsignedBigEndian:(NSData *)data {
     [self throwIfImmutable];
-    
     if (!data) return;
-    
-    if (!BN_bin2bn(data.bytes, (int)data.length, &_bignum))
-    {
+    if (!BN_bin2bn(data.bytes, (int)data.length, &_bignum)) {
         return;
     }
+}
+
+// deprecated
+- (NSData*) unsignedData {
+    return self.unsignedBigEndian;
+}
+
+// deprecated
+- (void) setUnsignedData:(NSData *)data {
+    self.unsignedBigEndian = data;
 }
 
 
@@ -704,10 +711,12 @@
 @dynamic int32value;
 @dynamic uint64value;
 @dynamic int64value;
-@dynamic littleEndianData;
-@dynamic unsignedData;
 @dynamic hexString;
 @dynamic decimalString;
+@dynamic signedLittleEndian;
+@dynamic unsignedBigEndian;
+@dynamic littleEndianData;
+@dynamic unsignedData;
 
 - (BIGNUM*) mutableBIGNUM
 {

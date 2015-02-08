@@ -23,12 +23,12 @@
 {
     BTCBlindSignature* api = [[BTCBlindSignature alloc] init];
     
-    BTCBigNumber* a = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"a" dataUsingEncoding:NSUTF8StringEncoding])];
-    BTCBigNumber* b = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"b" dataUsingEncoding:NSUTF8StringEncoding])];
-    BTCBigNumber* c = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"c" dataUsingEncoding:NSUTF8StringEncoding])];
-    BTCBigNumber* d = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"d" dataUsingEncoding:NSUTF8StringEncoding])];
-    BTCBigNumber* p = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"p" dataUsingEncoding:NSUTF8StringEncoding])];
-    BTCBigNumber* q = [[BTCBigNumber alloc] initWithUnsignedData:BTCHash256([@"q" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* a = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"a" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* b = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"b" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* c = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"c" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* d = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"d" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* p = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"p" dataUsingEncoding:NSUTF8StringEncoding])];
+    BTCBigNumber* q = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"q" dataUsingEncoding:NSUTF8StringEncoding])];
     
     NSArray* PQ = [api bob_P_and_Q_for_p:p q:q];
     BTCCurvePoint* P = PQ.firstObject;
@@ -51,7 +51,7 @@
     NSData* hash = BTCHash256([@"some transaction" dataUsingEncoding:NSUTF8StringEncoding]);
     
     // Alice computes and sends to Bob.
-    BTCBigNumber* blindedHash = [api aliceBlindedHashForHash:[[BTCBigNumber alloc] initWithUnsignedData:hash] a:a b:b];
+    BTCBigNumber* blindedHash = [api aliceBlindedHashForHash:[[BTCBigNumber alloc] initWithUnsignedBigEndian:hash] a:a b:b];
     
     NSAssert(blindedHash, @"sanity check");
     

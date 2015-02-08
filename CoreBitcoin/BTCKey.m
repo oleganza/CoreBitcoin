@@ -191,7 +191,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         BTCBigNumber* n = [BTCCurvePoint curveOrder];
 
         NSMutableData* kdata = BTCHMACSHA256(privkeyData, hash);
-        BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedData:kdata];
+        BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:kdata];
         [k mod:n]; // make sure k belongs to [0, n - 1]
         
         BTCDataClear(kdata);
@@ -200,7 +200,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         BTCCurvePoint* K = [[BTCCurvePoint generator] multiply:k];
         BTCBigNumber* Kx = K.x;
         
-        BTCBigNumber* hashBN = [[BTCBigNumber alloc] initWithUnsignedData:hash];
+        BTCBigNumber* hashBN = [[BTCBigNumber alloc] initWithUnsignedBigEndian:hash];
         
         // Compute s = (k^-1)*(h + Kx*privkey)
         

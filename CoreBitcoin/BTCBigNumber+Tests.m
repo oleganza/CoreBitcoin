@@ -26,9 +26,9 @@
     
     {
         BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt64:0xdeadf00ddeadbeef];
-        NSData* data = bn.littleEndianData;
+        NSData* data = bn.signedLittleEndian;
         NSAssert([@"efbeadde0df0adde00" isEqualToString:BTCHexFromData(data)], @"littleEndianData should be little-endian with trailing zero byte");
-        BTCBigNumber* bn2 = [[BTCBigNumber alloc] initWithLittleEndianData:data];
+        BTCBigNumber* bn2 = [[BTCBigNumber alloc] initWithSignedLittleEndian:data];
         NSAssert([@"deadf00ddeadbeef" isEqualToString:bn2.hexString], @"converting to and from data should give the same result");
     }
     
@@ -36,8 +36,8 @@
     // Negative zero
     {
         BTCBigNumber* zeroBN = [BTCBigNumber zero];
-        BTCBigNumber* negativeZeroBN = [[BTCBigNumber alloc] initWithLittleEndianData:BTCDataFromHex(@"80")];
-        BTCBigNumber* zeroWithEmptyDataBN = [[BTCBigNumber alloc] initWithLittleEndianData:[NSData data]];
+        BTCBigNumber* negativeZeroBN = [[BTCBigNumber alloc] initWithSignedLittleEndian:BTCDataFromHex(@"80")];
+        BTCBigNumber* zeroWithEmptyDataBN = [[BTCBigNumber alloc] initWithSignedLittleEndian:[NSData data]];
         
         //NSLog(@"negativeZeroBN.data = %@", negativeZeroBN.data);
         
@@ -62,14 +62,14 @@
 
     {
         //BTCBigNumber* bn = [BTCBigNumber zero];
-        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:BTCDataFromHex(@"00")];
-        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedData, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
+        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCDataFromHex(@"00")];
+        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedBigEndian, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
     }
 
     {
         //BTCBigNumber* bn = [BTCBigNumber one];
-        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:BTCDataFromHex(@"01")];
-        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedData, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
+        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCDataFromHex(@"01")];
+        NSLog(@"bn = %@ %@ (%@) 0x%@ b36:%@", bn, bn.unsignedBigEndian, bn.decimalString, [bn stringInBase:16], [bn stringInBase:36]);
     }
 
     {

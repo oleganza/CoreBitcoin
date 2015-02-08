@@ -299,7 +299,7 @@
     
     NSData* digest = BTCHMACSHA512(_chainCode, data);
     
-    BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedData:[digest subdataWithRange:NSMakeRange(0, 32)]];
+    BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedBigEndian:[digest subdataWithRange:NSMakeRange(0, 32)]];
     
     // Factor is too big, this derivation is invalid.
     if ([factor greaterOrEqual:[BTCCurvePoint curveOrder]])
@@ -313,13 +313,13 @@
     
     if (_privateKey)
     {
-        BTCMutableBigNumber* pkNumber = [[BTCMutableBigNumber alloc] initWithUnsignedData:_privateKey];
+        BTCMutableBigNumber* pkNumber = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:_privateKey];
         [pkNumber add:factor mod:[BTCCurvePoint curveOrder]];
         
         // Check for invalid derivation.
         if ([pkNumber isEqual:[BTCBigNumber zero]]) return nil;
         
-        NSData* pkData = pkNumber.unsignedData;
+        NSData* pkData = pkNumber.unsignedBigEndian;
         derivedKeychain.privateKey = [pkData mutableCopy];
         
         BTCDataClear(pkData);

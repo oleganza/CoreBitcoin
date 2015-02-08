@@ -26,7 +26,7 @@
     
     // 2. Make the pubkey using BTCCurvePoint API.
     
-    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedData:privateKeyData];
+    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedBigEndian:privateKeyData];
     
     BTCCurvePoint* generator = [BTCCurvePoint generator];
     BTCCurvePoint* pubkeyPoint = [[generator copy] multiply:bn];
@@ -53,8 +53,8 @@
 //    NSLog(@"Alice privkey: %@", BTCHexFromData(alicePrivateKeyData));
 //    NSLog(@"Bob privkey:   %@", BTCHexFromData(bobPrivateKeyData));
     
-    BTCBigNumber* aliceNumber = [[BTCBigNumber alloc] initWithUnsignedData:alicePrivateKeyData];
-    BTCBigNumber* bobNumber = [[BTCBigNumber alloc] initWithUnsignedData:bobPrivateKeyData];
+    BTCBigNumber* aliceNumber = [[BTCBigNumber alloc] initWithUnsignedBigEndian:alicePrivateKeyData];
+    BTCBigNumber* bobNumber = [[BTCBigNumber alloc] initWithUnsignedBigEndian:bobPrivateKeyData];
     
 //    NSLog(@"Alice number: %@", aliceNumber.hexString);
 //    NSLog(@"Bob number:   %@", bobNumber.hexString);
@@ -62,8 +62,8 @@
     BTCKey* aliceKey = [[BTCKey alloc] initWithPrivateKey:alicePrivateKeyData];
     BTCKey* bobKey = [[BTCKey alloc] initWithPrivateKey:bobPrivateKeyData];
     
-    NSAssert([aliceKey.privateKey isEqual:aliceNumber.unsignedData], @"");
-    NSAssert([bobKey.privateKey isEqual:bobNumber.unsignedData], @"");
+    NSAssert([aliceKey.privateKey isEqual:aliceNumber.unsignedBigEndian], @"");
+    NSAssert([bobKey.privateKey isEqual:bobNumber.unsignedBigEndian], @"");
     
     BTCCurvePoint* aliceSharedSecret = [bobKey.curvePoint multiply:aliceNumber];
     BTCCurvePoint* bobSharedSecret   = [aliceKey.curvePoint multiply:bobNumber];

@@ -439,7 +439,7 @@
                         else
                         {
                             BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:decimalInteger];
-                            [scriptData appendData:[BTCScriptChunk scriptDataForPushdata:bn.littleEndianData preferredLengthEncoding:-1]];
+                            [scriptData appendData:[BTCScriptChunk scriptDataForPushdata:bn.signedLittleEndian preferredLengthEncoding:-1]];
                             continue;
                         }
                     }
@@ -1013,7 +1013,7 @@
 {
     NSData* data = [self pushdataAtIndex:index];
     if (!data) return nil;
-    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithLittleEndianData:data];
+    BTCBigNumber* bn = [[BTCBigNumber alloc] initWithSignedLittleEndian:data];
     return bn;
 }
 
