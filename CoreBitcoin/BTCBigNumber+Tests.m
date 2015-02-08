@@ -94,8 +94,8 @@
 
     {
         BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUInt64:0xdeadf00ddeadbeef];
-        NSData* data = bn.littleEndianData;
-        BTCBigNumber* bn2 = [[BTCBigNumber alloc] initWithLittleEndianData:data];
+        NSData* data = bn.signedLittleEndian;
+        BTCBigNumber* bn2 = [[BTCBigNumber alloc] initWithSignedLittleEndian:data];
         NSLog(@"bn = %@", [bn2 hexString]);
     }
 }
