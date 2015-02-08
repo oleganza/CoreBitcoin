@@ -15,6 +15,7 @@
     dispatch_once(&onceToken, ^{
         
         network = [[BTCNetwork alloc] init];
+        network.name = @"mainnet";
         
         // TODO: set all parameters here.
         
@@ -22,13 +23,14 @@
     return network;
 }
 
-+ (BTCNetwork*) testnet3
++ (BTCNetwork*) testnet
 {
     static BTCNetwork* network;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
         network = [[BTCNetwork alloc] init];
+        network.name = @"testnet3";
         network->_isTestnet = YES;
         
         // TODO: set all parameters here.
@@ -37,9 +39,12 @@
     return network;
 }
 
-- (BOOL) isTestnet
-{
+- (BOOL) isTestnet {
     return _isTestnet;
+}
+
+- (BOOL) isMainnet {
+    return ![self isTestnet];
 }
 
 
@@ -47,13 +52,10 @@
 
 
 // Returns a checkpoint hash if it exists or nil if there is no checkpoint at such height.
-- (NSData*) checkpointAtHeight:(int)height
-{
-    for (NSArray* pair in self.checkpoints)
-    {
+- (NSData*) checkpointAtHeight:(int)height {
+    for (NSArray* pair in self.checkpoints) {
         int h = [pair[0] intValue];
-        if (h == height)
-        {
+        if (h == height) {
             return pair[1];
         }
     }
@@ -61,14 +63,11 @@
 }
 
 // Returns height of checkpoint or -1 if there is no such checkpoint.
-- (int) heightForCheckpoint:(NSData*)checkpointHash
-{
+- (int) heightForCheckpoint:(NSData*)checkpointHash {
     if (!checkpointHash) return -1;
     
-    for (NSArray* pair in self.checkpoints)
-    {
-        if ([pair[1] isEqual:checkpointHash])
-        {
+    for (NSArray* pair in self.checkpoints) {
+        if ([pair[1] isEqual:checkpointHash]) {
             return [pair[0] intValue];
         }
     }
@@ -85,6 +84,7 @@
     BTCNetwork* network = [[BTCNetwork alloc] copy];
     
     network->_isTestnet      = _isTestnet;
+    network.name             = self.name;
     network.genesisBlockHash = self.genesisBlockHash;
     network.defaultPort      = self.defaultPort;
     network.proofOfWorkLimit = [self.proofOfWorkLimit copy];
