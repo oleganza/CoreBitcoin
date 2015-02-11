@@ -18,20 +18,31 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 @class BTCKey;
 @class BTCBigNumber;
 @class BTCAddress;
+@class BTCNetwork;
 @interface BTCKeychain : NSObject<NSCopying>
 
 // Initializes master keychain from a seed. This is the "root" keychain of the entire hierarchy.
+// Sets the network to mainnet. To specify testnet, use `-initWithSeed:network:`
 - (id) initWithSeed:(NSData*)seed;
 
+// Initializes master keychain from a seed. This is the "root" keychain of the entire hierarchy.
+// Chosen network affects formatting of the extended keys.
+- (id) initWithSeed:(NSData*)seed network:(BTCNetwork*)network;
+
 // Initializes with a base58-encoded extended public or private key.
+// Inherits the network from the formatted key.
 - (id) initWithExtendedKey:(NSString*)extendedKey;
 
 // Initializes keychain with a serialized extended key.
 // Use BTCDataFromBase58Check() to convert from Base58 string.
-- (id) initWithExtendedKeyData:(NSData*)extendedKeyData;
+- (id) initWithExtendedKeyData:(NSData*)extendedKeyData DEPRECATED_ATTRIBUTE;
 
 // Clears all sensitive data from keychain (keychain becomes invalid)
 - (void) clear;
+
+// Network for formatting the extended keys (mainnet/testnet).
+// Default is mainnet.
+@property(nonatomic) BTCNetwork* network;
 
 // Deprecated because of the badly chosen name. See `-key`.
 @property(nonatomic, readonly) BTCKey* rootKey DEPRECATED_ATTRIBUTE;
@@ -52,12 +63,12 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 
 // Raw binary data for serialized extended public key.
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
-@property(nonatomic, readonly) NSData* extendedPublicKeyData;
+@property(nonatomic, readonly) NSData* extendedPublicKeyData DEPRECATED_ATTRIBUTE;
 
 // Raw binary data for serialized extended private key.
 // Returns nil if the receiver is public-only keychain.
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
-@property(nonatomic, readonly) NSData* extendedPrivateKeyData;
+@property(nonatomic, readonly) NSData* extendedPrivateKeyData DEPRECATED_ATTRIBUTE;
 
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
 @property(nonatomic, readonly) NSData* identifier;

@@ -7,11 +7,15 @@
 #import "BTCBigNumber.h"
 #import "BTCBase58.h"
 #import "BTCAddress.h"
+#import "BTCNetwork.h"
 
 #define CHECK_IF_CLEARED if (_cleared) { [[NSException exceptionWithName:@"BTCKeychain: instance was already cleared." reason:@"" userInfo:nil] raise]; }
 
-#define BTCKeychainPrivateExtendedKeyVersion 0x0488ADE4
-#define BTCKeychainPublicExtendedKeyVersion  0x0488B21E
+#define BTCKeychainMainnetPrivateVersion 0x0488ADE4
+#define BTCKeychainMainnetPublicVersion  0x0488B21E
+
+#define BTCKeychainTestnetPrivateVersion 0x04358394
+#define BTCKeychainTestnetPublicVersion  0x043587CF
 
 @interface BTCKeychain ()
 @property(nonatomic, readwrite) NSMutableData* chainCode;
@@ -48,26 +52,34 @@
 }
 
 
-- (id) initWithSeed:(NSData*)seed
-{
-    if (self = [super init])
-    {
+- (id) initWithSeed:(NSData*)seed {
+    return [self initWithSeed:seed network:nil];
+}
+
+- (id) initWithSeed:(NSData*)seed network:(BTCNetwork*)network {
+    if (self = [super init]) {
         if (!seed) return nil;
-        
+
         NSMutableData* hmac = BTCHMACSHA512([@"Bitcoin seed" dataUsingEncoding:NSASCIIStringEncoding], seed);
         _privateKey = BTCDataRange(hmac, NSMakeRange(0, 32));
         _chainCode  = BTCDataRange(hmac, NSMakeRange(32, 32));
         BTCDataClear(hmac);
+
+        _network = network;
     }
     return self;
 }
 
 - (id) initWithExtendedKey:(NSString*)extkey
 {
-    return [self initWithExtendedKeyData:BTCDataFromBase58Check(extkey)];
+    return [self initWithExtendedKeyDataInternal:BTCDataFromBase58Check(extkey)];
 }
 
-- (id) initWithExtendedKeyData:(NSData*)extendedKeyData
+- (id) initWithExtendedKeyData:(NSData*)data {
+    return [self initWithExtendedKeyDataInternal:data];
+}
+
+- (id) initWithExtendedKeyDataInternal:(NSData*)extendedKeyData
 {
     if (self = [super init])
     {
@@ -78,17 +90,28 @@
 
         uint32_t keyprefix = bytes[45];
         
-        if (version == BTCKeychainPrivateExtendedKeyVersion)
-        {
+        if (version == BTCKeychainMainnetPrivateVersion ||
+            version == BTCKeychainTestnetPrivateVersion) {
             // Should have 0-prefixed private key (1 + 32 bytes).
             if (keyprefix != 0) return nil;
             _privateKey = BTCDataRange(extendedKeyData, NSMakeRange(46, 32));
         }
-        else
-        {
+        else if (version == BTCKeychainMainnetPublicVersion ||
+                 version == BTCKeychainTestnetPublicVersion) {
             // Should have a 33-byte public key with non-zero first byte.
             if (keyprefix == 0) return nil;
             _publicKey = BTCDataRange(extendedKeyData, NSMakeRange(45, 33));
+        }
+        else {
+            // Unknown version.
+            return nil;
+        }
+
+        // If it's a testnet key, remember the network.
+        // Otherwise, keep it nil so we don't do extra work if it's not needed.
+        if (version == BTCKeychainTestnetPrivateVersion ||
+            version == BTCKeychainTestnetPublicVersion) {
+            _network = [BTCNetwork testnet];
         }
 
         _depth = *(bytes + 4);
@@ -110,6 +133,13 @@
 #pragma mark - Properties
 
 
+- (BTCNetwork*) network {
+    if (!_network) {
+        _network = [BTCNetwork mainnet];
+    }
+    return _network;
+}
+
 // deprecated
 - (BTCKey*) rootKey
 {
@@ -119,13 +149,13 @@
 - (NSString*) extendedPrivateKey
 {
     CHECK_IF_CLEARED;
-    return BTCBase58CheckStringWithData([self extendedPrivateKeyData]);
+    return BTCBase58CheckStringWithData([self extendedPrivateKeyDataInternal]);
 }
 
 - (NSString*) extendedPublicKey
 {
     CHECK_IF_CLEARED;
-    return BTCBase58CheckStringWithData([self extendedPublicKeyData]);
+    return BTCBase58CheckStringWithData([self extendedPublicKeyDataInternal]);
 }
 
 
@@ -145,7 +175,9 @@
     }
 }
 
-- (NSData*) extendedPrivateKeyData
+- (NSData*) extendedPrivateKeyData { return [self extendedPrivateKeyDataInternal]; }
+
+- (NSData*) extendedPrivateKeyDataInternal
 {
     CHECK_IF_CLEARED;
 
@@ -153,7 +185,8 @@
     
     if (!_extendedPrivateKeyData)
     {
-        NSMutableData* data = [self extendedKeyPrefixWithVersion:BTCKeychainPrivateExtendedKeyVersion];
+        uint32_t version = [self.network isMainnet] ? BTCKeychainMainnetPrivateVersion : BTCKeychainTestnetPrivateVersion;
+        NSMutableData* data = [self extendedKeyPrefixWithVersion:version];
         
         uint8_t padding = 0;
         [data appendBytes:&padding length:1];
@@ -164,7 +197,9 @@
     return _extendedPrivateKeyData;
 }
 
-- (NSData*) extendedPublicKeyData
+- (NSData*) extendedPublicKeyData { return [self extendedPublicKeyDataInternal]; }
+
+- (NSData*) extendedPublicKeyDataInternal
 {
     CHECK_IF_CLEARED;
 
@@ -173,8 +208,9 @@
         NSData* pubkey = self.publicKey;
         
         if (!pubkey) return nil;
-        
-        NSMutableData* data = [self extendedKeyPrefixWithVersion:BTCKeychainPublicExtendedKeyVersion];
+
+        uint32_t version = [self.network isMainnet] ? BTCKeychainMainnetPublicVersion : BTCKeychainTestnetPublicVersion;
+        NSMutableData* data = [self extendedKeyPrefixWithVersion:version];
         
         [data appendData:pubkey];
         
@@ -578,7 +614,7 @@
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat:@"<%@:0x%p %@>", [self class], self, BTCBase58CheckStringWithData(self.extendedPublicKeyData)];
+    return [NSString stringWithFormat:@"<%@ %@>", [self class], self.extendedPublicKey];
 }
 
 - (NSString*) debugDescription
