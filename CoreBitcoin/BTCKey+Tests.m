@@ -29,11 +29,8 @@
     BTCKey* dh2 = [bob diffieHellmanWithPrivateKey:alice];
 
     NSAssert([dh1.publicKey isEqual:dh2.publicKey], @"");
-    NSLog(@"dh1.publicKey = %@", dh1.publicKey);
-//    NSAssert([dh1.publicKey isEqual:BTCDataFromHex(@"0378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c71")], @"");
-//    NSAssert([dh2.publicKey isEqual:BTCDataFromHex(@"0378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c71")], @"");
-
-
+    NSAssert([dh1.publicKey isEqual:BTCDataFromHex(@"03735932754bc16e10febe40ee0280906d29459d477442f1838dcf27de3b5d9699")], @"");
+    NSAssert([dh2.publicKey isEqual:BTCDataFromHex(@"03735932754bc16e10febe40ee0280906d29459d477442f1838dcf27de3b5d9699")], @"");
 }
 
 + (void) testCanonicality
