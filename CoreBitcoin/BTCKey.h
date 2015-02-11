@@ -64,6 +64,10 @@
 // Verifies signature for a given hash with a public key.
 - (BOOL) isValidSignature:(NSData*)signature hash:(NSData*)hash;
 
+// Multiplies a public key of the receiver with a given private key and returns resulting curve point as BTCKey object (pubkey only).
+// Pubkey compression flag is the same as on receiver.
+- (BTCKey*) diffieHellmanWithPrivateKey:(BTCKey*)privkey;
+
 // Returns a signature data for a 256-bit hash using private key.
 // Returns nil if signing failed or a private key is not present.
 - (NSData*)signatureForHash:(NSData*)hash;

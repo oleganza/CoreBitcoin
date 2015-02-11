@@ -713,6 +713,24 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 }
 
 
+// Multiplies a public key of the receiver with a given private key and returns resulting curve point as BTCKey object (pubkey only).
+// Pubkey compression flag is the same as on receiver.
+- (BTCKey*) diffieHellmanWithPrivateKey:(BTCKey*)privkey {
+
+    BTCCurvePoint* curvePoint = self.curvePoint;
+    BTCBigNumber* pk = [[BTCBigNumber alloc] initWithUnsignedBigEndian:privkey.privateKey];
+
+    NSAssert(curvePoint, @"sanity check");
+    NSAssert(pk, @"sanity check");
+
+    // D-H happens here.
+    [curvePoint multiply:pk];
+
+    BTCKey* dhKey = [[BTCKey alloc] initWithCurvePoint:curvePoint];
+    dhKey.publicKeyCompressed = self.publicKeyCompressed;
+
+    return dhKey;
+}
 
 
 

@@ -9,11 +9,31 @@
 
 + (void) runAllTests
 {
+    [self testDiffieHellman];
     [self testCanonicality];
     [self testRandomKeys];
     [self testBasicSigning];
     [self testECDSA];
     [self testBitcoinSignedMessage];
+}
+
++ (void) testDiffieHellman {
+
+    BTCKey* alice = [[BTCKey alloc] initWithPrivateKey:BTCDataFromHex(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a")];
+    alice.publicKeyCompressed = YES;
+
+    BTCKey* bob = [[BTCKey alloc] initWithPrivateKey:BTCDataFromHex(@"2db963f0fe106f483d9afa73bd4e39a8ac4bbcb1fbec99d65bf59d85c8cb62ee")];
+    bob.publicKeyCompressed = YES;
+
+    BTCKey* dh1 = [alice diffieHellmanWithPrivateKey:bob];
+    BTCKey* dh2 = [bob diffieHellmanWithPrivateKey:alice];
+
+    NSAssert([dh1.publicKey isEqual:dh2.publicKey], @"");
+    NSLog(@"dh1.publicKey = %@", dh1.publicKey);
+//    NSAssert([dh1.publicKey isEqual:BTCDataFromHex(@"0378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c71")], @"");
+//    NSAssert([dh2.publicKey isEqual:BTCDataFromHex(@"0378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c71")], @"");
+
+
 }
 
 + (void) testCanonicality
