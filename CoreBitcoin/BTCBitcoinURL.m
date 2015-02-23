@@ -12,9 +12,12 @@
     return btcurl.URL;
 }
 
-/*!
- * Instantiates if URL is a valid bitcoin: URL.
- */
+- (id) init {
+    if (self = [super init]) {
+    }
+    return self;
+}
+
 - (id) initWithURL:(NSURL*)url {
     if (!url) return nil;
 
