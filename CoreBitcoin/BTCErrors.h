@@ -7,12 +7,16 @@ extern NSString* const BTCErrorDomain;
 typedef NS_ENUM(NSUInteger, BTCErrorCode) {
     
     // Canonical pubkey/signature check errors
-    BTCErrorNonCanonicalPublicKey        = 4001,
-    BTCErrorNonCanonicalScriptSignature  = 4002,
+    BTCErrorNonCanonicalPublicKey            = 4001,
+    BTCErrorNonCanonicalScriptSignature      = 4002,
     
     // Script verification errors
-    BTCErrorScriptError                  = 5001,
+    BTCErrorScriptError                      = 5001,
     
     // BTCPriceSource errors
-    BTCErrorUnsupportedCurrencyCode      = 6001,
+    BTCErrorUnsupportedCurrencyCode          = 6001,
+
+    // BIP70 Payment Protocol errors
+    BTCErrorPaymentRequestInvalidResponse    = 7001,
+    BTCErrorPaymentRequestTooBig             = 7002,
 };

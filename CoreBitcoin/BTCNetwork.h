@@ -7,6 +7,7 @@
 @class BTCBlock;
 @interface BTCNetwork : NSObject <NSCopying>
 
+- (id) initWithName:(NSString*)name;
 
 // Available networks
 
@@ -31,6 +32,9 @@
 
 // Name of the network ("mainnet", "testnet3" etc)
 @property(nonatomic, copy) NSString* name;
+
+// Name of the network for BIP70 Payment Details ("main", "test" or some custom name used in `-initWithName:`)
+@property(nonatomic, copy) NSString* paymentProtocolName;
 
 // Hash of the genesis block.
 @property(nonatomic) NSData* genesisBlockHash;

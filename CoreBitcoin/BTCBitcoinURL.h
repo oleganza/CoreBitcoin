@@ -32,6 +32,11 @@
 @property(nonatomic) NSString* message;
 
 /*!
+ * Payment request URL (r=...). Default is nil.
+ */
+@property(nonatomic) NSURL* paymentRequestURL;
+
+/*!
  * Complete URL built from the individual properties.
  */
 @property(nonatomic, readonly) NSURL* URL;
@@ -46,6 +51,7 @@
 
 /*!
  * Instantiates if URL is a valid bitcoin: URL.
+ * To be valid it should either contain a valid address, or payment request URL (r=), or both.
  */
 - (id) initWithURL:(NSURL*)url;
 

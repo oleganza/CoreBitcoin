@@ -5,7 +5,22 @@
 #import "BTCKey.h"
 
 @implementation BTCNetwork {
+    BOOL _isMainnet;
     BOOL _isTestnet;
+}
+
+- (id) initWithName:(NSString*)name {
+    if (self = [self initWithName:name paymentProtocolName:nil]) {
+    }
+    return self;
+}
+
+- (id) initWithName:(NSString*)name paymentProtocolName:(NSString*)ppName {
+    if (self = [super init]) {
+        _name = name;
+        _paymentProtocolName = ppName;
+    }
+    return self;
 }
 
 + (BTCNetwork*) mainnet
@@ -14,9 +29,9 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        network = [[BTCNetwork alloc] init];
-        network.name = @"mainnet";
-        
+        network = [[BTCNetwork alloc] initWithName:@"mainnet" paymentProtocolName:@"main"];
+        network->_isMainnet = YES;
+
         // TODO: set all parameters here.
         
     });
@@ -29,8 +44,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        network = [[BTCNetwork alloc] init];
-        network.name = @"testnet3";
+        network = [[BTCNetwork alloc] initWithName:@"testnet3" paymentProtocolName:@"test"];
         network->_isTestnet = YES;
         
         // TODO: set all parameters here.
@@ -39,12 +53,16 @@
     return network;
 }
 
+- (BOOL) isMainnet {
+    return _isMainnet;
+}
+
 - (BOOL) isTestnet {
     return _isTestnet;
 }
 
-- (BOOL) isMainnet {
-    return ![self isTestnet];
+- (NSString*) paymentProtocolName {
+    return _paymentProtocolName ?: _name;
 }
 
 
