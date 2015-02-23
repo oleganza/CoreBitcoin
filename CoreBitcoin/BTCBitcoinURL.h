@@ -42,6 +42,11 @@
 @property(nonatomic, readonly) NSURL* URL;
 
 /*!
+ * Returns YES if it has a valid address or paymentRequestURL.
+ */
+@property(nonatomic, readonly) BOOL isValid;
+
+/*!
  * Makes a URL in form "bitcoin:<address>?amount=1.2345&label=<label>.
  * @param address Address to be rendered in base58 format.
  * @param amount  Amount in satoshis. Note that URI scheme dictates to render this amount as a decimal number in BTC.
@@ -54,5 +59,11 @@
  * To be valid it should either contain a valid address, or payment request URL (r=), or both.
  */
 - (id) initWithURL:(NSURL*)url;
+
+/*!
+ * Instantiates an empty Bitcoin URL.
+ * Fill in address, amount, label and other fields and use `URL` property to get a composed URL.
+ */
+- (id) init;
 
 @end
