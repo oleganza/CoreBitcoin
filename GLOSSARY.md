@@ -1,6 +1,14 @@
 Bitcoin Glossary
 ================
 
+### ATTENTION
+
+This glossary has been moved to [Oleg Andreev's Bitcoin Papers](https://github.com/oleganza/bitcoin-papers/blob/master/BitcoinGlossary.md).
+
+The content below will not be updated and eventually will be removed.
+
+***
+
 Some unusual terms are frequently used in Bitcoin documentation and discussions like *tx* or *coinbase*. Or words like *scriptPubKey* were badly chosen and now deserve some extra explanation. This glossary will help you understand exact meaning of all Bitcoin-related terms.
 
 If you find an inaccuracy, please report it to oleganza@gmail.com or clone this repo and submit pull requests. Thanks!
