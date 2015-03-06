@@ -19,6 +19,9 @@
  
     NSAssert([BTCDataWithUTF8CString("hello").SHA256.hex
               isEqual:@"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"], @"Test vector");
+    NSAssert([BTCSHA256Concat(BTCDataWithUTF8CString("hel"), BTCDataWithUTF8CString("lo")).hex
+              isEqual:@"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"], @"Test vector");
+
     NSAssert([BTCDataWithUTF8CString("hello").SHA256.SHA256.hex
               isEqual:@"9595c9df90075148eb06860365df33584b75bff782a510c6cd4883a419833d50"], @"Test vector");
     NSAssert([BTCDataWithUTF8CString("hello").BTCHash256.hex
