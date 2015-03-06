@@ -16,6 +16,7 @@
 #import "BTCTransaction+Tests.h"
 #import "BTCBlockchainInfo+Tests.h"
 #import "BTCPriceSource+Tests.h"
+#import "BTCMerkleTree+Tests.h"
 
 int main(int argc, const char * argv[])
 {
@@ -34,6 +35,7 @@ int main(int argc, const char * argv[])
         [BTCBlindSignature runAllTests];
         [BTCEncryptedMessage runAllTests];
         [BTCScript runAllTests];
+        [BTCMerkleTree runAllTests];
         [BTCBlockchainInfo runAllTests];
         [BTCPriceSource runAllTests];
         [BTCTransaction runAllTests];

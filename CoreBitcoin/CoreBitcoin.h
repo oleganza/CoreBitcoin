@@ -5,6 +5,7 @@
 #import <CoreBitcoin/BTCBigNumber.h>
 #import <CoreBitcoin/BTCBlindSignature.h>
 #import <CoreBitcoin/BTCBlock.h>
+#import <CoreBitcoin/BTCMerkleTree.h>
 #import <CoreBitcoin/BTCBlockchainInfo.h>
 #import <CoreBitcoin/BTCBlockHeader.h>
 #import <CoreBitcoin/BTCCurvePoint.h>
