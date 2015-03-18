@@ -8,10 +8,10 @@
 
 OPENSSL_VERSION="1.0.1e"
 
-DEVELOPER="/Applications/Xcode.app/Contents/Developer"
+DEVELOPER=`xcode-select -print-path`
 
-IOS_SDK_VERSION="8.1"
-OSX_SDK_VERSION="10.9"
+IOS_SDK_VERSION=`xcrun -sdk iphoneos --show-sdk-version`
+OSX_SDK_VERSION=`xcrun -sdk macosx --show-sdk-version`
 
 WORKDIR=${PWD}
 
