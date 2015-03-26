@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"
 
-// TODO: support arbitrary keys and values.
 // TODO: support handling URL from UIApplicationDelegate.
 
 /*!
@@ -30,6 +29,11 @@
  * Message. Default is nil.
  */
 @property(nonatomic) NSString* message;
+
+/*!
+ * Query parameters. Default is nil.
+ */
+@property(nonatomic) NSDictionary* queryParameters;
 
 /*!
  * Payment request URL (r=...). Default is nil.

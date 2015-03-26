@@ -2,7 +2,17 @@
 #import "BTCAddress.h"
 #import "BTCNumberFormatter.h"
 
+@interface BTCBitcoinURL ()
+@property NSMutableDictionary* mutableQueryParameters;
+@end
+
 @implementation BTCBitcoinURL
+
+@synthesize amount = _amount;
+@synthesize label = _label;
+@synthesize message = _message;
+@synthesize paymentRequestURL = _paymentRequestURL;
+@synthesize queryParameters = _queryParameters;
 
 + (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCAmount)amount label:(NSString*)label {
     BTCBitcoinURL* btcurl = [[self alloc] init];
@@ -14,6 +24,7 @@
 
 - (id) init {
     if (self = [super init]) {
+        self.mutableQueryParameters = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -36,21 +47,10 @@
         }
     }
 
-    if (self = [super init]) {
+    if (self = [self init]) {
         self.address = address;
         for (NSURLQueryItem* item in comps.queryItems) {
-            if ([item.name isEqual:@"amount"]) {
-                self.amount = [[self class] parseAmount:item.value];
-            }
-            if ([item.name isEqual:@"label"]) {
-                self.label = item.value;
-            }
-            if ([item.name isEqual:@"message"]) {
-                self.message = item.value;
-            }
-            if ([item.name isEqual:@"r"]) {
-                self.paymentRequestURL = [NSURL URLWithString:item.value];
-            }
+            [self.mutableQueryParameters setObject:item.value forKey:item.name];
         }
     }
     return self;
@@ -65,27 +65,16 @@
     NSMutableString* string = [NSMutableString stringWithFormat:@"bitcoin:%@", self.address ? self.address.string : @""];
     NSMutableArray* queryItems = [NSMutableArray array];
 
-    if (self.amount > 0) {
-        [queryItems addObject:[NSString stringWithFormat:@"amount=%@", [BTCBitcoinURL formatAmount:self.amount]]];
-    }
-
-    if (self.label.length > 0) {
-        [queryItems addObject:[NSString stringWithFormat:@"label=%@",
-                               CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.label, NULL, CFSTR("&="),
-                                                                                kCFStringEncodingUTF8))]];
-    }
-
-    if (self.message.length > 0) {
-        [queryItems addObject:[NSString stringWithFormat:@"message=%@",
-                               CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.message, NULL, CFSTR("&="),
-                                                                                kCFStringEncodingUTF8))]];
-    }
-
-    if (self.paymentRequestURL) {
-        NSString* r = self.paymentRequestURL.absoluteString;
-        [queryItems addObject:[NSString stringWithFormat:@"r=%@",
-                               CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)r, NULL, CFSTR("&="),
-                                                                                kCFStringEncodingUTF8))]];
+    if(self.queryParameters) {
+        NSArray* keys = self.queryParameters.allKeys;
+        for (NSString* key in keys) {
+            NSString* encodedKey = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)key, NULL, CFSTR("&="),
+                                                                                             kCFStringEncodingUTF8));
+            NSString* encodedValue = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)[self.queryParameters objectForKey:key], NULL, CFSTR("&="),
+                                                                                               kCFStringEncodingUTF8));
+            [queryItems addObject:[NSString stringWithFormat:@"%@=%@",encodedKey,encodedValue]];
+             
+        }
     }
 
     if (queryItems.count > 0) {
@@ -95,6 +84,94 @@
 
     return [NSURL URLWithString:string];
 }
+
+- (id)objectForKeyedSubscript:(id <NSCopying>)key {
+    return self.mutableQueryParameters[key];
+}
+
+- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key {
+    self.mutableQueryParameters[key] = obj;
+}
+
+- (NSDictionary*) queryParameters {
+    return self.mutableQueryParameters;
+}
+
+- (void) setQueryParameters:(NSDictionary *)queryParameters {
+    self.mutableQueryParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
+    //Reset cached standard query parameters
+    _amount = 0;
+    _paymentRequestURL = nil;
+    _message = nil;
+    _label = nil;
+}
+
+#pragma mark Standard query parameters
+
+- (BTCAmount) amount {
+    if(_amount == 0){
+        NSString* amountString = self.mutableQueryParameters[@"amount"];
+        if (amountString) _amount = [BTCBitcoinURL parseAmount:amountString];
+    }
+    return _amount;
+}
+
+- (void) setAmount:(BTCAmount)amount {
+    _amount = amount;
+    NSString* amountString = [BTCBitcoinURL formatAmount:amount];
+    self.mutableQueryParameters[@"amount"] = amountString;
+}
+
+- (NSURL*) paymentRequestURL {
+    if (!_paymentRequestURL) {
+        NSString* r = self.mutableQueryParameters[@"r"];
+        if (r) _paymentRequestURL = [NSURL URLWithString:r];
+    }
+    return _paymentRequestURL;
+}
+
+- (void) setPaymentRequestURL:(NSURL *)paymentRequestURL {
+    _paymentRequestURL = paymentRequestURL;
+    if(paymentRequestURL != nil) {
+        self.mutableQueryParameters[@"r"] = paymentRequestURL.absoluteString;
+    } else {
+        [self.mutableQueryParameters removeObjectForKey:@"r"];
+    }
+}
+
+- (NSString*) label {
+    if(!_label) {
+        _label = self.mutableQueryParameters[@"label"];
+    }
+    return _label;
+}
+
+- (void) setLabel:(NSString *)label {
+    _label = label;
+    if(label != nil) {
+        self.mutableQueryParameters[@"label"] = label;
+    } else {
+        [self.mutableQueryParameters removeObjectForKey:@"label"];
+    }
+}
+
+- (NSString*) message {
+    if(!_message) {
+        _message = self.mutableQueryParameters[@"message"];
+    }
+    return _message;
+}
+
+- (void) setMessage:(NSString *)message {
+    _message = message;
+    if(message != nil) {
+        self.mutableQueryParameters[@"message"] = message;
+    } else {
+        [self.mutableQueryParameters removeObjectForKey:@"message"];
+    }
+}
+
+#pragma mark
 
 + (NSString*) formatAmount:(BTCAmount)amount {
     return [NSString stringWithFormat:@"%d.%08d", (int)(amount / BTCCoin), (int)(amount % BTCCoin)];
