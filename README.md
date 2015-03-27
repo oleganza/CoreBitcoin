@@ -1,61 +1,79 @@
 CoreBitcoin
 ===========
 
-CoreBitcoin implements Bitcoin protocol in Objective-C. It is far from being complete, but it is already a useful toolkit.
-
-Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
+CoreBitcoin implements Bitcoin protocol in Objective-C and provides many additional APIs to make great apps.
 
 CoreBitcoin deliberately implements as much as possible directly in Objective-C with limited dependency on OpenSSL. This gives everyone an opportunity to learn Bitcoin on a clean codebase and enables all Mac and iOS developers to extend and improve Bitcoin protocol.
 
 Note that "Bitcoin Core" (previously known as BitcoinQT or "Satoshi client") is a completely different project.
 
 
+Projects using CoreBitcoin
+--------------------------
+
+- [Chain-iOS SDK](https://github.com/chain-engineering/chain-ios) (written by Oleg Andreev)
+- [Mycelium iOS Wallet](https://itunes.apple.com/us/app/mycelium-bitcoin-wallet/id943912290) (written by Oleg Andreev)
+- [bitWallet](https://itunes.apple.com/us/app/bitwallet-bitcoin-wallet/id777634714)
+- [Yallet](https://www.yallet.com)
+- [BitStore](http://bitstoreapp.com)
+
+
 Features
 --------
 
-- EC keys and signatures for binary and Bitcoin text messages.
-- Addresses: P2PK, P2PKH, P2SH, WIF format.
-- Transaction building blocks: inputs, outputs, scripts.
-- Script evaluation machine to actually validate individual transactions.
-- Convenient and safe transaction builder to fetch inputs, compute fees and change and sign transactions easily.
-- Utils to parse and compose bitcoin URL and payment requests.
-- Flexible bitcoin currency formatter with support for BTC, mBTC, bits, satoshis.
-- Flexible currency converter (not linked to any exchange) with support for various methods to calculate exchange rate.
-- QR Code generator and scanner in a unified API (iOS only for now).
-- Blockchain.info and Chain.com API to fetch unspent outputs and broadcast transactions.
-- BIP32 hierarchical deterministic wallets (BTCKeychain).
-- BIP39 implementation (BTCMnemonic).
-- BIP44 implementation (BTCKeychain).
-- Blind signatures implementation.
-- Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points.
-- Various cryptographic primitives like hash functions and AES encryption.
+- Encoding/decoding addresses: P2PK, P2PKH, P2SH, WIF format ([BTCAddress](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCAddress.h)).
+- Transaction building blocks: inputs, outputs, scripts ([BTCTransaction](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCTransaction.h), [BTCScript](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCScript.h)).
+- EC keys and signatures ([BTCKey](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKey.h)).
+- High-level convenient and safe transaction builder ([BTCTransactionBuilder](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCTransactionBuilder.h)).
+- Parsing and composing bitcoin URLs and payment requests ([BTCBitcoinURL](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBitcoinURL.h)).
+- QR Code generator and scanner in a unified API (iOS only for now; [BTCQRCode](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCQRCode.h)).
+- BIP32, BIP44 hierarchical deterministic wallets ([BTCKeychain](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKeychain.h)).
+- BIP39 implementation ([BTCMnemonic](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCMnemonic.h)).
+- BIP70 implementation ([BTCPaymentProtocol](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCPaymentProtocol.h)).
 
-Not done yet:
+Currency Tools
+--------------
 
-- Blocks and block headers.
+- Bitcoin currency formatter with support for BTC, mBTC, bits ([BTCNumberFormatter](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCNumberFormatter.h)).
+- Currency converter (not linked to any exchange) with support for various methods to calculate exchange rate ([BTCCurrencyConverter](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCCurrencyConverter.h)).
+- Various price sources and abstract interface for adding new ones ([BTCPriceSource](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCPriceSource.h) with support for Winkdex, Coindesk, Coinbase, Paymium).
+
+Advanced Features
+-----------------
+
+- Script evaluation machine to actually validate individual transactions ([BTCScriptMachine](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCScriptMachine.h)).
+- Blind signatures implementation ([BTCBlindSignature](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlindSignature.h)).
+- Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points ([BTCBigNumber](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBigNumber.h), [BTCCurvePoint](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCCurvePoint.h)).
+- Various cryptographic primitives like hash functions and AES encryption (see [BTCData.h](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCData.h)).
+
+
+On the roadmap
+--------------
+
+- Blocks and block headers (incomplete support for blocks in [BTCBlock](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlock.h) and [BTCBlockHeader](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlockHeader.h)).
 - P2P communication with other nodes.
 - Full blockchain verification procedure and storage.
 - Importing BitcoinQT, Electrum and Blockchain.info wallets.
 - SPV mode.
-- Various BIPs (BIP38, BIP70 etc.)
+- BIP38 and some other BIPs.
 
-The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Ladies and gentlemen, send me your pull requests.
+The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Pull requests are welcome.
 
 
 Starting points
 ---------------
 
-To encode/decode addresses, P2SH and private keys in sipa format see BTCAddress.
+To encode/decode addresses see [BTCAddress](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCAddress.h).
 
-To perform cryptographic operations, use BTCKey, BTCBigNumber and BTCCurvePoint. BTCKeychain implements BIP32 (hierarchical deterministic wallet).
+To perform cryptographic operations, use [BTCKey](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKey.h), [BTCBigNumber](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBigNumber.h) and [BTCCurvePoint](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCCurvePoint). [BTCKeychain](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKeychain.h) implements BIP32 (hierarchical deterministic wallet).
 
-To fetch unspent coins and broadcast transactions use one of the 3rd party APIs: BTCBlockchainInfo (blockchain.info) or BTCChainCom (chain.com).
+To fetch unspent coins and broadcast transactions use one of the 3rd party APIs: [BTCBlockchainInfo](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlockchainInfo.h) (blockchain.info) or [Chain-iOS](https://github.com/chain-engineering/chain-ios) (recommended).
 
-For full wallet workflow see BTCTransaction+Tests.m (fetch unspent outputs, compose a transaction, sign inputs, verify and broadcast).
+For full wallet workflow see [BTCTransaction+Tests.m](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCTransaction+Tests.m) (fetch unspent outputs, compose a transaction, sign inputs, verify and broadcast).
 
-For multisignature scripts usage see BTCScript+Tests.m: compose and unlock multisig output.
+For multisignature scripts usage see [BTCScript+Tests.m](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCScript+Tests.m): compose and unlock multisig output.
 
-All other files with "+Tests" in their name are worth checking out as they contain useful sample code.
+All other files with `+Tests` in their name are worth checking out as they contain useful sample code.
 
 
 Using CoreBitcoin CocoaPod (recommended)
