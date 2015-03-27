@@ -56,6 +56,8 @@ On the roadmap
 - Importing BitcoinQT, Electrum and Blockchain.info wallets.
 - SPV mode.
 - BIP38 and some other BIPs.
+- Support for [libsecp256k1](https://github.com/bitcoin/secp256k1) in addition to OpenSSL.
+- Eventual support for libconsensus as it gets more mature and feature-full.
 
 The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Pull requests are welcome.
 
