@@ -48,7 +48,7 @@
 }
 
 - (NSData*) computeMerkleRoot {
-    // Based on original Satoshi implementation + vulnerability fix:
+    // Based on original Satoshi implementation + vulnerability detection API:
     /* WARNING! If you're reading this because you're learning about crypto
        and/or designing a new system that will use merkle trees, keep in mind
        that the following merkle tree algorithm has a serious flaw related to
@@ -85,7 +85,7 @@
        root.
     */
     NSMutableArray* tree = [self.hashes mutableCopy];
-
+    _hasTailDuplicates = NO;
     NSInteger j = 0;
     for (NSInteger size = (NSInteger)tree.count; size > 1; size = (size + 1) / 2) {
         for (NSInteger i = 0; i < size; i += 2) {
