@@ -50,12 +50,12 @@ Advanced Features
 On the roadmap
 --------------
 
-- Blocks and block headers (incomplete support for blocks in [BTCBlock](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlock.h) and [BTCBlockHeader](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlockHeader.h)).
-- P2P communication with other nodes.
+See all [todo items here](https://github.com/oleganza/CoreBitcoin/issues).
+
+- Complete support for blocks and block headers.
+- SPV mode and P2P communication with other nodes.
 - Full blockchain verification procedure and storage.
 - Importing BitcoinQT, Electrum and Blockchain.info wallets.
-- SPV mode.
-- BIP38 and some other BIPs.
 - Support for [libsecp256k1](https://github.com/bitcoin/secp256k1) in addition to OpenSSL.
 - Eventual support for libconsensus as it gets more mature and feature-full.
 
