@@ -1,7 +1,7 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import "BTCErrors.h"
-#import "BTCEncryptedMessage.h"
+#import "BTCFancyEncryptedMessage.h"
 #import "BTCData.h"
 #import "BTCKey.h"
 #import "BTCCurvePoint.h"
@@ -10,12 +10,12 @@
 #import <CommonCrypto/CommonCrypto.h>
 
 // First 16 bytes of the hash of a shared key and decrypted message appended to the end of the complete message.
-#define BTCEncryptedMessageChecksumLength 16
+#define BTCFancyEncryptedMessageChecksumLength 16
 
 static uint8_t BTCEMCompactTargetForFullTarget(uint32_t fullTarget);
 static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 
-@implementation BTCEncryptedMessage {
+@implementation BTCFancyEncryptedMessage {
     
     // Decrypted message data:
     
@@ -35,7 +35,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     if (self = [super init])
     {
         _difficultyTarget = 0xFFFFFFFF;
-        _addressLength = BTCEncryptedMessageAddressLengthNone;
+        _addressLength = BTCFancyEncryptedMessageAddressLengthNone;
         _decryptedData = data;
     }
     return self;
@@ -98,7 +98,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         [messageData setLength:0];
         
-        [messageData appendBytes:BTCEncryptedMessageVersion length:4];
+        [messageData appendBytes:BTCFancyEncryptedMessageVersion length:4];
         
         [messageData appendBytes:&compactTarget length:1];
         
@@ -223,7 +223,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
         CC_SHA256_Final(digest256, &ctx256);
 
-        [messageData appendBytes:digest256 length:BTCEncryptedMessageChecksumLength];
+        [messageData appendBytes:digest256 length:BTCFancyEncryptedMessageChecksumLength];
         
         BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
@@ -285,7 +285,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         // Check for minimum length.
         uint32_t datalength = (uint32_t)data.length;
         
-        if (datalength < (4 + 1 + 1 + 4 + 1 + 1 + 32 + 1 + BTCEncryptedMessageChecksumLength)) return nil;
+        if (datalength < (4 + 1 + 1 + 4 + 1 + 1 + 32 + 1 + BTCFancyEncryptedMessageChecksumLength)) return nil;
         
         // Compute full hash for PoW.
         unsigned char digest512[CC_SHA512_DIGEST_LENGTH];
@@ -297,7 +297,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         uint8_t* msgbytes = (uint8_t*)data.bytes;
         
         // Check the magic prefix.
-        if (memcmp(BTCEncryptedMessageVersion, msgbytes, sizeof(BTCEncryptedMessageVersion)) != 0)
+        if (memcmp(BTCFancyEncryptedMessageVersion, msgbytes, sizeof(BTCFancyEncryptedMessageVersion)) != 0)
         {
             return nil;
         }
@@ -370,9 +370,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         offset += encodedMessageLength;
         
-        if (datalength < offset + BTCEncryptedMessageChecksumLength) return nil;
+        if (datalength < offset + BTCFancyEncryptedMessageChecksumLength) return nil;
         
-        _checksum = [data subdataWithRange:NSMakeRange(offset, BTCEncryptedMessageChecksumLength)];
+        _checksum = [data subdataWithRange:NSMakeRange(offset, BTCFancyEncryptedMessageChecksumLength)];
         
         // Now the user must call decryptedDataWithKey: with some of his keys to see if this message is for him or not.
     }
@@ -468,13 +468,13 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
     CC_SHA256_Final(digest256, &ctx256);
     
-    if (_checksum.length != BTCEncryptedMessageChecksumLength)
+    if (_checksum.length != BTCFancyEncryptedMessageChecksumLength)
     {
         BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         return nil;
     }
     
-    if (memcmp(digest256, _checksum.bytes, BTCEncryptedMessageChecksumLength) != 0)
+    if (memcmp(digest256, _checksum.bytes, BTCFancyEncryptedMessageChecksumLength) != 0)
     {
         BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         return nil;

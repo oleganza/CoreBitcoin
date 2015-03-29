@@ -11,7 +11,7 @@
 #import "BTCKeychain+Tests.h"
 #import "BTCCurvePoint+Tests.h"
 #import "BTCBlindSignature+Tests.h"
-#import "BTCEncryptedMessage+Tests.h"
+#import "BTCFancyEncryptedMessage+Tests.h"
 #import "BTCScript+Tests.h"
 #import "BTCTransaction+Tests.h"
 #import "BTCBlockchainInfo+Tests.h"
@@ -33,7 +33,7 @@ int main(int argc, const char * argv[])
         [BTCCurvePoint runAllTests];
         [BTCKeychain runAllTests];
         [BTCBlindSignature runAllTests];
-        [BTCEncryptedMessage runAllTests];
+        [BTCFancyEncryptedMessage runAllTests];
         [BTCScript runAllTests];
         [BTCMerkleTree runAllTests];
         [BTCBlockchainInfo runAllTests];

@@ -1,19 +1,19 @@
 //
-//  BTCEncryptedMessage+Tests.m
+//  BTCFancyEncryptedMessage+Tests.m
 //  CoreBitcoin
 //
 //  Created by Oleg Andreev on 21.06.2014.
 //  Copyright (c) 2014 Oleg Andreev. All rights reserved.
 //
 
-#import "BTCEncryptedMessage+Tests.h"
+#import "BTCFancyEncryptedMessage+Tests.h"
 
 #import "BTCKey.h"
 #import "BTCData.h"
 #import "BTCBigNumber.h"
 #import "BTCCurvePoint.h"
 
-@implementation BTCEncryptedMessage (Tests)
+@implementation BTCFancyEncryptedMessage (Tests)
 
 + (void) runAllTests
 {
@@ -27,7 +27,7 @@
     
     NSString* originalString = @"Hello!";
     
-    BTCEncryptedMessage* msg = [[BTCEncryptedMessage alloc] initWithData:[originalString dataUsingEncoding:NSUTF8StringEncoding]];
+    BTCFancyEncryptedMessage* msg = [[BTCFancyEncryptedMessage alloc] initWithData:[originalString dataUsingEncoding:NSUTF8StringEncoding]];
 
     msg.difficultyTarget = 0x00FFFFFF;
     
@@ -39,7 +39,7 @@
     
     //NSLog(@"encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData([BTCHash256(encryptedMsg) subdataWithRange:NSMakeRange(0, 8)]));
     
-    BTCEncryptedMessage* receivedMsg = [[BTCEncryptedMessage alloc] initWithEncryptedData:encryptedMsg];
+    BTCFancyEncryptedMessage* receivedMsg = [[BTCFancyEncryptedMessage alloc] initWithEncryptedData:encryptedMsg];
     
     NSAssert(receivedMsg, @"pow and format are correct");
     
@@ -57,18 +57,18 @@
 
 + (void) testProofOfWork
 {
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:0] == 0, @"0x00 -> 0");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:0xFF] == 0xFFFFFFFF, @"0x00 -> 0");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:1] == 0, @"order is zero");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:2] == 0, @"order is zero");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:3] == 0, @"order is zero");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:4] == 1, @"order is zero, and tail starts with 1");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:5] == 1, @"order is zero, and tail starts with 1");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:6] == 1, @"order is zero, and tail starts with 1");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:7] == 1, @"order is zero, and tail starts with 1");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:8] == 2, @"order is one, but tail is zero");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:8+3] == 2, @"order is one, but tail is zero");
-    NSAssert([BTCEncryptedMessage targetForCompactTarget:8+4] == 3, @"order is one, and tail starts with 1");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:0] == 0, @"0x00 -> 0");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:0xFF] == 0xFFFFFFFF, @"0x00 -> 0");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:1] == 0, @"order is zero");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:2] == 0, @"order is zero");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:3] == 0, @"order is zero");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:4] == 1, @"order is zero, and tail starts with 1");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:5] == 1, @"order is zero, and tail starts with 1");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:6] == 1, @"order is zero, and tail starts with 1");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:7] == 1, @"order is zero, and tail starts with 1");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:8] == 2, @"order is one, but tail is zero");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:8+3] == 2, @"order is one, but tail is zero");
+    NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:8+4] == 3, @"order is one, and tail starts with 1");
     
     uint8_t t = 0;
     do
@@ -80,9 +80,9 @@
         if (order == 1) nt = t & (0xff - 1 - 2);
         if (order == 2) nt = t & (0xff - 1);
 
-        uint32_t target = [BTCEncryptedMessage targetForCompactTarget:t];
+        uint32_t target = [BTCFancyEncryptedMessage targetForCompactTarget:t];
         
-        uint8_t t2 = [BTCEncryptedMessage compactTargetForTarget:target];
+        uint8_t t2 = [BTCFancyEncryptedMessage compactTargetForTarget:target];
         
         // uncomment this line to visualize data
         

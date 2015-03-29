@@ -24,27 +24,27 @@
 //             We do not add checksum of the entire message as it's a job of a transport layer.
 //             Also, a reasonably difficult proof-of-work implicitly acts as a checksum of the entire message.
 
-static unsigned char BTCEncryptedMessageVersion[4] = {0xc1, 0xb9, 0xf0, 0xe3};
+static unsigned char BTCFancyEncryptedMessageVersion[4] = {0xc1, 0xb9, 0xf0, 0xe3};
 
-typedef NS_ENUM(uint8_t, BTCEncryptedMessageAddressLength) {
+typedef NS_ENUM(uint8_t, BTCFancyEncryptedMessageAddressLength) {
     // No address is given, recipient must attempt to decrypt the message to figure if he is indeed a recipient.
-    BTCEncryptedMessageAddressLengthNone           = 0,
+    BTCFancyEncryptedMessageAddressLengthNone           = 0,
     
     // First 4 bits of the address. To route message efficiently to 6% of all users yet keeping recipient secret.
-    BTCEncryptedMessageAddressLengthLightRouting   = 4,
+    BTCFancyEncryptedMessageAddressLengthLightRouting   = 4,
     
     // First 7 bits of the address. To route message to 0.8% of the users. Good anonymity of recipient is maintained if number of users is more than 200K.
-    BTCEncryptedMessageAddressLengthNormalRouting  = 7,
+    BTCFancyEncryptedMessageAddressLengthNormalRouting  = 7,
     
     // Fingerprint is a short 32-bit identifier to be compact, but yet allow fast identification like in BIP32 / BTCKeychain.
-    BTCEncryptedMessageAddressLengthFingerprint    = 32,
+    BTCFancyEncryptedMessageAddressLengthFingerprint    = 32,
     
     // Full 160-bit address fully identifying the recipient.
-    BTCEncryptedMessageAddressLengthFull           = 160,
+    BTCFancyEncryptedMessageAddressLengthFull           = 160,
 };
 
 @class BTCKey;
-@interface BTCEncryptedMessage : NSObject
+@interface BTCFancyEncryptedMessage : NSObject
 
 // Proof-of-work difficulty target.
 // Set it before encrypting the message that needs some Proof-of-Work attached.
