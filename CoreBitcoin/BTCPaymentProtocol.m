@@ -422,6 +422,9 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
             _status = BTCPaymentRequestStatusInvalidSignature;
             return;
         }
+
+        _status = BTCPaymentRequestStatusValid;
+        _isValid = YES;
 #else
         // On OS X 10.10 we don't have kSecPaddingPKCS1SHA256 and SecKeyRawVerify.
         // So we have to verify the signature using Security Transforms API.
@@ -454,8 +457,13 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
          }
          if (result == kCFBooleanTrue) {
             // signature is valid
+             _status = BTCPaymentRequestStatusValid;
+             _isValid = YES;
          } else {
             // signature is invalid.
+             _status = BTCPaymentRequestStatusInvalidSignature;
+             _isValid = NO;
+            return NO;
          }
          */
 
@@ -463,9 +471,6 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         _isValid = NO;
         return;
 #endif
-
-        _status = BTCPaymentRequestStatusValid;
-        _isValid = YES;
 
     } else {
         // Either "none" PKI type or some new and unsupported PKI.
