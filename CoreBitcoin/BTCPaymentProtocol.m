@@ -2,6 +2,13 @@
 
 #import "BTCPaymentProtocol.h"
 #import "BTCProtocolBuffers.h"
+#import "BTCErrors.h"
+#import "BTCData.h"
+#import "BTCNetwork.h"
+#import "BTCScript.h"
+#import "BTCTransaction.h"
+#import "BTCTransactionOutput.h"
+#import <Security/Security.h>
 
 NSInteger const BTCPaymentRequestVersion1 = 1;
 
@@ -392,6 +399,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 
         // 2. Verify signature
 
+#if TARGET_OS_IPHONE
         SecKeyRef pubKey = SecTrustCopyPublicKey(trust);
         SecPadding padding = kSecPaddingPKCS1;
         NSData* hash = nil;
@@ -414,6 +422,47 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
             _status = BTCPaymentRequestStatusInvalidSignature;
             return;
         }
+#else
+        // On OS X 10.10 we don't have kSecPaddingPKCS1SHA256 and SecKeyRawVerify.
+        // So we have to verify the signature using Security Transforms API.
+        // For now, just don't verify until someone has time to
+
+        //  Here's a draft of what needs to be done here.
+        /*
+         CFErrorRef* error = NULL;
+         verifier = SecVerifyTransformCreate(publickey, signature, &error);
+         if (!verifier) { CFShow(error); exit(-1); }
+         if (!SecTransformSetAttribute(verifier, kSecTransformInputAttributeName, dataForSigning, &error) {
+            CFShow(error);
+            exit(-1);
+         }
+         // if it's sha256, then set SHA2 digest type and 32 bytes length.
+         if (!SecTransformSetAttribute(verifier, kSecDigestTypeAttribute, kSecDigestSHA2, &error) {
+            CFShow(error);
+            exit(-1);
+         }
+         // Not sure if the length is in bytes or bits.
+         if (!SecTransformSetAttribute(verifier, kSecDigestLengthAttribute, @(32), &error) {
+            CFShow(error);
+            exit(-1);
+         }
+
+         result = SecTransformExecute(verifier, &error);
+         if (error) {
+            CFShow(error);
+            exit(-1);
+         }
+         if (result == kCFBooleanTrue) {
+            // signature is valid
+         } else {
+            // signature is invalid.
+         }
+         */
+
+        _status = BTCPaymentRequestStatusUnknown;
+        _isValid = NO;
+        return;
+#endif
 
         _status = BTCPaymentRequestStatusValid;
         _isValid = YES;

@@ -1,6 +1,7 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
+#import "BTCUnitsAndLimits.h"
 
 // Interface to BIP70 payment protocol.
 // Spec: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
@@ -41,6 +42,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 @class BTCPaymentACK;
 @class BTCPaymentRequest;
 @class BTCPaymentDetails;
+@class BTCTransaction;
 
 @interface BTCPaymentProtocol : NSObject
 
