@@ -146,6 +146,11 @@ Email: [oleganza@gmail.com](mailto:oleganza@gmail.com)
 
 Twitter: [@oleganza](http://twitter.com/oleganza)
 
+To publish on CocoaPods:
+
+```
+$ pod trunk push --verbose --use-libraries
+```
 
 Donate
 ------
