@@ -63,6 +63,7 @@ NSMutableData* BTCDataRange(NSData* data, NSRange range);
 // If the argument is nil, returns nil.
 NSMutableData* BTCSHA1(NSData* data);
 NSMutableData* BTCSHA256(NSData* data);
+NSMutableData* BTCSHA512(NSData* data);
 NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2); // SHA256(data1 || data2)
 NSMutableData* BTCHash256(NSData* data); // == SHA256(SHA256(data)) (aka Hash() in BitcoinQT)
 NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2);  // SHA256(SHA256(data1 || data2))

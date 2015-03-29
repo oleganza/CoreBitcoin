@@ -328,6 +328,23 @@ NSMutableData* BTCSHA256(NSData* data)
     return result;
 }
 
+NSMutableData* BTCSHA512(NSData* data)
+{
+    if (!data) return nil;
+    unsigned char digest[CC_SHA512_DIGEST_LENGTH];
+
+    __block CC_SHA512_CTX ctx;
+    CC_SHA512_Init(&ctx);
+    [data enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
+        CC_SHA512_Update(&ctx, bytes, (CC_LONG)byteRange.length);
+    }];
+    CC_SHA512_Final(digest, &ctx);
+
+    NSMutableData* result = [NSMutableData dataWithBytes:digest length:CC_SHA512_DIGEST_LENGTH];
+    BTCSecureMemset(digest, 0, CC_SHA512_DIGEST_LENGTH);
+    return result;
+}
+
 NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2)
 {
     if (!data1 || !data2) return nil;
