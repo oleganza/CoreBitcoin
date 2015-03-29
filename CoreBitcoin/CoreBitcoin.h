@@ -32,3 +32,4 @@
 #import <CoreBitcoin/BTCPriceSource.h>
 #import <CoreBitcoin/BTCBitcoinURL.h>
 #import <CoreBitcoin/BTCTransactionBuilder.h>
+#import <CoreBitcoin/BTCEncryptedMessage.h>
