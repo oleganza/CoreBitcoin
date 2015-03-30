@@ -428,7 +428,6 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 #else
         // On OS X 10.10 we don't have kSecPaddingPKCS1SHA256 and SecKeyRawVerify.
         // So we have to verify the signature using Security Transforms API.
-        // For now, just don't verify until someone has time to
 
         //  Here's a draft of what needs to be done here.
         /*
@@ -444,8 +443,9 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
             CFShow(error);
             exit(-1);
          }
-         // Not sure if the length is in bytes or bits.
-         if (!SecTransformSetAttribute(verifier, kSecDigestLengthAttribute, @(32), &error) {
+         // Not sure if the length is in bytes or bits. Quinn The Eskimo says it's in bits:
+         // https://devforums.apple.com/message/1119092#1119092
+         if (!SecTransformSetAttribute(verifier, kSecDigestLengthAttribute, @(256), &error) {
             CFShow(error);
             exit(-1);
          }
@@ -464,6 +464,62 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
              _status = BTCPaymentRequestStatusInvalidSignature;
              _isValid = NO;
             return NO;
+         }
+         
+         // -----------------------------------------------------------------------
+         
+         // From CryptoCompatibility sample code (QCCRSASHA1VerifyT.m):
+
+         BOOL                success;
+         SecTransformRef     transform;
+         CFBooleanRef        result;
+         CFErrorRef          errorCF;
+
+         result = NULL;
+         errorCF = NULL;
+
+         // Set up the transform.
+
+         transform = SecVerifyTransformCreate(self.publicKey, (__bridge CFDataRef) self.signatureData, &errorCF);
+         success = (transform != NULL);
+
+         // Note: kSecInputIsAttributeName defaults to kSecInputIsPlainText, which is what we want.
+
+         if (success) {
+         success = SecTransformSetAttribute(transform, kSecDigestTypeAttribute, kSecDigestSHA1, &errorCF) != false;
+         }
+
+         if (success) {
+         success = SecTransformSetAttribute(transform, kSecTransformInputAttributeName, (__bridge CFDataRef) self.inputData, &errorCF) != false;
+         }
+
+         // Run it.
+
+         if (success) {
+         result = SecTransformExecute(transform, &errorCF);
+         success = (result != NULL);
+         }
+
+         // Process the results.
+
+         if (success) {
+         assert(CFGetTypeID(result) == CFBooleanGetTypeID());
+         self.verified = (CFBooleanGetValue(result) != false);
+         } else {
+         assert(errorCF != NULL);
+         self.error = (__bridge NSError *) errorCF;
+         }
+
+         // Clean up.
+
+         if (result != NULL) {
+         CFRelease(result);
+         }
+         if (errorCF != NULL) {
+         CFRelease(errorCF);
+         }
+         if (transform != NULL) {
+         CFRelease(transform);
          }
          */
 
