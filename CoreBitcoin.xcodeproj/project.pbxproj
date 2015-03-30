@@ -315,6 +315,7 @@
 		20A443CD1AC82594008B3447 /* BTCEncryptedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A443C61AC82594008B3447 /* BTCEncryptedMessage.m */; };
 		20A443CE1AC82594008B3447 /* BTCEncryptedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A443C61AC82594008B3447 /* BTCEncryptedMessage.m */; };
 		20A443D11AC825DA008B3447 /* BTCEncryptedMessage+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A443D01AC825DA008B3447 /* BTCEncryptedMessage+Tests.m */; };
+		20A443D51AC954C1008B3447 /* BTCEncryptedBackup+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20A443D41AC954C1008B3447 /* BTCEncryptedBackup+Tests.m */; };
 		20B5A64018924F350035582D /* BTCTransaction+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B5A63F18924F350035582D /* BTCTransaction+Tests.m */; };
 		20B66C8717BFE4F9007128CE /* BTCErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B66C8617BFE4F9007128CE /* BTCErrors.m */; };
 		20B8AB92189E7E0100008138 /* BTCCurvePoint+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B8AB91189E7E0100008138 /* BTCCurvePoint+Tests.m */; };
@@ -543,6 +544,8 @@
 		20A443CF1AC825DA008B3447 /* BTCEncryptedMessage+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEncryptedMessage+Tests.h"; sourceTree = "<group>"; };
 		20A443D01AC825DA008B3447 /* BTCEncryptedMessage+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEncryptedMessage+Tests.m"; sourceTree = "<group>"; };
 		20A443D21AC941F7008B3447 /* ReleaseNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNotes.md; sourceTree = "<group>"; };
+		20A443D31AC954C1008B3447 /* BTCEncryptedBackup+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEncryptedBackup+Tests.h"; sourceTree = "<group>"; };
+		20A443D41AC954C1008B3447 /* BTCEncryptedBackup+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEncryptedBackup+Tests.m"; sourceTree = "<group>"; };
 		20B5A63E18924F350035582D /* BTCTransaction+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCTransaction+Tests.h"; sourceTree = "<group>"; };
 		20B5A63F18924F350035582D /* BTCTransaction+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCTransaction+Tests.m"; sourceTree = "<group>"; };
 		20B66C8517BFE4F9007128CE /* BTCErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCErrors.h; sourceTree = "<group>"; };
@@ -943,6 +946,8 @@
 				200756D91A5D6A44009A24A9 /* BTCPriceSource+Tests.m */,
 				208E30341AC012CE0020F830 /* BTCEncryptedBackup.h */,
 				208E30351AC012CE0020F830 /* BTCEncryptedBackup.m */,
+				20A443D31AC954C1008B3447 /* BTCEncryptedBackup+Tests.h */,
+				20A443D41AC954C1008B3447 /* BTCEncryptedBackup+Tests.m */,
 			);
 			path = CoreBitcoin;
 			sourceTree = "<group>";
@@ -1479,6 +1484,7 @@
 				2084DD8B17B8FF76005AC9E6 /* BTCKey.m in Sources */,
 				2084DD8C17B8FF76005AC9E6 /* BTCProtocolSerialization.m in Sources */,
 				207B2608188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
+				20A443D51AC954C1008B3447 /* BTCEncryptedBackup+Tests.m in Sources */,
 				2084DD8D17B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m in Sources */,
 				2060A2831AAA077A004531FD /* BTCMerkleTree.m in Sources */,
 				20D008C218D1AFA800079B79 /* BTC256+Tests.m in Sources */,
