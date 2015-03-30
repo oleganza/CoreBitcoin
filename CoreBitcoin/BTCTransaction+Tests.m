@@ -63,9 +63,8 @@ typedef enum : NSUInteger {
 
     BTCTransaction* tx = [[BTCTransaction alloc] initWithData:txdata];
 
-    BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"n3ZRkPLZZLdjWi4Wn3AazjqWBw7WWXWtVb"]];
-    NSData* sighash = [tx signatureHashForScript:outputScript inputIndex:0 hashType:SIGHASH_ALL error:nil];
-
+    //BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"n3ZRkPLZZLdjWi4Wn3AazjqWBw7WWXWtVb"]];
+    //NSData* sighash = [tx signatureHashForScript:outputScript inputIndex:0 hashType:SIGHASH_ALL error:nil];
     //NSLog(@"sighash = %@", BTCHexFromData(sighash));
 
     BTCTransactionInput* txin = tx.inputs.firstObject;
