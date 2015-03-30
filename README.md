@@ -61,6 +61,8 @@ See all [todo items here](https://github.com/oleganza/CoreBitcoin/issues).
 
 The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Pull requests are welcome.
 
+[Release Notes](ReleaseNotes.md)
+
 
 Starting points
 ---------------

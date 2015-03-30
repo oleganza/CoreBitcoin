@@ -542,6 +542,7 @@
 		20A443C61AC82594008B3447 /* BTCEncryptedMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCEncryptedMessage.m; sourceTree = "<group>"; };
 		20A443CF1AC825DA008B3447 /* BTCEncryptedMessage+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCEncryptedMessage+Tests.h"; sourceTree = "<group>"; };
 		20A443D01AC825DA008B3447 /* BTCEncryptedMessage+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCEncryptedMessage+Tests.m"; sourceTree = "<group>"; };
+		20A443D21AC941F7008B3447 /* ReleaseNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNotes.md; sourceTree = "<group>"; };
 		20B5A63E18924F350035582D /* BTCTransaction+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCTransaction+Tests.h"; sourceTree = "<group>"; };
 		20B5A63F18924F350035582D /* BTCTransaction+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCTransaction+Tests.m"; sourceTree = "<group>"; };
 		20B66C8517BFE4F9007128CE /* BTCErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCErrors.h; sourceTree = "<group>"; };
@@ -771,6 +772,7 @@
 			isa = PBXGroup;
 			children = (
 				2084DD9417B8FF7E005AC9E6 /* README.md */,
+				20A443D21AC941F7008B3447 /* ReleaseNotes.md */,
 				204F8A801845FAF8002649CE /* TODO.txt */,
 				2039DB0117E2ED2B0051177B /* GLOSSARY.md */,
 				20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */,
