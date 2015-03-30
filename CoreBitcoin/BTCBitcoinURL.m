@@ -104,6 +104,13 @@
     NSLocale* locale = [[NSLocale localeWithLocaleIdentifier:@"en_US"] copy]; // uses period (".") as a decimal point.
     NSAssert([[locale objectForKey:NSLocaleDecimalSeparator] isEqual:@"."], @"must be point as a decimal separator");
     NSDecimalNumber* dn = [NSDecimalNumber decimalNumberWithString:string locale:locale];
+    // Fixes crash on URL like "bitcoin:1shaYanre36PBhspFL9zG7nt6tfDhxQ4u?amount=#" (https://twitter.com/sbetamc/status/581974120440700929)
+    if ([dn isEqual:[NSDecimalNumber notANumber]]) {
+        return 0;
+    }
+    if (BTCAmountFromDecimalNumber(dn) > 21000000) { // prevent overflow when multiplying by 8.
+        return 0;
+    }
     dn = [dn decimalNumberByMultiplyingByPowerOf10:8];
     return BTCAmountFromDecimalNumber(dn);
 }
