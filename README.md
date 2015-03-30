@@ -21,6 +21,8 @@ Projects using CoreBitcoin
 Features
 --------
 
+See also [Release Notes](ReleaseNotes.md).
+
 - Encoding/decoding addresses: P2PK, P2PKH, P2SH, WIF format ([BTCAddress](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCAddress.h)).
 - Transaction building blocks: inputs, outputs, scripts ([BTCTransaction](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCTransaction.h), [BTCScript](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCScript.h)).
 - EC keys and signatures ([BTCKey](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKey.h)).
@@ -60,8 +62,6 @@ See all [todo items here](https://github.com/oleganza/CoreBitcoin/issues).
 - Eventual support for libconsensus as it gets more mature and feature-full.
 
 The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Pull requests are welcome.
-
-[Release Notes](ReleaseNotes.md)
 
 
 Starting points
