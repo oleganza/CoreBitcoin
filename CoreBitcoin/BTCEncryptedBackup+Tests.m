@@ -26,9 +26,12 @@
     NSData* plaintext = [@"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks" dataUsingEncoding:NSUTF8StringEncoding];
 
     NSData* masterKey = BTCSHA256([@"Master Key" dataUsingEncoding:NSUTF8StringEncoding]);
+    NSAssert([masterKey isEqual:BTCDataFromHex(@"08c17482950a872178b8030c8f8a63bc6e5f9f680dd25739e1ec7e0b544f40f9")], @"master key");
     NSData* backupKey = [BTCEncryptedBackup backupKeyForNetwork:[BTCNetwork mainnet] masterKey:masterKey];
+    NSData* backupKeyTestnet = [BTCEncryptedBackup backupKeyForNetwork:[BTCNetwork testnet] masterKey:masterKey];
 
     NSAssert([backupKey isEqual:BTCDataFromHex(@"7618f25cd5faadd52d0ea3b608b0c076664f5816b81311017985ae229157057a")], @"must produce a determinstic backup key");
+    NSAssert([backupKeyTestnet isEqual:BTCDataFromHex(@"caa57de4c3d9c77186175fbfdc326997162da0ce1b74022a51c600838449b2c3")], @"must produce a determinstic backup key");
 
     BTCEncryptedBackup* backup = [BTCEncryptedBackup encrypt:plaintext backupKey:backupKey timestamp:timestamp];
 

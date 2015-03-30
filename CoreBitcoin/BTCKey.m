@@ -176,94 +176,75 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     //       private key from a few observed signatures. Using the same function to derive k therefore
     //       does not make the signature any less secure.
     //
-   
+
     ECDSA_SIG sigValue;
     ECDSA_SIG *sig = NULL;
-    
-    if (1 /* deterministic signature with nonce derived from message and private key */)
-    {
-        sig = &sigValue;
-        
-        const BIGNUM *privkeyBIGNUM = EC_KEY_get0_private_key(_key);
-        
-        BTCMutableBigNumber* privkeyBN = [[BTCMutableBigNumber alloc] initWithBIGNUM:privkeyBIGNUM];
-        BTCBigNumber* n = [BTCCurvePoint curveOrder];
 
-        NSMutableData* kdata = [self signatureNonceForHash:hash];
-        BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:kdata];
-        [k mod:n]; // make sure k belongs to [0, n - 1]
-        
-        BTCDataClear(kdata);
-        
-        BTCCurvePoint* K = [[BTCCurvePoint generator] multiply:k];
-        BTCBigNumber* Kx = K.x;
-        
-        BTCBigNumber* hashBN = [[BTCBigNumber alloc] initWithUnsignedBigEndian:hash];
-        
-        // Compute s = (k^-1)*(h + Kx*privkey)
-        
-        BTCBigNumber* signatureBN = [[[privkeyBN multiply:Kx mod:n] add:hashBN mod:n] multiply:[k inverseMod:n] mod:n];
-        
-        //NSLog(@"ECDSA: r = %@", Kx.hexString);
-        //NSLog(@"ECDSA: s = %@", signatureBN.hexString);
-        BIGNUM r; BN_init(&r); BN_copy(&r, Kx.BIGNUM);
-        BIGNUM s; BN_init(&s); BN_copy(&s, signatureBN.BIGNUM);
-        
-        [privkeyBN clear];
-        [k clear];
-        [hashBN clear];
-        [K clear];
-        [Kx clear];
-        [signatureBN clear];
-        
-        sig->r = &r;
-        sig->s = &s;
-    }
-    else
-    {
-// Non-deterministic ECDSA signature using OpenSSL's RNG.
-//        sig = ECDSA_do_sign((unsigned char*)hash.bytes, (int)hash.length, _key);
-//        if (sig == NULL)
-//        {
-//            return nil;
-//        }
-    }
+    /* deterministic signature with nonce derived from message and private key */
+    sig = &sigValue;
     
+    const BIGNUM *privkeyBIGNUM = EC_KEY_get0_private_key(_key);
+
+    BTCMutableBigNumber* privkeyBN = [[BTCMutableBigNumber alloc] initWithBIGNUM:privkeyBIGNUM];
+    BTCBigNumber* n = [BTCCurvePoint curveOrder];
+
+    NSMutableData* kdata = [self signatureNonceForHash:hash];
+    BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:kdata];
+    [k mod:n]; // make sure k belongs to [0, n - 1]
+
+    BTCDataClear(kdata);
+
+    BTCCurvePoint* K = [[BTCCurvePoint generator] multiply:k];
+    BTCBigNumber* Kx = K.x;
+
+    BTCBigNumber* hashBN = [[BTCBigNumber alloc] initWithUnsignedBigEndian:hash];
+
+    // Compute s = (k^-1)*(h + Kx*privkey)
+
+    BTCBigNumber* signatureBN = [[[privkeyBN multiply:Kx mod:n] add:hashBN mod:n] multiply:[k inverseMod:n] mod:n];
+
+    //NSLog(@"ECDSA: r = %@", Kx.hexString);
+    //NSLog(@"ECDSA: s = %@", signatureBN.hexString);
+    BIGNUM r; BN_init(&r); BN_copy(&r, Kx.BIGNUM);
+    BIGNUM s; BN_init(&s); BN_copy(&s, signatureBN.BIGNUM);
+
+    [privkeyBN clear];
+    [k clear];
+    [hashBN clear];
+    [K clear];
+    [Kx clear];
+    [signatureBN clear];
+
+    sig->r = &r;
+    sig->s = &s;
+
     BN_CTX *ctx = BN_CTX_new();
     BN_CTX_start(ctx);
-    
+
     const EC_GROUP *group = EC_KEY_get0_group(_key);
     BIGNUM *order = BN_CTX_get(ctx);
     BIGNUM *halforder = BN_CTX_get(ctx);
     EC_GROUP_get_order(group, order, ctx);
     BN_rshift1(halforder, order);
-    if (BN_cmp(sig->s, halforder) > 0)
-    {
+    if (BN_cmp(sig->s, halforder) > 0) {
         // enforce low S values, by negating the value (modulo the order) if above order/2.
         BN_sub(sig->s, order, sig->s);
     }
     BN_CTX_end(ctx);
     BN_CTX_free(ctx);
     unsigned int sigSize = ECDSA_size(_key);
-    
+
     NSMutableData* signature = [NSMutableData dataWithLength:sigSize + 16]; // Make sure it is big enough
-    
+
     unsigned char *pos = (unsigned char *)signature.mutableBytes;
     sigSize = i2d_ECDSA_SIG(sig, &pos);
-    
-//    if (!deterministic)
-//    {
-//        ECDSA_SIG_free(sig); // sig was dynamically allocated by ECDSA_do_sign
-//    }
-    
+
     [signature setLength:sigSize];  // Shrink to fit actual size
-    
-    if (appendHashType)
-    {
+
+    if (appendHashType) {
         [signature appendBytes:&hashType length:sizeof(hashType)];
     }
 
-    
     return signature;
     
     // This code is simpler but it produces random signatures and does not canonicalize S as done above.
