@@ -32,6 +32,7 @@ See also [Release Notes](ReleaseNotes.md).
 - BIP32, BIP44 hierarchical deterministic wallets ([BTCKeychain](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCKeychain.h)).
 - BIP39 implementation ([BTCMnemonic](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCMnemonic.h)).
 - BIP70 implementation ([BTCPaymentProtocol](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCPaymentProtocol.h)).
+- [Automatic Encrypted Wallet Backup](https://github.com/oleganza/bitcoin-papers/blob/master/AutomaticEncryptedWalletBackups.md) scheme ([BTCPaymentProtocol](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCEncryptedBackup.h)).
 
 Currency Tools
 --------------
@@ -43,6 +44,7 @@ Currency Tools
 Advanced Features
 -----------------
 
+- Deterministic [RFC6979](https://tools.ietf.org/html/rfc6979#section-3.2)-compliant ECDSA signatures.
 - Script evaluation machine to actually validate individual transactions ([BTCScriptMachine](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCScriptMachine.h)).
 - Blind signatures implementation ([BTCBlindSignature](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBlindSignature.h)).
 - Math on elliptic curves: big numbers, curve points, conversion between keys, numbers and points ([BTCBigNumber](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCBigNumber.h), [BTCCurvePoint](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCCurvePoint.h)).

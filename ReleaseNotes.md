@@ -1,11 +1,14 @@
 CoreBitcoin Release Notes
 =========================
 
-CoreBitcoin 0.6.7 (pending)
----------------------------
+CoreBitcoin 0.6.7
+-----------------
 
+March 30, 2015.
+
+* Implemented RFC6979 deterministic signatures (`BTCKey`). Previously signatures were also deterministic, but non-standard.
+* Implemented [Automatic Encrypted Wallet Backup scheme](https://github.com/oleganza/bitcoin-papers/blob/master/AutomaticEncryptedWalletBackups.md) (`BTCEncryptedBackup`).
 * Fixed crash in BTCBitcoinURL parser on invalid amounts.
-
 
 CoreBitcoin 0.6.6
 -----------------

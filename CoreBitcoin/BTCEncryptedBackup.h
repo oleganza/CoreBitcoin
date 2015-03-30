@@ -1,5 +1,8 @@
 // CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
+// Implementation of [Automatic Encrypted Wallet Backups](https://github.com/oleganza/bitcoin-papers/blob/master/AutomaticEncryptedWalletBackups.md) scheme.
+// For test vectors, see unit tests (BTCEncryptedBackup+Tests.m).
+
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(unsigned char, BTCEncryptedBackupVersion) {
