@@ -32,6 +32,10 @@
 // To modify, use [[bn mutableCopy] mutableBIGNUM] methods.
 @property(nonatomic, readonly) const BIGNUM* BIGNUM;
 
+@property(nonatomic, readonly) BOOL isZero;
+@property(nonatomic, readonly) BOOL isOne;
+
+
 // BTCBigNumber returns always the same object for these constants.
 // BTCMutableBigNumber returns a new object every time.
 + (instancetype) zero;        //  0

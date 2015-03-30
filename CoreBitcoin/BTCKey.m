@@ -7,6 +7,7 @@
 #import "BTCBigNumber.h"
 #import "BTCProtocolSerialization.h"
 #import "BTCErrors.h"
+#include <CommonCrypto/CommonCrypto.h>
 #include <openssl/ec.h>
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
@@ -186,16 +187,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         const BIGNUM *privkeyBIGNUM = EC_KEY_get0_private_key(_key);
         
         BTCMutableBigNumber* privkeyBN = [[BTCMutableBigNumber alloc] initWithBIGNUM:privkeyBIGNUM];
-        NSMutableData* privkeyData = [self privateKey];
-        
         BTCBigNumber* n = [BTCCurvePoint curveOrder];
 
-        NSMutableData* kdata = BTCHMACSHA256(privkeyData, hash);
+        NSMutableData* kdata = [self signatureNonceForHash:hash];
         BTCMutableBigNumber* k = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:kdata];
         [k mod:n]; // make sure k belongs to [0, n - 1]
         
         BTCDataClear(kdata);
-        BTCDataClear(privkeyData);
         
         BTCCurvePoint* K = [[BTCCurvePoint generator] multiply:k];
         BTCBigNumber* Kx = K.x;
@@ -283,6 +281,67 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     //    return signature;
 }
 
+// [RFC6979 implementation](https://tools.ietf.org/html/rfc6979#section-3.2).
+// Returns 32-byte `k` nonce generated deterministically from the `hash` and the private key.
+- (NSMutableData*) signatureNonceForHash:(NSData*)hash {
+
+    NSMutableData* privkey = [self privateKey];
+    BTCBigNumber* order = [BTCCurvePoint curveOrder];
+
+    uint8_t v[32];
+    uint8_t k[32];
+    uint8_t bx[2*32];
+    uint8_t buf[32 + 1 + sizeof(bx)];
+    uint8_t t[32];
+
+    // Step 3.2.a. hash = H(message). Already performed by the caller.
+
+    // Step 3.2.b. V = 0x01 0x01 0x01 ... 0x01 (32 bytes equal 0x01)
+    memset(v, 1, sizeof(v));
+
+    // Step 3.2.c. K = 0x00 0x00 0x00 ... 0x00 (32 bytes equal 0x00)
+    memset(k, 0, sizeof(k));
+
+    // Step 3.2.d. K = HMAC-SHA256(key: K, data: V || 0x00 || int2octets(privkey) || bits2octets(hash))
+    memcpy(bx, privkey.bytes, 32);
+    BTCMutableBigNumber* hashModOrder = [[[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:hash] mod:order];
+    memcpy(bx + 32, hashModOrder.unsignedBigEndian.bytes, 32);
+
+    memcpy(buf, v, sizeof(v));
+    buf[sizeof(v)] = 0x00;
+    memcpy(buf + sizeof(v) + 1, bx, 64);
+
+    CCHmac(kCCHmacAlgSHA256, k, sizeof(k), buf, sizeof(buf), k);
+
+    // Step 3.2.e. V = HMAC-SHA256(key: K, data: V)
+    CCHmac(kCCHmacAlgSHA256, k, sizeof(k), v, sizeof(v), v);
+
+    // Step 3.2.f. K = HMAC-SHA256(key: K, data: V || 0x01 || int2octets(privkey) || bits2octets(hash))
+    memcpy(buf, v, sizeof(v));
+    buf[sizeof(v)] = 0x01;
+    memcpy(buf + sizeof(v) + 1, bx, 64);
+    CCHmac(kCCHmacAlgSHA256, k, sizeof(k), buf, sizeof(buf), k);
+
+    // Step 3.2.g. V = HMAC-SHA256(key: K, data: V)
+    CCHmac(kCCHmacAlgSHA256, k, sizeof(k), v, sizeof(v), v);
+
+    // Step 3.2.h.
+    for (int i = 0; i < 10000; i++) {
+        CCHmac(kCCHmacAlgSHA256, k, sizeof(k), v, sizeof(v), t);
+
+        BTCBigNumber* bn = [[BTCBigNumber alloc] initWithUnsignedBigEndian:[NSData dataWithBytesNoCopy:t length:sizeof(t) freeWhenDone:NO]];
+        if (!bn.isZero && [bn less:order]) {
+            return [NSMutableData dataWithBytes:&t length:sizeof(t)];
+        }
+        // Note: the probability of not succeeding at the first try is about 2^-127.
+        memcpy(buf, v, sizeof(v));
+        buf[sizeof(v)] = 0x00;
+        CCHmac(kCCHmacAlgSHA256, k, sizeof(k), buf, sizeof(v) + 1, k);
+        CCHmac(kCCHmacAlgSHA256, k, sizeof(k), v, sizeof(v), v);
+    }
+    // we generated 10000 numbers, none of them is good -> fail.
+    return nil;
+}
 
 - (NSMutableData*) publicKey
 {

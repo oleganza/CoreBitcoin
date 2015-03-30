@@ -151,6 +151,14 @@
     return &_bignum;
 }
 
+- (BOOL) isZero {
+    return BN_is_zero(&_bignum);
+}
+
+- (BOOL) isOne {
+    return BN_is_one(&_bignum);
+}
+
 
 #pragma mark - NSObject
 

@@ -9,12 +9,31 @@
 
 + (void) runAllTests
 {
+    [self testRFC6979];
     [self testDiffieHellman];
     [self testCanonicality];
     [self testRandomKeys];
     [self testBasicSigning];
     [self testECDSA];
     [self testBitcoinSignedMessage];
+}
+
++ (void) testRFC6979 {
+
+    void(^verifyRFC6979TestVector)(NSString* keyhex, NSString* msg, NSString* khex) = ^(NSString* keyhex, NSString* msg, NSString* khex) {
+        NSData* hash = BTCSHA256([msg dataUsingEncoding:NSUTF8StringEncoding]);
+        BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCDataFromHex(keyhex)];
+        NSData* k = [key signatureNonceForHash:hash];
+        NSAssert([BTCDataFromHex(khex) isEqual:k], @"Must produce matching k nonce.");
+    };
+
+    verifyRFC6979TestVector(@"cca9fbcc1b41e5a95d369eaa6ddcff73b61a4efaa279cfc6567e8daa39cbaf50", @"sample", @"2df40ca70e639d89528a6b670d9d48d9165fdc0febc0974056bdce192b8e16a3");
+    verifyRFC6979TestVector(@"0000000000000000000000000000000000000000000000000000000000000001", @"Satoshi Nakamoto", @"8f8a276c19f4149656b280621e358cce24f5f52542772691ee69063b74f15d15");
+    verifyRFC6979TestVector(@"fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140", @"Satoshi Nakamoto", @"33a19b60e25fb6f4435af53a3d42d493644827367e6453928554f43e49aa6f90");
+    verifyRFC6979TestVector(@"f8b8af8ce3c7cca5e300d33939540c10d45ce001b8f252bfbc57ba0342904181", @"Alan Turing", @"525a82b70e67874398067543fd84c83d30c175fdc45fdeee082fe13b1d7cfdf1");
+    verifyRFC6979TestVector(@"0000000000000000000000000000000000000000000000000000000000000001", @"All those moments will be lost in time, like tears in rain. Time to die...", @"38aa22d72376b4dbc472e06c3ba403ee0a394da63fc58d88686c611aba98d6b3");
+    verifyRFC6979TestVector(@"e91671c46231f833a6406ccbea0e3e392c76c167bac1cb013f6f1013980455c2", @"There is a computer disease that anybody who works with computers knows about. It's a very serious disease and it interferes completely with the work. The trouble with computers is that you 'play' with them!", @"1f4b84c23a86a221d233f2521be018d9318639d5b8bbd6374a8a59232d16ad3d");
+
 }
 
 + (void) testDiffieHellman {
