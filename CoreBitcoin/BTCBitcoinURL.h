@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"
 
-// TODO: support arbitrary keys and values.
 // TODO: support handling URL from UIApplicationDelegate.
 
 /*!
@@ -30,6 +29,11 @@
  * Message. Default is nil.
  */
 @property(nonatomic) NSString* message;
+
+/*!
+ * Query parameters. Default is nil.
+ */
+@property(nonatomic) NSDictionary* queryParameters;
 
 /*!
  * Payment request URL (r=...). Default is nil.
@@ -65,5 +69,18 @@
  * Fill in address, amount, label and other fields and use `URL` property to get a composed URL.
  */
 - (id) init;
+
+/*!
+ * Object subscripting to access query parameters more conveniently
+ * @param key The key in the queryParameters
+ */
+- (id)objectForKeyedSubscript:(id <NSCopying>)key;
+
+/*!
+ * Object subscripting to set query parameter key value pairs more conveniently
+ * @param obj The value to be set for key in queryParameters
+ * @param key The key for value in the queryParameters
+ */
+- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key;
 
 @end
