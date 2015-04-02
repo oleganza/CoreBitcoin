@@ -274,6 +274,7 @@
 		208E303B1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */ = {isa = PBXBuildFile; fileRef = 208E30351AC012CE0020F830 /* BTCEncryptedBackup.m */; };
 		208E303C1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */ = {isa = PBXBuildFile; fileRef = 208E30351AC012CE0020F830 /* BTCEncryptedBackup.m */; };
 		208E303D1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */ = {isa = PBXBuildFile; fileRef = 208E30351AC012CE0020F830 /* BTCEncryptedBackup.m */; };
+		2091948D1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2091948C1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.m */; };
 		209D1E1218D48EA200293483 /* BTCNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 209D1E1018D48EA200293483 /* BTCNetwork.h */; };
 		209D1E1318D48EA200293483 /* BTCNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 209D1E1018D48EA200293483 /* BTCNetwork.h */; };
 		209D1E1418D48EA200293483 /* BTCNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 209D1E1018D48EA200293483 /* BTCNetwork.h */; };
@@ -529,6 +530,8 @@
 		208642BA194C9EAF003A3A2C /* BTCBlindSignature+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBlindSignature+Tests.m"; sourceTree = "<group>"; };
 		208E30341AC012CE0020F830 /* BTCEncryptedBackup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCEncryptedBackup.h; sourceTree = "<group>"; };
 		208E30351AC012CE0020F830 /* BTCEncryptedBackup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCEncryptedBackup.m; sourceTree = "<group>"; };
+		2091948B1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCBitcoinURL+Tests.h"; sourceTree = "<group>"; };
+		2091948C1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBitcoinURL+Tests.m"; sourceTree = "<group>"; };
 		209818911839688D00541747 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		209818921839694000541747 /* CoreBitcoin.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = CoreBitcoin.podspec; sourceTree = "<group>"; };
 		209D1E1018D48EA200293483 /* BTCNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCNetwork.h; sourceTree = "<group>"; };
@@ -928,6 +931,8 @@
 				209D1E1B18D4F12500293483 /* BTCProcessor.m */,
 				207646EE1A0A8AE4000F00F2 /* BTCBitcoinURL.h */,
 				207646EF1A0A8AE4000F00F2 /* BTCBitcoinURL.m */,
+				2091948B1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.h */,
+				2091948C1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.m */,
 				207647021A0A8C15000F00F2 /* BTCCurrencyConverter.h */,
 				207647031A0A8C15000F00F2 /* BTCCurrencyConverter.m */,
 				207646F81A0A8BB3000F00F2 /* BTCNumberFormatter.h */,
@@ -1505,6 +1510,7 @@
 				20C2D80719E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
 				207646E91A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				207646F31A0A8AE4000F00F2 /* BTCBitcoinURL.m in Sources */,
+				2091948D1ACD318C00E67CB5 /* BTCBitcoinURL+Tests.m in Sources */,
 				206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */,
 				208642BB194C9EAF003A3A2C /* BTCBlindSignature+Tests.m in Sources */,
 				208E30391AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */,
