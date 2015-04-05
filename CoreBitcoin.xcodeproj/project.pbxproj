@@ -455,7 +455,6 @@
 		2037AB1717D3D1F900DB248C /* BTCBase58+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCBase58+Tests.m"; sourceTree = "<group>"; };
 		2039DB0117E2ED2B0051177B /* GLOSSARY.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = GLOSSARY.md; sourceTree = "<group>"; };
 		2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = ScriptStringRepresentation.md; sourceTree = "<group>"; };
-		204F8A801845FAF8002649CE /* TODO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		204FB500194C63B500C131DE /* BTCBlindSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCBlindSignature.h; sourceTree = "<group>"; };
 		204FB501194C63B500C131DE /* BTCBlindSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCBlindSignature.m; sourceTree = "<group>"; };
 		2054DC731950E35E007175C8 /* BTCFancyEncryptedMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCFancyEncryptedMessage.h; sourceTree = "<group>"; };
@@ -779,7 +778,6 @@
 			children = (
 				2084DD9417B8FF7E005AC9E6 /* README.md */,
 				20A443D21AC941F7008B3447 /* ReleaseNotes.md */,
-				204F8A801845FAF8002649CE /* TODO.txt */,
 				2039DB0117E2ED2B0051177B /* GLOSSARY.md */,
 				20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */,
 				209818911839688D00541747 /* LICENSE.txt */,

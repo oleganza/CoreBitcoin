@@ -54,14 +54,14 @@ Advanced Features
 On the roadmap
 --------------
 
-See all [todo items here](https://github.com/oleganza/CoreBitcoin/issues).
+See [all todo items](https://github.com/oleganza/CoreBitcoin/issues).
 
 - Complete support for blocks and block headers.
 - SPV mode and P2P communication with other nodes.
 - Full blockchain verification procedure and storage.
 - Importing BitcoinQT, Electrum and Blockchain.info wallets.
 - Support for [libsecp256k1](https://github.com/bitcoin/secp256k1) in addition to OpenSSL.
-- Eventual support for libconsensus as it gets more mature and feature-full.
+- Eventual support for libconsensus as it gets more mature and feature-complete.
 
 The goal is to implement everything useful related to Bitcoin and organize it nicely in a single powerful library. Pull requests are welcome.
 
@@ -119,18 +119,6 @@ Include headers:
 There are also raw universal libraries (.a) with headers located in binaries/include, if you happen to need them for some reason. Frameworks and binary libraries have OpenSSL built-in. If you have different version of OpenSSL in your project, consider using CocoaPods or raw sources of CoreBitcoin.
 
 
-Bounties
---------
-
-- [done] 0.1 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
-- [done] 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
-- [done] extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
-- 3 BTC for ECIES encryption scheme [@yrashk]
-- 0.25 BTC for P2P communication
-
-To add your own bounty, add a line here (or edit an existing one), make a pull request and donate to the address below. Your donation will be reserved for that bounty only. I will contact you to check if the implementation is acceptable before paying out.
-
-
 Swift
 -----
 
@@ -152,9 +140,8 @@ Twitter: [@oleganza](http://twitter.com/oleganza)
 
 To publish on CocoaPods:
 
-```
-$ pod trunk push --verbose --use-libraries
-```
+    $ pod trunk push --verbose --use-libraries
+
 
 Donate
 ------
@@ -163,12 +150,11 @@ Please send your donations here: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG.
 
 All funds will be used only for bounties.
 
-You can also donate to a specific bounty. The amount will be reserved for that bounty and listed above. Contact Oleg to arrange that.
+You can also donate to a specific bounty. The amount will be reserved for that bounty and listed above. Contact [Oleg](mailto:oleganza@gmail.com) to arrange that.
 
 
 License
 -------
 
-Released under the [WTFPL](http://www.wtfpl.net) except for OpenSSL. No contributor to CoreBitcoin will ever be able to drag you in court if you do not mention CoreBitcoin in your legalese. Crediting authors and improving library is voluntary and highly appreciated. Have a nice day.
-
+Released under the highly permissive [WTFPL](http://www.wtfpl.net) (except for OpenSSL). Have a nice day.
 
