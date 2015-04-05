@@ -156,5 +156,5 @@ You can also donate to a specific bounty. The amount will be reserved for that b
 License
 -------
 
-Released under the highly permissive [WTFPL](http://www.wtfpl.net) (except for OpenSSL). Have a nice day.
+Released under [WTFPL](http://www.wtfpl.net) (except for OpenSSL). Have a nice day.
 
