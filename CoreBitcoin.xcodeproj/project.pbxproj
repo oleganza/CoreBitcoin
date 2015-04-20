@@ -291,6 +291,7 @@
 		209D1E2118D4F12500293483 /* BTCProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 209D1E1B18D4F12500293483 /* BTCProcessor.m */; };
 		209D1E2218D4F12500293483 /* BTCProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 209D1E1B18D4F12500293483 /* BTCProcessor.m */; };
 		209D1E2318D4F12500293483 /* BTCProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 209D1E1B18D4F12500293483 /* BTCProcessor.m */; };
+		209F27C11AE538F80092A1FB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2084DD9617B8FFA2005AC9E6 /* Security.framework */; };
 		20A443B51AC55F52008B3447 /* BTCPaymentProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 20A443B11AC55F52008B3447 /* BTCPaymentProtocol.h */; };
 		20A443B61AC55F52008B3447 /* BTCPaymentProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 20A443B11AC55F52008B3447 /* BTCPaymentProtocol.h */; };
 		20A443B71AC55F52008B3447 /* BTCPaymentProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 20A443B11AC55F52008B3447 /* BTCPaymentProtocol.h */; };
@@ -632,6 +633,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				209F27C11AE538F80092A1FB /* Security.framework in Frameworks */,
 				20C0DDB8183BC5EA00A9EED0 /* libcrypto-osx.a in Frameworks */,
 				20C0DDB9183BC5EA00A9EED0 /* libssl-osx.a in Frameworks */,
 			);
@@ -1578,7 +1580,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CoreBitcoinIOS;
@@ -1605,7 +1607,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CoreBitcoinIOS;
@@ -1637,7 +1639,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
@@ -1668,7 +1670,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = NO;
 				MACH_O_TYPE = mh_object;
@@ -1696,7 +1698,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = CoreBitcoinOSX;
@@ -1718,7 +1720,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = CoreBitcoinOSX;
@@ -1747,7 +1749,7 @@
 				LD_DYLIB_INSTALL_NAME = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1773,7 +1775,7 @@
 				LD_DYLIB_INSTALL_NAME = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Volumes/work/projects/CoreBitcoin/CoreBitcoin/openssl/lib,
+					"$(PROJECT_DIR)/openssl/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
