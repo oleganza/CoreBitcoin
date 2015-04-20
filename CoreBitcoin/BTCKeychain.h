@@ -110,7 +110,33 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // This feature is used in BTCBlindSignature protocol.
 - (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut;
 
-// Returns a derived key from this keychain. This is a convenient way to access [... derivedKeychainAtIndex:i hardened:YES/NO].rootKey
+// Parses the BIP32 path and derives the chain of keychains accordingly.
+// Path syntax: (m?/)?([0-9]+'?(/[0-9]+'?)*)?
+// The following paths are valid:
+//
+// "" (root key)
+// "m" (root key)
+// "/" (root key)
+// "m/0'" (hardened child #0 of the root key)
+// "/0'" (hardened child #0 of the root key)
+// "0'" (hardened child #0 of the root key)
+// "m/44'/1'/2'" (BIP44 testnet account #2)
+// "/44'/1'/2'" (BIP44 testnet account #2)
+// "44'/1'/2'" (BIP44 testnet account #2)
+//
+// The following paths are invalid:
+//
+// "m / 0 / 1" (contains spaces)
+// "m/b/c" (alphabetical characters instead of numerical indexes)
+// "m/1.2^3" (contains illegal characters)
+- (BTCKeychain*) derivedKeychainWithPath:(NSString*)path;
+
+// Returns a derived key for a given BIP32 path.
+// Equivalent to `[keychain derivedKeychainWithPath:@"..."].key`
+- (BTCKey*) keyWithPath:(NSString*)path;
+
+// Returns a derived key from this keychain.
+// Equivalent to [keychain derivedKeychainAtIndex:i hardened:YES/NO].key
 // If the receiver contains a private key, child key will also contain a private key.
 // If the receiver contains only a public key, child key will only contain a public key. (Or nil will be returned if hardened = YES.)
 // By default, a normal (non-hardened) derivation is used.

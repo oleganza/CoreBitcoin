@@ -10,8 +10,32 @@
 
 + (void) runAllTests
 {
+    [self testPaths];
     [self testStandardTestVectors];
     [self testZeroPaddedPrivateKeys];
+}
+
++ (void) testPaths
+{
+    BTCKeychain* keychain = [[BTCKeychain alloc] initWithExtendedKey:@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi"];
+
+    NSAssert([[keychain derivedKeychainWithPath:@""].extendedPublicKey isEqual:keychain.extendedPublicKey], @"must return root key");
+    NSAssert([[keychain derivedKeychainWithPath:@"m"].extendedPublicKey isEqual:keychain.extendedPublicKey], @"must return root key");
+    NSAssert([[keychain derivedKeychainWithPath:@"/"].extendedPublicKey isEqual:keychain.extendedPublicKey], @"must return root key");
+    NSAssert([[keychain derivedKeychainWithPath:@"m//"].extendedPublicKey isEqual:keychain.extendedPublicKey], @"must return root key");
+
+    NSAssert([[keychain derivedKeychainWithPath:@"m/0'"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:YES].extendedPublicKey], @"must return hardened child at index 0");
+    NSAssert([[keychain derivedKeychainWithPath:@"/0'"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:YES].extendedPublicKey], @"must return hardened child at index 0");
+    NSAssert([[keychain derivedKeychainWithPath:@"0'"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:YES].extendedPublicKey], @"must return hardened child at index 0");
+
+    NSAssert([[keychain derivedKeychainWithPath:@"m/0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
+    NSAssert([[keychain derivedKeychainWithPath:@"/0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
+    NSAssert([[keychain derivedKeychainWithPath:@"0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
+
+    NSAssert([keychain derivedKeychainWithPath:@"m / 0 / 1"] == nil, @"must return nil if path contains spaces");
+    NSAssert([keychain derivedKeychainWithPath:@"m/b/c"] == nil, @"must return nil if path contains irrelevant characters");
+    NSAssert([keychain derivedKeychainWithPath:@"1/m/2"] == nil, @"must return nil if path contains irrelevant characters");
+    NSAssert([keychain derivedKeychainWithPath:@"m/1.2^3"] == nil, @"must return nil if path contains irrelevant characters");
 }
 
 + (void) testStandardTestVectors
@@ -58,8 +82,8 @@
         NSAssert([@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi" isEqualToString:masterChain.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:masterChain];
-        
-        BTCKeychain* m0prv = [masterChain derivedKeychainAtIndex:0 hardened:YES];
+
+        BTCKeychain* m0prv = [masterChain derivedKeychainWithPath:@"m/0'"];
         
         NSAssert(m0prv.parentFingerprint != 0, @"");
         NSAssert(m0prv.depth == 1, @"");
@@ -71,7 +95,7 @@
         
         [self testDeserializationWithKeychain:m0prv];
 
-        BTCKeychain* m0prv1pub = [m0prv derivedKeychainAtIndex:1];
+        BTCKeychain* m0prv1pub = [masterChain derivedKeychainWithPath:@"m/0'/1"];
         
         NSAssert(m0prv1pub.parentFingerprint != 0, @"");
         NSAssert(m0prv1pub.depth == 2, @"");
@@ -83,7 +107,7 @@
         
         [self testDeserializationWithKeychain:m0prv1pub];
 
-        BTCKeychain* m0prv1pub2prv = [m0prv1pub derivedKeychainAtIndex:2 hardened:YES];
+        BTCKeychain* m0prv1pub2prv = [masterChain derivedKeychainWithPath:@"m/0'/1/2'"];
         NSAssert([@"xpub6D4BDPcP2GT577Vvch3R8wDkScZWzQzMMUm3PWbmWvVJrZwQY4VUNgqFJPMM3No2dFDFGTsxxpG5uJh7n7epu4trkrX7x7DogT5Uv6fcLW5" isEqualToString:m0prv1pub2prv.extendedPublicKey], @"");
         NSAssert([@"xprv9z4pot5VBttmtdRTWfWQmoH1taj2axGVzFqSb8C9xaxKymcFzXBDptWmT7FwuEzG3ryjH4ktypQSAewRiNMjANTtpgP4mLTj34bhnZX7UiM" isEqualToString:m0prv1pub2prv.extendedPrivateKey], @"");
         
@@ -94,8 +118,8 @@
         NSAssert([@"xprvA2JDeKCSNNZky6uBCviVfJSKyQ1mDYahRjijr5idH2WwLsEd4Hsb2Tyh8RfQMuPh7f7RtyzTtdrbdqqsunu5Mm3wDvUAKRHSC34sJ7in334" isEqualToString:m0prv1pub2prv2pub.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:m0prv1pub2prv2pub];
-        
-        BTCKeychain* m0prv1pub2prv2pub1Gpub = [m0prv1pub2prv2pub derivedKeychainAtIndex:1000000000];
+
+        BTCKeychain* m0prv1pub2prv2pub1Gpub = [masterChain derivedKeychainWithPath:@"m/0'/1/2'/2/1000000000"];
         NSAssert([@"xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcYFgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy" isEqualToString:m0prv1pub2prv2pub1Gpub.extendedPublicKey], @"");
         NSAssert([@"xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmHScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76" isEqualToString:m0prv1pub2prv2pub1Gpub.extendedPrivateKey], @"");
         
@@ -162,13 +186,13 @@
         
         [self testDeserializationWithKeychain:m0pubFFprv1];
         
-        BTCKeychain* m0pubFFprv1pubFEprv = [m0pubFFprv1 derivedKeychainAtIndex:2147483646 hardened:YES];
+        BTCKeychain* m0pubFFprv1pubFEprv = [masterChain derivedKeychainWithPath:@"m/0/2147483647'/1/2147483646'"];
         NSAssert([@"xpub6ERApfZwUNrhLCkDtcHTcxd75RbzS1ed54G1LkBUHQVHQKqhMkhgbmJbZRkrgZw4koxb5JaHWkY4ALHY2grBGRjaDMzQLcgJvLJuZZvRcEL" isEqualToString:m0pubFFprv1pubFEprv.extendedPublicKey], @"");
         NSAssert([@"xprvA1RpRA33e1JQ7ifknakTFpgNXPmW2YvmhqLQYMmrj4xJXXWYpDPS3xz7iAxn8L39njGVyuoseXzU6rcxFLJ8HFsTjSyQbLYnMpCqE2VbFWc" isEqualToString:m0pubFFprv1pubFEprv.extendedPrivateKey], @"");
         
         [self testDeserializationWithKeychain:m0pubFFprv1pubFEprv];
         
-        BTCKeychain* m0pubFFprv1pubFEprv2 = [m0pubFFprv1pubFEprv derivedKeychainAtIndex:2];
+        BTCKeychain* m0pubFFprv1pubFEprv2 = [masterChain derivedKeychainWithPath:@"m/0/2147483647'/1/2147483646'/2"];
         NSAssert([@"xpub6FnCn6nSzZAw5Tw7cgR9bi15UV96gLZhjDstkXXxvCLsUXBGXPdSnLFbdpq8p9HmGsApME5hQTZ3emM2rnY5agb9rXpVGyy3bdW6EEgAtqt" isEqualToString:m0pubFFprv1pubFEprv2.extendedPublicKey], @"");
         NSAssert([@"xprvA2nrNbFZABcdryreWet9Ea4LvTJcGsqrMzxHx98MMrotbir7yrKCEXw7nadnHM8Dq38EGfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j" isEqualToString:m0pubFFprv1pubFEprv2.extendedPrivateKey], @"");
         

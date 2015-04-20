@@ -389,7 +389,68 @@
 }
 - (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened
 {
-    return [[self derivedKeychainAtIndex:index hardened:hardened] key];
+    return [self derivedKeychainAtIndex:index hardened:hardened].key;
+}
+
+
+// Parses the BIP32 path and derives the chain of keychains accordingly.
+// Path syntax: (m?/)?([0-9]+'?(/[0-9]+'?)*)?
+// The following paths are valid:
+//
+// "" (root key)
+// "m" (root key)
+// "/" (root key)
+// "m/0'" (hardened child #0 of the root key)
+// "/0'" (hardened child #0 of the root key)
+// "0'" (hardened child #0 of the root key)
+// "m/44'/1'/2'" (BIP44 testnet account #2)
+// "/44'/1'/2'" (BIP44 testnet account #2)
+// "44'/1'/2'" (BIP44 testnet account #2)
+//
+// The following paths are invalid:
+//
+// "m / 0 / 1" (contains spaces)
+// "m/b/c" (alphabetical characters instead of numerical indexes)
+// "m/1.2^3" (contains illegal characters)
+- (BTCKeychain*) derivedKeychainWithPath:(NSString*)path {
+
+    if (path == nil) return nil;
+
+    if ([path isEqualToString:@"m"] ||
+        [path isEqualToString:@"/"] ||
+        [path isEqualToString:@""]) {
+        return self;
+    }
+
+    BTCKeychain* kc = self;
+
+    if ([path rangeOfString:@"m/"].location == 0) { // strip "m/" from the beginning.
+        path = [path substringFromIndex:2];
+    }
+    for (NSString* chunk in [path componentsSeparatedByString:@"/"]) {
+        if (chunk.length == 0) {
+            continue;
+        }
+        BOOL hardened = NO;
+        NSString* indexString = chunk;
+        if ([chunk rangeOfString:@"'"].location == chunk.length - 1) {
+            hardened = YES;
+            indexString = [chunk substringToIndex:chunk.length - 1];
+        }
+
+        // Make sure the chunk is just a number
+        NSInteger i = [indexString integerValue];
+        if (i >= 0 && [@(i).stringValue isEqualToString:indexString]) {
+            kc = [kc derivedKeychainAtIndex:(uint32_t)i hardened:hardened];
+        } else {
+            return nil;
+        }
+    }
+    return kc;
+}
+
+- (BTCKey*) keyWithPath:(NSString*)path {
+    return [self derivedKeychainWithPath:path].key;
 }
 
 - (BTCKeychain*) publicKeychain
