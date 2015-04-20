@@ -1,3 +1,5 @@
+// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+
 //
 //  BTCFancyEncryptedMessage+Tests.h
 //  CoreBitcoin
