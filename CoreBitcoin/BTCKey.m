@@ -74,7 +74,7 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
 - (id) initWithWIF:(NSString*)wifString
 {
-    BTCPrivateKeyAddress* addr = [BTCPrivateKeyAddress addressWithBase58String:wifString];
+    BTCPrivateKeyAddress* addr = [BTCPrivateKeyAddress addressWithString:wifString];
     if (![addr isKindOfClass:[BTCPrivateKeyAddress class]])
     {
         return nil;
@@ -401,13 +401,13 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 - (NSString*) WIF
 {
     if (!self.privateKey) return nil;
-    return [self privateKeyAddress].base58String;
+    return [self privateKeyAddress].string;
 }
 
 - (NSString*) WIFTestnet
 {
     if (!self.privateKey) return nil;
-    return [self privateKeyAddressTestnet].base58String;
+    return [self privateKeyAddressTestnet].string;
 }
 
 - (void) setPublicKey:(NSData *)publicKey

@@ -18,7 +18,7 @@
 
     {
         NSError* error = nil;
-        NSArray* outputs = [[[BTCBlockchainInfo alloc] init] unspentOutputsWithAddresses:@[ [BTCAddress addressWithBase58String:@"1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr"] ] error:&error];
+        NSArray* outputs = [[[BTCBlockchainInfo alloc] init] unspentOutputsWithAddresses:@[ [BTCAddress addressWithString:@"1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr"] ] error:&error];
         
         NSAssert([outputs isEqual:@[]], @"should return an empty array");
         NSAssert(!error, @"should have no error");
@@ -27,7 +27,7 @@
     
     {
         NSError* error = nil;
-        NSArray* outputs = [[[BTCBlockchainInfo alloc] init] unspentOutputsWithAddresses:@[ [BTCAddress addressWithBase58String:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"] ] error:&error];
+        NSArray* outputs = [[[BTCBlockchainInfo alloc] init] unspentOutputsWithAddresses:@[ [BTCAddress addressWithString:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"] ] error:&error];
         
         NSAssert(outputs.count > 0, @"should return non-empty array");
         NSAssert([outputs.firstObject isKindOfClass:[BTCTransactionOutput class]], @"should contain BTCTransactionOutput objects");

@@ -240,7 +240,7 @@ typedef enum : NSUInteger {
     
     NSLog(@"Address: %@", key.compressedPublicKeyAddress);
     
-    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.compressedPublicKeyAddress.base58String])
+    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.compressedPublicKeyAddress.string])
     {
         NSLog(@"WARNING: incorrect private key is supplied");
         return;
@@ -248,7 +248,7 @@ typedef enum : NSUInteger {
     
     NSError* error = nil;
     BTCTransaction* transaction = [self transactionSpendingFromPrivateKey:privateKey
-                                                                       to:[BTCPublicKeyAddress addressWithBase58String:@"1A3tnautz38PZL15YWfxTeh8MtuMDhEPVB"]
+                                                                       to:[BTCPublicKeyAddress addressWithString:@"1A3tnautz38PZL15YWfxTeh8MtuMDhEPVB"]
                                                                    change:key.compressedPublicKeyAddress // send change to the same address
                                                                    amount:100000
                                                                       fee:0

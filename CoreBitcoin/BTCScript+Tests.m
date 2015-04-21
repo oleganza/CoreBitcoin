@@ -35,7 +35,7 @@
 
     BTCTransaction* tx = [[BTCTransaction alloc] initWithData:BTCDataFromHex(@"0100000002e7131826715b36b47b149177b0f2f3169af74b9188d3d02433d7f3b5e6c796a701000000fdfd0000473044022032e7b327ccf5e7f19029134c50d881daa178a1233d09ac9e6e93081e8f33efaf02202e2bf8b57d1c34554f65fac9c6df4986d31b3f6a7bee6cbab9a3ed835e3f57c301483045022100a355f5cde0b7643a1cbb813df4b29ddca13ddd7ee3685e77b1972179832bbd9a0220391bb9661fdab9f38bcce2abaebde39f3b5874b65758b61e1961c64f8b74d288014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff12780cf6595ce7d34ca2e2c104dad5a2ea8709348a280cefc2246bdbd0bf142a01000000fdfd0000483045022100a6967dcd995712007a647d5466131ebc2f5cd3f46c7b314ccf428ea4e46684c502202716cf49125a67627dc2837b747898b38e8c4f58abb13cd3c1c362f0f4094ff301473044022056fc5265f4508e1baf4d837894d5e6e3df8925c68c1f2f8ca83476b73fabd64202200ad5c9928db2d7096a3d19ac2d6fc9eab3db69cd00b9dbcb923bb2e709c5b64f014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff03e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87c60700000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d8700000000")];
 //    BTCScript* redeemScript = [[BTCScript alloc] initWithData:BTCDataFromHex(@"52210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153ae")];
-    BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"2NDdMCpA9to3ayTkXJQ3DvfKuSxjyRtFG5S"]];
+    BTCScript* outputScript = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithString:@"2NDdMCpA9to3ayTkXJQ3DvfKuSxjyRtFG5S"]];
 
 //    NSLog(@"p2sh = %@", outputScript.string);
 //    NSLog(@"p2sh inner = %@", redeemScript.string);
@@ -230,20 +230,20 @@
         NSAssert(simsigData2.length == 1 + (72 + 1) + 1 + 33, @"Simulated sigscript for p2pkh with compressed pubkey option should contain signature, hashtype and a compressed pubkey");
     }
 
-    NSString* base58address = [[script standardAddress] base58String];
+    NSString* base58address = script.standardAddress.string;
     //NSLog(@"TEST: address: %@", base58address);
     
     NSAssert([base58address isEqualToString:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"], @"address should be correctly decoded");
     
-    BTCScript* script2 = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithBase58String:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"]];
+    BTCScript* script2 = [[BTCScript alloc] initWithAddress:[BTCAddress addressWithString:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"]];
     NSAssert([script2.data isEqual:script.data], @"script created from extracted address should be the same as the original script");
     NSAssert([script2.string isEqual:script.string], @"script created from extracted address should be the same as the original script");
     
     
     {
     	BTCKey* key = [[BTCKey alloc] init];
-        NSString *addressB58 = key.compressedPublicKeyAddress.base58String;
-        NSString *privKeyB58 = key.privateKeyAddress.base58String;
+        NSString *addressB58 = key.compressedPublicKeyAddress.string;
+        NSString *privKeyB58 = key.privateKeyAddress.string;
         
         //NSLog(@"Address1: %@", addressB58);
         //NSLog(@"PrivKey1: %@", privKeyB58);
@@ -252,13 +252,13 @@
 
         if (1) // this assert fails because it creates data = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000> because it's cleared when address is dealloc'd.
         {
-            NSData *privkey01 = [[BTCAddress addressWithBase58String:privKeyB58] data];
+            NSData *privkey01 = [[BTCAddress addressWithString:privKeyB58] data];
 
             NSAssert([privkey01 isEqual:key.privateKey], @"private key should be the same");
         }
         
         // However, if we assign intermediate object to a variable, everything works fine. Need to investigate.
-        BTCPrivateKeyAddress* pkaddr = [BTCPrivateKeyAddress addressWithBase58String:privKeyB58];
+        BTCPrivateKeyAddress* pkaddr = [BTCPrivateKeyAddress addressWithString:privKeyB58];
         NSData *privkey = pkaddr.data;
         
         NSAssert([privkey isEqual:key.privateKey], @"private key should be the same");
@@ -270,7 +270,7 @@
         //NSLog(@"Address2: %@", pubkeyAddress.base58String);
         //NSLog(@"PrivKey2: %@", privkeyAddress.base58String);
         
-        NSString *address2 = key2.compressedPublicKeyAddress.base58String;
+        NSString *address2 = key2.compressedPublicKeyAddress.string;
         //NSLog(@"Address1 %@ Equal Address2", [addressB58 isEqualToString:address2] ? @"is": @"is NOT");
         NSAssert([addressB58 isEqualToString:address2], @"addresses must be equal");
     }

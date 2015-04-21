@@ -165,8 +165,8 @@
     
     //NSLog(@"pubkeyAddress.base58String = %@", pubkeyAddress.base58String);
     
-    NSAssert([pubkeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"");
-    NSAssert([privkeyAddress.base58String isEqual:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"], @"");
+    NSAssert([pubkeyAddress.string isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"");
+    NSAssert([privkeyAddress.string isEqual:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"], @"");
     
     NSData* signature = [key signatureForHash:messageData.SHA256];
     //    NSLog(@"Signature: %@ (%d bytes)", [signature hexString], (int)signature.length);
@@ -231,7 +231,7 @@
         
         BTCKey* key = [BTCKey verifySignature:signature forMessage:@"Test message"];
         NSAssert([key isValidSignature:signature forMessage:@"Test message"], @"Should validate signature");
-        NSAssert([key.uncompressedPublicKeyAddress.base58String isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
+        NSAssert([key.uncompressedPublicKeyAddress.string isEqual:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Should be signed with 1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T");
     }
     
 }

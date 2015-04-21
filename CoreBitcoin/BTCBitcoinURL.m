@@ -41,7 +41,7 @@
     // We allow empty address, but if it's not empty, it must be a valid address.
     BTCAddress* address = nil;
     if (comps.path.length > 0) {
-        address = [BTCAddress addressWithBase58String:comps.path];
+        address = [BTCAddress addressWithString:comps.path];
         if (!address) {
             return nil;
         }

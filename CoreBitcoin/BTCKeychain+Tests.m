@@ -68,7 +68,7 @@
         
         BTCKeychain* masterChain = [[BTCKeychain alloc] initWithSeed:seed];
 
-        NSAssert([masterChain.key.compressedPublicKeyAddress.base58String isEqualToString:@"15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma"], @"");
+        NSAssert([masterChain.key.compressedPublicKeyAddress.string isEqualToString:@"15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma"], @"");
 
         //NSLog(@"identifier: %@ fingerprint: %@", masterChain.identifier, @(masterChain.fingerprint));
         NSAssert([masterChain.identifier isEqual:BTCDataFromHex(@"3442193e1bb70916e914552172cd4e2dbc9df811")], @"");
@@ -233,11 +233,11 @@
     }
 
     // Same as BIP32.org
-    NSAssert([[keychain keyAtIndex:70  hardened:YES].address.base58String isEqualToString:@"1FZQfsXwAoUcn9WVwbfRb4jMMkPJEozLWH"], @"");
+    NSAssert([[keychain keyAtIndex:70  hardened:YES].address.string isEqualToString:@"1FZQfsXwAoUcn9WVwbfRb4jMMkPJEozLWH"], @"");
     NSAssert(((uint8_t*)[keychain keyAtIndex:70  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
-    NSAssert([[keychain keyAtIndex:227 hardened:YES].address.base58String isEqualToString:@"1LRbeWJC3sLGRk7ob82djVYTNhsH2UdR4f"], @"");
+    NSAssert([[keychain keyAtIndex:227 hardened:YES].address.string isEqualToString:@"1LRbeWJC3sLGRk7ob82djVYTNhsH2UdR4f"], @"");
     NSAssert(((uint8_t*)[keychain keyAtIndex:227  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
-    NSAssert([[keychain keyAtIndex:455 hardened:YES].address.base58String isEqualToString:@"1HSr4B5Hr3hc7vAzNHbp7SV7rsFzUhQSeF"], @"");
+    NSAssert([[keychain keyAtIndex:455 hardened:YES].address.string isEqualToString:@"1HSr4B5Hr3hc7vAzNHbp7SV7rsFzUhQSeF"], @"");
     NSAssert(((uint8_t*)[keychain keyAtIndex:455  hardened:YES].privateKey.bytes)[0] == 0, @"must be zero-prefixed");
 
 }
