@@ -26,6 +26,8 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
     // Payment request is valid and the user can trust it.
     BTCPaymentRequestStatusValid                 = 0, // signed with a valid and known certificate.
 
+    BTCPaymentRequestStatusNotCompatible         = 100, // version is not supported (currently only v1 is supported)
+
     // These allow Payment Request to be accepted with a warning to the user.
     BTCPaymentRequestStatusUnsigned              = 101, // PKI type is "none"
     BTCPaymentRequestStatusUnknown               = 102, // PKI type is unknown (for forward compatibility may allow sending or warn to upgrade).

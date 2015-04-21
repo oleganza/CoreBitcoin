@@ -363,6 +363,12 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
     _isValidated = YES;
     _isValid = NO;
 
+    // Make sure we do not accidentally send funds to a payment request that we do not support.
+    if (self.version != BTCPaymentRequestVersion1) {
+        _status = BTCPaymentRequestStatusNotCompatible;
+        return;
+    }
+
     if ([self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA1] ||
         [self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA256]) {
 
