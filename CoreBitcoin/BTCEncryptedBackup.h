@@ -31,6 +31,8 @@ typedef NS_ENUM(unsigned char, BTCEncryptedBackupVersion) {
 + (instancetype) decrypt:(NSData*)data backupKey:(NSData*)backupKey;
 
 + (NSData*) backupKeyForNetwork:(BTCNetwork*)network masterKey:(NSData*)masterKey;
++ (BTCKey*) authenticationKeyWithBackupKey:(NSData*)backupKey;
++ (NSString*) walletIDWithAuthenticationKey:(NSData*)authPubkey;
 
 // For testing/audit purposes only:
 

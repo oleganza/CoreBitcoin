@@ -82,6 +82,22 @@
     }
 }
 
++ (BTCKey*) authenticationKeyWithBackupKey:(NSData*)backupKey {
+    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCHMACSHA256(backupKey, [@"Authentication Key" dataUsingEncoding:NSUTF8StringEncoding])];
+    key.publicKeyCompressed = YES;
+    return key;
+}
+
++ (NSString*) walletIDWithAuthenticationKey:(NSData*)authPubkey {
+    // WalletID = Base58Check(0x49 || RIPEMD-160(SHA-256(APub)))
+    NSMutableData* data = [NSMutableData data];
+    uint8_t v = 0x49;
+    [data appendBytes:&v length:1];
+    [data appendData:BTCHash160(authPubkey)];
+    return BTCBase58CheckStringWithData(data);
+}
+
+
 - (NSData*) encryptionKey {
     return [BTCHMACSHA256(self.backupKey, [@"Encryption Key" dataUsingEncoding:NSUTF8StringEncoding]) subdataWithRange:NSMakeRange(0, 16)];
 }
@@ -105,18 +121,11 @@
 }
 
 - (BTCKey*) authenticationKey {
-    BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCHMACSHA256(self.backupKey, [@"Authentication Key" dataUsingEncoding:NSUTF8StringEncoding])];
-    key.publicKeyCompressed = YES;
-    return key;
+    return [[self class] authenticationKeyWithBackupKey:self.backupKey];
 }
 
 - (NSString*) walletID {
-    // WalletID = Base58Check(0x49 || RIPEMD-160(SHA-256(APub)))
-    NSMutableData* data = [NSMutableData data];
-    uint8_t v = 0x49;
-    [data appendBytes:&v length:1];
-    [data appendData:BTCHash160([self authenticationKey].publicKey)];
-    return BTCBase58CheckStringWithData(data);
+    return [[self class] walletIDWithAuthenticationKey:self.authenticationKey.publicKey];
 }
 
 - (NSData*) signature {
