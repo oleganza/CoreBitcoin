@@ -81,7 +81,7 @@
 {
     _buyRate = buyRate;
     _sellRate = _sellRate ?: buyRate;
-    _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:2 exponent:0 isNegative:NO]];
+    _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:5 exponent:-1 isNegative:NO]];
     _bids = nil;
     _asks = nil;
     _date = [NSDate date];
@@ -91,7 +91,7 @@
 {
     _buyRate = _buyRate ?: sellRate;
     _sellRate = sellRate;
-    _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:2 exponent:0 isNegative:NO]];
+    _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:5 exponent:-1 isNegative:NO]];
     _bids = nil;
     _asks = nil;
     _date = [NSDate date];

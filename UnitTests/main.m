@@ -20,6 +20,7 @@
 #import "BTCPriceSource+Tests.h"
 #import "BTCMerkleTree+Tests.h"
 #import "BTCBitcoinURL+Tests.h"
+#import "BTCCurrencyConverter+Tests.h"
 
 int main(int argc, const char * argv[])
 {
@@ -44,6 +45,7 @@ int main(int argc, const char * argv[])
         [BTCBlockchainInfo runAllTests];
         [BTCPriceSource runAllTests];
         [BTCBitcoinURL runAllTests];
+        [BTCCurrencyConverter runAllTests];
 
         [BTCTransaction runAllTests]; // has some interactive features to ask for private key
         NSLog(@"All tests passed.");
