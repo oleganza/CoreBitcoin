@@ -59,7 +59,7 @@
 @end
 
 
-// Standard pulic key address (19FGfswVqxNubJbh1NW8A4t51T9x9RDVWQ)
+// Standard public key address (19FGfswVqxNubJbh1NW8A4t51T9x9RDVWQ)
 @interface BTCPublicKeyAddress : BTCAddress
 @end
 @interface BTCPublicKeyAddressTestnet : BTCPublicKeyAddress
