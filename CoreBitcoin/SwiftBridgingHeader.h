@@ -14,3 +14,4 @@
 #import "NSData+BTCData.h"
 #import "NS+BTCBase58.h"
 #import "BTCKey.h"
+#import "BTCBitcoinURL.h"
