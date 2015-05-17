@@ -33,7 +33,6 @@ class BTCBitcoinURLTests: XCTestCase {
         XCTAssertEqual(bURL.amount, 123450009, "Must parse amount formatted as btc")
         XCTAssertEqual(bURL.address.string, "1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T", "Must parse address")
         XCTAssertEqual(bURL.paymentRequestURL.absoluteString!, "http://example.com/order-1000123", "Must parse payment request")
-        
     }
     
     func testNakedPaymentRequest() {
@@ -41,9 +40,8 @@ class BTCBitcoinURLTests: XCTestCase {
         XCTAssertNotNil(bURL, "Must parse")
         XCTAssertTrue(bURL.isValid, "Must be valid")
         XCTAssertEqual(bURL.amount, 0, "Default amount is zero")
-        XCTAssertNil(bURL.address, "Default address is nill")
+        XCTAssertNil(bURL.address, "Default address is nil")
         XCTAssertEqual(bURL.paymentRequestURL.absoluteString!, "http://example.com/order-1000123", "Must parse payment request")
-        
     }
     
     func testInvalidURL1() {
