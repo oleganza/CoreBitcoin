@@ -15,3 +15,4 @@
 #import "NS+BTCBase58.h"
 #import "BTCKey.h"
 #import "BTCBitcoinURL.h"
+#import "BTCCurrencyConverter.h"
