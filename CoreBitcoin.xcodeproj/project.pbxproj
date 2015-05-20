@@ -361,6 +361,14 @@
 		20C2D80B19E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C2D80319E2F2280022CAAC /* BTCMnemonic+Tests.m */; };
 		20C3F16917BFDCF8009DB89C /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C3F16817BFDCF8009DB89C /* libSystem.dylib */; };
 		20C4860A1955A88C0061DF75 /* BTCFancyEncryptedMessage+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C486091955A88B0061DF75 /* BTCFancyEncryptedMessage+Tests.m */; };
+		20C7D14C1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 20C7D14A1B0CBBC900F71493 /* BTCAssetAddress.h */; };
+		20C7D14D1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 20C7D14A1B0CBBC900F71493 /* BTCAssetAddress.h */; };
+		20C7D14E1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 20C7D14A1B0CBBC900F71493 /* BTCAssetAddress.h */; };
+		20C7D14F1B0CBBC900F71493 /* BTCAssetAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */; };
+		20C7D1501B0CBBC900F71493 /* BTCAssetAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */; };
+		20C7D1511B0CBBC900F71493 /* BTCAssetAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */; };
+		20C7D1521B0CBBC900F71493 /* BTCAssetAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */; };
+		20C7D1531B0CBBC900F71493 /* BTCAssetAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */; };
 		20CD68DA189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20CD68DB189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		20CD68DC189B18820083E1A9 /* BTCCurvePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -593,6 +601,8 @@
 		20C3F16817BFDCF8009DB89C /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		20C486081955A88B0061DF75 /* BTCFancyEncryptedMessage+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCFancyEncryptedMessage+Tests.h"; sourceTree = "<group>"; };
 		20C486091955A88B0061DF75 /* BTCFancyEncryptedMessage+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCFancyEncryptedMessage+Tests.m"; sourceTree = "<group>"; };
+		20C7D14A1B0CBBC900F71493 /* BTCAssetAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCAssetAddress.h; sourceTree = "<group>"; };
+		20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCAssetAddress.m; sourceTree = "<group>"; };
 		20CD68D8189B18820083E1A9 /* BTCCurvePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCCurvePoint.h; sourceTree = "<group>"; };
 		20CD68D9189B18820083E1A9 /* BTCCurvePoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCCurvePoint.m; sourceTree = "<group>"; };
 		20D008C018D1AFA800079B79 /* BTC256+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTC256+Tests.h"; sourceTree = "<group>"; };
@@ -888,6 +898,8 @@
 				2084DD6A17B8FF76005AC9E6 /* BTCAddress.m */,
 				2084DD6B17B8FF76005AC9E6 /* BTCAddress+Tests.h */,
 				2084DD6C17B8FF76005AC9E6 /* BTCAddress+Tests.m */,
+				20C7D14A1B0CBBC900F71493 /* BTCAssetAddress.h */,
+				20C7D14B1B0CBBC900F71493 /* BTCAssetAddress.m */,
 				2084DD6D17B8FF76005AC9E6 /* BTCBase58.h */,
 				2084DD6E17B8FF76005AC9E6 /* BTCBase58.m */,
 				2037AB1617D3D1F900DB248C /* BTCBase58+Tests.h */,
@@ -1048,6 +1060,7 @@
 				207646FB1A0A8BB3000F00F2 /* BTCNumberFormatter.h in Headers */,
 				20148C2F1835650B00E68E9C /* BTCAddress.h in Headers */,
 				20148C301835650B00E68E9C /* BTCAddress+Tests.h in Headers */,
+				20C7D14D1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */,
 				20148C311835650B00E68E9C /* BTCBase58.h in Headers */,
 				20148C321835650B00E68E9C /* BTCBase58+Tests.h in Headers */,
 				207646E71A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
@@ -1107,6 +1120,7 @@
 				207646FC1A0A8BB3000F00F2 /* BTCNumberFormatter.h in Headers */,
 				20148CD9183643FC00E68E9C /* BTCAddress.h in Headers */,
 				20148CDA183643FC00E68E9C /* BTCAddress+Tests.h in Headers */,
+				20C7D14E1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */,
 				20148CDB183643FC00E68E9C /* BTCBase58.h in Headers */,
 				20148CDC183643FC00E68E9C /* BTCBase58+Tests.h in Headers */,
 				207646E81A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
@@ -1166,6 +1180,7 @@
 				207646FA1A0A8BB3000F00F2 /* BTCNumberFormatter.h in Headers */,
 				206B013E1835484300878B8D /* BTCData.h in Headers */,
 				206B014B1835484300878B8D /* BTCProtocolSerialization.h in Headers */,
+				20C7D14C1B0CBBC900F71493 /* BTCAssetAddress.h in Headers */,
 				206B01421835484300878B8D /* BTCAddress.h in Headers */,
 				206B014F1835484300878B8D /* BTCScript+Tests.h in Headers */,
 				207646E61A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
@@ -1392,6 +1407,7 @@
 				20148B0D18355DAD00E68E9C /* NS+BTCBase58.m in Sources */,
 				208E303B1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */,
 				20148B0E18355DAD00E68E9C /* BTCBigNumber.m in Sources */,
+				20C7D1511B0CBBC900F71493 /* BTCAssetAddress.m in Sources */,
 				204FB507194C63B500C131DE /* BTCBlindSignature.m in Sources */,
 				207646EB1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				C9C3C176195B535500D9F6FB /* BTCChainCom.m in Sources */,
@@ -1440,6 +1456,7 @@
 				20148C1B183563D000E68E9C /* NS+BTCBase58.m in Sources */,
 				208E303C1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */,
 				20148C1C183563D000E68E9C /* BTCBigNumber.m in Sources */,
+				20C7D1521B0CBBC900F71493 /* BTCAssetAddress.m in Sources */,
 				204FB508194C63B500C131DE /* BTCBlindSignature.m in Sources */,
 				207646EC1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				C9C3C177195B535500D9F6FB /* BTCChainCom.m in Sources */,
@@ -1488,6 +1505,7 @@
 				20148CC6183643E700E68E9C /* NS+BTCBase58.m in Sources */,
 				208E303D1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */,
 				20148CC7183643E700E68E9C /* BTCBigNumber.m in Sources */,
+				20C7D1531B0CBBC900F71493 /* BTCAssetAddress.m in Sources */,
 				204FB509194C63B500C131DE /* BTCBlindSignature.m in Sources */,
 				207646ED1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				C9C3C178195B535500D9F6FB /* BTCChainCom.m in Sources */,
@@ -1536,6 +1554,7 @@
 				206B015C1835485D00878B8D /* NS+BTCBase58.m in Sources */,
 				208E303A1AC012CE0020F830 /* BTCEncryptedBackup.m in Sources */,
 				206B01571835485D00878B8D /* BTCErrors.m in Sources */,
+				20C7D1501B0CBBC900F71493 /* BTCAssetAddress.m in Sources */,
 				204FB506194C63B500C131DE /* BTCBlindSignature.m in Sources */,
 				207646EA1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				C9C3C175195B535500D9F6FB /* BTCChainCom.m in Sources */,
@@ -1584,6 +1603,7 @@
 				207B2608188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
 				20A443D51AC954C1008B3447 /* BTCEncryptedBackup+Tests.m in Sources */,
 				2084DD8D17B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m in Sources */,
+				20C7D14F1B0CBBC900F71493 /* BTCAssetAddress.m in Sources */,
 				2060A2831AAA077A004531FD /* BTCMerkleTree.m in Sources */,
 				20D008C218D1AFA800079B79 /* BTC256+Tests.m in Sources */,
 				2054DC781950E35E007175C8 /* BTCFancyEncryptedMessage.m in Sources */,

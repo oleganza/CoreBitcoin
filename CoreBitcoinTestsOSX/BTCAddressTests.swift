@@ -74,5 +74,16 @@ class BTCAddressTests: XCTestCase {
         XCTAssertNotNil(addr2, "Address should be created")
         XCTAssertEqual("3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8", addr2.string, "Must encode hash160 correctly.")
     }
-    
+
+
+    func testAssetAddress() {
+        let btcAddr = BTCPublicKeyAddress(string: "16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM")
+        let assetAddr = BTCAssetAddress(bitcoinAddress:btcAddr)
+        XCTAssertNotNil(assetAddr, "Address should be created")
+        XCTAssertEqual("akB4NBW9UuCmHuepksob6yfZs6naHtRCPNy", assetAddr.string, "Must encode to Open Assets format correctly.")
+
+        let assetAddr2 = BTCAssetAddress(string:"akB4NBW9UuCmHuepksob6yfZs6naHtRCPNy")
+        XCTAssertEqual("16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM", assetAddr2.bitcoinAddress.string, "Must decode underlying Bitcoin address from Open Assets address.")
+    }
+
 }
