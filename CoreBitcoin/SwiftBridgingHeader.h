@@ -17,3 +17,5 @@
 #import "BTCKey.h"
 #import "BTCBitcoinURL.h"
 #import "BTCCurrencyConverter.h"
+#import "BTCBigNumber.h"
+#import "BTCCurvePoint.h"
