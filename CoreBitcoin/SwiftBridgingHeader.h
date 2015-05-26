@@ -22,3 +22,5 @@
 #import "BTCBlindSignature.h"
 #import "BTCKeychain.h"
 #import "BTCData.h"
+#import "BTCEncryptedBackup.h"
+#import "BTCNetwork.h"
