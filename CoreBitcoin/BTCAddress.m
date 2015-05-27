@@ -1,6 +1,7 @@
 // Oleg Andreev <oleganza@gmail.com>
 
 #import "BTCAddress.h"
+#import "BTCAddressSubclass.h"
 #import "BTCData.h"
 #import "BTCBase58.h"
 #import "BTCKey.h"
@@ -15,10 +16,6 @@ enum
     BTCPrivateKeyAddressVersionTestnet = 239,
     BTCScriptHashAddressVersionTestnet = 196,
 };
-
-@interface BTCAddress ()
-@property(nonatomic, readwrite) NSData* data;
-@end
 
 @implementation BTCAddress {
     char* _cstring;
@@ -47,7 +44,7 @@ enum
 }
 
 // prototype to make clang happy.
-+ (instancetype) addressWithComposedData:(NSData*)data cstring:(const char*)cstring {
++ (instancetype) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version {
     return nil;
 }
 
@@ -62,7 +59,7 @@ enum
 
     NSDictionary* classes = [self registeredAddressClasses];
     Class cls = classes[@(version)];
-    BTCAddress* address = [cls addressWithComposedData:composedData cstring:cstring];
+    BTCAddress* address = [cls addressWithComposedData:composedData cstring:cstring version:version];
     if (!address) {
         NSLog(@"BTCAddress: unknown address version: %d", version);
     }
@@ -201,7 +198,7 @@ enum
     return addr;
 }
 
-+ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring
++ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring version:(uint8_t)version
 {
     if (composedData.length != (1 + BTCPublicKeyAddressLength))
     {
@@ -281,7 +278,7 @@ enum
     return addr;
 }
 
-+ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring
++ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version
 {
     if (data.length != (1 + BTCPrivateKeyAddressLength + 1) &&  data.length != (1 + BTCPrivateKeyAddressLength))
     {
@@ -399,7 +396,7 @@ enum
     return addr;
 }
 
-+ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring
++ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version
 {
     if (data.length != (1 + BTCScriptHashAddressLength))
     {

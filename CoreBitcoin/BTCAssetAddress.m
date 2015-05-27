@@ -26,16 +26,15 @@
 
 + (instancetype) addressWithString:(NSString*)string {
     NSMutableData* composedData = BTCDataFromBase58Check(string);
-    return [self addressWithComposedData:composedData cstring:[string cStringUsingEncoding:NSUTF8StringEncoding]];
+    uint8_t version = ((unsigned char*)composedData.bytes)[0];
+    return [self addressWithComposedData:composedData cstring:[string cStringUsingEncoding:NSUTF8StringEncoding] version:version];
 }
 
-+ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring {
++ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring version:(uint8_t)version {
     if (!composedData) return nil;
     if (composedData.length < 2) return nil;
 
-    int namespace = ((unsigned char*)composedData.bytes)[0];
-
-    if (namespace == BTCAssetAddressNamespace) { // same for testnet and mainnet
+    if (version == BTCAssetAddressNamespace) { // same for testnet and mainnet
         BTCAddress* btcAddr = [BTCAddress addressWithString:BTCBase58CheckStringWithData([composedData subdataWithRange:NSMakeRange(1, composedData.length - 1)])];
         return [self addressWithBitcoinAddress:btcAddr];
     } else {

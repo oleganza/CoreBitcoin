@@ -9,6 +9,7 @@
 #import "BTCBlockchainInfo.h"
 #import "BTCAddress.h"
 #import "BTCAssetAddress.h"
+#import "BTCAssetID.h"
 #import "BTCTransactionOutput.h"
 #import "BTCPriceSource.h"
 #import "BTCAddress.h"

@@ -10,6 +10,7 @@
  * See: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
  */
 @class BTCAddress;
+@class BTCAssetID;
 @interface BTCBitcoinURL : NSObject
 
 /*!
@@ -25,7 +26,7 @@
 /*!
  * Asset ID for Open Assets URL.
  */
-@property(nonatomic, nullable) NSString* assetID;
+@property(nonatomic, nullable) BTCAssetID* assetID;
 
 /*!
  * Label. Default is nil.

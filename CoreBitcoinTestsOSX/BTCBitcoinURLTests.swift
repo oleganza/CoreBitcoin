@@ -80,6 +80,7 @@ class BTCBitcoinURLTests: XCTestCase {
         XCTAssertTrue(bURL.isValidOpenAssetsURL, "Must be valid OA url")
         XCTAssertEqual(bURL.amount, 123, "Must parse amount")
         XCTAssertEqual(bURL.address!.string, "akB4NBW9UuCmHuepksob6yfZs6naHtRCPNy", "Must parse address")
+        XCTAssertEqual(bURL.assetID!.string, "ALn3aK1fSuG27N96UGYB1kUYUpGKRhBuBC", "Must parse asset ID")
         XCTAssertNil(bURL.paymentRequestURL, "Must not parse payment request")
     }
 
@@ -100,6 +101,7 @@ class BTCBitcoinURLTests: XCTestCase {
         XCTAssertTrue(bURL.isValidOpenAssetsURL, "Must be valid OA url")
         XCTAssertEqual(bURL.amount, 123, "Must parse amount")
         XCTAssertEqual(bURL.address!.string, "akB4NBW9UuCmHuepksob6yfZs6naHtRCPNy", "Must parse address")
+        XCTAssertEqual(bURL.assetID!.string, "ALn3aK1fSuG27N96UGYB1kUYUpGKRhBuBC", "Must parse asset ID")
         XCTAssertNil(bURL.paymentRequestURL, "Must not parse payment request")
     }
 

@@ -1,6 +1,7 @@
 #import "BTCBitcoinURL.h"
 #import "BTCAddress.h"
 #import "BTCAssetAddress.h"
+#import "BTCAssetID.h"
 #import "BTCNumberFormatter.h"
 
 NSString* const BTCBitcoinURLSchemeBitcoin = @"bitcoin";
@@ -95,7 +96,7 @@ NSString* const BTCBitcoinURLSchemeOpenAssets = @"openassets";
         [self.scheme isEqualToString:BTCBitcoinURLSchemeOpenAssets]) {
 
         // We should either have an asset address with asset ID, or no address and payment request URL.
-        return ([self.address isKindOfClass:[BTCAssetAddress class]] && self.assetID) || (!self.address && self.paymentRequestURL);
+        return ([self.address isKindOfClass:[BTCAssetAddress class]] && self.assetID) || (!self.address && !self.assetID && self.paymentRequestURL);
     }
     return NO;
 }
@@ -177,13 +178,13 @@ NSString* const BTCBitcoinURLSchemeOpenAssets = @"openassets";
     }
 }
 
-- (NSString*) assetID {
-    return self.mutableQueryParameters[@"asset"];
+- (BTCAssetID*) assetID {
+    return [BTCAssetID assetIDWithString:self.mutableQueryParameters[@"asset"]];
 }
 
-- (void) setAssetID:(NSString *)assetID {
+- (void) setAssetID:(BTCAssetID *)assetID {
     if (assetID) {
-        self.mutableQueryParameters[@"asset"] = assetID;
+        self.mutableQueryParameters[@"asset"] = assetID.string;
     } else {
         [self.mutableQueryParameters removeObjectForKey:@"asset"];
     }
