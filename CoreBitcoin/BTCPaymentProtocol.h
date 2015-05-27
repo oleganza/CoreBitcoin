@@ -13,10 +13,11 @@
 // * BTCPaymentACK object that represents "PaymentACK" as described in BIP70.
 
 extern NSInteger const BTCPaymentRequestVersion1;
+extern NSInteger const BTCPaymentRequestVersionOpenAssets1;
 
-extern NSString* const BTCPaymentRequestPKITypeNone;
-extern NSString* const BTCPaymentRequestPKITypeX509SHA1;
-extern NSString* const BTCPaymentRequestPKITypeX509SHA256;
+extern NSString* __nonnull const BTCPaymentRequestPKITypeNone;
+extern NSString* __nonnull const BTCPaymentRequestPKITypeX509SHA1;
+extern NSString* __nonnull const BTCPaymentRequestPKITypeX509SHA256;
 
 // Special value indicating that amount on the output is not specified.
 extern BTCAmount const BTCUnspecifiedPaymentAmount;
@@ -51,23 +52,23 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Convenience API
 
 // Loads a BTCPaymentRequest object from a given URL.
-+ (void) loadPaymentRequestFromURL:(NSURL*)paymentRequestURL completionHandler:(void(^)(BTCPaymentRequest* pr, NSError* error))completionHandler;
++ (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler;
 
 // Posts completed payment object to a given payment URL (provided in BTCPaymentDetails) and
 // returns a PaymentACK object.
-+ (void) postPayment:(BTCPayment*)payment URL:(NSURL*)paymentURL completionHandler:(void(^)(BTCPaymentACK* ack, NSError* error))completionHandler;
++ (void) postPayment:(nonnull BTCPayment*)payment URL:(nonnull NSURL*)paymentURL completionHandler:(nonnull void(^)(BTCPaymentACK* __nullable ack, NSError* __nullable error))completionHandler;
 
 
 // Low-level API
 // (use these if you have your own connection queue).
 
-+ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL; // default timeout is 10 sec
-+ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout;
-+ (BTCPaymentRequest*) paymentRequestFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut;
++ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL; // default timeout is 10 sec
++ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout;
++ (nullable BTCPaymentRequest*) paymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
 
-+ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL; // default timeout is 10 sec
-+ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL timeout:(NSTimeInterval)timeout;
-+ (BTCPaymentACK*) paymentACKFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut;
++ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL; // default timeout is 10 sec
++ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL timeout:(NSTimeInterval)timeout;
++ (nullable BTCPaymentACK*) paymentACKFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
 
 @end
 
@@ -75,6 +76,13 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // The bulk of the information is contained in the PaymentDetails message.
 // It is wrapped inside a PaymentRequest message, which contains meta-information
 // about the merchant and a digital signature.
+// message PaymentRequest {
+//     optional uint32 payment_details_version = 1 [default = 1];
+//     optional string pki_type = 2 [default = "none"];
+//     optional bytes pki_data = 3;
+//     required bytes serialized_payment_details = 4;
+//     optional bytes signature = 5;
+// }
 @interface BTCPaymentRequest : NSObject
 
 // Version of the payment request and payment details.
@@ -84,15 +92,15 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Public-key infrastructure (PKI) system being used to identify the merchant.
 // All implementation should support "none", "x509+sha256" and "x509+sha1".
 // See BTCPaymentRequestPKIType* constants.
-@property(nonatomic, readonly) NSString* pkiType;
+@property(nonatomic, readonly, nonnull) NSString* pkiType;
 
 // PKI-system data that identifies the merchant and can be used to create a digital signature.
 // In the case of X.509 certificates, pki_data contains one or more X.509 certificates.
 // Depends on pkiType. Optional.
-@property(nonatomic, readonly) NSData* pkiData;
+@property(nonatomic, readonly, nullable) NSData* pkiData;
 
 // A BTCPaymentDetails object.
-@property(nonatomic, readonly) BTCPaymentDetails* details;
+@property(nonatomic, readonly, nonnull) BTCPaymentDetails* details;
 
 // Digital signature over a hash of the protocol buffer serialized variation of
 // the PaymentRequest message, with all serialized fields serialized in numerical order
@@ -101,12 +109,12 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Optional fields that are not set are not serialized (however, setting a field to its default value will cause it to be serialized and will affect the signature).
 // Before serialization, the signature field must be set to an empty value so that
 // the field is included in the signed PaymentRequest hash but contains no data.
-@property(nonatomic, readonly) NSData* signature;
+@property(nonatomic, readonly, nullable) NSData* signature;
 
 // Array of DER encoded certificates or nil if pkiType does offer certificates.
 // This list is extracted from raw `pkiData`.
 // If set, certificates are cerialized in X509Certificates object and set to pkiData.
-@property(nonatomic, readonly) NSArray* certificates;
+@property(nonatomic, readonly, nonnull) NSArray* certificates;
 
 // Returns YES if payment request is correctly signed by a trusted certificate if needed
 // and expiration date is valid.
@@ -116,40 +124,40 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Human-readable name of the signer or nil if it's unsigned.
 // You should display this to the user as a name of the merchant.
 // Accessing this property also updates `status` and `isValid`.
-@property(nonatomic, readonly) NSString* signerName;
+@property(nonatomic, readonly, nullable) NSString* signerName;
 
 // Validation status.
 // Accessing this property also updates `commonName` and `isValid`.
 @property(nonatomic, readonly) BTCPaymentRequestStatus status;
 
 // Binary serialization in protocol buffer format.
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly, nonnull) NSData* data;
 
-- (id) initWithData:(NSData*)data;
+- (nullable id) initWithData:(nullable NSData*)data;
 
-- (BTCPayment*) paymentWithTransaction:(BTCTransaction*)tx;
+- (nullable BTCPayment*) paymentWithTransaction:(nullable BTCTransaction*)tx;
 
-- (BTCPayment*) paymentWithTransactions:(NSArray*)txs memo:(NSString*)memo;
+- (nullable BTCPayment*) paymentWithTransactions:(nullable  NSArray*)txs memo:(nullable NSString*)memo;
 
 @end
 
 @interface BTCPaymentDetails : NSObject
 
 // Mainnet or testnet. Default is mainnet.
-@property(nonatomic, readonly) BTCNetwork* network;
+@property(nonatomic, readonly, nonnull) BTCNetwork* network;
 
 // Array of transaction outputs storing `value` in satoshis and `script` where payment should be sent.
 // Unspecified amounts are set to BTC_MAX_MONEY so you can know if zero amount was actually specified (e.g. for OP_RETURN or proof-of-burn etc).
-@property(nonatomic, readonly) NSArray* /*[BTCTransactionOutput]*/ outputs;
+@property(nonatomic, readonly, nonnull) NSArray* /*[BTCTransactionOutput]*/ outputs;
 
 // Date when the PaymentRequest was created.
-@property(nonatomic, readonly) NSDate* date;
+@property(nonatomic, readonly, nonnull) NSDate* date;
 
 // Date after which the PaymentRequest should be considered invalid.
-@property(nonatomic, readonly) NSDate* expirationDate;
+@property(nonatomic, readonly, nullable) NSDate* expirationDate;
 
 // Plain-text (no formatting) note that should be displayed to the customer, explaining what this PaymentRequest is for.
-@property(nonatomic, readonly) NSString* memo;
+@property(nonatomic, readonly, nullable) NSString* memo;
 
 // Secure location (usually https) where a Payment message (see below) may be sent to obtain a PaymentACK.
 // The payment_url specified in the PaymentDetails should remain valid at least until the PaymentDetails expires
@@ -157,17 +165,17 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Note that this is irrespective of any state change in the underlying payment request;
 // for example cancellation of an order should not invalidate the payment_url,
 // as it is important that the merchant's server can record mis-payments in order to refund the payment.
-@property(nonatomic, readonly) NSURL* paymentURL;
+@property(nonatomic, readonly, nullable) NSURL* paymentURL;
 
 // Arbitrary data that may be used by the merchant to identify the PaymentRequest.
 // May be omitted if the merchant does not need to associate Payments with PaymentRequest or
 // if they associate each PaymentRequest with a separate payment address.
-@property(nonatomic, readonly) NSData* merchantData;
+@property(nonatomic, readonly, nullable) NSData* merchantData;
 
 // Binary serialization in protocol buffer format.
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly, nonnull) NSData* data;
 
-- (id) initWithData:(NSData*)data;
+- (nullable id) initWithData:(nullable NSData*)data;
 
 @end
 
@@ -177,21 +185,21 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Should be copied from PaymentDetails.merchant_data.
 // Merchants may use invoice numbers or any other data they require
 // to match Payments to PaymentRequests.
-@property(nonatomic, readonly) NSData* merchantData;
+@property(nonatomic, readonly, nullable) NSData* merchantData;
 
 // One or more valid, signed Bitcoin transactions that fully pay the PaymentRequest
-@property(nonatomic, readonly) NSArray* /*[BTCTransaction]*/ transactions;
+@property(nonatomic, readonly, nonnull) NSArray* /*[BTCTransaction]*/ transactions;
 
 // Output scripts and amounts. Amounts are optional and can be zero.
-@property(nonatomic, readonly) NSArray* /*[BTCTransactionOutput]*/ refundOutputs;
+@property(nonatomic, readonly, nonnull) NSArray* /*[BTCTransactionOutput]*/ refundOutputs;
 
 // Plain-text note from the customer to the merchant.
-@property(nonatomic, readonly) NSString* memo;
+@property(nonatomic, readonly, nullable) NSString* memo;
 
 // Binary serialization in protocol buffer format.
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly, nonnull) NSData* data;
 
-- (id) initWithData:(NSData*)data;
+- (nullable id) initWithData:(nullable NSData*)data;
 
 @end
 
@@ -201,15 +209,15 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 
 // Copy of the Payment message that triggered this PaymentACK.
 // Clients may ignore this if they implement another way of associating Payments with PaymentACKs.
-@property(nonatomic, readonly) BTCPayment* payment;
+@property(nonatomic, readonly, nonnull) BTCPayment* payment;
 
 // Note that should be displayed to the customer giving the status of the transaction
 // (e.g. "Payment of 1 BTC for eleven tribbles accepted for processing.")
-@property(nonatomic, readonly) NSString* memo;
+@property(nonatomic, readonly, nullable) NSString* memo;
 
 // Binary serialization in protocol buffer format.
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly, nonnull) NSData* data;
 
-- (id) initWithData:(NSData*)data;
+- (nullable id) initWithData:(nullable NSData*)data;
 
 @end

@@ -11,6 +11,7 @@
 #import <Security/Security.h>
 
 NSInteger const BTCPaymentRequestVersion1 = 1;
+NSInteger const BTCPaymentRequestVersionOpenAssets1 = 0x4f41;
 
 NSString* const BTCPaymentRequestPKITypeNone = @"none";
 NSString* const BTCPaymentRequestPKITypeX509SHA1 = @"x509+sha1";
@@ -559,7 +560,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 }
 
 - (BTCPayment*) paymentWithTransaction:(BTCTransaction*)tx {
-    if (!tx) return nil;
+    NSParameterAssert(tx);
     return [self paymentWithTransactions:@[ tx ] memo:nil];
 }
 
