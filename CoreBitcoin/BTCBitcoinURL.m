@@ -1,21 +1,28 @@
 #import "BTCBitcoinURL.h"
 #import "BTCAddress.h"
+#import "BTCAssetAddress.h"
 #import "BTCNumberFormatter.h"
+
+NSString* const BTCBitcoinURLSchemeBitcoin = @"bitcoin";
+NSString* const BTCBitcoinURLSchemeOpenAssets = @"openassets";
 
 @interface BTCBitcoinURL ()
 @property NSMutableDictionary* mutableQueryParameters;
+@property NSString* scheme;
 @end
 
 @implementation BTCBitcoinURL
 
 @synthesize amount = _amount;
 @synthesize label = _label;
+@synthesize assetID = _assetID;
 @synthesize message = _message;
 @synthesize paymentRequestURL = _paymentRequestURL;
 @synthesize queryParameters = _queryParameters;
 
 + (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCAmount)amount label:(NSString*)label {
     BTCBitcoinURL* btcurl = [[self alloc] init];
+    btcurl.scheme = @"bitcoin";
     btcurl.address = address;
     btcurl.amount = amount;
     btcurl.label = label;
@@ -34,9 +41,17 @@
 
     NSURLComponents* comps = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
 
-    if (!comps) return nil;
+    if (!comps) {
+        return nil;
+    }
 
-    if (![comps.scheme isEqual:@"bitcoin"]) return nil;
+    NSString* scheme = [comps.scheme lowercaseString];
+
+    // We only support bitcoin: and openassets: schemes.
+    if (![scheme isEqual:BTCBitcoinURLSchemeBitcoin] &&
+        ![scheme isEqual:BTCBitcoinURLSchemeOpenAssets]) {
+        return nil;
+    }
 
     // We allow empty address, but if it's not empty, it must be a valid address.
     BTCAddress* address = nil;
@@ -53,16 +68,40 @@
             [self.mutableQueryParameters setObject:item.value forKey:item.name];
         }
     }
+
+    self.scheme = scheme;
+
     return self;
 }
 
 - (BOOL) isValid {
-    return self.address || self.paymentRequestURL;
+    return [self isValidBitcoinURL] || [self isValidOpenAssetsURL];
 }
 
-- (NSURL*) URL
-{
-    NSMutableString* string = [NSMutableString stringWithFormat:@"bitcoin:%@", self.address ? self.address.string : @""];
+- (BOOL) isBitcoinAddress {
+    return [self.address isKindOfClass:[BTCPublicKeyAddress class]] ||
+           [self.address isKindOfClass:[BTCScriptHashAddress class]];
+}
+
+- (BOOL) isValidBitcoinURL {
+    if ([self.scheme isEqualToString:BTCBitcoinURLSchemeBitcoin]) {
+        return [self isBitcoinAddress] || (!self.address && self.paymentRequestURL);
+    }
+    return NO;
+}
+
+- (BOOL) isValidOpenAssetsURL {
+    if ([self.scheme isEqualToString:BTCBitcoinURLSchemeBitcoin] ||
+        [self.scheme isEqualToString:BTCBitcoinURLSchemeOpenAssets]) {
+
+        // We should either have an asset address with asset ID, or no address and payment request URL.
+        return ([self.address isKindOfClass:[BTCAssetAddress class]] && self.assetID) || (!self.address && self.paymentRequestURL);
+    }
+    return NO;
+}
+
+- (NSURL*) URL {
+    NSMutableString* string = [NSMutableString stringWithFormat:@"%@:%@", self.scheme, self.address ? self.address.string : @""];
     NSMutableArray* queryItems = [NSMutableArray array];
 
     if(self.queryParameters) {
@@ -98,28 +137,56 @@
 }
 
 - (void) setQueryParameters:(NSDictionary *)queryParameters {
-    self.mutableQueryParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters];
+    self.mutableQueryParameters = [NSMutableDictionary dictionaryWithDictionary:queryParameters ?: @{}];
     //Reset cached standard query parameters
     _amount = 0;
     _paymentRequestURL = nil;
     _message = nil;
     _label = nil;
+    _assetID = nil;
 }
 
-#pragma mark Standard query parameters
+
+
+
+#pragma mark - Standard query parameters
+
+
+- (void) setAddress:(BTCAddress *)address {
+    // Make sure to reformat amount according to the address.
+    BTCAmount amount = self.amount;
+    _address = address;
+    self.amount = amount;
+}
 
 - (BTCAmount) amount {
     if(_amount == 0){
         NSString* amountString = self.mutableQueryParameters[@"amount"];
-        if (amountString) _amount = [BTCBitcoinURL parseAmount:amountString];
+        if (amountString) _amount = [BTCBitcoinURL parseAmount:amountString address:self.address];
     }
     return _amount;
 }
 
 - (void) setAmount:(BTCAmount)amount {
     _amount = amount;
-    NSString* amountString = [BTCBitcoinURL formatAmount:amount];
-    self.mutableQueryParameters[@"amount"] = amountString;
+    if (amount > 0) {
+        NSString* amountString = [BTCBitcoinURL formatAmount:amount address:self.address];
+        self.mutableQueryParameters[@"amount"] = amountString;
+    } else {
+        [self.mutableQueryParameters removeObjectForKey:@"amount"];
+    }
+}
+
+- (NSString*) assetID {
+    return self.mutableQueryParameters[@"asset"];
+}
+
+- (void) setAssetID:(NSString *)assetID {
+    if (assetID) {
+        self.mutableQueryParameters[@"asset"] = assetID;
+    } else {
+        [self.mutableQueryParameters removeObjectForKey:@"asset"];
+    }
 }
 
 - (NSURL*) paymentRequestURL {
@@ -171,13 +238,23 @@
     }
 }
 
-#pragma mark
+#pragma mark - Helpers
 
-+ (NSString*) formatAmount:(BTCAmount)amount {
++ (NSString*) formatAmount:(BTCAmount)amount address:(BTCAddress*)address {
+    // Open Assets urls should have amount formatted as integer
+    if (address && [address isKindOfClass:[BTCAssetAddress class]]) {
+        return @(amount).stringValue;
+    }
     return [NSString stringWithFormat:@"%d.%08d", (int)(amount / BTCCoin), (int)(amount % BTCCoin)];
 }
 
-+ (BTCAmount) parseAmount:(NSString*)string {
++ (BTCAmount) parseAmount:(NSString*)string address:(BTCAddress*)address {
+
+    // Open Assets urls should have amount formatted as integer
+    if (address && [address isKindOfClass:[BTCAssetAddress class]]) {
+        return [string longLongValue];
+    }
+
     NSLocale* locale = [[NSLocale localeWithLocaleIdentifier:@"en_US"] copy]; // uses period (".") as a decimal point.
     NSAssert([[locale objectForKey:NSLocaleDecimalSeparator] isEqual:@"."], @"must be point as a decimal separator");
     NSDecimalNumber* dn = [NSDecimalNumber decimalNumberWithString:string locale:locale];

@@ -15,7 +15,7 @@
 /*!
  * Encoded address.
  */
-@property(nonatomic) BTCAddress* address;
+@property(nonatomic, nullable) BTCAddress* address;
 
 /*!
  * Amount in satoshis. Default is 0.
@@ -23,29 +23,34 @@
 @property(nonatomic) BTCAmount amount;
 
 /*!
+ * Asset ID for Open Assets URL.
+ */
+@property(nonatomic, nullable) NSString* assetID;
+
+/*!
  * Label. Default is nil.
  */
-@property(nonatomic) NSString* label;
+@property(nonatomic, nullable) NSString* label;
 
 /*!
  * Message. Default is nil.
  */
-@property(nonatomic) NSString* message;
+@property(nonatomic, nullable) NSString* message;
 
 /*!
  * Query parameters. Default is nil.
  */
-@property(nonatomic) NSDictionary* queryParameters;
+@property(nonatomic, nonnull) NSDictionary* queryParameters;
 
 /*!
  * Payment request URL (r=...). Default is nil.
  */
-@property(nonatomic) NSURL* paymentRequestURL;
+@property(nonatomic, nullable) NSURL* paymentRequestURL;
 
 /*!
  * Complete URL built from the individual properties.
  */
-@property(nonatomic, readonly) NSURL* URL;
+@property(nonatomic, readonly, nonnull) NSURL* URL;
 
 /*!
  * Returns YES if it has a valid address or paymentRequestURL.
@@ -53,36 +58,46 @@
 @property(nonatomic, readonly) BOOL isValid;
 
 /*!
+ * Returns YES if it is a pure bitcoin URL. That does not specify asset_id and not uses openassets: scheme.
+ */
+@property(nonatomic, readonly) BOOL isValidBitcoinURL;
+
+/*!
+ * Returns YES if it is an Open Assets URL.
+ */
+@property(nonatomic, readonly) BOOL isValidOpenAssetsURL;
+
+/*!
  * Makes a URL in form "bitcoin:<address>?amount=1.2345&label=<label>.
  * @param address Address to be rendered in base58 format.
  * @param amount  Amount in satoshis. Note that URI scheme dictates to render this amount as a decimal number in BTC.
  * @param label   Optional label.
  */
-+ (NSURL*) URLWithAddress:(BTCAddress*)address amount:(BTCAmount)amount label:(NSString*)label;
++ (nonnull NSURL*) URLWithAddress:(nonnull BTCAddress*)address amount:(BTCAmount)amount label:(nullable NSString*)label;
 
 /*!
  * Instantiates if URL is a valid bitcoin: URL.
  * To be valid it should either contain a valid address, or payment request URL (r=), or both.
  */
-- (id) initWithURL:(NSURL*)url;
+- (nullable id) initWithURL:(nullable NSURL*)url;
 
 /*!
  * Instantiates an empty Bitcoin URL.
  * Fill in address, amount, label and other fields and use `URL` property to get a composed URL.
  */
-- (id) init;
+- (nonnull id) init;
 
 /*!
  * Object subscripting to access query parameters more conveniently
  * @param key The key in the queryParameters
  */
-- (id)objectForKeyedSubscript:(id <NSCopying>)key;
+- (nullable id)objectForKeyedSubscript:(nonnull id <NSCopying>)key;
 
 /*!
  * Object subscripting to set query parameter key value pairs more conveniently
  * @param obj The value to be set for key in queryParameters
  * @param key The key for value in the queryParameters
  */
-- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key;
+- (void)setObject:(nullable id)obj forKeyedSubscript:(nonnull id <NSCopying>)key;
 
 @end

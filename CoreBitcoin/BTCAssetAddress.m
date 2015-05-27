@@ -13,17 +13,23 @@
 
 #define BTCAssetAddressNamespace 0x13
 
-+ (instancetype) addressWithBitcoinAddress:(BTCAddress*)btcAddress
-{
++ (void) load {
+    [BTCAddress registerAddressClass:self version:BTCAssetAddressNamespace];
+}
+
++ (instancetype) addressWithBitcoinAddress:(BTCAddress*)btcAddress {
     if (!btcAddress) return nil;
     BTCAssetAddress* addr = [[self alloc] init];
     addr.bitcoinAddress = btcAddress;
     return addr;
 }
 
-+ (instancetype) addressWithString:(NSString*)string
-{
++ (instancetype) addressWithString:(NSString*)string {
     NSMutableData* composedData = BTCDataFromBase58Check(string);
+    return [self addressWithComposedData:composedData cstring:[string cStringUsingEncoding:NSUTF8StringEncoding]];
+}
+
++ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring {
     if (!composedData) return nil;
     if (composedData.length < 2) return nil;
 
@@ -37,8 +43,7 @@
     }
 }
 
-- (NSMutableData*) dataForBase58Encoding
-{
+- (NSMutableData*) dataForBase58Encoding {
     NSMutableData* data = [NSMutableData dataWithLength:1];
     char* buf = data.mutableBytes;
     buf[0] = BTCAssetAddressNamespace;
@@ -46,8 +51,7 @@
     return data;
 }
 
-- (unsigned char) versionByte
-{
+- (unsigned char) versionByte {
     return BTCAssetAddressNamespace;
 }
 

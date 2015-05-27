@@ -17,22 +17,36 @@
 @class BTCKey;
 @interface BTCAddress : NSObject
 
-// Returns an instance of a specific subclass depending on version number.
-// Returns nil for unsupported addresses.
+/*!
+ * Allows subclasses to be instantiated by a call to a superclass: BTCAddress(string: "...")
+ */
++ (void) registerAddressClass:(nonnull Class)addressClass version:(uint8_t)version;
+
+/*!
+ * Returns an instance of a specific subclass depending on version number.
+ * Returns nil for unsupported addresses.
+ */
 + (nullable instancetype) addressWithString:(nullable NSString*)string;
 
-// Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
+/*!
+ * Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
+ * Returns an instance of a specific subclass depending on version number.
+ */
 + (nullable instancetype) addressWithData:(nullable NSData*)data;
 
-// Returns binary contents of an address (without checksums or version number).
-// 20 bytes for hashes, 32 bytes for private key.
+/*!
+ * Returns binary contents of an address (without checksums or version number).
+ * 20 bytes for hashes, 32 bytes for private key.
+ */
 @property(nonatomic, readonly, nonnull) NSData* data;
 
-// Returns representation in base58 encoding.
+/*!
+ * Returns representation in base58 encoding.
+ */
 @property(nonatomic, readonly, nonnull) NSString* string;
 
 /*!
- * Returns a public version of this address. By default it's receiver itself.
+ * Returns a public version of this address. By default it is a receiver itself.
  * PrivateKeyAddress returns appropriate PublicKeyAddress.
  */
 @property(nonatomic, readonly, nonnull) BTCAddress* publicAddress;

@@ -58,36 +58,12 @@ enum
     if (!composedData) return nil;
     if (composedData.length < 2) return nil;
     
-    int version = ((unsigned char*)composedData.bytes)[0];
+    uint8_t version = ((unsigned char*)composedData.bytes)[0];
 
-    BTCAddress* address = nil;
-    if (version == BTCPublicKeyAddressVersion)
-    {
-        address = [BTCPublicKeyAddress addressWithComposedData:composedData cstring:cstring];
-    }
-    else if (version == BTCPrivateKeyAddressVersion)
-    {
-        address = [BTCPrivateKeyAddress addressWithComposedData:composedData cstring:cstring];
-    }
-    else if (version == BTCScriptHashAddressVersion)
-    {
-        address = [BTCScriptHashAddress addressWithComposedData:composedData cstring:cstring];
-    }
-    else if (version == BTCPublicKeyAddressVersionTestnet)
-    {
-        address = [BTCPublicKeyAddressTestnet addressWithComposedData:composedData cstring:cstring];
-    }
-    else if (version == BTCPrivateKeyAddressVersionTestnet)
-    {
-        address = [BTCPrivateKeyAddressTestnet addressWithComposedData:composedData cstring:cstring];
-    }
-    else if (version == BTCScriptHashAddressVersionTestnet)
-    {
-        address = [BTCScriptHashAddressTestnet addressWithComposedData:composedData cstring:cstring];
-    }
-    else
-    {
-        // Unknown version.
+    NSDictionary* classes = [self registeredAddressClasses];
+    Class cls = classes[@(version)];
+    BTCAddress* address = [cls addressWithComposedData:composedData cstring:cstring];
+    if (!address) {
         NSLog(@"BTCAddress: unknown address version: %d", version);
     }
 
@@ -121,13 +97,11 @@ enum
 }
 
 // for subclasses
-- (NSMutableData*) dataForBase58Encoding
-{
+- (NSMutableData*) dataForBase58Encoding {
     return nil;
 }
 
-- (const char*) base58CString
-{
+- (const char*) base58CString {
     if (!_cstring)
     {
         NSMutableData* data = [self dataForBase58Encoding];
@@ -138,41 +112,43 @@ enum
 }
 
 // Returns representation in base58 encoding.
-- (NSString*) string
-{
+- (NSString*) string {
     const char* cstr = [self base58CString];
     if (!cstr) return nil;
     return [NSString stringWithCString:cstr encoding:NSASCIIStringEncoding];
 }
 
-- (NSString*) base58String
-{
+- (NSString*) base58String { // deprecated
     return [self string];
 }
 
-- (BTCAddress*) publicAddress
-{
+- (BTCAddress*) publicAddress {
     return self;
 }
 
-- (BOOL) isTestnet
-{
+- (BOOL) isTestnet {
     return NO;
 }
 
-- (void) clear
-{
+- (uint8_t) versionByte {
+    return [[self class] BTCVersionPrefix];
+}
+
++ (uint8_t) BTCVersionPrefix {
+    [NSException raise:@"BTCAddress BTCVersionPrefix must be accessed via subclasses" format:@""];
+    return 0xff;
+}
+
+- (void) clear {
     BTCSecureClearCString(_cstring);
     BTCDataClear(_data);
 }
 
-- (NSString*) description
-{
+- (NSString*) description {
     return [NSString stringWithFormat:@"<%@: %@>", [self class], self.string];
 }
 
-- (BOOL) isEqual:(BTCAddress*)other
-{
+- (BOOL) isEqual:(BTCAddress*)other {
     if (![other isKindOfClass:[BTCAddress class]]) return NO;
     return [self.string isEqualToString:other.string];
 }
@@ -191,10 +167,9 @@ enum
 }
 
 // Registers a price source with a given name.
-+ (void) registerAddressClass:(Class)addressClass {
++ (void) registerAddressClass:(Class)addressClass version:(uint8_t)version {
     if (!addressClass) return;
-    NSString* name = [NSString stringWithCString:class_getName(addressClass) encoding:NSUTF8StringEncoding];
-    [self registeredAddressClasses][name] = addressClass;
+    [self registeredAddressClasses][@(version)] = addressClass;
 }
 
 
@@ -202,6 +177,14 @@ enum
 
 
 @implementation BTCPublicKeyAddress
+
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
+    return BTCPublicKeyAddressVersion;
+}
 
 #define BTCPublicKeyAddressLength 20
 
@@ -240,17 +223,15 @@ enum
     return data;
 }
 
-- (unsigned char) versionByte
-{
-    return BTCPublicKeyAddressVersion;
-}
-
 @end
 
 @implementation BTCPublicKeyAddressTestnet
 
-- (unsigned char) versionByte
-{
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
     return BTCPublicKeyAddressVersionTestnet;
 }
 
@@ -269,6 +250,14 @@ enum
 // Private key in Base58 format (5KQntKuhYWSRXNq... or L3p8oAcQTtuokSC...)
 @implementation BTCPrivateKeyAddress {
     BOOL _publicKeyCompressed;
+}
+
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
+    return BTCPrivateKeyAddressVersion;
 }
 
 #define BTCPrivateKeyAddressLength 32
@@ -354,27 +343,23 @@ enum
     return data;
 }
 
-- (unsigned char) versionByte
-{
-    return BTCPrivateKeyAddressVersion;
-}
-
 @end
 
 @implementation BTCPrivateKeyAddressTestnet
 
-- (unsigned char) versionByte
-{
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
     return BTCPrivateKeyAddressVersionTestnet;
 }
 
-- (BTCAddress*) publicAddress
-{
+- (BTCAddress*) publicAddress {
     return [BTCPublicKeyAddressTestnet addressWithData:BTCHash160(self.key.publicKey)];
 }
 
-- (BOOL) isTestnet
-{
+- (BOOL) isTestnet {
     return YES;
 }
 
@@ -389,6 +374,15 @@ enum
 
 // P2SH address (e.g. 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8)
 @implementation BTCScriptHashAddress
+
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
+    return BTCScriptHashAddressVersion;
+}
+
 
 #define BTCScriptHashAddressLength 20
 
@@ -427,22 +421,19 @@ enum
     return data;
 }
 
-- (unsigned char) versionByte
-{
-    return BTCScriptHashAddressVersion;
-}
-
 @end
 
 @implementation BTCScriptHashAddressTestnet
 
-- (unsigned char) versionByte
-{
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
     return BTCScriptHashAddressVersionTestnet;
 }
 
-- (BOOL) isTestnet
-{
+- (BOOL) isTestnet {
     return YES;
 }
 
