@@ -3,6 +3,6 @@
 #import "BTCAddress.h"
 
 @interface BTCAssetAddress : BTCAddress
-@property(nonatomic, readonly) BTCAddress* bitcoinAddress;
-+ (instancetype) addressWithBitcoinAddress:(BTCAddress*)btcAddress;
+@property(nonatomic, readonly, nonnull) BTCAddress* bitcoinAddress;
++ (nonnull instancetype) addressWithBitcoinAddress:(nonnull BTCAddress*)btcAddress;
 @end

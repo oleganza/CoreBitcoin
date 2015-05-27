@@ -4,6 +4,7 @@
 #import "BTCData.h"
 #import "BTCBase58.h"
 #import "BTCKey.h"
+#import <objc/runtime.h>
 
 enum
 {
@@ -23,42 +24,36 @@ enum
     char* _cstring;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
     // The data may be retained by someone and should not be cleared like that.
 //    [self clear];
     if (_cstring) free(_cstring);
     _data = nil;
 }
 
-+ (instancetype) addressWithString:(NSString*)string
-{
++ (instancetype) addressWithString:(NSString*)string {
     return [self addressWithBase58CString:[string cStringUsingEncoding:NSASCIIStringEncoding]];
 }
 
-+ (instancetype) addressWithBase58String:(NSString*)string // DEPRECATED
-{
++ (instancetype) addressWithBase58String:(NSString*)string { // DEPRECATED
     return [self addressWithString:string];
 }
 
 // Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
-+ (instancetype) addressWithData:(NSData*)data
-{
++ (instancetype) addressWithData:(NSData*)data {
     @throw [NSException exceptionWithName:@"BTCAddress Exception"
                                    reason:@"Cannot init base class with raw data. Please use specialized subclass." userInfo:nil];
     return nil;
 }
 
 // prototype to make clang happy.
-+ (instancetype) addressWithComposedData:(NSData*)data cstring:(const char*)cstring
-{
++ (instancetype) addressWithComposedData:(NSData*)data cstring:(const char*)cstring {
     return nil;
 }
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-+ (id) addressWithBase58CString:(const char*)cstring
-{
++ (id) addressWithBase58CString:(const char*)cstring {
     NSMutableData* composedData = BTCDataFromBase58CheckCString(cstring);
     if (!composedData) return nil;
     if (composedData.length < 2) return nil;
@@ -95,7 +90,13 @@ enum
         // Unknown version.
         NSLog(@"BTCAddress: unknown address version: %d", version);
     }
-    
+
+    // Verify that address is compatible with the class being invoked.
+    // So if someone asked to parse P2PKH address with P2SH string, they will get nil instead of P2SH instance.
+    if (![address isKindOfClass:self]) {
+        return nil;
+    }
+
     // Securely erase decoded address data
     BTCDataClear(composedData);
     
@@ -175,6 +176,27 @@ enum
     if (![other isKindOfClass:[BTCAddress class]]) return NO;
     return [self.string isEqualToString:other.string];
 }
+
+
+// Known Addresses
+
+
++ (NSMutableDictionary*) registeredAddressClasses {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary* registeredAddressClasses;
+    dispatch_once(&onceToken, ^{
+        registeredAddressClasses = [NSMutableDictionary dictionary];
+    });
+    return registeredAddressClasses;
+}
+
+// Registers a price source with a given name.
++ (void) registerAddressClass:(Class)addressClass {
+    if (!addressClass) return;
+    NSString* name = [NSString stringWithCString:class_getName(addressClass) encoding:NSUTF8StringEncoding];
+    [self registeredAddressClasses][name] = addressClass;
+}
+
 
 @end
 

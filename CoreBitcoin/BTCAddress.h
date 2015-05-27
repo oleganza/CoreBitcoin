@@ -19,32 +19,23 @@
 
 // Returns an instance of a specific subclass depending on version number.
 // Returns nil for unsupported addresses.
-+ (instancetype) addressWithString:(NSString*)string;
++ (nullable instancetype) addressWithString:(nullable NSString*)string;
 
 // Initializes address with raw data. Should only be used in subclasses, base class will raise exception.
-+ (instancetype) addressWithData:(NSData*)data;
-
-// Returns an instance of a specific subclass depending on version number.
-// Returns nil for unsupported addresses.
-// DEPRECATED! Use `-addressWithString:` instead.
-+ (instancetype) addressWithBase58String:(NSString*)string DEPRECATED_ATTRIBUTE;
++ (nullable instancetype) addressWithData:(nullable NSData*)data;
 
 // Returns binary contents of an address (without checksums or version number).
 // 20 bytes for hashes, 32 bytes for private key.
-@property(nonatomic, readonly) NSData* data;
+@property(nonatomic, readonly, nonnull) NSData* data;
 
 // Returns representation in base58 encoding.
-@property(nonatomic, readonly) NSString* string;
-
-// Returns representation in base58 encoding.
-// DEPRECATED! Use -string instead.
-@property(nonatomic, readonly) NSString* base58String DEPRECATED_ATTRIBUTE;
+@property(nonatomic, readonly, nonnull) NSString* string;
 
 /*!
  * Returns a public version of this address. By default it's receiver itself.
  * PrivateKeyAddress returns appropriate PublicKeyAddress.
  */
-@property(nonatomic, readonly) BTCAddress* publicAddress;
+@property(nonatomic, readonly, nonnull) BTCAddress* publicAddress;
 
 /*!
  * Returns YES if this address is intended for testnet.
@@ -55,6 +46,15 @@
  * Clears contents of the data to prevent leaks.
  */
 - (void) clear;
+
+
+// Returns an instance of a specific subclass depending on version number.
+// Returns nil for unsupported addresses.
+// DEPRECATED! Use `-addressWithString:` instead.
++ (nullable instancetype) addressWithBase58String:(nullable NSString*)string DEPRECATED_ATTRIBUTE;
+// Returns representation in base58 encoding.
+// DEPRECATED! Use -string instead.
+@property(nonatomic, readonly, nonnull) NSString* base58String DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -73,10 +73,10 @@
 @property(nonatomic, getter=isPublicKeyCompressed) BOOL publicKeyCompressed;
 
 // Returns BTCKey containing a key pair. Its public key is compressed as specified by the address.
-@property(nonatomic, readonly) BTCKey* key;
+@property(nonatomic, readonly, nonnull) BTCKey* key;
 
 // Creates address from raw private key data. If the public key must be compressed, pass YES to publicKeyCompressed:.
-+ (instancetype) addressWithData:(NSData*)data publicKeyCompressed:(BOOL)compressedPubkey;
++ (nullable instancetype) addressWithData:(nullable NSData*)data publicKeyCompressed:(BOOL)compressedPubkey;
 @end
 @interface BTCPrivateKeyAddressTestnet : BTCPrivateKeyAddress
 @end
