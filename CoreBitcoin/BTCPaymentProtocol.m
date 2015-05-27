@@ -3,11 +3,14 @@
 #import "BTCPaymentProtocol.h"
 #import "BTCProtocolBuffers.h"
 #import "BTCErrors.h"
+#import "BTCAssetType.h"
+#import "BTCAssetID.h"
 #import "BTCData.h"
 #import "BTCNetwork.h"
 #import "BTCScript.h"
 #import "BTCTransaction.h"
 #import "BTCTransactionOutput.h"
+#import "BTCTransactionInput.h"
 #import <Security/Security.h>
 
 NSInteger const BTCPaymentRequestVersion1 = 1;
@@ -21,7 +24,14 @@ BTCAmount const BTCUnspecifiedPaymentAmount = -1;
 
 typedef NS_ENUM(NSInteger, BTCOutputKey) {
     BTCOutputKeyAmount = 1,
-    BTCOutputKeyScript = 2
+    BTCOutputKeyScript = 2,
+    BTCOutputKeyAssetID = 4001, // only for Open Assets PRs.
+    BTCOutputKeyAssetAmount = 4002 // only for Open Assets PRs.
+};
+
+typedef NS_ENUM(NSInteger, BTCInputKey) {
+    BTCInputKeyTxhash = 1,
+    BTCInputKeyIndex = 2
 };
 
 typedef NS_ENUM(NSInteger, BTCRequestKey) {
@@ -39,7 +49,8 @@ typedef NS_ENUM(NSInteger, BTCDetailsKey) {
     BTCDetailsKeyExpires      = 4,
     BTCDetailsKeyMemo         = 5,
     BTCDetailsKeyPaymentURL   = 6,
-    BTCDetailsKeyMerchantData = 7
+    BTCDetailsKeyMerchantData = 7,
+    BTCDetailsKeyInputs       = 8
 };
 
 typedef NS_ENUM(NSInteger, BTCCertificatesKey) {
@@ -59,14 +70,52 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 };
 
 
-
+@interface BTCPaymentProtocol ()
+@property(nonnull, nonatomic, readwrite) NSArray* assetTypes;
+@property(nonnull, nonatomic) NSArray* paymentRequestMediaTypes;
+@end
 
 @implementation BTCPaymentProtocol
 
+// Instantiates default BIP70 protocol that supports only Bitcoin.
+- (nonnull id) init {
+    return [self initWithAssetTypes:@[ BTCAssetTypeBitcoin ]];
+}
+
+// Instantiates protocol instance with accepted asset types.
+- (nonnull id) initWithAssetTypes:(nonnull NSArray*)assetTypes {
+    NSParameterAssert(assetTypes);
+    NSParameterAssert(assetTypes.count > 0);
+    if (self = [super init]) {
+        self.assetTypes = assetTypes;
+    }
+    return self;
+}
+
+- (NSArray*) paymentRequestMediaTypes {
+    if (!_paymentRequestMediaTypes && self.assetTypes) {
+        NSMutableArray* arr = [NSMutableArray array];
+        for (NSString* assetType in self.assetTypes) {
+            if ([assetType isEqual:BTCAssetTypeBitcoin]) {
+                [arr addObject:@"application/bitcoin-paymentrequest"];
+            } else if ([assetType isEqual:BTCAssetTypeOpenAssets]) {
+                [arr addObject:@"application/oa-paymentrequest"];
+            }
+        }
+        _paymentRequestMediaTypes = arr;
+    }
+    return _paymentRequestMediaTypes;
+}
+
+- (NSInteger) maxDataLength {
+    return 50000;
+}
+
+
 // Convenience API
 
-// Loads a BTCPaymentRequest object from a given URL.
-+ (void) loadPaymentRequestFromURL:(NSURL*)paymentRequestURL completionHandler:(void(^)(BTCPaymentRequest* pr, NSError* error))completionHandler {
+
+- (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler {
     NSParameterAssert(paymentRequestURL);
     NSParameterAssert(completionHandler);
 
@@ -88,9 +137,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
     });
 }
 
-// Posts completed payment object to a given payment URL (provided in BTCPaymentDetails) and
-// returns a PaymentACK object.
-+ (void) postPayment:(BTCPayment*)payment URL:(NSURL*)paymentURL completionHandler:(void(^)(BTCPaymentACK* ack, NSError* error))completionHandler {
+- (void) postPayment:(nonnull BTCPayment*)payment URL:(nonnull NSURL*)paymentURL completionHandler:(nonnull void(^)(BTCPaymentACK* __nullable ack, NSError* __nullable error))completionHandler {
     NSParameterAssert(payment);
     NSParameterAssert(paymentURL);
     NSParameterAssert(completionHandler);
@@ -117,24 +164,26 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 // Low-level API
 // (use this if you have your own connection queue).
 
-+ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL {
+- (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL {
     return [self requestForPaymentRequestWithURL:paymentRequestURL timeout:10];
 }
 
-+ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout {
+- (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout {
     if (!paymentRequestURL) return nil;
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:paymentRequestURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout];
-    [request addValue:@"application/bitcoin-paymentrequest" forHTTPHeaderField:@"Accept"];
+    for (NSString* mimeType in self.paymentRequestMediaTypes) {
+        [request addValue:mimeType forHTTPHeaderField:@"Accept"];
+    }
     return request;
 }
 
-+ (BTCPaymentRequest*) paymentRequestFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
+- (BTCPaymentRequest*) paymentRequestFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
 
-    if (![response.MIMEType.lowercaseString isEqual:@"application/bitcoin-paymentrequest"]) {
+    if (![self.paymentRequestMediaTypes containsObject:response.MIMEType.lowercaseString]) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
         return nil;
     }
-    if (data.length > 50000) {
+    if (data.length > [self maxDataLength]) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestTooBig userInfo:@{}];
         return nil;
     }
@@ -146,11 +195,11 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
     return pr;
 }
 
-+ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL {
+- (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL {
     return [self requestForPayment:payment url:paymentURL timeout:10];
 }
 
-+ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL timeout:(NSTimeInterval)timeout {
+- (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL timeout:(NSTimeInterval)timeout {
     if (!payment) return nil;
     if (!paymentURL) return nil;
 
@@ -163,13 +212,13 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
     return request;
 }
 
-+ (BTCPaymentACK*) paymentACKFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
+- (BTCPaymentACK*) paymentACKFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
 
     if (![response.MIMEType.lowercaseString isEqual:@"application/bitcoin-paymentack"]) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
         return nil;
     }
-    if (data.length > 50000) {
+    if (data.length > [self maxDataLength]) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestTooBig userInfo:@{}];
         return nil;
     }
@@ -180,8 +229,44 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
         return nil;
     }
-
+    
     return ack;
+}
+
+
+
+
+// DEPRECATED METHODS
+
++ (void) loadPaymentRequestFromURL:(NSURL*)paymentRequestURL completionHandler:(void(^)(BTCPaymentRequest* pr, NSError* error))completionHandler {
+    [[[self alloc] init] loadPaymentRequestFromURL:paymentRequestURL completionHandler:completionHandler];
+}
++ (void) postPayment:(BTCPayment*)payment URL:(NSURL*)paymentURL completionHandler:(void(^)(BTCPaymentACK* ack, NSError* error))completionHandler {
+    [[[self alloc] init] postPayment:payment URL:paymentURL completionHandler:completionHandler];
+}
+
++ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL {
+    return [self requestForPaymentRequestWithURL:paymentRequestURL timeout:10];
+}
+
++ (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout {
+    return [[[self alloc] init] requestForPaymentRequestWithURL:paymentRequestURL timeout:timeout];
+}
+
++ (BTCPaymentRequest*) paymentRequestFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
+    return [[[self alloc] init] paymentRequestFromData:data response:response error:errorOut];
+}
+
++ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL {
+    return [self requestForPayment:payment url:paymentURL timeout:10];
+}
+
++ (NSURLRequest*) requestForPayment:(BTCPayment*)payment url:(NSURL*)paymentURL timeout:(NSTimeInterval)timeout {
+    return [[[self alloc] init] requestForPayment:payment url:paymentURL timeout:timeout];
+}
+
++ (BTCPaymentACK*) paymentACKFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
+    return [[[self alloc] init] paymentACKFromData:data response:response error:errorOut];
 }
 
 @end
@@ -218,6 +303,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 @interface BTCPaymentDetails ()
 @property(nonatomic, readwrite) BTCNetwork* network;
 @property(nonatomic, readwrite) NSArray* /*[BTCTransactionOutput]*/ outputs;
+@property(nonatomic, readwrite) NSArray* /*[BTCTransactionInput]*/ inputs;
 @property(nonatomic, readwrite) NSDate* date;
 @property(nonatomic, readwrite) NSDate* expirationDate;
 @property(nonatomic, readwrite) NSString* memo;
@@ -365,7 +451,8 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
     _isValid = NO;
 
     // Make sure we do not accidentally send funds to a payment request that we do not support.
-    if (self.version != BTCPaymentRequestVersion1) {
+    if (self.version != BTCPaymentRequestVersion1 &&
+        self.version != BTCPaymentRequestVersionOpenAssets1) {
         _status = BTCPaymentRequestStatusNotCompatible;
         return;
     }
@@ -605,6 +692,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 
     if (self = [super init]) {
         NSMutableArray* outputs = [NSMutableArray array];
+        NSMutableArray* inputs = [NSMutableArray array];
 
         NSInteger offset = 0;
         while (offset < data.length) {
@@ -628,9 +716,32 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                     NSInteger offset2 = 0;
                     BTCAmount amount = BTCUnspecifiedPaymentAmount;
                     NSData* scriptData = nil;
-                    // both amount and scriptData are optional, so we try to read any of them
+                    BTCAssetID* assetID = nil;
+                    BTCAmount assetAmount = BTCUnspecifiedPaymentAmount;
+
+                    uint64_t integer2 = 0;
+                    NSData* d2 = nil;
                     while (offset2 < d.length) {
-                        [BTCProtocolBuffers fieldAtOffset:&offset2 int:(uint64_t*)&amount data:&scriptData fromData:d];
+                        switch ([BTCProtocolBuffers fieldAtOffset:&offset2 int:&integer2 data:&d2 fromData:d]) {
+                            case BTCOutputKeyAmount:
+                                amount = integer2;
+                                break;
+                            case BTCOutputKeyScript:
+                                scriptData = d2;
+                                break;
+                            case BTCOutputKeyAssetID:
+                                if (d2.length != 20) {
+                                    NSLog(@"CoreBitcoin ERROR: Received invalid asset id in Payment Request Details (must be 20 bytes long): %@", d2);
+                                    return nil;
+                                }
+                                assetID = [BTCAssetID assetIDWithHash:d2];
+                                break;
+                            case BTCOutputKeyAssetAmount:
+                                assetAmount = integer2;
+                                break;
+                            default:
+                                break;
+                        }
                     }
                     if (scriptData) {
                         BTCScript* script = [[BTCScript alloc] initWithData:scriptData];
@@ -638,8 +749,51 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                             NSLog(@"CoreBitcoin ERROR: Received invalid script data in Payment Request Details: %@", scriptData);
                             return nil;
                         }
+                        if (assetID) {
+                            if (amount != BTCUnspecifiedPaymentAmount) {
+                                NSLog(@"CoreBitcoin ERROR: Received invalid amount specification in Payment Request Details: amount must not be specified.");
+                                return nil;
+                            }
+                        } else {
+                            if (assetAmount != BTCUnspecifiedPaymentAmount) {
+                                NSLog(@"CoreBitcoin ERROR: Received invalid amount specification in Payment Request Details: asset_amount must not specified without asset_id.");
+                                return nil;
+                            }
+                        }
                         BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] initWithValue:amount script:script];
+                        NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+
+                        if (assetID) {
+                            userInfo[@"assetID"] = assetID;
+                        }
+                        if (assetAmount != BTCUnspecifiedPaymentAmount) {
+                            userInfo[@"assetAmount"] = @(assetAmount);
+                        }
                         [outputs addObject:txout];
+                    }
+                    break;
+                }
+                case BTCDetailsKeyInputs: {
+                    NSInteger offset2 = 0;
+                    uint64_t index = BTCUnspecifiedPaymentAmount;
+                    NSData* txhash = nil;
+                    // both amount and scriptData are optional, so we try to read any of them
+                    while (offset2 < d.length) {
+                        [BTCProtocolBuffers fieldAtOffset:&offset2 int:(uint64_t*)&index data:&txhash fromData:d];
+                    }
+                    if (txhash) {
+                        if (txhash.length != 32) {
+                            NSLog(@"CoreBitcoin ERROR: Received invalid txhash in Payment Request Input: %@", txhash);
+                            return nil;
+                        }
+                        if (index > 0xffffffffLL) {
+                            NSLog(@"CoreBitcoin ERROR: Received invalid prev index in Payment Request Input: %@", @(index));
+                            return nil;
+                        }
+                        BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
+                        txin.previousHash = txhash;
+                        txin.previousIndex = (uint32_t)index;
+                        [inputs addObject:txin];
                     }
                     break;
                 }
@@ -669,6 +823,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         if (!_date) return nil;
         
         _outputs = outputs;
+        _data = data;
     }
     return self;
 }
@@ -694,7 +849,24 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                 [BTCProtocolBuffers writeInt:txout.value withKey:BTCOutputKeyAmount toData:outputData];
             }
             [BTCProtocolBuffers writeData:txout.script.data withKey:BTCOutputKeyScript toData:outputData];
+
+            if (txout.userInfo[@"assetID"]) {
+                BTCAssetID* aid = txout.userInfo[@"assetID"];
+                [BTCProtocolBuffers writeData:aid.data withKey:BTCOutputKeyAssetID toData:outputData];
+            }
+            if (txout.userInfo[@"assetAmount"]) {
+                BTCAmount assetAmount = [txout.userInfo[@"assetAmount"] longLongValue];
+                [BTCProtocolBuffers writeInt:assetAmount withKey:BTCOutputKeyAssetAmount toData:outputData];
+            }
             [BTCProtocolBuffers writeData:outputData withKey:BTCDetailsKeyOutputs toData:dst];
+        }
+
+        for (BTCTransactionInput* txin in _inputs) {
+            NSMutableData* inputsData = [NSMutableData data];
+
+            [BTCProtocolBuffers writeData:txin.previousHash withKey:BTCInputKeyTxhash toData:inputsData];
+            [BTCProtocolBuffers writeInt:txin.previousIndex withKey:BTCInputKeyIndex toData:inputsData];
+            [BTCProtocolBuffers writeData:inputsData withKey:BTCDetailsKeyInputs toData:dst];
         }
 
         if (_date) {

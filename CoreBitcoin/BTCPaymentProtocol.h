@@ -49,26 +49,50 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 
 @interface BTCPaymentProtocol : NSObject
 
+// List of accepted asset types.
+@property(nonnull, nonatomic, readonly) NSArray* assetTypes;
+
+// Instantiates default BIP70 protocol that supports only Bitcoin.
+- (nonnull id) init;
+
+// Instantiates protocol instance with accepted asset types. See BTCAssetType* constants.
+- (nonnull id) initWithAssetTypes:(nonnull NSArray*)assetTypes;
+
+
 // Convenience API
 
 // Loads a BTCPaymentRequest object from a given URL.
-+ (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler;
+- (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler;
 
 // Posts completed payment object to a given payment URL (provided in BTCPaymentDetails) and
 // returns a PaymentACK object.
-+ (void) postPayment:(nonnull BTCPayment*)payment URL:(nonnull NSURL*)paymentURL completionHandler:(nonnull void(^)(BTCPaymentACK* __nullable ack, NSError* __nullable error))completionHandler;
+- (void) postPayment:(nonnull BTCPayment*)payment URL:(nonnull NSURL*)paymentURL completionHandler:(nonnull void(^)(BTCPaymentACK* __nullable ack, NSError* __nullable error))completionHandler;
 
 
 // Low-level API
 // (use these if you have your own connection queue).
 
-+ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL; // default timeout is 10 sec
-+ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout;
-+ (nullable BTCPaymentRequest*) paymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
+- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL; // default timeout is 10 sec
+- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout;
+- (nullable BTCPaymentRequest*) paymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
 
-+ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL; // default timeout is 10 sec
-+ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL timeout:(NSTimeInterval)timeout;
-+ (nullable BTCPaymentACK*) paymentACKFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
+- (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL; // default timeout is 10 sec
+- (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL timeout:(NSTimeInterval)timeout;
+- (nullable BTCPaymentACK*) paymentACKFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
+
+
+// Deprecated Methods
+
++ (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler DEPRECATED_ATTRIBUTE;
++ (void) postPayment:(nonnull BTCPayment*)payment URL:(nonnull NSURL*)paymentURL completionHandler:(nonnull void(^)(BTCPaymentACK* __nullable ack, NSError* __nullable error))completionHandler DEPRECATED_ATTRIBUTE;
+
++ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL DEPRECATED_ATTRIBUTE; // default timeout is 10 sec
++ (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout DEPRECATED_ATTRIBUTE;
++ (nullable BTCPaymentRequest*) paymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut DEPRECATED_ATTRIBUTE;
+
++ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL DEPRECATED_ATTRIBUTE; // default timeout is 10 sec
++ (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL timeout:(NSTimeInterval)timeout DEPRECATED_ATTRIBUTE;
++ (nullable BTCPaymentACK*) paymentACKFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -149,6 +173,10 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // Array of transaction outputs storing `value` in satoshis and `script` where payment should be sent.
 // Unspecified amounts are set to BTC_MAX_MONEY so you can know if zero amount was actually specified (e.g. for OP_RETURN or proof-of-burn etc).
 @property(nonatomic, readonly, nonnull) NSArray* /*[BTCTransactionOutput]*/ outputs;
+
+// Array of transaction inputs storing `previousHash` and `previousIndex`.
+// Client should include these inputs in the transaction as they constitute product offered by the merchant.
+@property(nonatomic, readonly, nonnull) NSArray* /*[BTCTransactionInput]*/ inputs;
 
 // Date when the PaymentRequest was created.
 @property(nonatomic, readonly, nonnull) NSDate* date;
