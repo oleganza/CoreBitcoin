@@ -877,6 +877,7 @@
 		205D8B921B1602B200F9EA4E /* Core Data Structures */ = {
 			isa = PBXGroup;
 			children = (
+				2084DD8117B8FF76005AC9E6 /* BTCUnitsAndLimits.h */,
 				20D09C4F18BC012700794209 /* BTCBlockHeader.h */,
 				20D09C5018BC012700794209 /* BTCBlockHeader.m */,
 				20D09C5918BC016B00794209 /* BTCBlock.h */,
@@ -1064,7 +1065,6 @@
 				20D09B9F18BA14F900794209 /* CoreBitcoin.h */,
 				20D09BA018BA14F900794209 /* CoreBitcoin+Categories.h */,
 				757B24211B03F1E80084A9DE /* SwiftBridgingHeader.h */,
-				2084DD8117B8FF76005AC9E6 /* BTCUnitsAndLimits.h */,
 				20B66C8517BFE4F9007128CE /* BTCErrors.h */,
 				20B66C8617BFE4F9007128CE /* BTCErrors.m */,
 				205D8B901B16021200F9EA4E /* Data Encoding */,
