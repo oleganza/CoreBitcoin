@@ -23,25 +23,29 @@ class BTCPaymentProtocolTests: XCTestCase {
 
     func testOpenAssetsPaymentRequestDetails() {
 
-        let pr = BTCPaymentDetails(data: BTCDataFromHex("12361217a9142b94378e6ed1e52e8f1fcdbce3f5106f6d0c2b4e878afa0114346282702ba85eda1796a580aa318034308a27c490fa01d209121c08ae2c1217a9141fca9ebacd3720968c7b636e5879991e05f290718718efadbdab052a04746573743211687474703a2f2f676f6f676c652e636f6d"))!
+        let pr = BTCPaymentDetails(data: BTCDataFromHex("121c0888271217a914bb22ad9011886eef754e2be30931f6cd89d13a668712371217a914278f4f9e5c8b2bbbcabd0711a84730c0317c9374878afa0114346282702ba85eda1796a580aa318034308a27c490fa01a09c0118c1cdbda60520a0f6bea6052a0e74686973206973206120746573743211687474703a2f2f676f6f676c652e636f6d42240a20807164529ec1b7866d7801d7dbc34edc326a991633573b549116c62dfd9b4f4f1000"))!
 
-        XCTAssertEqual(pr.memo!, "test", "Memo should be 'test'")
+        XCTAssertEqual(pr.memo!, "this is a test", "Memo should be present")
         XCTAssertEqual(pr.paymentURL!.absoluteString!, "http://google.com", "Payment URL should be google.com")
-        XCTAssertEqual(pr.inputs.count,  0, "Has no inputs")
+        XCTAssertEqual(pr.inputs.count,  1, "Has 1 input")
         XCTAssertEqual(pr.outputs.count, 2, "Has 2 outputs")
 
+        let in1 = pr.inputs[0] as! BTCTransactionInput
         let out1 = pr.outputs[0] as! BTCTransactionOutput
         let out2 = pr.outputs[1] as! BTCTransactionOutput
 
-        XCTAssertEqual(pr.outputs.map{$0.script!.standardAddress.string}, ["35fSY6FZS4LdELQqqHw54hDhs4hfmF7DCL", "34b7bn3tQUBMVwQjQXH9u7ZLNaDmwSVwjg"], "Outputs should have P2SH addresses")
+        XCTAssertEqual(in1.previousIndex, 0, "First input has output index 0")
+        XCTAssertEqual(BTCHexFromData(in1.previousHash), "807164529ec1b7866d7801d7dbc34edc326a991633573b549116c62dfd9b4f4f", "First input has output txid 807164529...")
 
-        XCTAssertEqual(out1.value(), BTCUnspecifiedPaymentAmount, "First output has no amount specified")
-        XCTAssertEqual((out1.userInfo["assetID"]! as! BTCAssetID).string, "ALYro2zndzUpPKcZXXqSYE1npuM4ycY1MA", "First output has asset ID ALYro2...")
-        XCTAssertEqual(out1.userInfo["assetAmount"]! as! Int, 1234, "First output has asset amount 1234")
+        XCTAssertEqual(pr.outputs.map{$0.script!.standardAddress.string}, ["3JkVptF3n9VS6FGR6NjrEr8NnUCh4TPvMs", "35JBxSyefxmVj34obKC2od3r98MuaJ34am"], "Outputs should have P2SH addresses")
 
-        XCTAssertEqual(out2.value(), 5678, "Second output has 5678")
-        XCTAssert(out2.userInfo["assetID"] == nil, "Second output has no asset info")
-        XCTAssert(out2.userInfo["assetAmount"] == nil, "Second output has no asset info")
+        XCTAssertEqual(out1.value(), 5000, "First output has 5000")
+        XCTAssert(out1.userInfo["assetID"] == nil, "First output has no asset info")
+        XCTAssert(out1.userInfo["assetAmount"] == nil, "First output has no asset info")
+
+        XCTAssertEqual(out2.value(), BTCUnspecifiedPaymentAmount, "Second output has no amount specified")
+        XCTAssertEqual((out2.userInfo["assetID"]! as! BTCAssetID).string, "ALYro2zndzUpPKcZXXqSYE1npuM4ycY1MA", "Second output has asset ID ALYro2...")
+        XCTAssertEqual(out2.userInfo["assetAmount"]! as! Int, 20000, "Second output has asset amount 1234")
     }
 
 

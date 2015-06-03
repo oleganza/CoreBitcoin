@@ -611,6 +611,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         if (!_date) return nil;
 
         _outputs = outputs;
+        _inputs = inputs;
         _data = data;
     }
     return self;
