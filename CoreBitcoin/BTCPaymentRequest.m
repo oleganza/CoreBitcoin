@@ -556,6 +556,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                         if (assetAmount != BTCUnspecifiedPaymentAmount) {
                             userInfo[@"assetAmount"] = @(assetAmount);
                         }
+                        txout.userInfo = userInfo;
                         [outputs addObject:txout];
                     }
                     break;
