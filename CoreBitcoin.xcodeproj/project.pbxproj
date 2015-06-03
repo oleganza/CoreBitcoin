@@ -434,6 +434,7 @@
 		20D09C6218BC016C00794209 /* BTCBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D09C5A18BC016B00794209 /* BTCBlock.m */; };
 		20E154DA195D0DB400DA40D3 /* BTCBlockchainInfo+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E154D9195D0DB400DA40D3 /* BTCBlockchainInfo+Tests.m */; };
 		20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01117C73181003B6987 /* NSData+BTCData.m */; };
+		20FFD8001B1F85F300CCA48D /* BTCPaymentProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FFD7FF1B1F85F300CCA48D /* BTCPaymentProtocolTests.swift */; };
 		754564761B07F9AB008F34DC /* BTCBitcoinURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754564751B07F9AB008F34DC /* BTCBitcoinURLTests.swift */; };
 		7549DAD11B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549DAD01B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift */; };
 		7558460E1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7558460D1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift */; };
@@ -662,6 +663,7 @@
 		20E1E01117C73181003B6987 /* NSData+BTCData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+BTCData.m"; sourceTree = "<group>"; };
 		20E1E01317C735EE003B6987 /* NS+BTCBase58.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NS+BTCBase58.h"; sourceTree = "<group>"; };
 		20E1E01417C735EE003B6987 /* NS+BTCBase58.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NS+BTCBase58.m"; sourceTree = "<group>"; };
+		20FFD7FF1B1F85F300CCA48D /* BTCPaymentProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCPaymentProtocolTests.swift; sourceTree = "<group>"; };
 		754564751B07F9AB008F34DC /* BTCBitcoinURLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCBitcoinURLTests.swift; sourceTree = "<group>"; };
 		7549DAD01B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCCurrencyConverterTests.swift; sourceTree = "<group>"; };
 		7558460D1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCEncryptedBackupTests.swift; sourceTree = "<group>"; };
@@ -1134,6 +1136,7 @@
 				75B819091B04E69A0055F8B1 /* BTCPriceSourceTests.swift */,
 				75B819071B04E68B0055F8B1 /* BTCBlockchainInfoTests.swift */,
 				75B819051B04E65A0055F8B1 /* BTCAddressTests.swift */,
+				20FFD7FF1B1F85F300CCA48D /* BTCPaymentProtocolTests.swift */,
 				757B24171B03F1BF0084A9DE /* Supporting Files */,
 			);
 			path = CoreBitcoinTestsOSX;
@@ -1806,6 +1809,7 @@
 				75B819061B04E65A0055F8B1 /* BTCAddressTests.swift in Sources */,
 				754564761B07F9AB008F34DC /* BTCBitcoinURLTests.swift in Sources */,
 				75A1A3721B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift in Sources */,
+				20FFD8001B1F85F300CCA48D /* BTCPaymentProtocolTests.swift in Sources */,
 				75B819081B04E68B0055F8B1 /* BTCBlockchainInfoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2181,8 +2185,13 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)",
+				);
 				INFOPLIST_FILE = CoreBitcoinTestsOSX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/openssl/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2212,8 +2221,13 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)",
+				);
 				INFOPLIST_FILE = CoreBitcoinTestsOSX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/openssl/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
