@@ -2,6 +2,7 @@
 
 #import "BTCAddress.h"
 #import "BTCAddressSubclass.h"
+#import "BTCNetwork.h"
 #import "BTCData.h"
 #import "BTCBase58.h"
 #import "BTCKey.h"
@@ -123,7 +124,13 @@ enum
     return self;
 }
 
+- (BTCNetwork*) network {
+    // TODO: use this as a primary source and replace isTestnet
+    return [self isTestnet] ? [BTCNetwork testnet] : [BTCNetwork mainnet];
+}
+
 - (BOOL) isTestnet {
+    // TODO: replace this method with network property exclusively.
     return NO;
 }
 
