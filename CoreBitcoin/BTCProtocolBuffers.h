@@ -3,7 +3,6 @@
 #import <Foundation/Foundation.h>
 
 // An API to parse and encode protocol buffers.
-// Currently incomplete and only supports BIP70 / BTCPaymentProtocol
 @interface BTCProtocolBuffers : NSObject
 
 // Reading
@@ -17,11 +16,14 @@
 // Returns either int or data depending on field type, and returns a field key.
 + (NSInteger) fieldAtOffset:(NSInteger *)offset int:(uint64_t *)i data:(NSData **)d fromData:(NSData*)src;
 
+// Returns either int or fixed64 or data depending on field type, and returns a field key.
++ (NSInteger) fieldAtOffset:(NSInteger *)offset int:(uint64_t *)i fixed32:(uint32_t *)fixed32 fixed64:(uint64_t *)fixed64 data:(NSData **)d fromData:(NSData*)src;
 
 // Writing
 
-+ (void) writeVarInt:(uint64_t)i toData:(NSMutableData*)dst;
 + (void) writeInt:(uint64_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst;
++ (void) writeFixed32:(uint32_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst;
++ (void) writeFixed64:(uint64_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst;
 + (void) writeLengthDelimitedData:(NSData*)data toData:(NSMutableData*)dst;
 + (void) writeData:(NSData*)d withKey:(NSInteger)key toData:(NSMutableData*)dst;
 + (void) writeString:(NSString*)string withKey:(NSInteger)key toData:(NSMutableData*)dst;

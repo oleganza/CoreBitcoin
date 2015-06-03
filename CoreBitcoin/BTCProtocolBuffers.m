@@ -36,6 +36,12 @@ typedef NS_ENUM(NSInteger, BTCProtobufType) {
 
 // Returns either int or data depending on field type, and returns a field key.
 + (NSInteger) fieldAtOffset:(NSInteger *)offset int:(uint64_t *)i data:(NSData **)d fromData:(NSData*)src {
+    return [self fieldAtOffset:offset int:i fixed32:NULL fixed64:NULL data:d fromData:src];
+}
+
+// Returns either int or fixed64 or data depending on field type, and returns a field key.
++ (NSInteger) fieldAtOffset:(NSInteger *)offset int:(uint64_t *)i fixed32:(uint32_t *)fixed32 fixed64:(uint64_t *)fixed64 data:(NSData **)d fromData:(NSData*)src {
+
     NSInteger key = (NSInteger)[self varIntAtOffset:offset fromData:src];
     uint64_t varInt = 0;
     NSData *lengthDelimitedData = nil;
@@ -46,7 +52,11 @@ typedef NS_ENUM(NSInteger, BTCProtobufType) {
             if (i) *i = varInt;
             break;
         }
-        case BTCProtobufType64bit: { // not used by BIP70
+        case BTCProtobufType64bit: {
+            if (fixed64) {
+                const uint64_t* words = (const uint64_t*)(((const uint8_t*)src.bytes) + *offset);
+                *fixed64 = words[0];
+            }
             *offset += sizeof(uint64_t);
             break;
         }
@@ -55,7 +65,11 @@ typedef NS_ENUM(NSInteger, BTCProtobufType) {
             if (d) *d = lengthDelimitedData;
             break;
         }
-        case BTCProtobufType32bit: { // not used by BIP70
+        case BTCProtobufType32bit: {
+            if (fixed32) {
+                const uint32_t* words = (const uint32_t*)(((const uint8_t*)src.bytes) + *offset);
+                *fixed32 = words[0];
+            }
             *offset += sizeof(uint32_t);
             break;
         }
@@ -65,7 +79,7 @@ typedef NS_ENUM(NSInteger, BTCProtobufType) {
     return key >> 3;
 }
 
-+ (void) writeVarInt:(uint64_t)i toData:(NSMutableData*)dst {
++ (void) writeRawVarInt:(uint64_t)i toData:(NSMutableData*)dst {
     do {
         uint8_t b = i & 0x7f;
         i >>= 7;
@@ -75,17 +89,27 @@ typedef NS_ENUM(NSInteger, BTCProtobufType) {
 }
 
 + (void) writeInt:(uint64_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst {
-    [self writeVarInt:(key << 3) + BTCProtobufTypeVarInt toData:dst];
-    [self writeVarInt:i toData:dst];
+    [self writeRawVarInt:(key << 3) + BTCProtobufTypeVarInt toData:dst];
+    [self writeRawVarInt:i toData:dst];
+}
+
++ (void) writeFixed32:(uint32_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst {
+    [self writeRawVarInt:(key << 3) + BTCProtobufType32bit toData:dst];
+    [dst appendBytes:&i length:sizeof(uint32_t)];
+}
+
++ (void) writeFixed64:(uint64_t)i withKey:(NSInteger)key toData:(NSMutableData*)dst {
+    [self writeRawVarInt:(key << 3) + BTCProtobufType64bit toData:dst];
+    [dst appendBytes:&i length:sizeof(uint64_t)];
 }
 
 + (void) writeLengthDelimitedData:(NSData*)data toData:(NSMutableData*)dst {
-    [self writeVarInt:data.length toData:dst];
+    [self writeRawVarInt:data.length toData:dst];
     [dst appendData:data];
 }
 
 + (void) writeData:(NSData*)data withKey:(NSInteger)key toData:(NSMutableData*)dst {
-    [self writeVarInt:(key << 3) + BTCProtobufTypeLengthDelimited toData:dst];
+    [self writeRawVarInt:(key << 3) + BTCProtobufTypeLengthDelimited toData:dst];
     [self writeLengthDelimitedData:data toData:dst];
 }
 
