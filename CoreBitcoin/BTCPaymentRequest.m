@@ -537,12 +537,10 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                             return nil;
                         }
                         if (assetID) {
-                            if (amount != BTCUnspecifiedPaymentAmount && amount != 0) {
-                                NSLog(@"CoreBitcoin ERROR: Received invalid amount specification in Payment Request Details: amount must not be specified (or can be 0).");
+                            if (amount != BTCUnspecifiedPaymentAmount) {
+                                NSLog(@"CoreBitcoin ERROR: Received invalid amount specification in Payment Request Details: amount must not be specified.");
                                 return nil;
                             }
-                            // Make sure client has to set the correct value.
-                            amount = BTCUnspecifiedPaymentAmount;
                         } else {
                             if (assetAmount != BTCUnspecifiedPaymentAmount) {
                                 NSLog(@"CoreBitcoin ERROR: Received invalid amount specification in Payment Request Details: asset_amount must not specified without asset_id.");
