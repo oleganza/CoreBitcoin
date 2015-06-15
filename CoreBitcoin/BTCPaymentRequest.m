@@ -128,6 +128,9 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 
     if (self = [super init]) {
 
+        // Note: we are not assigning default values here because we need to
+        // reconstruct exact data (without the signature) for signature verification.
+
         NSInteger offset = 0;
         while (offset < data.length) {
             uint64_t i = 0;
@@ -204,16 +207,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
 
 - (NSArray*) certificates {
     if (!_certificates) {
-        NSMutableArray* certs = [NSMutableArray array];
-        NSInteger offset = 0;
-        while (offset < self.pkiData.length) {
-            NSData* d = nil;
-            NSInteger key = [BTCProtocolBuffers fieldAtOffset:&offset int:NULL data:&d fromData:self.pkiData];
-            if (key == BTCCertificatesKeyCertificate && d) {
-                [certs addObject:d];
-            }
-        }
-        _certificates = certs;
+        _certificates = BTCParseCertificatesFromPaymentRequestPKIData(self.pkiData);
     }
     return _certificates;
 }
@@ -244,8 +238,74 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         return;
     }
 
-    if ([self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA1] ||
-        [self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA256]) {
+    __typeof(_status) status = _status;
+    __typeof(_signerName) signer = _signerName;
+    _isValid = BTCPaymentRequestVerifySignature(self.pkiType,
+                                                [self dataForSigning],
+                                                self.certificates,
+                                                _signature,
+                                                &status,
+                                                &signer);
+    _status = status;
+    _signerName = signer;
+    if (!_isValid) {
+        return;
+    }
+
+    // Signatures are valid, but PR has expired.
+    if (self.details.expirationDate && [self.currentDate ?: [NSDate date] timeIntervalSinceDate:self.details.expirationDate] > 0.0) {
+        _status = BTCPaymentRequestStatusExpired;
+        _isValid = NO;
+        return;
+    }
+}
+
+- (BTCPayment*) paymentWithTransaction:(BTCTransaction*)tx {
+    NSParameterAssert(tx);
+    return [self paymentWithTransactions:@[ tx ] memo:nil];
+}
+
+- (BTCPayment*) paymentWithTransactions:(NSArray*)txs memo:(NSString*)memo {
+    if (!txs || txs.count == 0) return nil;
+    BTCPayment* payment = [[BTCPayment alloc] init];
+    payment.merchantData = self.details.merchantData;
+    payment.transactions = txs;
+    payment.memo = memo;
+    return payment;
+}
+
+@end
+
+
+NSArray* __nullable BTCParseCertificatesFromPaymentRequestPKIData(NSData* __nullable pkiData) {
+    if (!pkiData) return nil;
+    NSMutableArray* certs = [NSMutableArray array];
+    NSInteger offset = 0;
+    while (offset < pkiData.length) {
+        NSData* d = nil;
+        NSInteger key = [BTCProtocolBuffers fieldAtOffset:&offset int:NULL data:&d fromData:pkiData];
+        if (key == BTCCertificatesKeyCertificate && d) {
+            [certs addObject:d];
+        }
+    }
+    return certs;
+}
+
+
+BOOL BTCPaymentRequestVerifySignature(NSString* __nullable pkiType,
+                                      NSData* __nullable dataToVerify,
+                                      NSArray* __nullable certificates,
+                                      NSData* __nullable signature,
+                                      BTCPaymentRequestStatus* __nullable statusOut,
+                                      NSString* __autoreleasing __nullable *  __nullable signerOut) {
+
+    if ([pkiType isEqual:BTCPaymentRequestPKITypeX509SHA1] ||
+        [pkiType isEqual:BTCPaymentRequestPKITypeX509SHA256]) {
+
+        if (!signature || !certificates || certificates.count == 0 || !dataToVerify) {
+            if (statusOut) *statusOut = BTCPaymentRequestStatusInvalidSignature;
+            return NO;
+        }
 
         // 1. Verify chain of trust
 
@@ -254,13 +314,13 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         SecTrustRef trust = NULL;
         SecTrustResultType trustResult = kSecTrustResultInvalid;
 
-        for (NSData *certData in self.certificates) {
+        for (NSData *certData in certificates) {
             SecCertificateRef cert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certData);
             if (cert) [certs addObject:CFBridgingRelease(cert)];
         }
 
         if (certs.count > 0) {
-            _signerName = CFBridgingRelease(SecCertificateCopySubjectSummary((__bridge SecCertificateRef)certs[0]));
+            if (signerOut) *signerOut = CFBridgingRelease(SecCertificateCopySubjectSummary((__bridge SecCertificateRef)certs[0]));
         }
 
         SecTrustCreateWithCertificates((__bridge CFArrayRef)certs, (__bridge CFArrayRef)policies, &trust);
@@ -271,42 +331,42 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
         // explicitly specified.
         if (trustResult != kSecTrustResultUnspecified && trustResult != kSecTrustResultProceed) {
             if (certs.count > 0) {
-                _status = BTCPaymentRequestStatusUntrustedCertificate;
+                if (statusOut) *statusOut = BTCPaymentRequestStatusUntrustedCertificate;
             } else {
-                _status = BTCPaymentRequestStatusMissingCertificate;
+                if (statusOut) *statusOut = BTCPaymentRequestStatusMissingCertificate;
             }
-            return;
+            return NO;
         }
 
         // 2. Verify signature
 
-#if TARGET_OS_IPHONE
+    #if TARGET_OS_IPHONE
         SecKeyRef pubKey = SecTrustCopyPublicKey(trust);
         SecPadding padding = kSecPaddingPKCS1;
         NSData* hash = nil;
 
-        NSData* dataForSigning = [self dataForSigning];
-        if ([self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA256]) {
-            hash = BTCSHA256(dataForSigning);
+        if ([pkiType isEqual:BTCPaymentRequestPKITypeX509SHA256]) {
+            hash = BTCSHA256(dataToVerify);
             padding = kSecPaddingPKCS1SHA256;
         }
-        else if ([self.pkiType isEqual:BTCPaymentRequestPKITypeX509SHA1]) {
-            hash = BTCSHA1(dataForSigning);
+        else if ([pkiType isEqual:BTCPaymentRequestPKITypeX509SHA1]) {
+            hash = BTCSHA1(dataToVerify);
             padding = kSecPaddingPKCS1SHA1;
         }
 
-        OSStatus status = SecKeyRawVerify(pubKey, padding, hash.bytes, hash.length, _signature.bytes, _signature.length);
+        OSStatus status = SecKeyRawVerify(pubKey, padding, hash.bytes, hash.length, signature.bytes, signature.length);
 
         CFRelease(pubKey);
 
         if (status != errSecSuccess) {
-            _status = BTCPaymentRequestStatusInvalidSignature;
-            return;
+            if (statusOut) *statusOut = BTCPaymentRequestStatusInvalidSignature;
+            return NO;
         }
 
-        _status = BTCPaymentRequestStatusValid;
-        _isValid = YES;
-#else
+        if (statusOut) *statusOut = BTCPaymentRequestStatusValid;
+        return YES;
+
+    #else
         // On OS X 10.10 we don't have kSecPaddingPKCS1SHA256 and SecKeyRawVerify.
         // So we have to verify the signature using Security Transforms API.
 
@@ -338,11 +398,11 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
          }
          if (result == kCFBooleanTrue) {
          // signature is valid
-         _status = BTCPaymentRequestStatusValid;
+         if (statusOut) *statusOut = BTCPaymentRequestStatusValid;
          _isValid = YES;
          } else {
          // signature is invalid.
-         _status = BTCPaymentRequestStatusInvalidSignature;
+         if (statusOut) *statusOut = BTCPaymentRequestStatusInvalidSignature;
          _isValid = NO;
          return NO;
          }
@@ -404,55 +464,28 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
          }
          */
 
-        _status = BTCPaymentRequestStatusUnknown;
-        _isValid = NO;
-        return;
-#endif
+        if (statusOut) *statusOut = BTCPaymentRequestStatusUnknown;
+        return NO;
+    #endif
 
     } else {
         // Either "none" PKI type or some new and unsupported PKI.
 
-        if (self.certificates.count > 0) {
+        if (certificates.count > 0) {
             // Non-standard extension to include a signer's name without actually signing request.
-            _signerName = [[NSString alloc] initWithData:self.certificates[0] encoding:NSUTF8StringEncoding];
+            if (signerOut) *signerOut = [[NSString alloc] initWithData:certificates[0] encoding:NSUTF8StringEncoding];
         }
 
-        if ([self.pkiType isEqual:BTCPaymentRequestPKITypeNone]) {
-            _isValid = YES;
-            _status = BTCPaymentRequestStatusUnsigned;
+        if ([pkiType isEqual:BTCPaymentRequestPKITypeNone]) {
+            if (statusOut) *statusOut = BTCPaymentRequestStatusUnsigned;
+            return YES;
         } else {
-            _isValid = NO;
-            _status = BTCPaymentRequestStatusUnknown;
+            if (statusOut) *statusOut = BTCPaymentRequestStatusUnknown;
+            return NO;
         }
     }
-
-    if (self.details.expirationDate && [[NSDate date] timeIntervalSinceDate:self.details.expirationDate] > 0.0) {
-        _status = BTCPaymentRequestStatusExpired;
-        _isValid = NO;
-        return;
-    }
+    return NO;
 }
-
-- (BTCPayment*) paymentWithTransaction:(BTCTransaction*)tx {
-    NSParameterAssert(tx);
-    return [self paymentWithTransactions:@[ tx ] memo:nil];
-}
-
-- (BTCPayment*) paymentWithTransactions:(NSArray*)txs memo:(NSString*)memo {
-    if (!txs || txs.count == 0) return nil;
-    BTCPayment* payment = [[BTCPayment alloc] init];
-    payment.merchantData = self.details.merchantData;
-    payment.transactions = txs;
-    payment.memo = memo;
-    return payment;
-}
-
-@end
-
-
-
-
-
 
 
 
@@ -557,6 +590,7 @@ typedef NS_ENUM(NSInteger, BTCPaymentAckKey) {
                             userInfo[@"assetAmount"] = @(assetAmount);
                         }
                         txout.userInfo = userInfo;
+                        txout.index = (uint32_t)outputs.count;
                         [outputs addObject:txout];
                     }
                     break;
