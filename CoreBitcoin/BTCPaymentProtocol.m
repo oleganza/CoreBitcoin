@@ -6,6 +6,10 @@
 #import "BTCAssetType.h"
 #import <Security/Security.h>
 
+static NSString* const BTCBitcoinPaymentRequestMimeType = @"application/bitcoin-paymentrequest";
+static NSString* const BTCOpenAssetsPaymentRequestMimeType = @"application/oa-paymentrequest";
+static NSString* const BTCOpenAssetsPaymentMethodRequestMimeType = @"application/oa-paymentmethodrequest";
+
 @interface BTCPaymentProtocol ()
 @property(nonnull, nonatomic, readwrite) NSArray* assetTypes;
 @property(nonnull, nonatomic) NSArray* paymentRequestMediaTypes;
@@ -33,9 +37,9 @@
         NSMutableArray* arr = [NSMutableArray array];
         for (NSString* assetType in self.assetTypes) {
             if ([assetType isEqual:BTCAssetTypeBitcoin]) {
-                [arr addObject:@"application/bitcoin-paymentrequest"];
+                [arr addObject:BTCBitcoinPaymentRequestMimeType];
             } else if ([assetType isEqual:BTCAssetTypeOpenAssets]) {
-                [arr addObject:@"application/oa-paymentrequest"];
+                [arr addObject:BTCOpenAssetsPaymentRequestMimeType];
             }
         }
         _paymentRequestMediaTypes = arr;
@@ -49,6 +53,33 @@
 
 
 // Convenience API
+
+
+- (void) loadPaymentMethodRequestFromURL:(nonnull NSURL*)paymentMethodRequestURL
+                       completionHandler:(nonnull void(^)(BTCPaymentMethodRequest* __nullable pmr, BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler {
+
+    NSParameterAssert(paymentMethodRequestURL);
+    NSParameterAssert(completionHandler);
+
+    NSURLRequest* request = [self requestForPaymentMethodRequestWithURL:paymentMethodRequestURL];
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
+        NSURLResponse* response = nil;
+        NSError* error = nil;
+        NSData* data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (!data) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nil, nil, error);
+            });
+            return;
+        }
+        id prOrPmr = [self polymorphicPaymentRequestFromData:data response:response error:&error];
+        BTCPaymentRequest* pr = ([prOrPmr isKindOfClass:[BTCPaymentRequest class]] ? prOrPmr : nil);
+        BTCPaymentMethodRequest* pmr = ([prOrPmr isKindOfClass:[BTCPaymentMethodRequest class]] ? prOrPmr : nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(pmr, pr, prOrPmr ? nil : error);
+        });
+    });
+}
 
 
 - (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler {
@@ -100,6 +131,52 @@
 // Low-level API
 // (use this if you have your own connection queue).
 
+- (nullable NSURLRequest*) requestForPaymentMethodRequestWithURL:(nonnull NSURL*)url {
+    return [self requestForPaymentMethodRequestWithURL:url timeout:10];
+}
+
+- (nullable NSURLRequest*) requestForPaymentMethodRequestWithURL:(nonnull NSURL*)url timeout:(NSTimeInterval)timeout {
+    if (!url) return nil;
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout];
+    [request addValue:BTCBitcoinPaymentRequestMimeType forHTTPHeaderField:@"Accept"];
+    [request addValue:BTCOpenAssetsPaymentRequestMimeType forHTTPHeaderField:@"Accept"];
+    [request addValue:BTCOpenAssetsPaymentMethodRequestMimeType forHTTPHeaderField:@"Accept"];
+    return request;
+}
+
+- (nullable id) polymorphicPaymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut {
+    NSString* mime = response.MIMEType.lowercaseString;
+    BOOL isPaymentRequest = [mime isEqual:BTCBitcoinPaymentRequestMimeType] ||
+                            [mime isEqual:BTCOpenAssetsPaymentRequestMimeType];
+    BOOL isPaymentMethodRequest = [mime isEqual:BTCOpenAssetsPaymentMethodRequestMimeType];
+
+    if (!isPaymentRequest && !isPaymentMethodRequest) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
+        return nil;
+    }
+    if (data.length > [self maxDataLength]) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestTooBig userInfo:@{}];
+        return nil;
+    }
+    if (isPaymentRequest) {
+        BTCPaymentRequest* pr = [[BTCPaymentRequest alloc] initWithData:data];
+        if (!pr) {
+            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
+            return nil;
+        }
+        return pr;
+    } else if (isPaymentMethodRequest) {
+        BTCPaymentMethodRequest* pmr = [[BTCPaymentMethodRequest alloc] initWithData:data];
+        if (!pmr) {
+            if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
+            return nil;
+        }
+        return pmr;
+    }
+    return nil;
+
+}
+
 - (NSURLRequest*) requestForPaymentRequestWithURL:(NSURL*)paymentRequestURL {
     return [self requestForPaymentRequestWithURL:paymentRequestURL timeout:10];
 }
@@ -115,7 +192,9 @@
 
 - (BTCPaymentRequest*) paymentRequestFromData:(NSData*)data response:(NSURLResponse*)response error:(NSError**)errorOut {
 
-    if (![self.paymentRequestMediaTypes containsObject:response.MIMEType.lowercaseString]) {
+    NSArray* mimes = self.paymentRequestMediaTypes;
+    NSString* mime = response.MIMEType.lowercaseString;
+    if (![mimes containsObject:mime]) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
         return nil;
     }
@@ -125,6 +204,16 @@
     }
     BTCPaymentRequest* pr = [[BTCPaymentRequest alloc] initWithData:data];
     if (!pr) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
+        return nil;
+    }
+    if (pr.version == BTCPaymentRequestVersion1 && ![self.assetTypes containsObject:BTCAssetTypeBitcoin]) {
+        // Client did not want bitcoin, but received bitcoin.
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
+        return nil;
+    }
+    if (pr.version == BTCPaymentRequestVersionOpenAssets1 && ![self.assetTypes containsObject:BTCAssetTypeOpenAssets]) {
+        // Client did not want open assets, but received open assets.
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorPaymentRequestInvalidResponse userInfo:@{}];
         return nil;
     }

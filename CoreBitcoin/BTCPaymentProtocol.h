@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BTCPaymentRequest.h"
+#import "BTCPaymentMethodRequest.h"
 
 // Interface to BIP70 payment protocol.
 // Spec: https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki
@@ -11,10 +12,6 @@
 // * BTCPaymentDetails object that represents "PaymentDetails" as described in BIP70.
 // * BTCPayment object that represents "Payment" as described in BIP70.
 // * BTCPaymentACK object that represents "PaymentACK" as described in BIP70.
-
-@class BTCPayment;
-@class BTCPaymentACK;
-@class BTCPaymentRequest;
 
 @interface BTCPaymentProtocol : NSObject
 
@@ -30,6 +27,11 @@
 
 // Convenience API
 
+// Loads a BTCPaymentRequest object or BTCPaymentMethodRequest from a given URL.
+// May return either PaymentMethodRequest or PaymentRequest, depending on the response from the server.
+// This method ignores `assetTypes` and allows both bitcoin and openassets types.
+- (void) loadPaymentMethodRequestFromURL:(nonnull NSURL*)paymentMethodRequestURL completionHandler:(nonnull void(^)(BTCPaymentMethodRequest* __nullable pmr, BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler;
+
 // Loads a BTCPaymentRequest object from a given URL.
 - (void) loadPaymentRequestFromURL:(nonnull NSURL*)paymentRequestURL completionHandler:(nonnull void(^)(BTCPaymentRequest* __nullable pr, NSError* __nullable error))completionHandler;
 
@@ -41,8 +43,12 @@
 // Low-level API
 // (use these if you have your own connection queue).
 
-- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL; // default timeout is 10 sec
-- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)paymentRequestURL timeout:(NSTimeInterval)timeout;
+- (nullable NSURLRequest*) requestForPaymentMethodRequestWithURL:(nonnull NSURL*)url; // default timeout is 10 sec
+- (nullable NSURLRequest*) requestForPaymentMethodRequestWithURL:(nonnull NSURL*)url timeout:(NSTimeInterval)timeout;
+- (nullable id) polymorphicPaymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
+
+- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)url; // default timeout is 10 sec
+- (nullable NSURLRequest*) requestForPaymentRequestWithURL:(nonnull NSURL*)url timeout:(NSTimeInterval)timeout;
 - (nullable BTCPaymentRequest*) paymentRequestFromData:(nonnull NSData*)data response:(nonnull NSURLResponse*)response error:(NSError* __nullable * __nullable)errorOut;
 
 - (nullable NSURLRequest*) requestForPayment:(nonnull BTCPayment*)payment url:(nonnull NSURL*)paymentURL; // default timeout is 10 sec

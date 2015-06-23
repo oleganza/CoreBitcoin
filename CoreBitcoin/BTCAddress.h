@@ -15,6 +15,7 @@
 //   BTCScriptHashAddressTestnet.
 //
 @class BTCKey;
+@class BTCNetwork;
 @interface BTCAddress : NSObject
 
 /*!
@@ -50,6 +51,11 @@
  * PrivateKeyAddress returns appropriate PublicKeyAddress.
  */
 @property(nonatomic, readonly, nonnull) BTCAddress* publicAddress;
+
+/*!
+ * Returns mainnet or testnet3 instance.
+ */
+@property(nonatomic, readonly, nonnull) BTCNetwork* network;
 
 /*!
  * Returns YES if this address is intended for testnet.

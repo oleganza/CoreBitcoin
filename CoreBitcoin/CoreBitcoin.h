@@ -3,6 +3,7 @@
 #import <CoreBitcoin/BTC256.h>
 #import <CoreBitcoin/BTCAddress.h>
 #import <CoreBitcoin/BTCAssetID.h>
+#import <CoreBitcoin/BTCAssetType.h>
 #import <CoreBitcoin/BTCAssetAddress.h>
 #import <CoreBitcoin/BTCBase58.h>
 #import <CoreBitcoin/BTCBigNumber.h>

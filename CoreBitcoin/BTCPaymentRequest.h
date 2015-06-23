@@ -47,6 +47,15 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 @class BTCPaymentDetails;
 @class BTCTransaction;
 
+NSArray* __nullable BTCParseCertificatesFromPaymentRequestPKIData(NSData* __nullable pkiData);
+
+BOOL BTCPaymentRequestVerifySignature(NSString* __nullable pkiType,
+                                             NSData* __nullable dataToVerify,
+                                             NSArray* __nullable certificates,
+                                             NSData* __nullable signature,
+                                             BTCPaymentRequestStatus* __nullable statusOut,
+                                             NSString* __autoreleasing __nullable *  __nullable signerOut);
+
 // Payment requests are split into two messages to support future extensibility.
 // The bulk of the information is contained in the PaymentDetails message.
 // It is wrapped inside a PaymentRequest message, which contains meta-information
@@ -90,6 +99,10 @@ typedef NS_ENUM(NSInteger, BTCPaymentRequestStatus) {
 // This list is extracted from raw `pkiData`.
 // If set, certificates are cerialized in X509Certificates object and set to pkiData.
 @property(nonatomic, readonly, nonnull) NSArray* certificates;
+
+// A date against which the payment request is being validated.
+// If nil, system date at the moment of validation is used.
+@property(nonatomic, nullable) NSDate* currentDate;
 
 // Returns YES if payment request is correctly signed by a trusted certificate if needed
 // and expiration date is valid.
