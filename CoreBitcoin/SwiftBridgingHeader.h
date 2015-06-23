@@ -7,6 +7,7 @@
 //
 
 #import "BTCBlockchainInfo.h"
+#import "BTC256.h"
 #import "BTCAddress.h"
 #import "BTCAssetAddress.h"
 #import "BTCAssetID.h"
