@@ -4,7 +4,6 @@
 //
 
 #import "CoreBitcoin.h"
-#import "BTC256.h"
 #import "NSData+BTCData.h"
 #import "NS+BTCBase58.h"
 
