@@ -10,6 +10,40 @@ import Cocoa
 import XCTest
 
 class BTCFancyEncryptedMessageTests: XCTestCase {
+    
+    func testMessages() {
+        let key = BTCKey(privateKey: BTCSHA256("some key".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)))
+        
+        let originalString = "Hello!"
+        
+        let msg = BTCFancyEncryptedMessage(data: originalString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false))
+        msg.difficultyTarget = 0x00FFFFFF
+        
+        println(NSString(format: "difficulty: %@ (%x)", self.binaryString32(msg.difficultyTarget), msg.difficultyTarget))
+        
+        let encryptedMsg = msg.encryptedDataWithKey(key, seed: BTCDataFromHex("deadbeef"))
+        
+        XCTAssertEqual(msg.difficultyTarget, 0x00FFFFFF, "check the difficulty target")
+        
+        println(NSString(format: "encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData(BTCHash256(encryptedMsg).subdataWithRange(NSMakeRange(0, 8)))))
+        
+        let receivedMsg = BTCFancyEncryptedMessage(encryptedData: encryptedMsg)
+        
+        XCTAssertNotNil(receivedMsg, "pow and format are correct")
+        
+        var error: NSError?
+        let decryptedData = receivedMsg.decryptedDataWithKey(key, error: &error)
+        
+        XCTAssertNotNil(decryptedData, "should decrypt correctly")
+        
+        let str = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
+        
+        XCTAssertNotNil(str, "should decode a UTF-8 string")
+        
+        XCTAssertEqual(str!, originalString, "should decrypt the original string")
+        
+    }
+    
     func testProofOfWork() {
         XCTAssertEqual(BTCFancyEncryptedMessage.targetForCompactTarget(0), 0, "0x00 -> 0")
         XCTAssertEqual(BTCFancyEncryptedMessage.targetForCompactTarget(0xFF), 0xFFFFFFFF, "0x00 -> 0")
@@ -99,6 +133,5 @@ class BTCFancyEncryptedMessageTests: XCTestCase {
             Int(((eent >> 1) & 1)),
             Int(((eent >> 0) & 1)))
     }
+    
 }
-
-
