@@ -16,7 +16,7 @@ Projects using CoreBitcoin
 - [bitWallet](https://itunes.apple.com/us/app/bitwallet-bitcoin-wallet/id777634714)
 - [Yallet](https://www.yallet.com)
 - [BitStore](http://bitstoreapp.com)
-
+- [ArcBit](http://arcbit.io)
 
 Features
 --------
