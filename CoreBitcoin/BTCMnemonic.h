@@ -62,6 +62,7 @@ typedef NS_ENUM(int8_t, BTCMnemonicWordListType) {
 // Clears all sensitive information from memory.
 - (void) clear;
 
+// Check if the word list conatins a specific word
 + (BOOL) containsWord:(NSString*)word;
 
 @end

@@ -288,9 +288,6 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     _seed = nil;
 }
 
-
-#pragma mark - Helpers
-
 + (BOOL) containsWord:(NSString*)word 
 {
     return [BTCMnemonic.englishWordList containsObject:word];
