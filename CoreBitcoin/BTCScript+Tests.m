@@ -345,10 +345,10 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
 
 + (void) testValidBitcoinQTScripts
 {
-//    // e177c42f05a659138e28087326b687504d123c5834e21a49f306a24eabd2b72f
-//    NSLog(@"crediting tx: %@", BTCHexFromData(BuildCreditingTransaction([BTCScript new]).transactionHash));
-//    // 11d60a2babf8277968063fe8cc591bb92fc2aaf2a3e1d3c353434339d636d732
-//    NSLog(@"spending tx:  %@", BTCHexFromData(BuildSpendingTransaction([BTCScript new], BuildCreditingTransaction([BTCScript new])).transactionHash));
+//    // 7f33a2f5ace097f071010d5105e7fd01f22c83d8d5daa741a41f2a630a2af23b
+//    NSLog(@"crediting tx: %@", BuildCreditingTransaction([BTCScript new]).transactionID);
+//    // add55eb99bb1f653ab822ea4177cb0f9673bcc5c2c4c729894ab0c626c8fa1e1
+//    NSLog(@"spending tx:  %@", BuildSpendingTransaction([BTCScript new], BuildCreditingTransaction([BTCScript new])).transactionID);
 
     for (NSArray* tuple in [self validBitcoinQTScripts])
     {
