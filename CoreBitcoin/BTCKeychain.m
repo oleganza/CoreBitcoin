@@ -21,6 +21,7 @@
 @property(nonatomic, readwrite) NSMutableData* chainCode;
 @property(nonatomic, readwrite) NSMutableData* extendedPublicKeyData;
 @property(nonatomic, readwrite) NSMutableData* extendedPrivateKeyData;
+@property(nonatomic, readwrite, nullable) BTCKeychain* parent;
 @property(nonatomic, readwrite) NSData* identifier;
 @property(nonatomic, readwrite) uint32_t fingerprint;
 @property(nonatomic, readwrite) uint32_t parentFingerprint;
@@ -227,10 +228,11 @@
     
     version = OSSwapHostToBigInt32(version);
     [data appendBytes:&version length:sizeof(version)];
-    
-    [data appendBytes:&_depth length:1];
-    
-    uint32_t parentfp = OSSwapHostToBigInt32(_parentFingerprint);
+	
+	uint8_t depth = self.depth;
+    [data appendBytes:&depth length:1];
+	
+    uint32_t parentfp = OSSwapHostToBigInt32(self.parentFingerprint);
     [data appendBytes:&parentfp length:sizeof(parentfp)];
     
     uint32_t childindex = OSSwapHostToBigInt32(_hardened ? (0x80000000 | _index) : _index);
@@ -262,6 +264,65 @@
         _fingerprint = OSSwapBigToHostInt32(words[0]);
     }
     return _fingerprint;
+}
+
+- (uint32_t) parentFingerprint
+{
+	CHECK_IF_CLEARED;
+	
+	if (_parentFingerprint == 0)
+	{
+		if (_parent == NULL)
+		{
+			_parentFingerprint = 0;
+		}
+		else
+		{
+			_parentFingerprint = self.parent.fingerprint;
+		}
+	}
+	
+	return _parentFingerprint;
+}
+
+- (uint8_t) depth
+{
+	CHECK_IF_CLEARED;
+	
+	if (_depth == 0)
+	{
+		if (_parent == NULL)
+		{
+			_depth = 0;
+		}
+		else
+		{
+			_depth = self.parent.depth + 1;
+		}
+	}
+	
+	return _depth;
+}
+
+
+- (NSString*) ownPathComponent {
+	
+	return [NSString stringWithFormat:@"%d%s", self.index, self.isHardened ? "'" : ""];
+}
+
+- (NSArray*) pathComponents {
+	
+	if (_parent == NULL)
+	{
+		return [NSArray arrayWithObject:@"m"];
+	}
+	
+	return [self.parent.pathComponents arrayByAddingObject:[self ownPathComponent]];
+}
+
+- (NSString*) path {
+	
+	return [[self pathComponents] componentsJoinedByString:@"/"];
 }
 
 - (NSData*) publicKey
@@ -374,9 +435,8 @@
         BTCDataClear(pointData);
         [point clear];
     }
-    
-    derivedKeychain.depth = _depth + 1;
-    derivedKeychain.parentFingerprint = self.fingerprint;
+	
+	derivedKeychain.parent = self;
     derivedKeychain.index = index;
     derivedKeychain.hardened = hardened;
     
@@ -461,9 +521,8 @@
     
     keychain.chainCode = [self.chainCode mutableCopy];
     keychain.publicKey = [self.publicKey mutableCopy];
-    keychain.parentFingerprint = self.parentFingerprint;
-    keychain.index = self.index;
-    keychain.depth = self.depth;
+	keychain.parent = self.parent;
+	keychain.index = self.index;
     keychain.hardened = self.hardened;
     
     return keychain;
@@ -634,9 +693,8 @@
     keychain.chainCode = [self.chainCode mutableCopy];
     keychain.privateKey = [self.privateKey mutableCopy];
     if (!_privateKey) keychain.publicKey = [self.publicKey mutableCopy];
-    keychain.parentFingerprint = self.parentFingerprint;
+	keychain.parent = self.parent;
     keychain.index = self.index;
-    keychain.depth = self.depth;
     keychain.hardened = self.hardened;
     
     return keychain;
@@ -681,10 +739,10 @@
 - (NSString*) debugDescription
 {
     return [NSString stringWithFormat:@"<%@:0x%p depth:%d index:%x%@ parentFingerprint:%x fingerprint:%x privkey:%@ pubkey:%@ chainCode:%@>", [self class], self,
-            (int)_depth,
+            (int)self.depth,
             _index,
             _hardened ? @" hardened:YES" : @"",
-            _parentFingerprint,
+            self.parentFingerprint,
             self.fingerprint,
             [BTCHexFromData(self.privateKey) substringToIndex:8],
             [BTCHexFromData(self.publicKey) substringToIndex:8],

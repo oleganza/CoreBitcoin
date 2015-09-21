@@ -70,6 +70,9 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPrivateKeyData DEPRECATED_ATTRIBUTE;
 
+// A reference to the parent keychain from which this keychain was derived.
+@property(nonatomic, readonly, nullable) BTCKeychain* parent;
+
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
 @property(nonatomic, readonly) NSData* identifier;
 
@@ -130,6 +133,13 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // "m/b/c" (alphabetical characters instead of numerical indexes)
 // "m/1.2^3" (contains illegal characters)
 - (BTCKeychain*) derivedKeychainWithPath:(NSString*)path;
+
+// return the path components of the path for deriving this keychain from it's master node.
+- (NSArray*) pathComponents;
+
+// return the path for deriving this keychain from it's master node.
+// Equivalent to `[[self pathComponents] componentsJoinedByString:@"/"]`
+- (NSString*) path;
 
 // Returns a derived key for a given BIP32 path.
 // Equivalent to `[keychain derivedKeychainWithPath:@"..."].key`
