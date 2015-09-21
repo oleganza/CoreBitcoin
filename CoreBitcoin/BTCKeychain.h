@@ -89,6 +89,13 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // Depth. Master keychain has depth = 0.
 @property(nonatomic, readonly) uint8_t depth;
 
+// return the path components of the path for deriving this keychain from it's master node.
+@property(nonatomic, readonly, nonnull) NSArray* pathComponents;
+
+// return the path for deriving this keychain from it's master node.
+// Equivalent to `[[self pathComponents] componentsJoinedByString:@"/"]`
+@property(nonatomic, readonly, nonnull) NSString* path;
+
 // Returns YES if the keychain can derive private keys.
 @property(nonatomic, readonly) BOOL isPrivate;
 
@@ -133,13 +140,6 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // "m/b/c" (alphabetical characters instead of numerical indexes)
 // "m/1.2^3" (contains illegal characters)
 - (BTCKeychain*) derivedKeychainWithPath:(NSString*)path;
-
-// return the path components of the path for deriving this keychain from it's master node.
-- (NSArray*) pathComponents;
-
-// return the path for deriving this keychain from it's master node.
-// Equivalent to `[[self pathComponents] componentsJoinedByString:@"/"]`
-- (NSString*) path;
 
 // Returns a derived key for a given BIP32 path.
 // Equivalent to `[keychain derivedKeychainWithPath:@"..."].key`
