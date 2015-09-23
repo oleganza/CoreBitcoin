@@ -28,9 +28,16 @@ class BTCScriptTests: XCTestCase {
         for i in 0 ..< uint32(tx.inputs.count) {
             let sm = BTCScriptMachine(transaction: tx, inputIndex: i)
             var error: NSError?
-            let r = sm.verifyWithOutputScript(outputScript, error: &error)
+            let r: Bool
+            do {
+                try sm.verifyWithOutputScript(outputScript)
+                r = true
+            } catch let error1 as NSError {
+                error = error1
+                r = false
+            }
             if !r {
-                println("BTCScriptMachine error: \(error)")
+                print("BTCScriptMachine error: \(error)")
             }
             XCTAssertTrue(r, "should verify first input")
         }
@@ -69,7 +76,7 @@ class BTCScriptTests: XCTestCase {
         // 3. Sign the redeeming transaction.
         
         let hashtype = BTCSignatureHashType.SIGHASH_ALL
-        let hash = dstTx.signatureHashForScript(srcTxOut.script, inputIndex: 0, hashType: hashtype, error: nil)
+        let hash = try? dstTx.signatureHashForScript(srcTxOut.script, inputIndex: 0, hashType: hashtype)
         
         XCTAssertNotNil(hash, "sanity check")
         
@@ -87,7 +94,13 @@ class BTCScriptTests: XCTestCase {
             // Verify the transaction.
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
-            let r = sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript, error: nil)
+            let r: Bool
+            do {
+                try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
+                r = true
+            } catch _ {
+                r = false
+            }
             XCTAssertTrue(r, "should verify first input")
         }
         
@@ -119,9 +132,16 @@ class BTCScriptTests: XCTestCase {
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
             var error: NSError?
-            let r = sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript, error: &error)
+            let r: Bool
+            do {
+                try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
+                r = true
+            } catch let error1 as NSError {
+                error = error1
+                r = false
+            }
             if !r {
-                println("BTCScriptMachine error: \(error)")
+                print("BTCScriptMachine error: \(error)")
             }
             XCTAssertTrue(r, "should verify first input")
         }
@@ -166,8 +186,15 @@ class BTCScriptTests: XCTestCase {
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
             var error: NSError?
-            let r = sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript, error: &error)
-            println("BTCScriptMachine error: \(error)")
+            let r: Bool
+            do {
+                try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
+                r = true
+            } catch let error1 as NSError {
+                error = error1
+                r = false
+            }
+            print("BTCScriptMachine error: \(error)")
             XCTAssertFalse(r, "should not verify first output")
             
         }
@@ -210,7 +237,7 @@ class BTCScriptTests: XCTestCase {
         }
         
         let base58address = script.standardAddress.string
-        println("TEST: address: \(base58address)")
+        print("TEST: address: \(base58address)")
         
         XCTAssertEqual(base58address, "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG", "address should be correctly decoded")
         
@@ -224,8 +251,8 @@ class BTCScriptTests: XCTestCase {
             let addressB58 = key.compressedPublicKeyAddress.string
             let privKeyB58 = key.privateKeyAddress.string
             
-            println("Address1: \(addressB58)")
-            println("PrivKey1: \(privKeyB58)")
+            print("Address1: \(addressB58)")
+            print("PrivKey1: \(privKeyB58)")
             
             //get address from private key
             
@@ -244,8 +271,8 @@ class BTCScriptTests: XCTestCase {
             let pubkeyAddress = BTCPublicKeyAddress(data: BTCHash160(key2.publicKey))
             let privkeyAddress = BTCPrivateKeyAddress(data: key2.privateKey)
             
-            println("Address2: \(pubkeyAddress?.string)")
-            println("PrivKey2: \(privkeyAddress?.string)")
+            print("Address2: \(pubkeyAddress?.string)")
+            print("PrivKey2: \(privkeyAddress?.string)")
             
             let address2 = key2.compressedPublicKeyAddress.string
             XCTAssertEqual(addressB58, address2, "addresses must be equal")
@@ -267,12 +294,19 @@ class BTCScriptTests: XCTestCase {
         scriptMachine.inputScript = script
         
         var error: NSError?
-        let result = scriptMachine.verifyWithOutputScript(BTCScript(string: "OP_NOP"), error: &error)
+        let result: Bool
+        do {
+            try scriptMachine.verifyWithOutputScript(BTCScript(string: "OP_NOP"))
+            result = true
+        } catch let error1 as NSError {
+            error = error1
+            result = false
+        }
         if !result {
-            println("error: \(error)")
+            print("error: \(error)")
         }
         else {
-            println("script passed: \(script)")
+            print("script passed: \(script)")
         }
         
     }
@@ -303,13 +337,24 @@ class BTCScriptTests: XCTestCase {
             scriptMachine.inputScript = inputScript
             
             var error: NSError?
-            let result = scriptMachine.verifyWithOutputScript(outputScript, error: &error)
+            let result: Bool
+            do {
+                try scriptMachine.verifyWithOutputScript(outputScript)
+                result = true
+            } catch let error1 as NSError {
+                error = error1
+                result = false
+            }
             
             if !result {
-                println("BTCScript validation error: \(error) (\(comment))")
+                print("BTCScript validation error: \(error) (\(comment))")
                 
-                // for breakpoint
-                scriptMachine.verifyWithOutputScript(outputScript, error: &error)
+                do {
+                    // for breakpoint
+                    try scriptMachine.verifyWithOutputScript(outputScript)
+                } catch let error1 as NSError {
+                    error = error1
+                }
                 XCTAssert(false, comment)
             }
         }
@@ -337,10 +382,21 @@ class BTCScriptTests: XCTestCase {
             scriptMachine.inputScript = inputScript
             
             var error: NSError?
-            let result = scriptMachine.verifyWithOutputScript(outputScript, error: &error)
+            let result: Bool
+            do {
+                try scriptMachine.verifyWithOutputScript(outputScript)
+                result = true
+            } catch let error1 as NSError {
+                error = error1
+                result = false
+            }
             if result {
-                // for breakpoint.
-                scriptMachine.verifyWithOutputScript(outputScript, error: &error)
+                do {
+                    // for breakpoint.
+                    try scriptMachine.verifyWithOutputScript(outputScript)
+                } catch let error1 as NSError {
+                    error = error1
+                }
                 XCTAssert(false, comment)
             }
         }

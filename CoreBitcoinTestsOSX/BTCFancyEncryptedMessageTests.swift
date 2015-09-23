@@ -19,20 +19,26 @@ class BTCFancyEncryptedMessageTests: XCTestCase {
         let msg = BTCFancyEncryptedMessage(data: originalString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false))
         msg.difficultyTarget = 0x00FFFFFF
         
-        println(NSString(format: "difficulty: %@ (%x)", self.binaryString32(msg.difficultyTarget), msg.difficultyTarget))
+        print(NSString(format: "difficulty: %@ (%x)", self.binaryString32(msg.difficultyTarget), msg.difficultyTarget))
         
         let encryptedMsg = msg.encryptedDataWithKey(key, seed: BTCDataFromHex("deadbeef"))
         
         XCTAssertEqual(msg.difficultyTarget, 0x00FFFFFF, "check the difficulty target")
         
-        println(NSString(format: "encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData(BTCHash256(encryptedMsg).subdataWithRange(NSMakeRange(0, 8)))))
+        print(NSString(format: "encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData(BTCHash256(encryptedMsg).subdataWithRange(NSMakeRange(0, 8)))))
         
         let receivedMsg = BTCFancyEncryptedMessage(encryptedData: encryptedMsg)
         
         XCTAssertNotNil(receivedMsg, "pow and format are correct")
         
         var error: NSError?
-        let decryptedData = receivedMsg.decryptedDataWithKey(key, error: &error)
+        let decryptedData: NSData!
+        do {
+            decryptedData = try receivedMsg.decryptedDataWithKey(key)
+        } catch let error1 as NSError {
+            error = error1
+            decryptedData = nil
+        }
         
         XCTAssertNotNil(decryptedData, "should decrypt correctly")
         

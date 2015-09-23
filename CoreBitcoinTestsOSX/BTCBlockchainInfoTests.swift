@@ -25,7 +25,13 @@ class BTCBlockchainInfoTests: XCTestCase {
         
         var error: NSError?
         
-        let outputs = BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr")!], error: &error)
+        let outputs: [AnyObject]!
+        do {
+            outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr")!])
+        } catch let error1 as NSError {
+            error = error1
+            outputs = nil
+        }
         
         XCTAssert(outputs.count == 0, "should return an empty array")
         XCTAssert(error == nil, "should have no error")
@@ -36,7 +42,13 @@ class BTCBlockchainInfoTests: XCTestCase {
         
         var error: NSError?
         
-        let outputs = BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")!], error: &error)
+        let outputs: [AnyObject]!
+        do {
+            outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")!])
+        } catch let error1 as NSError {
+            error = error1
+            outputs = nil
+        }
         
         XCTAssert(outputs.count > 0, "should return a non-empty array")
         XCTAssert((outputs.first as? BTCTransactionOutput) != nil, "should contain BTCTransactionOutput objects")

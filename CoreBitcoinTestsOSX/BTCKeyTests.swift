@@ -86,14 +86,19 @@ class BTCKeyTests: XCTestCase {
         
         let errors = data.reduce(Array<NSError>()) { acc, datum in
             var error: NSError?
-            if !BTCKey.isCanonicalSignatureWithHashType(datum, verifyLowerS: true, error: &error) {
+            do {
+                try BTCKey.isCanonicalSignatureWithHashType(datum, verifyLowerS: true)
+            } catch let error1 as NSError {
+                error = error1
                 return acc + [error!]
+            } catch {
+                fatalError()
             }
             return acc
         }
         
         for error in errors {
-            println("Error: \(error)")
+            print("Error: \(error)")
         }
         
         XCTAssertEqual(errors.count, 0, "Should have no errors")
@@ -109,7 +114,7 @@ class BTCKeyTests: XCTestCase {
             
             // Note: this test may fail, but very rarely.
             let subkey = k.privateKey.subdataWithRange(NSRange(location: 0, length: 4))
-            XCTAssertFalse(contains(arr, subkey), "Should not repeat")
+            XCTAssertFalse(arr.contains(subkey), "Should not repeat")
             XCTAssertEqual(k.privateKey.length, 32, "Should be 32 bytes")
             
             arr.append(subkey)
@@ -168,7 +173,7 @@ class BTCKeyTests: XCTestCase {
         if true {
             let digest = messageData.SHA256()
             let sig = signature.mutableCopy() as! NSMutableData
-            var buf = unsafeBitCast(sig.mutableBytes, UnsafeMutablePointer<CUnsignedChar>.self)
+            let buf = unsafeBitCast(sig.mutableBytes, UnsafeMutablePointer<CUnsignedChar>.self)
             for i in 0 ..< signature.length {
                 for j in 0 ..< 8 {
                     let mask = CUnsignedChar(1 << j)

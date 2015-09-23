@@ -78,9 +78,15 @@ class BTCEncryptedBackupTests: XCTestCase {
         ]
         
         var error: NSError? = nil
-        let plaintext = NSJSONSerialization.dataWithJSONObject(backupJSON, options: NSJSONWritingOptions(0), error: &error)
+        let plaintext: NSData?
+        do {
+            plaintext = try NSJSONSerialization.dataWithJSONObject(backupJSON, options: NSJSONWritingOptions(rawValue: 0))
+        } catch var error1 as NSError {
+            error = error1
+            plaintext = nil
+        }
         let toPrint = NSString(data: plaintext!, encoding: NSUTF8StringEncoding)
-        println("plaintext = \(toPrint)")
+        print("plaintext = \(toPrint)")
         XCTAssertNotNil(plaintext, "Must encode to JSON")
         
         let masterKey = BTCSHA256("Master Key".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false))

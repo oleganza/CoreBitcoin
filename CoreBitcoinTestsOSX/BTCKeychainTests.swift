@@ -63,7 +63,7 @@ class BTCKeychainTests: XCTestCase {
         
         let masterChain = BTCKeychain(seed: seed)
         
-        XCTAssertEqual(masterChain.key().compressedPublicKeyAddress.string, "15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma", "")
+        XCTAssertEqual(masterChain.key.compressedPublicKeyAddress.string, "15mKKb2eos1hWa6tisdPwwDC1a5J1y9nma", "")
         
 //        println("identifier: \(masterChain.identifier) fingerprint: \(masterChain.fingerprint)")
         XCTAssertEqual(masterChain.identifier, BTCDataFromHex("3442193e1bb70916e914552172cd4e2dbc9df811"), "")
@@ -218,7 +218,7 @@ class BTCKeychainTests: XCTestCase {
         
     }
     
-    func verifyDeserialization(#keychain: BTCKeychain) { //Not prefixed with `test` because we don't want Xcode to automatically run this
+    func verifyDeserialization(keychain keychain: BTCKeychain) { //Not prefixed with `test` because we don't want Xcode to automatically run this
         
         let pubchain = BTCKeychain(extendedKey: keychain.extendedPublicKey)
         let prvchain = BTCKeychain(extendedKey: keychain.extendedPrivateKey)

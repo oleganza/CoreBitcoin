@@ -26,7 +26,7 @@ class BTCTransactionTests: XCTestCase {
         XCTAssertEqual(BTCTransaction().estimatedFeeWithRate(0), 0, "zero fee rate should always yield zero fee")
         
         let tx = BTCTransaction()
-        for i in 0 ..< 10 {
+        for _ in 0 ..< 10 {
             let txin = BTCTransactionInput()
             txin.previousIndex = 0
             txin.signatureScript = BTCScript()
@@ -40,7 +40,7 @@ class BTCTransactionTests: XCTestCase {
         XCTAssertEqual(tx.estimatedFeeWithRate(0), 0, "Must have zero fee for zero rate.")
     }
     
-    func transactionSpendingFromPrivateKey(privateKey: NSData, destinationAddress: BTCPublicKeyAddress, changeAddress: BTCPublicKeyAddress, amount: BTCAmount, fee: BTCAmount, api: BTCAPI) -> (BTCTransaction?, NSError?) {
+    func transactionSpendingFromPrivateKey(privateKey: NSData, destinationAddress: BTCPublicKeyAddress, changeAddress: BTCPublicKeyAddress, amount: BTCAmount, fee: BTCAmount, api: BTCAPI) -> (BTCTransaction?, ErrorType?) {
         
         // 1. Get a private key, destination address, change address and amount
         // 2. Get unspent outputs for that key (using both compressed and non-compressed pubkey)
@@ -50,28 +50,34 @@ class BTCTransactionTests: XCTestCase {
         
         let key = BTCKey(privateKey: privateKey)
         
-        var errorOut: NSError?
+        var errorOut: ErrorType?
         
-        var error: NSError?
-        var utxos: [BTCTransactionOutput]?
+        
+        var getUTXOs: [BTCTransactionOutput]?
         
         switch api {
         case .Blockchain:
             let bci = BTCBlockchainInfo()
-            utxos = bci.unspentOutputsWithAddresses([key.compressedPublicKeyAddress], error: &error) as! [BTCTransactionOutput]?
+            do {
+                getUTXOs = try bci.unspentOutputsWithAddresses([key.compressedPublicKeyAddress]) as? [BTCTransactionOutput]
+            }
+            catch {
+                errorOut = error
+            }
         case .Chain:
             let chain = BTCChainCom(token: "Free API Token form chain.com")
-            utxos = chain.unspentOutputsWithAddress(key.compressedPublicKeyAddress, error: &error) as! [BTCTransactionOutput]?
+            do {
+                getUTXOs = try chain.unspentOutputsWithAddress(key.compressedPublicKeyAddress) as? [BTCTransactionOutput]
+            }
+            catch {
+                errorOut = error
+            }
         }
         
-        
-        println("UTXOs for \(key.compressedPublicKeyAddress): \(utxos) \(error)")
+        print("UTXOs for \(key.compressedPublicKeyAddress): \(getUTXOs) \(errorOut)")
         
         // Can't download unspent outputs - return with error.
-        if utxos == nil { //Good place for a guard in Swift 2
-            errorOut = error
-            return (nil, errorOut)
-        }
+        guard var utxos = getUTXOs else { return (nil, errorOut) }
         
         // Find enough outputs to spend the total amount.
         let totalAmount = amount + fee
@@ -102,19 +108,19 @@ class BTCTransactionTests: XCTestCase {
         
         
         // Sort utxo in order of
-        utxos?.sort { $0.value() < $1.value() }
+        utxos.sortInPlace { $0.value < $1.value }
         
-        var txouts: [BTCTransactionOutput]!
+        var getTxouts: [BTCTransactionOutput]?
         
-        for txout in utxos! {
-            if txout.value() > (totalAmount + dustThreshold) && txout.script.isPayToPublicKeyHashScript {
-                txouts = [txout]
+        for txout in utxos {
+            if txout.value > (totalAmount + dustThreshold) && txout.script.isPayToPublicKeyHashScript {
+                getTxouts = [txout]
                 break
             }
         }
         
         // We support spending just one output for now.
-        if (txouts == nil) { return (nil, nil) } //Another good place for a guard
+        guard let txouts = getTxouts else { return (nil, nil) }
         
         // Create a new transaction
         let tx = BTCTransaction()
@@ -128,16 +134,16 @@ class BTCTransactionTests: XCTestCase {
             txin.previousIndex = txout.index
             tx.addInput(txin)
             
-            println("txhash: http://blockchain.info/rawtx/\(BTCHexFromData(txout.transactionHash))")
-            println("txhash: http://blockchain.info/rawtx/\(BTCHexFromData(BTCReversedData(txout.transactionHash))) (reversed)")
+            print("txhash: http://blockchain.info/rawtx/\(BTCHexFromData(txout.transactionHash))")
+            print("txhash: http://blockchain.info/rawtx/\(BTCHexFromData(BTCReversedData(txout.transactionHash))) (reversed)")
             
-            spentCoins += txout.value()
+            spentCoins += txout.value
         }
         
-        println(String(format: "Total satoshis to spend:       %lld", spentCoins))
-        println(String(format: "Total satoshis to destination: %lld", amount))
-        println(String(format: "Total satoshis to fee:         %lld", fee))
-        println(String(format: "Total satoshis to change:      %lld", spentCoins - (amount + fee)))
+        print(String(format: "Total satoshis to spend:       %lld", spentCoins))
+        print(String(format: "Total satoshis to destination: %lld", amount))
+        print(String(format: "Total satoshis to fee:         %lld", fee))
+        print(String(format: "Total satoshis to change:      %lld", spentCoins - (amount + fee)))
         
         // Add required outputs - payment and change
         let paymentOutput = BTCTransactionOutput(value: amount, address: destinationAddress)
@@ -160,17 +166,22 @@ class BTCTransactionTests: XCTestCase {
             
             let hashType = BTCSignatureHashType.SIGHASH_ALL
             
-            var err: NSError?
-            let hash = tx.signatureHashForScript(txout.script, inputIndex: UInt32(i), hashType: hashType, error: &errorOut)
+            
+            let getHash: NSData?
+            do {
+                getHash = try tx.signatureHashForScript(txout.script, inputIndex: UInt32(i), hashType: hashType)
+            } catch {
+                errorOut = error
+                getHash = nil
+            }
             
             let d2 = tx.data
             
             XCTAssertEqual(d1, d2, "Transaction must not change within signatureHashForScript!")
             
             // 134675e153a5df1b8e0e0f0c45db0822f8f681a2eb83a0f3492ea8f220d4d3e4
-            println(String(format: "Hash for input %d: \(BTCHexFromData(hash))", i))
-            if hash == nil { return (nil, err) } //Another good place for a guard
-            
+            guard let hash = getHash else { return (nil, errorOut) }
+            print(String(format: "Hash for input %d: \(BTCHexFromData(hash))", i))
             let signatureForScript = key.signatureForHash(hash, hashType: hashType)
             sigScript.appendData(signatureForScript)
             sigScript.appendData(key.publicKey)
@@ -186,11 +197,18 @@ class BTCTransactionTests: XCTestCase {
         do {
             let sm = BTCScriptMachine(transaction: tx, inputIndex: 0)
             var error: NSError?
-            let r = sm.verifyWithOutputScript((txouts.first as BTCTransactionOutput!).script.copy() as! BTCScript, error: &error)
-            println("Error: \(error)")
+            let r: Bool
+            do {
+                try sm.verifyWithOutputScript((txouts.first as BTCTransactionOutput!).script.copy() as! BTCScript)
+                r = true
+            } catch let error1 as NSError {
+                error = error1
+                r = false
+            }
+            print("Error: \(error)")
             XCTAssertTrue(r, "should verify first output")
             
-        } while false //this last while can be removed in Swift 2. Just using `do` for scoping, as Swift 2 does.
+        }
         
         // Transaction is signed now, return it.
         
@@ -204,11 +222,11 @@ class BTCTransactionTests: XCTestCase {
         gets(str)
         
         let privateKey = BTCDataWithHexCString(str)
-        println("Private key: \(privateKey)")
+        print("Private key: \(privateKey)")
         
         let key = BTCKey(privateKey: privateKey)
         
-        println("Address: \(key.compressedPublicKeyAddress)")
+        print("Address: \(key.compressedPublicKeyAddress)")
         
         XCTAssertEqual("1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo", key.compressedPublicKeyAddress.string, "WARNING: incorrect private key is supplied")
         
@@ -217,19 +235,19 @@ class BTCTransactionTests: XCTestCase {
         
         XCTAssertNotNil(transaction, "Can't make a transaction: \(error)")
         
-        println("transaction = \(transaction?.dictionary)")
-        println("transaction in hex:\n------------------\n\(BTCHexFromData(transaction?.data))\n------------------\n")
+        print("transaction = \(transaction?.dictionary)")
+        print("transaction in hex:\n------------------\n\(BTCHexFromData(transaction?.data))\n------------------\n")
         
-        println("Sending in 5 sec...")
+        print("Sending in 5 sec...")
         sleep(5)
-        println("Sending...")
+        print("Sending...")
         sleep(1)
         
         let req = BTCChainCom(token: "Free API Token form chain.com").requestForTransactionBroadcastWithData(transaction!.data)
-        let data = NSURLConnection.sendSynchronousRequest(req, returningResponse: nil, error: nil)
+        let data = try? NSURLConnection.sendSynchronousRequest(req, returningResponse: nil)
         
-        println("Broadcast result: data = \(data)")
-        println("string = \(NSString(data: data!, encoding: NSUTF8StringEncoding))")
+        print("Broadcast result: data = \(data)")
+        print("string = \(NSString(data: data!, encoding: NSUTF8StringEncoding))")
         
     }
     
