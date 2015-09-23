@@ -77,7 +77,7 @@ class BTCTransactionTests: XCTestCase {
         print("UTXOs for \(key.compressedPublicKeyAddress): \(getUTXOs) \(errorOut)")
         
         // Can't download unspent outputs - return with error.
-        guard var utxos = getUTXOs else { return (nil, errorOut) }
+        guard let utxos = getUTXOs?.sort ({ $0.value < $1.value }) else { return (nil, errorOut) }
         
         // Find enough outputs to spend the total amount.
         let totalAmount = amount + fee
@@ -106,9 +106,6 @@ class BTCTransactionTests: XCTestCase {
         // Scan with a minimum window increasing it if needed if no good enough change can be found.
         // Yet another option: finding combinations so the below-the-dust change can go to miners.
         
-        
-        // Sort utxo in order of
-        utxos.sortInPlace { $0.value < $1.value }
         
         var getTxouts: [BTCTransactionOutput]?
         
