@@ -307,8 +307,49 @@
     }
 }
 
+
+BTCTransaction* BuildCreditingTransaction(BTCScript* scriptPubKey) {
+    BTCTransaction* txCredit = [[BTCTransaction alloc] init];
+    txCredit.version = 1;
+    txCredit.lockTime = 0;
+    BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
+    txin.previousHash = BTCZero256();
+    txin.previousIndex = 0xffffffff;
+    txin.coinbaseData = [[[BTCScript new] appendOpcode:OP_0] appendOpcode:OP_0].data;
+    [txCredit addInput:txin];
+    BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
+    txout.script = scriptPubKey;
+    txout.value = 0;
+    [txCredit addOutput:txout];
+    return txCredit;
+}
+
+BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* txCredit) {
+    BTCTransaction* txSpend =[[BTCTransaction alloc] init];
+    txSpend.version = 1;
+    txSpend.lockTime = 0;
+    BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
+    txin.previousHash = txCredit.transactionHash;
+    txin.previousIndex = 0;
+    txin.signatureScript = scriptSig;
+    txin.sequence = 0xffffffff;
+    [txSpend addInput:txin];
+    BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
+    txout.script = [[BTCScript alloc] init];
+    txout.value = 0;
+    [txSpend addOutput:txout];
+    return txSpend;
+}
+
+
+
 + (void) testValidBitcoinQTScripts
 {
+//    // 7f33a2f5ace097f071010d5105e7fd01f22c83d8d5daa741a41f2a630a2af23b
+//    NSLog(@"crediting tx: %@", BuildCreditingTransaction([BTCScript new]).transactionID);
+//    // add55eb99bb1f653ab822ea4177cb0f9673bcc5c2c4c729894ab0c626c8fa1e1
+//    NSLog(@"spending tx:  %@", BuildSpendingTransaction([BTCScript new], BuildCreditingTransaction([BTCScript new])).transactionID);
+
     for (NSArray* tuple in [self validBitcoinQTScripts])
     {
         NSString* inputScriptString = tuple[0];
@@ -332,6 +373,8 @@
         NSAssert(outputScript, @"Output script must be well-formed");
         
         BTCScriptMachine* scriptMachine = [[BTCScriptMachine alloc] init];
+        scriptMachine.transaction = BuildSpendingTransaction(inputScript, BuildCreditingTransaction(outputScript));
+        scriptMachine.inputIndex = 0;
         scriptMachine.verificationFlags = BTCScriptVerificationStrictEncoding;
         scriptMachine.inputScript = inputScript;
         
@@ -366,6 +409,8 @@
         if (!outputScript) continue;
         
         BTCScriptMachine* scriptMachine = [[BTCScriptMachine alloc] init];
+        scriptMachine.transaction = BuildSpendingTransaction(inputScript, BuildCreditingTransaction(outputScript));
+        scriptMachine.inputIndex = 0;
         scriptMachine.verificationFlags = BTCScriptVerificationStrictEncoding;
         scriptMachine.inputScript = inputScript;
         
@@ -798,7 +843,21 @@
                               
                               @[@"0x4c 0x40 0x42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242",
                                 @"0x4d 0x4000 0x42424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242 EQUAL",
-                                @"Basic PUSHDATA1 signedness check"]
+                                @"Basic PUSHDATA1 signedness check"],
+
+                              @[@"0x47 0x304402200a5c6163f07b8d3b013c4d1d6dba25e780b39658d79ba37af7057a3b7f15ffa102201fd9b4eaa9943f734928b99a83592c2e7bf342ea2680f6a2bb705167966b742001",
+                                @"0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG",
+                                @"P2PK"],
+                              @[
+                               @"0x47 0x304402206e05a6fe23c59196ffe176c9ddc31e73a9885638f9d1328d47c0c703863b8876022076feb53811aa5b04e0e79f938eb19906cc5e67548bc555a8e8b8b0fc603d840c01 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508",
+                               @"DUP HASH160 0x14 0x1018853670f9f3b0582c5b9ee8ce93764ac32b93 EQUALVERIFY CHECKSIG",
+                               @"P2PKH"
+                               ],
+                              @[
+                               @"0x47 0x304402204710a85181663b32d25c70ec2bbd14adff5ddfff6cb50d09e155ef5f541fc86c0220056b0cc949be9386ecc5f6c2ac0493269031dbb185781db90171b54ac127790281",
+                               @"0x41 0x048282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f5150811f8a8098557dfe45e8256e830b60ace62d613ac2f7b17bed31b6eaff6e26caf CHECKSIG",
+                               @"P2PK anyonecanpay"
+                               ]
                               ];
 }
 
