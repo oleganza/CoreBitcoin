@@ -436,6 +436,7 @@
         [point clear];
     }
 	
+	derivedKeychain.network = _network;
 	derivedKeychain.parent = self;
     derivedKeychain.index = index;
     derivedKeychain.hardened = hardened;
