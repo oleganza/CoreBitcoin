@@ -654,31 +654,64 @@
 }
 
 
+
+
+- (NSData*) payToPublicKeyHashAddressData
+{
+	if ([self isPayToPublicKeyHashScript])
+	{
+		if (_chunks.count != 5) return nil;
+		
+		BTCScriptChunk* dataChunk = [self chunkAtIndex:2];
+		
+		if (!dataChunk.isOpcode && dataChunk.range.length == 21)
+		{
+			return dataChunk.pushdata;
+		}
+	}
+	return nil;
+}
+
+- (NSData*) PayToScriptHashAddressData
+{
+	if ([self isPayToScriptHashScript])
+	{
+		if (_chunks.count != 3) return nil;
+		
+		BTCScriptChunk* dataChunk = [self chunkAtIndex:1];
+		
+		if (!dataChunk.isOpcode && dataChunk.range.length == 21)
+		{
+			return dataChunk.pushdata;
+		}
+	}
+	return nil;
+}
+
 - (BTCAddress*) standardAddress
 {
-    if ([self isPayToPublicKeyHashScript])
-    {
-        if (_chunks.count != 5) return nil;
-        
-        BTCScriptChunk* dataChunk = [self chunkAtIndex:2];
-        
-        if (!dataChunk.isOpcode && dataChunk.range.length == 21)
-        {
-            return [BTCPublicKeyAddress addressWithData:dataChunk.pushdata];
-        }
-    }
-    else if ([self isPayToScriptHashScript])
-    {
-        if (_chunks.count != 3) return nil;
-        
-        BTCScriptChunk* dataChunk = [self chunkAtIndex:1];
-        
-        if (!dataChunk.isOpcode && dataChunk.range.length == 21)
-        {
-            return [BTCScriptHashAddress addressWithData:dataChunk.pushdata];
-        }
-    }
-    return nil;
+	if ([self isPayToPublicKeyHashScript])
+	{
+		return [BTCPublicKeyAddress addressWithData:self.payToPublicKeyHashAddressData];
+	}
+	else if ([self isPayToScriptHashScript])
+	{
+		return [BTCScriptHashAddress addressWithData:self.PayToScriptHashAddressData];
+	}
+	return nil;
+}
+
+- (BTCAddress*) standardAddressTestnet
+{
+	if ([self isPayToPublicKeyHashScript])
+	{
+		return [BTCPublicKeyAddressTestnet addressWithData:self.payToPublicKeyHashAddressData];
+	}
+	else if ([self isPayToScriptHashScript])
+	{
+		return [BTCScriptHashAddressTestnet addressWithData:self.PayToScriptHashAddressData];
+	}
+	return nil;
 }
 
 
