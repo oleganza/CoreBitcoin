@@ -27,19 +27,14 @@ class BTCScriptTests: XCTestCase {
         
         for i in 0 ..< uint32(tx.inputs.count) {
             let sm = BTCScriptMachine(transaction: tx, inputIndex: i)
-            var error: NSError?
-            let r: Bool
+            
             do {
                 try sm.verifyWithOutputScript(outputScript)
-                r = true
-            } catch let error1 as NSError {
-                error = error1
-                r = false
-            }
-            if !r {
+            } catch {
                 print("BTCScriptMachine error: \(error)")
+                XCTFail("should verify first input")
             }
-            XCTAssertTrue(r, "should verify first input")
+            
         }
         
     }
@@ -94,14 +89,12 @@ class BTCScriptTests: XCTestCase {
             // Verify the transaction.
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
-            let r: Bool
             do {
                 try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
-                r = true
-            } catch _ {
-                r = false
+            } catch {
+                XCTFail("should verify first input")
             }
-            XCTAssertTrue(r, "should verify first input")
+            
         }
         
         // 5. Check valid combinations
@@ -131,19 +124,15 @@ class BTCScriptTests: XCTestCase {
             // Verify the transaction.
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
-            var error: NSError?
-            let r: Bool
+            
             do {
                 try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
-                r = true
-            } catch let error1 as NSError {
-                error = error1
-                r = false
-            }
-            if !r {
+            } catch {
                 print("BTCScriptMachine error: \(error)")
+                XCTFail("should verify first input")
             }
-            XCTAssertTrue(r, "should verify first input")
+            
+            
         }
         
         // Check invalid combinations
@@ -185,17 +174,14 @@ class BTCScriptTests: XCTestCase {
             //Verify the transaction.
             
             let sm = BTCScriptMachine(transaction: dstTx, inputIndex: 0)
-            var error: NSError?
-            let r: Bool
+            
             do {
                 try sm.verifyWithOutputScript(srcTxOut.script.copy() as! BTCScript)
-                r = true
-            } catch let error1 as NSError {
-                error = error1
-                r = false
+                XCTFail("should not verify first output")
+            } catch {
+                print("BTCScriptMachine error: \(error)")
             }
-            print("BTCScriptMachine error: \(error)")
-            XCTAssertFalse(r, "should not verify first output")
+            
             
         }
         
@@ -293,21 +279,13 @@ class BTCScriptTests: XCTestCase {
         scriptMachine.verificationFlags = .StrictEncoding
         scriptMachine.inputScript = script
         
-        var error: NSError?
-        let result: Bool
         do {
             try scriptMachine.verifyWithOutputScript(BTCScript(string: "OP_NOP"))
-            result = true
-        } catch let error1 as NSError {
-            error = error1
-            result = false
-        }
-        if !result {
+            print("script passed: \(script)")
+        } catch {
             print("error: \(error)")
         }
-        else {
-            print("script passed: \(script)")
-        }
+        
         
     }
     
@@ -336,27 +314,13 @@ class BTCScriptTests: XCTestCase {
             scriptMachine.verificationFlags = .StrictEncoding
             scriptMachine.inputScript = inputScript
             
-            var error: NSError?
-            let result: Bool
             do {
                 try scriptMachine.verifyWithOutputScript(outputScript)
-                result = true
-            } catch let error1 as NSError {
-                error = error1
-                result = false
+            } catch {
+                XCTFail("BTCScript validation error: \(error) (\(comment))")
             }
             
-            if !result {
-                print("BTCScript validation error: \(error) (\(comment))")
-                
-                do {
-                    // for breakpoint
-                    try scriptMachine.verifyWithOutputScript(outputScript)
-                } catch let error1 as NSError {
-                    error = error1
-                }
-                XCTAssert(false, comment)
-            }
+            
         }
     }
     
@@ -381,24 +345,14 @@ class BTCScriptTests: XCTestCase {
             scriptMachine.verificationFlags = .StrictEncoding
             scriptMachine.inputScript = inputScript
             
-            var error: NSError?
-            let result: Bool
+            
             do {
                 try scriptMachine.verifyWithOutputScript(outputScript)
-                result = true
-            } catch let error1 as NSError {
-                error = error1
-                result = false
+                
+            } catch {
+                XCTFail(comment)
             }
-            if result {
-                do {
-                    // for breakpoint.
-                    try scriptMachine.verifyWithOutputScript(outputScript)
-                } catch let error1 as NSError {
-                    error = error1
-                }
-                XCTAssert(false, comment)
-            }
+            
         }
     }
     

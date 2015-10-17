@@ -31,22 +31,19 @@ class BTCFancyEncryptedMessageTests: XCTestCase {
         
         XCTAssertNotNil(receivedMsg, "pow and format are correct")
         
-        var error: NSError?
-        let decryptedData: NSData!
         do {
-            decryptedData = try receivedMsg.decryptedDataWithKey(key)
-        } catch let error1 as NSError {
-            error = error1
-            decryptedData = nil
+            let decryptedData = try receivedMsg.decryptedDataWithKey(key)
+            XCTAssertNotNil(decryptedData, "should decrypt correctly")
+            
+            let str = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
+            XCTAssertNotNil(str, "should decode a UTF-8 string")
+            XCTAssertEqual(str!, originalString, "should decrypt the original string")
+            
+        } catch {
+            XCTFail("Error: \(error)")
+            
         }
         
-        XCTAssertNotNil(decryptedData, "should decrypt correctly")
-        
-        let str = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
-        
-        XCTAssertNotNil(str, "should decode a UTF-8 string")
-        
-        XCTAssertEqual(str!, originalString, "should decrypt the original string")
         
     }
     

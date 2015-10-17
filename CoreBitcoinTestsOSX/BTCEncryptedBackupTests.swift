@@ -77,14 +77,15 @@ class BTCEncryptedBackupTests: XCTestCase {
             ]
         ]
         
-        var error: NSError? = nil
+        
         let plaintext: NSData?
         do {
             plaintext = try NSJSONSerialization.dataWithJSONObject(backupJSON, options: NSJSONWritingOptions(rawValue: 0))
-        } catch var error1 as NSError {
-            error = error1
+        } catch {
+            XCTFail("Error: \(error)")
             plaintext = nil
         }
+        
         let toPrint = NSString(data: plaintext!, encoding: NSUTF8StringEncoding)
         print("plaintext = \(toPrint)")
         XCTAssertNotNil(plaintext, "Must encode to JSON")

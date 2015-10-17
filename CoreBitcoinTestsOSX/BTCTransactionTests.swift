@@ -193,17 +193,14 @@ class BTCTransactionTests: XCTestCase {
         
         do {
             let sm = BTCScriptMachine(transaction: tx, inputIndex: 0)
-            var error: NSError?
-            let r: Bool
+            
             do {
                 try sm.verifyWithOutputScript((txouts.first as BTCTransactionOutput!).script.copy() as! BTCScript)
-                r = true
-            } catch let error1 as NSError {
-                error = error1
-                r = false
+            } catch {
+                print("Error: \(error)")
+                XCTFail("should verify first output")
             }
-            print("Error: \(error)")
-            XCTAssertTrue(r, "should verify first output")
+            
             
         }
         
@@ -216,7 +213,14 @@ class BTCTransactionTests: XCTestCase {
     func spendCoinTestWithAPI(api: BTCAPI) { //Not prefixed with `test` because we don't want Xcode to try and call it
         let privStr = ""
         let str = UnsafeMutablePointer<Int8>((privStr as NSString).UTF8String)
+        
+        // For safety I'm not putting a private key in the source code, but copy-paste here from Keychain on each run.
+        print("Please paste a private key for coin spend test, or 'x' to skip this test.\n")
         gets(str)
+        
+        if str.memory == 120 { //Skips test if 'x' is entered instead of private key
+            return
+        }
         
         let privateKey = BTCDataWithHexCString(str)
         print("Private key: \(privateKey)")
@@ -245,6 +249,7 @@ class BTCTransactionTests: XCTestCase {
         
         print("Broadcast result: data = \(data)")
         print("string = \(NSString(data: data!, encoding: NSUTF8StringEncoding))")
+        
         
     }
     

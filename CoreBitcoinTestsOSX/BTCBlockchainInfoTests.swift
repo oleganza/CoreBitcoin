@@ -23,36 +23,25 @@ class BTCBlockchainInfoTests: XCTestCase {
     
     func testEmptyUnspents() {
         
-        var error: NSError?
-        
-        let outputs: [AnyObject]!
         do {
-            outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr")!])
-        } catch let error1 as NSError {
-            error = error1
-            outputs = nil
+            let outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr")!])
+            XCTAssert(outputs.count == 0, "should return an empty array")
+        } catch {
+            XCTFail("Error: \(error)")
         }
-        
-        XCTAssert(outputs.count == 0, "should return an empty array")
-        XCTAssert(error == nil, "should have no error")
         
     }
     
     func testNonEmptyUnspents() {
         
-        var error: NSError?
-        
-        let outputs: [AnyObject]!
         do {
-            outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")!])
-        } catch let error1 as NSError {
-            error = error1
-            outputs = nil
+            let outputs = try BTCBlockchainInfo().unspentOutputsWithAddresses([BTCAddress(string: "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")!])
+            XCTAssert(outputs.count > 0, "should return a non-empty array")
+            XCTAssert((outputs.first as! BTCTransactionOutput?) != nil, "should contain BTCTransactionOutput objects")
+        } catch {
+            XCTFail("Error: \(error)")
         }
         
-        XCTAssert(outputs.count > 0, "should return a non-empty array")
-        XCTAssert((outputs.first as? BTCTransactionOutput) != nil, "should contain BTCTransactionOutput objects")
-        XCTAssert(error == nil, "should have no error")
     }
     
     
