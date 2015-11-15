@@ -70,6 +70,9 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 // Use BTCBase58CheckStringWithData() to convert to Base58 form.
 @property(nonatomic, readonly) NSData* extendedPrivateKeyData DEPRECATED_ATTRIBUTE;
 
+// A reference to the parent keychain from which this keychain was derived.
+@property(nonatomic, readonly, nullable) BTCKeychain* parent;
+
 // 160-bit identifier (aka "hash") of the keychain (RIPEMD160(SHA256(pubkey))).
 @property(nonatomic, readonly) NSData* identifier;
 
@@ -85,6 +88,13 @@ static const uint32_t BTCKeychainMaxIndex = 0x7fffffff;
 
 // Depth. Master keychain has depth = 0.
 @property(nonatomic, readonly) uint8_t depth;
+
+// return the path components of the path for deriving this keychain from it's master node.
+@property(nonatomic, readonly, nonnull) NSArray* pathComponents;
+
+// return the path for deriving this keychain from it's master node.
+// Equivalent to `[[self pathComponents] componentsJoinedByString:@"/"]`
+@property(nonatomic, readonly, nonnull) NSString* path;
 
 // Returns YES if the keychain can derive private keys.
 @property(nonatomic, readonly) BOOL isPrivate;

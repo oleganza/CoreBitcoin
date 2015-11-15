@@ -31,6 +31,11 @@
     NSAssert([[keychain derivedKeychainWithPath:@"m/0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
     NSAssert([[keychain derivedKeychainWithPath:@"/0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
     NSAssert([[keychain derivedKeychainWithPath:@"0"].extendedPublicKey isEqual:[keychain derivedKeychainAtIndex:0 hardened:NO].extendedPublicKey], @"must return non-hardened child at index 0");
+	
+	NSString* testPath = @"m/0/1/2/3/4";
+	NSAssert([[keychain derivedKeychainWithPath:testPath].path isEqual:testPath], @"must resolve the same path as deriviation");
+	NSAssert([keychain derivedKeychainWithPath:testPath].depth == 5, @"must resolve the same depth as deriviation path");
+	
 
     NSAssert([keychain derivedKeychainWithPath:@"m / 0 / 1"] == nil, @"must return nil if path contains spaces");
     NSAssert([keychain derivedKeychainWithPath:@"m/b/c"] == nil, @"must return nil if path contains irrelevant characters");
