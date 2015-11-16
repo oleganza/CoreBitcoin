@@ -8,6 +8,7 @@
 #import "BTCAddress+Tests.h"
 #import "BTCProtocolSerialization+Tests.h"
 #import "BTCKey+Tests.h"
+#import "BTCBip38EncryptedKey+Tests.h"
 #import "BTCKeychain+Tests.h"
 #import "BTCCurvePoint+Tests.h"
 #import "BTCBlindSignature+Tests.h"
@@ -34,6 +35,7 @@ int main(int argc, const char * argv[])
         [BTCAddress runAllTests];
         [BTCProtocolSerialization runAllTests];
         [BTCKey runAllTests];
+		[BTCBip38EncryptedKey runAllTests];
         [BTCCurvePoint runAllTests];
         [BTCKeychain runAllTests];
         [BTCBlindSignature runAllTests];
