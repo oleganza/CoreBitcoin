@@ -22,6 +22,7 @@
 #import <CoreBitcoin/BTCFancyEncryptedMessage.h>
 #import <CoreBitcoin/BTCHashID.h>
 #import <CoreBitcoin/BTCKey.h>
+#import <CoreBitcoin/BTCBip38EncryptedKey.h>
 #import <CoreBitcoin/BTCKeychain.h>
 #import <CoreBitcoin/BTCMerkleTree.h>
 #import <CoreBitcoin/BTCMnemonic.h>
