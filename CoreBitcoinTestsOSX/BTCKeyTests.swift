@@ -84,32 +84,27 @@ class BTCKeyTests: XCTestCase {
         
         let data = ["304402207f5561ac3cfb05743cab6ca914f7eb93c489f276f10cdf4549e7f0b0ef4e85cd02200191c0c2fd10f10158973a0344fdaf2438390e083a509d2870bcf2b05445612b01", "3045022100e81a33ac22d0ef25d359a5353977f0f953608b2733141239ec02363237ab6781022045c71237e95b56079e9fa88591060e4c1a4bb02c0cad1ebeb092749d4aa9754701", "304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e01"].map(BTCDataFromHex)
         
-        let errors = data.reduce(Array<NSError>()) { acc, datum in
-            var error: NSError?
-            if !BTCKey.isCanonicalSignatureWithHashType(datum, verifyLowerS: true, error: &error) {
-                return acc + [error!]
+        for elem in data {
+            do {
+                try BTCKey.isCanonicalSignatureWithHashType(elem, verifyLowerS: true)
             }
-            return acc
+            catch {
+                XCTFail("Error: \(error)")
+            }
         }
-        
-        for error in errors {
-            println("Error: \(error)")
-        }
-        
-        XCTAssertEqual(errors.count, 0, "Should have no errors")
 
     }
     
     func testRandomKeys() {
         var arr = Array<NSData>()
         // just a sanity check, not a serious randomness
-        for i in 0 ..< 32 {
+        for _ in 0 ..< 32 {
             let k = BTCKey()
             //println("key = \(BTCHexFromData(k.privateKey))")
             
             // Note: this test may fail, but very rarely.
             let subkey = k.privateKey.subdataWithRange(NSRange(location: 0, length: 4))
-            XCTAssertFalse(contains(arr, subkey), "Should not repeat")
+            XCTAssertFalse(arr.contains(subkey), "Should not repeat")
             XCTAssertEqual(k.privateKey.length, 32, "Should be 32 bytes")
             
             arr.append(subkey)
@@ -168,7 +163,7 @@ class BTCKeyTests: XCTestCase {
         if true {
             let digest = messageData.SHA256()
             let sig = signature.mutableCopy() as! NSMutableData
-            var buf = unsafeBitCast(sig.mutableBytes, UnsafeMutablePointer<CUnsignedChar>.self)
+            let buf = unsafeBitCast(sig.mutableBytes, UnsafeMutablePointer<CUnsignedChar>.self)
             for i in 0 ..< signature.length {
                 for j in 0 ..< 8 {
                     let mask = CUnsignedChar(1 << j)
@@ -192,7 +187,7 @@ class BTCKeyTests: XCTestCase {
 //        key.publicKeyCompressed = true
 //        println("Pubkey 1: \(key.publicKey) (\(key.publicKey.length) bytes)")
         
-        encapsulate {
+        doBlock {
             let signature = key.signatureForMessage(message)
 //            println("Signature: \(signature.hex()) (\(signature.length) bytes)")
             let key2 = BTCKey.verifySignature(signature, forMessage: message)
@@ -203,7 +198,7 @@ class BTCKeyTests: XCTestCase {
             XCTAssertTrue(key.isValidSignature(signature, forMessage: message), "Signature must be valid")
         }
         
-        encapsulate {
+        doBlock {
             let signature = BTCDataFromHex("1B158259BD8EEB198BABBCC4308CDFB8E8068F0A712CAC634257933A072EA6DB7" + "BEB3308F4C937D4F397A2A782BF12884045C27430719A2890F0127B4732D9CF0D")
             
             let key = BTCKey.verifySignature(signature, forMessage: "Test message")
@@ -216,6 +211,6 @@ class BTCKeyTests: XCTestCase {
 }
 
 
-func encapsulate(capsule: () -> ()) {
+func doBlock(capsule: () -> ()) {
     capsule()
 }

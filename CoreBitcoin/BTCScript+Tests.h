@@ -6,4 +6,7 @@
 
 + (void) runAllTests;
 
++ (NSArray*) invalidBitcoinQTScripts;
++ (NSArray*) validBitcoinQTScripts;
+
 @end

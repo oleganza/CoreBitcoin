@@ -19,28 +19,31 @@ class BTCFancyEncryptedMessageTests: XCTestCase {
         let msg = BTCFancyEncryptedMessage(data: originalString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false))
         msg.difficultyTarget = 0x00FFFFFF
         
-        println(NSString(format: "difficulty: %@ (%x)", self.binaryString32(msg.difficultyTarget), msg.difficultyTarget))
+        print(NSString(format: "difficulty: %@ (%x)", self.binaryString32(msg.difficultyTarget), msg.difficultyTarget))
         
         let encryptedMsg = msg.encryptedDataWithKey(key, seed: BTCDataFromHex("deadbeef"))
         
         XCTAssertEqual(msg.difficultyTarget, 0x00FFFFFF, "check the difficulty target")
         
-        println(NSString(format: "encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData(BTCHash256(encryptedMsg).subdataWithRange(NSMakeRange(0, 8)))))
+        print(NSString(format: "encrypted msg = %@   hash: %@...", BTCHexFromData(encryptedMsg), BTCHexFromData(BTCHash256(encryptedMsg).subdataWithRange(NSMakeRange(0, 8)))))
         
         let receivedMsg = BTCFancyEncryptedMessage(encryptedData: encryptedMsg)
         
         XCTAssertNotNil(receivedMsg, "pow and format are correct")
         
-        var error: NSError?
-        let decryptedData = receivedMsg.decryptedDataWithKey(key, error: &error)
+        do {
+            let decryptedData = try receivedMsg.decryptedDataWithKey(key)
+            XCTAssertNotNil(decryptedData, "should decrypt correctly")
+            
+            let str = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
+            XCTAssertNotNil(str, "should decode a UTF-8 string")
+            XCTAssertEqual(str!, originalString, "should decrypt the original string")
+            
+        } catch {
+            XCTFail("Error: \(error)")
+            
+        }
         
-        XCTAssertNotNil(decryptedData, "should decrypt correctly")
-        
-        let str = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
-        
-        XCTAssertNotNil(str, "should decode a UTF-8 string")
-        
-        XCTAssertEqual(str!, originalString, "should decrypt the original string")
         
     }
     

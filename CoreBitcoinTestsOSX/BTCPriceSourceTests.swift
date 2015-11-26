@@ -25,11 +25,11 @@ class BTCPriceSourceTests: XCTestCase {
         let coindesk = BTCPriceSourceCoindesk()
         XCTAssert(coindesk.name.lowercaseString.rangeOfString("coindesk") != nil, "should be named coindesk")
         let codes = coindesk.currencyCodes as! [String]
-        XCTAssert(contains(codes, "USD"), "should contain USD")
-        XCTAssert(contains(codes, "EUR"), "should contain EUR")
+        XCTAssert(codes.contains("USD"), "should contain USD")
+        XCTAssert(codes.contains("EUR"), "should contain EUR")
         
-        validatePrice(coindesk.loadPriceForCurrency("USD", error: nil), min: 100, max: 10000)
-        validatePrice(coindesk.loadPriceForCurrency("EUR", error: nil), min: 100, max: 10000)
+        validatePrice(try? coindesk.loadPriceForCurrency("USD"), min: 100, max: 10000)
+        validatePrice(try? coindesk.loadPriceForCurrency("EUR"), min: 100, max: 10000)
     }
     
     func testWinkdex() {
@@ -38,16 +38,16 @@ class BTCPriceSourceTests: XCTestCase {
         
         let codes = winkdex.currencyCodes as! [String]
         
-        XCTAssert(contains(codes, "USD"), "should contain USD")
+        XCTAssert(codes.contains("USD"), "should contain USD")
         
-        validatePrice(winkdex.loadPriceForCurrency("USD", error: nil), min: 100, max: 10000)
+        validatePrice(try? winkdex.loadPriceForCurrency("USD"), min: 100, max: 10000)
     }
     
     func testCoinbase() {
         let coinbase = BTCPriceSourceCoinbase()
         XCTAssert(coinbase.name.lowercaseString.rangeOfString("coinbase") != nil, "should be named properly")
         let codes = coinbase.currencyCodes as! [String]
-        XCTAssert(contains(codes, "USD"), "should contain USD")
+        XCTAssert(codes.contains("USD"), "should contain USD")
     }
     
     func testPaymium() {
@@ -56,8 +56,8 @@ class BTCPriceSourceTests: XCTestCase {
         
         let codes = paymium.currencyCodes as! [String]
         
-        XCTAssert(contains(codes, "EUR"), "should contain EUR")
-        validatePrice(paymium.loadPriceForCurrency("EUR", error: nil), min: 100, max: 10000)
+        XCTAssert(codes.contains("EUR"), "should contain EUR")
+        validatePrice(try? paymium.loadPriceForCurrency("EUR"), min: 100, max: 10000)
         
     }
     
