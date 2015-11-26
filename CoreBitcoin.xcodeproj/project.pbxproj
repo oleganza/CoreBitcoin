@@ -474,7 +474,7 @@
 		7558460E1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7558460D1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift */; };
 		757B241B1B03F1BF0084A9DE /* CoreBitcoinOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 206B0113183547C200878B8D /* CoreBitcoinOSX.framework */; };
 		758A16C81B69BAF30075C64A /* BTCScriptTestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 758A16C71B69BAF30075C64A /* BTCScriptTestData.m */; };
-		758DDAFE1BD2D83600AEDFFB /* BTCMnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DDAFD1BD2D83600AEDFFB /* BTCMnemonicTests.swift */; settings = {ASSET_TAGS = (); }; };
+		758DDAFE1BD2D83600AEDFFB /* BTCMnemonicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758DDAFD1BD2D83600AEDFFB /* BTCMnemonicTests.swift */; };
 		75A06DA01B17B7FE00ED7E79 /* BTCKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A06D9F1B17B7FE00ED7E79 /* BTCKeyTests.swift */; };
 		75A1A3721B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A1A3711B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift */; };
 		75B819061B04E65A0055F8B1 /* BTCAddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B819051B04E65A0055F8B1 /* BTCAddressTests.swift */; };
@@ -2158,7 +2158,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/openssl/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -2184,7 +2184,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/openssl/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -2354,6 +2354,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = CoreBitcoin/SwiftBridgingHeader.h;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Release;
 		};

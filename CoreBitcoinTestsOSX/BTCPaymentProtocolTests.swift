@@ -45,7 +45,7 @@ class BTCPaymentProtocolTests: XCTestCase {
 
         XCTAssertEqual(out2.value, BTCUnspecifiedPaymentAmount, "Second output has no amount specified")
         XCTAssertEqual((out2.userInfo["assetID"]! as! BTCAssetID).string, "ALYro2zndzUpPKcZXXqSYE1npuM4ycY1MA", "Second output has asset ID ALYro2...")
-        XCTAssertEqual(out2.userInfo["assetAmount"]! as! Int, 20000, "Second output has asset amount 1234")
+        XCTAssertEqual(out2.userInfo["assetAmount"]! as? Int, 20000, "Second output has asset amount 1234")
     }
 
 

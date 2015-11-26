@@ -253,10 +253,10 @@ class BTCTransactionTests: XCTestCase {
         
     }
     
-    func testSpendCoins() {
-        spendCoinTestWithAPI(.Chain)
-        spendCoinTestWithAPI(.Blockchain)
-    }
+//    func testSpendCoins() {
+//        spendCoinTestWithAPI(.Chain)
+//        spendCoinTestWithAPI(.Blockchain)
+//    }
 
 }
 

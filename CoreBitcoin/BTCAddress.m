@@ -20,13 +20,36 @@ enum
 
 @implementation BTCAddress {
     char* _cstring;
+    NSData* _data;
+}
+
+- (id) init {
+    if (self = [super init]) {
+        _data = nil;
+    }
+    return self;
+}
+
+- (void) setData:(NSData *)data {
+    if (_data) {
+        NSLog(@"Rewriting data %p with data %p in %p", _data, data, self);
+    }
+    id d = [data copy];
+    NSLog(@"Setting copied data %p -> %p", _data, d);
+    _data = d;
+}
+
+- (NSData*) data {
+//    id d = [_data copy];
+//    NSLog(@"Returning copied data %p -> %p", _data, d);
+    return _data;
 }
 
 - (void) dealloc {
     // The data may be retained by someone and should not be cleared like that.
 //    [self clear];
-    if (_cstring) free(_cstring);
-    _data = nil;
+    NSLog(@"DEALLOC SCRIPT %@ %p data = %p", [self class], self, _data);
+    //if (_cstring) free(_cstring);
 }
 
 + (instancetype) addressWithString:(NSString*)string {
@@ -411,7 +434,8 @@ enum
         return nil;
     }
     BTCScriptHashAddress* addr = [[self alloc] init];
-    addr.data = [NSMutableData dataWithBytes:((const char*)data.bytes) + 1 length:data.length - 1];
+    addr.data = [[NSMutableData dataWithBytes:((const char*)data.bytes) + 1 length:data.length - 1] copy];
+    NSLog(@"Created P2SH data: %p (%@)", addr.data, addr.data);
     addr.base58CString = cstring;
     return addr;
 }

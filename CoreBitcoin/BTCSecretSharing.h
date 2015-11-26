@@ -9,12 +9,12 @@ typedef NS_ENUM(NSInteger, BTCSecretSharingVersion) {
 
 @interface BTCSecretSharing : NSObject
 
-@property(nonatomic, readonly) BTCSecretSharingVersion version;
-
-- (id __nonnull) initWithVersion:(BTCSecretSharingVersion)version;
-
-- (NSArray* __nonnull) splitSecret:(NSData* __nonnull)secret threshold:(NSInteger)m shares:(NSInteger)n error:(NSError**)errorOut;
-
-- (NSData* __nonnull) joinShares:(NSArray* __nonnull)shares error:(NSError**)errorOut;
+//@property(nonatomic, readonly) BTCSecretSharingVersion version;
+//
+//- (id __nonnull) initWithVersion:(BTCSecretSharingVersion)version;
+//
+//- (NSArray* __nonnull) splitSecret:(NSData* __nonnull)secret threshold:(NSInteger)m shares:(NSInteger)n error:(NSError* __nullable * __nullable)errorOut;
+//
+//- (NSData* __nonnull) joinShares:(NSArray* __nonnull)shares error:(NSError* __nullable * __nullable)errorOut;
 
 @end
