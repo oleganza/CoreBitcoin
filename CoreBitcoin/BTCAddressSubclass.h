@@ -1,4 +1,4 @@
-// This is the header for subclasses
+// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #ifndef CoreBitcoin_BTCAddressSubclass_h
 #define CoreBitcoin_BTCAddressSubclass_h

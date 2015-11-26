@@ -19,4 +19,9 @@ typedef NS_ENUM(NSUInteger, BTCErrorCode) {
     // BIP70 Payment Protocol errors
     BTCErrorPaymentRequestInvalidResponse    = 7001,
     BTCErrorPaymentRequestTooBig             = 7002,
+
+    // Secret Sharing errors
+    BTCErrorIncompatibleSecret               = 10001,
+    BTCErrorInsufficientShares               = 10002,
+    BTCErrorMalformedShare                   = 10003,
 };
