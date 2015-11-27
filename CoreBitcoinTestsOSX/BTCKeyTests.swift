@@ -187,7 +187,7 @@ class BTCKeyTests: XCTestCase {
 //        key.publicKeyCompressed = true
 //        println("Pubkey 1: \(key.publicKey) (\(key.publicKey.length) bytes)")
         
-        doBlock {
+        do {
             let signature = key.signatureForMessage(message)
 //            println("Signature: \(signature.hex()) (\(signature.length) bytes)")
             let key2 = BTCKey.verifySignature(signature, forMessage: message)
@@ -198,7 +198,7 @@ class BTCKeyTests: XCTestCase {
             XCTAssertTrue(key.isValidSignature(signature, forMessage: message), "Signature must be valid")
         }
         
-        doBlock {
+        do {
             let signature = BTCDataFromHex("1B158259BD8EEB198BABBCC4308CDFB8E8068F0A712CAC634257933A072EA6DB7" + "BEB3308F4C937D4F397A2A782BF12884045C27430719A2890F0127B4732D9CF0D")
             
             let key = BTCKey.verifySignature(signature, forMessage: "Test message")
@@ -210,7 +210,3 @@ class BTCKeyTests: XCTestCase {
     }
 }
 
-
-func doBlock(capsule: () -> ()) {
-    capsule()
-}
