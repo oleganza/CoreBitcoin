@@ -22,6 +22,7 @@
 		200AAE4119FA3F010004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
 		200AAE4219FA3F020004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
 		200AAE4319FA3F020004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
+		200FA8DA1C07A8B80039029D /* BTCSecretSharingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200FA8D91C07A8B80039029D /* BTCSecretSharingTests.swift */; };
 		20148AE018355D7200E68E9C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D2802517B8FE00004A462B /* Foundation.framework */; };
 		20148B0518355DAD00E68E9C /* BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD8517B8FF76005AC9E6 /* BTCData.m */; };
 		20148B0718355DAD00E68E9C /* NSData+BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01117C73181003B6987 /* NSData+BTCData.m */; };
@@ -535,6 +536,7 @@
 		200756D91A5D6A44009A24A9 /* BTCPriceSource+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTCPriceSource+Tests.m"; sourceTree = "<group>"; };
 		200AAE3D19FA3EFA0004F908 /* BTCOutpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCOutpoint.h; sourceTree = "<group>"; };
 		200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCOutpoint.m; sourceTree = "<group>"; };
+		200FA8D91C07A8B80039029D /* BTCSecretSharingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCSecretSharingTests.swift; sourceTree = "<group>"; };
 		20148ADF18355D7200E68E9C /* libCoreBitcoinIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCoreBitcoinIOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		20148AE318355D7200E68E9C /* CoreBitcoinIOSlib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinIOSlib-Prefix.pch"; sourceTree = "<group>"; };
 		20148B2418355E8F00E68E9C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -1217,6 +1219,7 @@
 				75B819071B04E68B0055F8B1 /* BTCBlockchainInfoTests.swift */,
 				75B819051B04E65A0055F8B1 /* BTCAddressTests.swift */,
 				20FFD7FF1B1F85F300CCA48D /* BTCPaymentProtocolTests.swift */,
+				200FA8D91C07A8B80039029D /* BTCSecretSharingTests.swift */,
 				757B24171B03F1BF0084A9DE /* Supporting Files */,
 			);
 			path = CoreBitcoinTestsOSX;
@@ -1922,6 +1925,7 @@
 				75A06DA01B17B7FE00ED7E79 /* BTCKeyTests.swift in Sources */,
 				752834A91B699BEC00CD92E3 /* BTCScriptTests.swift in Sources */,
 				75B8190A1B04E69A0055F8B1 /* BTCPriceSourceTests.swift in Sources */,
+				200FA8DA1C07A8B80039029D /* BTCSecretSharingTests.swift in Sources */,
 				75E565AE1B7927C800CCCFA5 /* BTCTransactionTests.swift in Sources */,
 				7549DAD11B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift in Sources */,
 				75FB13E61B449661006D8935 /* BTCFancyEncryptedMessageTests.swift in Sources */,

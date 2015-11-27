@@ -7,14 +7,17 @@ typedef NS_ENUM(NSInteger, BTCSecretSharingVersion) {
     BTCSecretSharingVersionCompact128 = 1,
 };
 
+@class BTCBigNumber;
 @interface BTCSecretSharing : NSObject
 
-//@property(nonatomic, readonly) BTCSecretSharingVersion version;
-//
-//- (id __nonnull) initWithVersion:(BTCSecretSharingVersion)version;
-//
-//- (NSArray* __nonnull) splitSecret:(NSData* __nonnull)secret threshold:(NSInteger)m shares:(NSInteger)n error:(NSError* __nullable * __nullable)errorOut;
-//
-//- (NSData* __nonnull) joinShares:(NSArray* __nonnull)shares error:(NSError* __nullable * __nullable)errorOut;
+@property(nonatomic, readonly) BTCSecretSharingVersion version;
+@property(nonatomic, readonly, nonnull) BTCBigNumber* order;
+@property(nonatomic, readonly) NSInteger bitlength;
+
+- (id __nonnull) initWithVersion:(BTCSecretSharingVersion)version;
+
+- (NSArray* __nullable) splitSecret:(NSData* __nonnull)secret threshold:(NSInteger)m shares:(NSInteger)n error:(NSError* __nullable * __nullable)errorOut;
+
+- (NSData* __nullable) joinShares:(NSArray* __nonnull)shares error:(NSError* __nullable * __nullable)errorOut;
 
 @end
