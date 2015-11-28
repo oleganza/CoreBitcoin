@@ -76,9 +76,10 @@
         // end
         while (exp < m) {
             BTCMutableBigNumber* coef = [coefficients[exp] mutableCopy];
-            [coef multiply:x mod:prime];
+            BTCMutableBigNumber* xexp = [x mutableCopy];
+            [xexp exp:[[BTCBigNumber alloc] initWithInt64:exp] mod:prime];
+            [coef multiply:xexp mod:prime];
             [y add:coef mod:prime];
-            [x multiply:x mod:prime]; // (x**exp % prime)
             exp += 1;
         }
         NSData* share = [self encodeShareM:m X:i+1 Y:y];

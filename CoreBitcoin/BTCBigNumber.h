@@ -139,5 +139,7 @@
 - (instancetype) lshift:(unsigned int)shift; // <<=
 - (instancetype) rshift:(unsigned int)shift; // >>=
 - (instancetype) inverseMod:(BTCBigNumber*)mod; // (a^-1) mod n
+- (instancetype) exp:(BTCBigNumber*)power;
+- (instancetype) exp:(BTCBigNumber*)power mod:(BTCBigNumber *)mod;
 
 @end

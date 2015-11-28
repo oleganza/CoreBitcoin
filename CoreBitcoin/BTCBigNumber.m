@@ -850,6 +850,24 @@
     return self;
 }
 
+- (instancetype) exp:(BTCBigNumber*)power // pow(self, p)
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_exp(&(self->_bignum), &(self->_bignum), &(power->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return self;
+}
+
+- (instancetype) exp:(BTCBigNumber*)power mod:(BTCBigNumber *)mod // pow(self,p) % m
+{
+    BN_CTX* pctx = BN_CTX_new();
+    BN_mod_exp(&(self->_bignum), &(self->_bignum), &(power->_bignum), &(mod->_bignum), pctx);
+    BN_CTX_free(pctx);
+    return self;
+}
+
+
+
 @end
 
 
