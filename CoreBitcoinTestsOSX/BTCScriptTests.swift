@@ -77,7 +77,7 @@ class BTCScriptTests: XCTestCase {
         
         // 4. Simple signing case useful as a sample code.
         
-        doBlock {
+        do {
             let signatureScript = BTCScript()
             
             signatureScript.appendOpcode(.OP_0) // always prepend dummy OP_0 because OP_CHECKMULTISIG pops one too many items from the stack.
@@ -190,7 +190,7 @@ class BTCScriptTests: XCTestCase {
 
     func testBinarySerialization() {
         //Empty script
-        doBlock {
+        do {
             XCTAssertEqual(BTCScript().data, NSData(), "Default script should be empty")
             XCTAssertEqual(BTCScript(data: NSData()).data, NSData(), "Empty script should be empty")
         }
