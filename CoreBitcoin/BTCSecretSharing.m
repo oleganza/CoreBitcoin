@@ -16,13 +16,21 @@
 // Returns a configuration for compact 128-bit secrets with up to 16 shares.
 - (id __nonnull) initWithVersion:(BTCSecretSharingVersion)version {
     if (self = [super init]) {
-        if (version == BTCSecretSharingVersionCompact128) {
-            self.version = version;
+        self.version = version;
+        if (version == BTCSecretSharingVersionCompact96) {
+            // 0xffffffffffffffffffffffef
+            self.bitlength = 96;
+            self.order = [[BTCBigNumber alloc] initWithString:@"ffffffffffffffffffffffef" base:16];
+        } else if (version == BTCSecretSharingVersionCompact104) {
+            // 0xffffffffffffffffffffffffef
+            self.bitlength = 104;
+            self.order = [[BTCBigNumber alloc] initWithString:@"ffffffffffffffffffffffffef" base:16];
+        } else if (version == BTCSecretSharingVersionCompact128) {
             // 0xffffffffffffffffffffffffffffff61
             self.bitlength = 128;
             self.order = [[BTCBigNumber alloc] initWithString:@"ffffffffffffffffffffffffffffff61" base:16];
         } else {
-            [NSException raise:@"BTCSecretSharing supports only BTCSecretSharingVersionCompact128 at the moment" format:@""];
+            [NSException raise:@"BTCSecretSharing supports only BTCSecretSharingVersionCompact{96,104,128} versions" format:@""];
         }
     }
     return self;
@@ -90,7 +98,61 @@
 
 - (NSData* __nullable) joinShares:(NSArray* __nonnull)shares error:(NSError**)errorOut {
 
-    return [@"" dataUsingEncoding:NSUTF8StringEncoding];
+    BTCBigNumber* prime = self.order;
+
+    shares = [[NSSet setWithArray:shares] allObjects]; // uniq
+    NSMutableArray* points = [NSMutableArray array];
+    for (id sh in shares) {
+        id p = [self decodeShare:sh];
+        if (p) { [points addObject:p]; }
+    }
+    if (points.count == 0) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorInsufficientShares userInfo:@{NSLocalizedDescriptionKey: @"No shares provided."}];
+        return nil;
+    }
+
+    NSMutableSet* ms = [NSMutableSet set];
+    for (id p in points) {
+        [ms addObject:p[0]];
+    }
+    if (ms.count > 1) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorMalformedShare userInfo:@{NSLocalizedDescriptionKey: @"All shares must have the same threshold (M) value."}];
+        return nil;
+    }
+    NSMutableSet* xs = [NSMutableSet set];
+    for (id p in points) {
+        [xs addObject:p[1]];
+    }
+    if (xs.count != points.count) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorMalformedShare userInfo:@{NSLocalizedDescriptionKey: @"All shares must have unique indexes (X) values."}];
+        return nil;
+    }
+    NSInteger m = [[ms anyObject] integerValue];
+    if (points.count < m) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCErrorDomain code:BTCErrorInsufficientShares userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Not enough shares to restore the secret (need %@)", @(m)]}];
+        return nil;
+    }
+    BTCMutableBigNumber* y = [BTCMutableBigNumber zero];
+    for (NSInteger formula = 0; formula < m; formula++) {
+        // Multiply the numerator across the top and denominators across the bottom to do Lagrange's interpolation
+        BTCMutableBigNumber* numerator = [BTCMutableBigNumber one];
+        BTCMutableBigNumber* denominator = [BTCMutableBigNumber one];
+        for (NSInteger count = 0; count < m; count++) {
+            if (formula != count) { // skip element with i == j
+                BTCMutableBigNumber* startposition = [[[BTCBigNumber alloc] initWithInt64:[points[formula][1] longLongValue]] mutableCopy];
+                BTCBigNumber* negnextposition = [[BTCBigNumber alloc] initWithInt64:-[points[count][1] longLongValue]];
+                [numerator multiply:negnextposition mod:prime];
+                [startposition add:negnextposition];
+                [denominator multiply:startposition mod:prime];
+            }
+        }
+        BTCMutableBigNumber* value = [points[formula][2] mutableCopy];
+        [value multiply:numerator];
+        [value multiply:[denominator inverseMod:prime] mod:prime];
+        [y add:prime];
+        [y add:value mod:prime];
+    }
+    return [y.unsignedBigEndian subdataWithRange:NSMakeRange(32-self.bitlength/8, self.bitlength/8)];
 }
 
 - (NSData*) prng:(NSData*)seed {
@@ -113,7 +175,7 @@
     while ([x greaterOrEqual:self.order]) {
         NSMutableData* input = [seed mutableCopy];
         [input appendData:pad];
-        s = [BTCHash256(input) subdataWithRange:NSMakeRange(0, 16)];
+        s = [BTCHash256(input) subdataWithRange:NSMakeRange(0, self.bitlength/8)];
         x = [[BTCBigNumber alloc] initWithUnsignedBigEndian:s];
         unsigned char zero = 0;
         [pad appendBytes:&zero length:1];
@@ -121,7 +183,7 @@
     return s;
 }
 
-// Returns mmmmxxxx yyyyyyyy yyyyyyyy ... (16 bytes of y)
+// Returns mmmmxxxx yyyyyyyy yyyyyyyy ... (N bytes of y)
 - (NSData*) encodeShareM:(NSInteger)m X:(NSInteger)x Y:(BTCBigNumber*)y {
     m = [self toNibble:m];
     x = [self toNibble:x];
@@ -131,23 +193,15 @@
     return data;
 }
 
-
-//# Returns mmmmxxxx yyyyyyyy yyyyyyyy ... (16 bytes of y)
-//def string_from_point(m, x, y)
-//m = to_nibble(m)
-//x = to_nibble(x)
-//byte = [(m << 4) + x].pack("C")
-//byte + be_from_int(y)
-//end
-//
-//# returns [m, x, y]
-//def point_from_string(s)
-//byte = s.bytes.first
-//m = from_nibble(byte >> 4)
-//x = from_nibble(byte & 0x0f)
-//y = int_from_be(s[1..-1])
-//[m, x, y]
-//end
+// Returns [m, x, y] where m, x - NSNumber, y - BTCBigNumber
+- (NSArray*) decodeShare:(NSData*)share {
+    if (share.length != (self.bitlength/8+1)) return nil;
+    unsigned char byte = ((unsigned char*)share.bytes)[0];
+    NSInteger m = [self fromNibble:byte >> 4];
+    NSInteger x = [self fromNibble:byte & 0x0f];
+    BTCBigNumber* y = [[BTCBigNumber alloc]initWithUnsignedBigEndian:[share subdataWithRange:NSMakeRange(1, self.bitlength/8)]];
+    return @[@(m), @(x), y];
+}
 
 // Encodes values in range 1..16 to one nibble where all values are encoded as-is,
 // except for 16 which becomes 0. This is to make strings look friendly for common cases when M,N < 16

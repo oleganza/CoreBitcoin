@@ -4,7 +4,9 @@
 
 typedef NS_ENUM(NSInteger, BTCSecretSharingVersion) {
     // Identifies configuration for compact 128-bit secrets with up to 16 shares.
-    BTCSecretSharingVersionCompact128 = 1,
+    BTCSecretSharingVersionCompact96  = 96,
+    BTCSecretSharingVersionCompact104 = 104,
+    BTCSecretSharingVersionCompact128 = 128,
 };
 
 @class BTCBigNumber;
