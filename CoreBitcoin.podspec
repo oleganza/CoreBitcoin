@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.9'
   s.source       = { :git => "https://github.com/oleganza/CoreBitcoin.git", :tag => s.version.to_s }
   s.source_files = 'CoreBitcoin'
-  s.exclude_files = 'CoreBitcoin/**/*+Tests.{h,m}'
+  s.exclude_files = ['CoreBitcoin/**/*+Tests.{h,m}', 'CoreBitcoin/BTCScriptTestData.m']
   s.requires_arc = true
   s.framework    = 'Foundation'
   s.ios.framework = 'UIKit'

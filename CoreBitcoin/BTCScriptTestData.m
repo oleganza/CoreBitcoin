@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Oleg Andreev. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 
 //Test data is in Objective-C rather than Swift, because this takes at least tens of minutes for Xcode to index if written in Swift
 
