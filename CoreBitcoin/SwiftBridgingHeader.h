@@ -8,7 +8,6 @@
 #import "CoreBitcoin.h"
 #import "NSData+BTCData.h"
 #import "NS+BTCBase58.h"
-#import "BTCScriptTestData.m"
 
 #include <CommonCrypto/CommonCrypto.h>
 #include <openssl/ec.h>
