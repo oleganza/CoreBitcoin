@@ -31,7 +31,7 @@ class BTCProtocolSerializationTests: XCTestCase {
     }
     
     func testAll() {
-        self.assertNumber(0  , serializesToHex: "00")
+        self.assertNumber(0, serializesToHex: "00")
         self.assertNumber(252, serializesToHex: "fc")
         self.assertNumber(CUnsignedLongLong(255), serializesToHex: "fdff00")
         self.assertNumber(CUnsignedLongLong(12345), serializesToHex: "fd3930")
