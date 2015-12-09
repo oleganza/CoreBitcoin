@@ -188,16 +188,16 @@ static NSData *point_multiply(NSData *point, const BIGNUM *factor, BOOL compress
 
 
 
-- (BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase
+- (nullable BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase
 {
 	const uint8_t flags = self.flags;
 	const uint32_t addressHash = self.addressHash;
+	NSData *salt = [NSData dataWithBytesNoCopy:(void *)&addressHash length:sizeof(addressHash) freeWhenDone:NO];
 	
 	NSMutableData *secret = [[NSMutableData alloc] initWithLength:BTCBip38EncryptedKeySecretLength];
 	
 	if (![self isEC]) {
 		NSData *password = normalize_passphrase(passphrase);
-		NSData *salt = [NSData dataWithBytesNoCopy:(void *)&addressHash length:sizeof(addressHash) freeWhenDone:NO];
 		
 		NSData *derivedData = scrypt(password, salt, BTCBip38EncryptedKeyScryptN, BTCBip38EncryptedKeyScryptR, BTCBip38EncryptedKeyScryptP, BTCBip38EncryptedKeyScryptLength);
 		const uint64_t *derivedBytes1 = (const uint64_t *)derivedData.bytes;
@@ -284,8 +284,16 @@ static NSData *point_multiply(NSData *point, const BIGNUM *factor, BOOL compress
 		BN_CTX_free(ctx);
 	}
 	
+	
 	BTCKey *key = [[BTCKey alloc] initWithPrivateKey:secret];
 	[key setPublicKeyCompressed:[self isCompressed]];
+	
+	NSData *decryptedAddressData = [[[key address] string] dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *decryptedSalt = [BTCHash256(decryptedAddressData) subdataWithRange:NSMakeRange(0, 4)];
+	
+	if (![decryptedSalt isEqualToData:salt]) {
+		return nil;
+	}
 	
 	return key;
 }

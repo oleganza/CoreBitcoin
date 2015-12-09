@@ -16,6 +16,7 @@
 	
 	[self testEncryption];
 	[self testDecryption];
+	[self testDecryptionWithWrongPass];
 }
 
 
@@ -85,6 +86,18 @@
 		NSAssert([resultedHex isEqualToString:expextedHex], @"Bip38 encryption failed");
 		NSAssert(key.isPublicKeyCompressed == expectedCompressed, @"Bip38 encryption failed to find compression value");
 	}
+}
+
++ (void) testDecryptionWithWrongPass {
+	
+	NSString *passphrase = @"12345678";
+	NSString *wrongPassphrase = @"87654321";
+	BTCKey *key = [[BTCKey alloc] init];
+	
+	BTCBip38EncryptedKey *bip38Key = [key encryptedBIP38KeyWithPassphrase:passphrase];
+	BTCKey *decryptedKey = [bip38Key decryptedKeyWithPassphrase:wrongPassphrase];
+	
+	NSAssert(decryptedKey == NULL, @"Bip38 encryption should've failed with wrong pass");
 }
 
 
