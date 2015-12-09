@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BTCOpcode.h"
+#import "BTCNetwork.h"
 #import "BTCSignatureHashType.h"
 
 typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
@@ -121,7 +122,8 @@ typedef NS_ENUM(NSInteger, BTCScriptSimulationOptions) {
 
 // Returns BTCPublicKeyAddress or BTCScriptHashAddress if the script is a standard output script for these addresses.
 // If the script is something different, returns nil.
-@property(nonatomic, readonly) BTCAddress* standardAddress;
+@property(nonatomic, readonly) BTCAddress* standardAddress DEPRECATED_ATTRIBUTE;
+- (BTCAddress*) standardAddress:(BTCNetwork*)network;
 
 // Wraps the recipient into an output P2SH script (OP_HASH160 <20-byte hash of the recipient> OP_EQUAL).
 @property(nonatomic, readonly) BTCScript* scriptHashScript;
