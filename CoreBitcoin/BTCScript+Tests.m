@@ -230,8 +230,8 @@
         NSAssert(simsigData2.length == 1 + (72 + 1) + 1 + 33, @"Simulated sigscript for p2pkh with compressed pubkey option should contain signature, hashtype and a compressed pubkey");
     }
 	
-	NSString* base58address = script.standardAddress.string;
-	NSString* base58addressTestnet = script.standardAddressTestnet.string;
+	NSString* base58address = [[script standardAddress:[BTCNetwork mainnet]] string];
+	NSString* base58addressTestnet = [[script standardAddress:[BTCNetwork testnet]] string];
     //NSLog(@"TEST: address: %@", base58address);
 	
 	NSAssert([base58address isEqualToString:@"1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG"], @"address should be correctly decoded");
