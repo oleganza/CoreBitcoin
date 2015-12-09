@@ -188,7 +188,7 @@ static NSData *point_multiply(NSData *point, const BIGNUM *factor, BOOL compress
 
 
 
-- (BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase
+- (nullable BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase
 {
 	const uint8_t flags = self.flags;
 	const uint32_t addressHash = self.addressHash;

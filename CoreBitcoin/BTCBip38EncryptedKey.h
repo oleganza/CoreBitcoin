@@ -38,7 +38,7 @@ extern const NSUInteger BTCBip38EncryptedKeyFlagsInvalid;
 - (BOOL)isEC;
 - (BOOL)isCompressed;
 
-- (BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase;
+- (nullable BTCKey *)decryptedKeyWithPassphrase:(NSString *)passphrase;
 
 @end
 
