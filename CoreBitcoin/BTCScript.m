@@ -672,7 +672,7 @@
 	return nil;
 }
 
-- (NSData*) PayToScriptHashAddressData
+- (NSData*) payToScriptHashAddressData
 {
 	if ([self isPayToScriptHashScript])
 	{
@@ -696,7 +696,7 @@
 	}
 	else if ([self isPayToScriptHashScript])
 	{
-		return [BTCScriptHashAddress addressWithData:self.PayToScriptHashAddressData];
+		return [BTCScriptHashAddress addressWithData:self.payToScriptHashAddressData];
 	}
 	return nil;
 }
@@ -709,7 +709,7 @@
 	}
 	else if ([self isPayToScriptHashScript])
 	{
-		return [BTCScriptHashAddressTestnet addressWithData:self.PayToScriptHashAddressData];
+		return [BTCScriptHashAddressTestnet addressWithData:self.payToScriptHashAddressData];
 	}
 	return nil;
 }
