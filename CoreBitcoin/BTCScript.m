@@ -701,15 +701,17 @@
 	return nil;
 }
 
-- (BTCAddress*) standardAddressTestnet
+- (BTCAddress*) standardAddress:(BTCNetwork*)network
 {
 	if ([self isPayToPublicKeyHashScript])
 	{
-		return [BTCPublicKeyAddressTestnet addressWithData:self.payToPublicKeyHashAddressData];
+		Class publicKeyAddressClass = [network isMainnet] ? [BTCPublicKeyAddress class] : [BTCPublicKeyAddressTestnet class];
+		return [publicKeyAddressClass addressWithData:self.payToPublicKeyHashAddressData];
 	}
 	else if ([self isPayToScriptHashScript])
 	{
-		return [BTCScriptHashAddressTestnet addressWithData:self.payToScriptHashAddressData];
+		Class scriptHashAddressClass = [network isMainnet] ? [BTCScriptHashAddress class] : [BTCScriptHashAddressTestnet class];
+		return [scriptHashAddressClass addressWithData:self.payToScriptHashAddressData];
 	}
 	return nil;
 }
