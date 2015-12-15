@@ -5,8 +5,7 @@
 
 @implementation BTCProtocolSerialization (Tests)
 
-+ (void) assertNumber:(uint64_t)number serializesToHex:(NSString*)hexForm
-{
++ (void) assertNumber:(uint64_t)number serializesToHex:(NSString*)hexForm {
     NSUInteger requiredLength = hexForm.length / 2;
     
     NSData* data = [BTCProtocolSerialization dataForVarInt:number];
@@ -25,8 +24,7 @@
     NSAssert(value == number, @"Should read original value");
 }
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self assertNumber:0   serializesToHex:@"00"];
     [self assertNumber:252 serializesToHex:@"fc"];
     [self assertNumber:255ULL serializesToHex:@"fdff00"];
