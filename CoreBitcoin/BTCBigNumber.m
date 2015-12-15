@@ -164,55 +164,45 @@
 
 
 
-- (BTCBigNumber*) copy
-{
+- (BTCBigNumber*) copy {
     return [self copyWithZone:nil];
 }
 
-- (BTCMutableBigNumber*) mutableCopy
-{
+- (BTCMutableBigNumber*) mutableCopy {
     return [self mutableCopyWithZone:nil];
 }
 
-- (BTCBigNumber*) copyWithZone:(NSZone *)zone
-{
+- (BTCBigNumber*) copyWithZone:(NSZone *)zone {
     BTCBigNumber* to = [[BTCBigNumber alloc] init];
-    if (BN_copy(&(to->_bignum), &_bignum))
-    {
+    if (BN_copy(&(to->_bignum), &_bignum)) {
         return to;
     }
     return nil;
 }
 
-- (BTCMutableBigNumber*) mutableCopyWithZone:(NSZone *)zone
-{
+- (BTCMutableBigNumber*) mutableCopyWithZone:(NSZone *)zone {
     BTCMutableBigNumber* to = [[BTCMutableBigNumber alloc] init];
-    if (BN_copy(&(to->_bignum), &_bignum))
-    {
+    if (BN_copy(&(to->_bignum), &_bignum)) {
         return to;
     }
     return nil;
 }
 
 
-- (BOOL) isEqual:(BTCBigNumber*)other
-{
+- (BOOL) isEqual:(BTCBigNumber*)other {
     if (![other isKindOfClass:[BTCBigNumber class]]) return NO;
     return BTCBigNumberCompare(self, other) == NSOrderedSame;
 }
 
-- (NSComparisonResult)compare:(BTCBigNumber *)other
-{
+- (NSComparisonResult)compare:(BTCBigNumber *)other {
     return BTCBigNumberCompare(self, other);
 }
 
-- (NSUInteger)hash
-{
+- (NSUInteger)hash {
     return (NSUInteger)BN_get_word(&_bignum);
 }
 
-- (NSString*) description
-{
+- (NSString*) description {
     return [NSString stringWithFormat:@"<%@:0x%p 0x%@ (%@)>", [self class], self, [self stringInBase:16], [self stringInBase:10]];
 }
 
@@ -222,13 +212,11 @@
 #pragma mark - Comparison
 
 
-- (BTCBigNumber*) min:(BTCBigNumber*)other
-{
+- (BTCBigNumber*) min:(BTCBigNumber*)other {
     return (BTCBigNumberCompare(self, other) <= 0) ? self : other;
 }
 
-- (BTCBigNumber*) max:(BTCBigNumber*)other
-{
+- (BTCBigNumber*) max:(BTCBigNumber*)other {
     return (BTCBigNumberCompare(self, other) >= 0) ? self : other;
 }
 
@@ -245,30 +233,25 @@
 
 
 
-- (NSString*) hexString
-{
+- (NSString*) hexString {
     return [self stringInBase:16];
 }
 
-- (void) setHexString:(NSString *)hexString
-{
+- (void) setHexString:(NSString *)hexString {
     [self throwIfImmutable];
     [self setString:hexString base:16];
 }
 
-- (NSString*) decimalString
-{
+- (NSString*) decimalString {
     return [self stringInBase:10];
 }
 
-- (void) setDecimalString:(NSString *)decimalString
-{
+- (void) setDecimalString:(NSString *)decimalString {
     [self throwIfImmutable];
     [self setString:decimalString base:10];
 }
 
-- (void) setString:(NSString*)string base:(NSUInteger)base
-{
+- (void) setString:(NSString*)string base:(NSUInteger)base {
     [self throwIfImmutable];
     if (base > 36 || base < 2) return;
     
@@ -281,8 +264,7 @@
     while (isspace(*psz)) psz++;
     
     bool isNegative = false;
-    if (*psz == '-')
-    {
+    if (*psz == '-') {
         isNegative = true;
         psz++;
     }
@@ -321,39 +303,27 @@
     BN_CTX* pctx = NULL;
     BIGNUM bnBase; BN_init(&bnBase); BN_set_word(&bnBase, (BN_ULONG)base);
     
-    while (1)
-    {
+    while (1) {
         unsigned char c = (unsigned char)*psz++;
         if (c == 0) break; // break when null-terminator is hit
         
-        if (c != 0x20) // skip space
-        {
+        if (c != 0x20) { // skip space
+        
             int n = digits[c];
             if (n == 0 && c != 0x30) break; // discard characters outside the 36-char range
             if (n >= base) break; // discard character outside the base range.
             
-            if (base == 16)
-            {
+            if (base == 16) {
                 BN_lshift(&_bignum, &_bignum, 4);
-            }
-            else if (base == 8)
-            {
+            } else if (base == 8) {
                 BN_lshift(&_bignum, &_bignum, 3);
-            }
-            else if (base == 4)
-            {
+            } else if (base == 4) {
                 BN_lshift(&_bignum, &_bignum, 2);
-            }
-            else if (base == 2)
-            {
+            } else if (base == 2) {
                 BN_lshift(&_bignum, &_bignum, 1);
-            }
-            else if (base == 32)
-            {
+            } else if (base == 32) {
                 BN_lshift(&_bignum, &_bignum, 5);
-            }
-            else
-            {
+            } else {
                 if (!pctx) pctx = BN_CTX_new();
                 BN_mul(&_bignum, &_bignum, &bnBase, pctx);
             }
@@ -362,8 +332,7 @@
         }
     }
     
-    if (isNegative)
-    {
+    if (isNegative) {
         BN_set_negative(&_bignum, 1);
     }
     
@@ -371,8 +340,7 @@
     if (pctx) BN_CTX_free(pctx);
 }
 
-- (NSString*) stringInBase:(NSUInteger)base
-{
+- (NSString*) stringInBase:(NSUInteger)base {
     if (base > 36 || base < 2) return nil;
     
     NSMutableData* resultData = nil;
@@ -387,16 +355,11 @@
     BIGNUM dv;  BN_init(&dv);
     BIGNUM rem; BN_init(&rem);
     
-    if (BN_cmp(&bn, &bn0) == 0)
-    {
+    if (BN_cmp(&bn, &bn0) == 0) {
         resultData = [NSMutableData dataWithBytes:"0" length:1];
-    }
-    else
-    {
-        while (BN_cmp(&bn, &bn0) > 0)
-        {
-            if (!BN_div(&dv, &rem, &bn, &bnBase, pctx))
-            {
+    } else {
+        while (BN_cmp(&bn, &bn0) > 0) {
+            if (!BN_div(&dv, &rem, &bn, &bnBase, pctx)) {
                 NSLog(@"BTCBigNumber: stringInBase failed to BN_div");
                 break;
             }
@@ -410,8 +373,7 @@
             
             [resultData replaceBytesInRange:NSMakeRange(0, 0) withBytes:&ch length:1];
         }
-        if (resultData && BN_is_negative(&_bignum))
-        {
+        if (resultData && BN_is_negative(&_bignum)) {
             unsigned char ch = '-';
             [resultData replaceBytesInRange:NSMakeRange(0, 0) withBytes:&ch length:1];
         }
@@ -449,16 +411,12 @@
 //
 // This implementation directly uses shifts instead of going
 // through an intermediate MPI representation.
-- (uint32_t) compact
-{
+- (uint32_t) compact {
     uint32_t size = BN_num_bytes(&_bignum);
     uint32_t result = 0;
-    if (size <= 3)
-    {
+    if (size <= 3) {
         result = (uint32_t)(BN_get_word(&_bignum) << 8*(3-size));
-    }
-    else
-    {
+    } else {
         BIGNUM bn;
         BN_init(&bn);
         BN_rshift(&bn, &_bignum, 8*(size-3));
@@ -466,8 +424,7 @@
     }
     // The 0x00800000 bit denotes the sign.
     // Thus, if it is already set, divide the mantissa by 256 and increase the exponent.
-    if (result & 0x00800000)
-    {
+    if (result & 0x00800000) {
         result >>= 8;
         size++;
     }
@@ -476,48 +433,38 @@
     return result;
 }
 
-- (void) setCompact:(uint32_t)value
-{
+- (void) setCompact:(uint32_t)value {
     [self throwIfImmutable];
     unsigned int size = value >> 24;
     bool isNegative   = (value & 0x00800000) != 0;
     unsigned int word = value & 0x007fffff;
-    if (size <= 3)
-    {
+    if (size <= 3) {
         word >>= 8*(3-size);
         BN_set_word(&_bignum, word);
-    }
-    else
-    {
+    } else {
         BN_set_word(&_bignum, word);
         BN_lshift(&_bignum, &_bignum, 8*(size-3));
     }
     BN_set_negative(&_bignum, isNegative);
 }
 
-- (uint32_t) uint32value
-{
+- (uint32_t) uint32value {
     return (uint32_t)BN_get_word(&_bignum);
 }
 
-- (void) setUint32value:(uint32_t)value
-{
+- (void) setUint32value:(uint32_t)value {
     [self throwIfImmutable];
     BN_set_word(&_bignum, value);
 }
 
-- (int32_t) int32value
-{
+- (int32_t) int32value {
     uint32_t value = [self uint32value];
-    if (!BN_is_negative(&_bignum))
-    {
+    if (!BN_is_negative(&_bignum)) {
         if (value > INT32_MAX)
             return INT32_MAX;
         else
             return value;
-    }
-    else
-    {
+    } else {
         if (value > INT32_MAX)
             return INT32_MIN;
         else
@@ -525,42 +472,33 @@
     }
 }
 
-- (void) setInt32value:(int32_t)value
-{
+- (void) setInt32value:(int32_t)value {
     [self throwIfImmutable];
-    if (value >= 0)
-    {
+    if (value >= 0) {
         self.uint32value = value;
-    }
-    else
-    {
+    } else {
         self.int64value = value;
     }
 }
 
-- (uint64_t) uint64value
-{
+- (uint64_t) uint64value {
     return (uint64_t)BN_get_word(&_bignum);
 }
 
-- (int64_t) int64value
-{
+- (int64_t) int64value {
     return (int64_t)BN_get_word(&_bignum);
 }
 
-- (void) setUint64value:(uint64_t)value
-{
+- (void) setUint64value:(uint64_t)value {
     [self throwIfImmutable];
     [self setUint64valuePrivate:value negative:NO];
 }
 
-- (void) setInt64value:(int64_t)value
-{
+- (void) setInt64value:(int64_t)value {
     [self throwIfImmutable];
     bool isNegative = NO;
     uint64_t uintValue;
-    if (value < 0)
-    {
+    if (value < 0) {
         // Since the minimum signed integer cannot be represented as
         // positive so long as its type is signed, and it's not well-defined
         // what happens if you make it unsigned before negating it, we
@@ -569,36 +507,30 @@
         uintValue = -(value + 1);
         ++uintValue;
         isNegative = YES;
-    }
-    else
-    {
+    } else {
         uintValue = value;
     }
     
     [self setUint64valuePrivate:uintValue negative:isNegative];
 }
 
-- (void) setUint64valuePrivate:(uint64_t)value negative:(BOOL)isNegative
-{
+- (void) setUint64valuePrivate:(uint64_t)value negative:(BOOL)isNegative {
     // Numbers are represented in OpenSSL using the MPI format. 4 byte length.
     unsigned char rawMPI[sizeof(value) + 6];
     unsigned char* currentByte = &rawMPI[4];
     BOOL leadingZeros = YES;
-    for (int i = 0; i < 8; ++i)
-    {
+    for (int i = 0; i < 8; ++i) {
         uint8_t c = (value >> 56) & 0xff;
         value <<= 8;
-        if (leadingZeros)
-        {
+        if (leadingZeros) {
             if (c == 0) continue; // Skip beginning zeros
             
-            if (c & 0x80)
-            {
+            if (c & 0x80) {
                 *currentByte = (isNegative ? 0x80 : 0);
                 ++currentByte;
-            }
-            else if (isNegative)
+            } else if (isNegative) {
                 c |= 0x80;
+            }
             leadingZeros = false;
         }
         *currentByte = c;
@@ -612,11 +544,9 @@
     BN_mpi2bn(rawMPI, (int)(currentByte - rawMPI), &_bignum);
 }
 
-- (NSData*) signedLittleEndian
-{
+- (NSData*) signedLittleEndian {
     size_t size = BN_bn2mpi(&_bignum, NULL);
-    if (size <= 4)
-    {
+    if (size <= 4) {
         return [NSData data];
     }
     NSMutableData* data = [NSMutableData dataWithLength:size];
@@ -626,8 +556,7 @@
     return data;
 }
 
-- (void) setSignedLittleEndian:(NSData *)data
-{
+- (void) setSignedLittleEndian:(NSData *)data {
     [self throwIfImmutable];
     NSUInteger size = data.length;
     NSMutableData* mdata = [data mutableCopy];
@@ -726,33 +655,27 @@
 @dynamic littleEndianData;
 @dynamic unsignedData;
 
-- (BIGNUM*) mutableBIGNUM
-{
+- (BIGNUM*) mutableBIGNUM {
     return &(self->_bignum);
 }
 
-+ (instancetype) zero
-{
++ (instancetype) zero {
     return [[BTCBigNumber zero] mutableCopy];
 }
 
-+ (instancetype) one
-{
++ (instancetype) one {
     return [[BTCBigNumber one] mutableCopy];
 }
 
-+ (instancetype) negativeOne
-{
++ (instancetype) negativeOne {
     return [[BTCBigNumber negativeOne] mutableCopy];
 }
 
 // We are mutable, disable checks.
-- (void) throwIfImmutable
-{
+- (void) throwIfImmutable {
 }
 
-- (void) setString:(NSString*)string base:(NSUInteger)base
-{
+- (void) setString:(NSString*)string base:(NSUInteger)base {
     [super setString:string base:base];
 }
 
@@ -760,80 +683,69 @@
 #pragma mark - Operations
 
 
-- (instancetype) add:(BTCBigNumber*)other // +=
-{
+- (instancetype) add:(BTCBigNumber*)other { // +=
     BN_add(&(self->_bignum), &(self->_bignum), &(other->_bignum));
     return self;
 }
 
-- (instancetype) add:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
-{
+- (instancetype) add:(BTCBigNumber*)other mod:(BTCBigNumber*)mod {
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_add(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) subtract:(BTCBigNumber *)other // -=
-{
+- (instancetype) subtract:(BTCBigNumber *)other { // -=
     BN_sub(&(self->_bignum), &(self->_bignum), &(other->_bignum));
     return self;
 }
 
-- (instancetype) subtract:(BTCBigNumber*)other mod:(BTCBigNumber*)mod
-{
+- (instancetype) subtract:(BTCBigNumber*)other mod:(BTCBigNumber*)mod {
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_sub(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) multiply:(BTCBigNumber*)other // *=
-{
+- (instancetype) multiply:(BTCBigNumber*)other { // *=
     BN_CTX* pctx = BN_CTX_new();
     BN_mul(&(self->_bignum), &(self->_bignum), &(other->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) multiply:(BTCBigNumber*)other mod:(BTCBigNumber *)mod
-{
+- (instancetype) multiply:(BTCBigNumber*)other mod:(BTCBigNumber *)mod {
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_mul(&(self->_bignum), &(self->_bignum), &(other->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) divide:(BTCBigNumber*)other // /=
-{
+- (instancetype) divide:(BTCBigNumber*)other { // /=
     BN_CTX* pctx = BN_CTX_new();
     BN_div(&(self->_bignum), NULL, &(self->_bignum), &(other->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) mod:(BTCBigNumber*)other // %=
-{
+- (instancetype) mod:(BTCBigNumber*)other { // %=
     BN_CTX* pctx = BN_CTX_new();
     BN_div(NULL, &(self->_bignum), &(self->_bignum), &(other->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) lshift:(unsigned int)shift // <<=
-{
+- (instancetype) lshift:(unsigned int)shift { // <<=
     BN_lshift(&(self->_bignum), &(self->_bignum), shift);
     return self;
 }
 
-- (instancetype) rshift:(unsigned int)shift // >>=
-{
+- (instancetype) rshift:(unsigned int)shift { // >>=
     // Note: BN_rshift segfaults on 64-bit if 2^shift is greater than the number
     //   if built on ubuntu 9.04 or 9.10, probably depends on version of OpenSSL
     BTCMutableBigNumber* a = [BTCMutableBigNumber one];
     [a lshift:shift];
-    if (BN_cmp(&(a->_bignum), &(self->_bignum)) > 0)
-    {
+    if (BN_cmp(&(a->_bignum), &(self->_bignum)) > 0) {
         BN_zero(&(self->_bignum));
         return self;
     }
@@ -842,24 +754,21 @@
     return self;
 }
 
-- (instancetype) inverseMod:(BTCBigNumber*)mod // (a^-1) mod n
-{
+- (instancetype) inverseMod:(BTCBigNumber*)mod { // (a^-1) mod n
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_inverse(&(self->_bignum), &(self->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) exp:(BTCBigNumber*)power // pow(self, p)
-{
+- (instancetype) exp:(BTCBigNumber*)power { // pow(self, p)
     BN_CTX* pctx = BN_CTX_new();
     BN_exp(&(self->_bignum), &(self->_bignum), &(power->_bignum), pctx);
     BN_CTX_free(pctx);
     return self;
 }
 
-- (instancetype) exp:(BTCBigNumber*)power mod:(BTCBigNumber *)mod // pow(self,p) % m
-{
+- (instancetype) exp:(BTCBigNumber*)power mod:(BTCBigNumber *)mod { // pow(self,p) % m
     BN_CTX* pctx = BN_CTX_new();
     BN_mod_exp(&(self->_bignum), &(self->_bignum), &(power->_bignum), &(mod->_bignum), pctx);
     BN_CTX_free(pctx);
