@@ -6,15 +6,12 @@
 
 @implementation BTCBlockHeader
 
-+ (NSUInteger) headerLength
-{
++ (NSUInteger) headerLength {
     return 4 + 32 + 32 + 4 + 4 + 4;
 }
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         // init default values
         _version = BTCBlockCurrentVersion;
         _previousBlockHash = BTCZero256();
@@ -27,61 +24,49 @@
     return self;
 }
 
-- (id) initWithData:(NSData*)data
-{
-    if (self = [self init])
-    {
+- (id) initWithData:(NSData*)data {
+    if (self = [self init]) {
         if (![self parseData:data]) return nil;
     }
     return self;
 }
 
-- (id) initWithStream:(NSInputStream*)stream
-{
-    if (self = [self init])
-    {
+- (id) initWithStream:(NSInputStream*)stream {
+    if (self = [self init]) {
         if (![self parseStream:stream]) return nil;
     }
     return self;
 }
 
-- (NSString*) previousBlockID
-{
+- (NSString*) previousBlockID {
     return BTCIDFromHash(self.previousBlockHash);
 }
 
-- (void) setPreviousBlockID:(NSString *)previousBlockID
-{
+- (void) setPreviousBlockID:(NSString *)previousBlockID {
     self.previousBlockHash = BTCHashFromID(previousBlockID) ?: BTCZero256();
 }
 
-- (NSData*) blockHash
-{
+- (NSData*) blockHash {
     return BTCHash256(self.data);
 }
 
-- (NSString*) blockID
-{
+- (NSString*) blockID {
     return BTCIDFromHash(self.blockHash);
 }
 
-- (NSDate*) date
-{
+- (NSDate*) date {
     return [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)self.time];
 }
 
-- (void) setDate:(NSDate *)date
-{
+- (void) setDate:(NSDate *)date {
     _time = (uint32_t)round(date.timeIntervalSince1970);
 }
 
-- (NSData*) data
-{
+- (NSData*) data {
     return [self computePayload];
 }
 
-- (NSData*) computePayload
-{
+- (NSData*) computePayload {
     NSMutableData* data = [NSMutableData data];
 
     int32_t version = OSSwapHostToLittleInt32(_version);
@@ -102,23 +87,20 @@
     return data;
 }
 
-- (BOOL) parseData:(NSData*)data
-{
+- (BOOL) parseData:(NSData*)data {
     
     // TODO
     
     return YES;
 }
 
-- (BOOL) parseStream:(NSStream*)stream
-{
+- (BOOL) parseStream:(NSStream*)stream {
     // TODO
     
     return YES;
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     BTCBlockHeader* bh = [[BTCBlockHeader alloc] init];
     bh.version = self->_version;
     bh.previousBlockHash = [self->_previousBlockHash copy];
