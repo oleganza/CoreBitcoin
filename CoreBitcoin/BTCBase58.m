@@ -6,18 +6,15 @@
 
 static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-NSMutableData* BTCDataFromBase58(NSString* string)
-{
+NSMutableData* BTCDataFromBase58(NSString* string) {
     return BTCDataFromBase58CString([string cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
-NSMutableData* BTCDataFromBase58Check(NSString* string)
-{
+NSMutableData* BTCDataFromBase58Check(NSString* string) {
     return BTCDataFromBase58CheckCString([string cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
-NSMutableData* BTCDataFromBase58CString(const char* cstring)
-{
+NSMutableData* BTCDataFromBase58CString(const char* cstring) {
     if (cstring == NULL) return nil;
     
     // empty string -> empty data.
@@ -41,15 +38,12 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     
     
     // Convert big endian string to bignum
-    for (const char* p = cstring; *p; p++)
-    {
+    for (const char* p = cstring; *p; p++) {
         const char* p1 = strchr(BTCBase58Alphabet, *p);
-        if (p1 == NULL)
-        {
+        if (p1 == NULL) {
             while (isspace(*p))
                 p++;
-            if (*p != '\0')
-            {
+            if (*p != '\0') {
                 finish();
                 return nil;
             }
@@ -58,14 +52,12 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
         
         BN_set_word(&bnChar, (BN_ULONG)(p1 - BTCBase58Alphabet));
         
-        if (!BN_mul(&bn, &bn, &bn58, pctx))
-        {
+        if (!BN_mul(&bn, &bn, &bn58, pctx)) {
             finish();
             return nil;
         }
         
-        if (!BN_add(&bn, &bn, &bnChar))
-        {
+        if (!BN_add(&bn, &bn, &bnChar)) {
             finish();
             return nil;
         }
@@ -76,12 +68,9 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     NSMutableData* bndata = nil;
     {
         size_t bnsize = BN_bn2mpi(&bn, NULL);
-        if (bnsize <= 4)
-        {
+        if (bnsize <= 4) {
             bndata = [NSMutableData data];
-        }
-        else
-        {
+        } else {
             bndata = [NSMutableData dataWithLength:bnsize];
             BN_bn2mpi(&bn, bndata.mutableBytes);
             [bndata replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
@@ -93,8 +82,7 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     // Trim off sign byte if present
     if (bnsize >= 2
         && ((unsigned char*)bndata.bytes)[bnsize - 1] == 0
-        && ((unsigned char*)bndata.bytes)[bnsize - 2] >= 0x80)
-    {
+        && ((unsigned char*)bndata.bytes)[bnsize - 2] >= 0x80) {
         bnsize -= 1;
         [bndata setLength:bnsize];
     }
@@ -117,21 +105,18 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring)
     return result;
 }
 
-NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
-{
+NSMutableData* BTCDataFromBase58CheckCString(const char* cstring) {
     if (cstring == NULL) return nil;
     
     NSMutableData* result = BTCDataFromBase58CString(cstring);
     size_t length = result.length;
-    if (length < 4)
-    {
+    if (length < 4) {
         return nil;
     }
     NSData* hash = BTCHash256([result subdataWithRange:NSMakeRange(0, length - 4)]);
     
     // Last 4 bytes should be equal first 4 bytes of the hash.
-    if (memcmp(hash.bytes, result.bytes + length - 4, 4) != 0)
-    {
+    if (memcmp(hash.bytes, result.bytes + length - 4, 4) != 0) {
         return nil;
     }
     [result setLength:length - 4];
@@ -139,8 +124,7 @@ NSMutableData* BTCDataFromBase58CheckCString(const char* cstring)
 }
 
 
-char* BTCBase58CStringWithData(NSData* data)
-{
+char* BTCBase58CStringWithData(NSData* data) {
     if (!data) return NULL;
     
     BN_CTX* pctx = BN_CTX_new();
@@ -188,10 +172,8 @@ char* BTCBase58CStringWithData(NSData* data)
     // use 138% to be safe
     NSMutableData* stringData = [NSMutableData dataWithCapacity:data.length*138/100 + 1];
     
-    while (BN_cmp(&bn, &bn0) > 0)
-    {
-        if (!BN_div(&dv, &rem, &bn, &bn58, pctx))
-        {
+    while (BN_cmp(&bn, &bn0) > 0) {
+        if (!BN_div(&dv, &rem, &bn, &bn58, pctx)) {
             finish();
             return nil;
         }
@@ -204,8 +186,7 @@ char* BTCBase58CStringWithData(NSData* data)
     // Leading zeroes encoded as base58 ones ("1")
     const unsigned char* pbegin = data.bytes;
     const unsigned char* pend = data.bytes + data.length;
-    for (const unsigned char* p = pbegin; p < pend && *p == 0; p++)
-    {
+    for (const unsigned char* p = pbegin; p < pend && *p == 0; p++) {
         [stringData appendBytes:BTCBase58Alphabet + 0 length:1];
     }
     
@@ -221,8 +202,7 @@ char* BTCBase58CStringWithData(NSData* data)
 }
 
 // String in Base58 with checksum
-char* BTCBase58CheckCStringWithData(NSData* immutabledata)
-{
+char* BTCBase58CheckCStringWithData(NSData* immutabledata) {
     if (!immutabledata) return NULL;
     // add 4-byte hash check to the end
     NSMutableData* data = [immutabledata mutableCopy];
@@ -233,8 +213,7 @@ char* BTCBase58CheckCStringWithData(NSData* immutabledata)
     return result;
 }
 
-NSString* BTCBase58StringWithData(NSData* data)
-{
+NSString* BTCBase58StringWithData(NSData* data) {
     if (!data) return nil;
     char* s = BTCBase58CStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
@@ -244,8 +223,7 @@ NSString* BTCBase58StringWithData(NSData* data)
 }
 
 
-NSString* BTCBase58CheckStringWithData(NSData* data)
-{
+NSString* BTCBase58CheckStringWithData(NSData* data) {
     if (!data) return nil;
     char* s = BTCBase58CheckCStringWithData(data);
     id r = [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
