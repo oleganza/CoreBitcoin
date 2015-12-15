@@ -2,8 +2,7 @@
 
 #import "BTCOpcode.h"
 
-NSDictionary* BTCOpcodeForNameDictionary()
-{
+NSDictionary* BTCOpcodeForNameDictionary() {
     static NSDictionary* dict = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -127,18 +126,15 @@ NSDictionary* BTCOpcodeForNameDictionary()
     return dict;
 }
 
-NSString* BTCNameForOpcode(BTCOpcode opcode)
-{
+NSString* BTCNameForOpcode(BTCOpcode opcode) {
     NSDictionary* dict = BTCOpcodeForNameDictionary();
-    for (NSString* name in dict)
-    {
+    for (NSString* name in dict) {
         if ([dict[name] unsignedCharValue] == opcode) return name;
     }
     return @"OP_UNKNOWN";
 }
 
-BTCOpcode BTCOpcodeForName(NSString* opcodeName)
-{
+BTCOpcode BTCOpcodeForName(NSString* opcodeName) {
     NSNumber* number = opcodeName ? BTCOpcodeForNameDictionary()[opcodeName] : nil;
     if (!number) return OP_INVALIDOPCODE;
     return [number unsignedCharValue];
@@ -146,8 +142,7 @@ BTCOpcode BTCOpcodeForName(NSString* opcodeName)
 
 // Returns OP_1NEGATE, OP_0 .. OP_16 for ints from -1 to 16.
 // Returns OP_INVALIDOPCODE for other ints.
-BTCOpcode BTCOpcodeForSmallInteger(NSInteger smallInteger)
-{
+BTCOpcode BTCOpcodeForSmallInteger(NSInteger smallInteger) {
     if (smallInteger == 0) return OP_0;
     if (smallInteger == -1) return OP_1NEGATE;
     if (smallInteger >= 1 && smallInteger <= 16) return (OP_1 + (smallInteger - 1));
@@ -156,8 +151,7 @@ BTCOpcode BTCOpcodeForSmallInteger(NSInteger smallInteger)
 
 // Converts opcode OP_<N> or OP_1NEGATE to an integer value.
 // If incorrect opcode is given, NSIntegerMax is returned.
-NSInteger BTCSmallIntegerFromOpcode(BTCOpcode opcode)
-{
+NSInteger BTCSmallIntegerFromOpcode(BTCOpcode opcode) {
     if (opcode == OP_0) return 0;
     if (opcode == OP_1NEGATE) return -1;
     if (opcode >= OP_1 && opcode <= OP_16) return (int)opcode - (int)(OP_1 - 1);
