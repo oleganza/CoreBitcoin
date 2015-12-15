@@ -3,12 +3,10 @@
 #import "BTCHashID.h"
 #import "BTCData.h"
 
-NSData* BTCHashFromID(NSString* identifier)
-{
+NSData* BTCHashFromID(NSString* identifier) {
     return BTCReversedData(BTCDataFromHex(identifier));
 }
 
-NSString* BTCIDFromHash(NSData* hash)
-{
+NSString* BTCIDFromHash(NSData* hash) {
     return BTCHexFromData(BTCReversedData(hash));
 }
