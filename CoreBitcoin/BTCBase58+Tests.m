@@ -3,8 +3,7 @@
 #import "BTCBase58+Tests.h"
 #import "BTCData.h"
 
-void BTCAssertHexEncodesToBase58(NSString* hex, NSString* base58)
-{
+void BTCAssertHexEncodesToBase58(NSString* hex, NSString* base58) {
     NSData* data = BTCDataFromHex(hex);
     
     // Encode
@@ -15,15 +14,13 @@ void BTCAssertHexEncodesToBase58(NSString* hex, NSString* base58)
     NSCAssert([data2 isEqual:data], @"should decode base58 correctly");
 }
 
-void BTCAssertDetectsInvalidBase58(NSString* text)
-{
+void BTCAssertDetectsInvalidBase58(NSString* text) {
 	NSData *data = BTCDataFromBase58Check(text);
     
     NSCAssert(data == nil, @"should return nil if base58 is invalid");
 }
 
-void BTCBase58RunAllTests()
-{
+void BTCBase58RunAllTests() {
     BTCAssertDetectsInvalidBase58(nil);
     BTCAssertDetectsInvalidBase58(@" ");
     BTCAssertDetectsInvalidBase58(@"lLoO");
@@ -46,18 +43,15 @@ void BTCBase58RunAllTests()
     BTCAssertHexEncodesToBase58(@"10c8511e", @"Rt5zm");
     BTCAssertHexEncodesToBase58(@"00000000000000000000", @"1111111111");
 
-    if ((0))
-    {
+    if ((0)) {
         // Search for vanity prefix
         NSString* prefix = @"s";
         
         NSData* payload = BTCRandomDataWithLength(32);
-        for (uint32_t i = 0x10000000; i <= UINT32_MAX; i++)
-        {
+        for (uint32_t i = 0x10000000; i <= UINT32_MAX; i++) {
             int j = 10;
             NSString* serialization = nil;
-            do
-            {
+            do {
                 NSMutableData* data = [NSMutableData data];
 
                 uint32_t idx = 0;
@@ -71,8 +65,7 @@ void BTCBase58RunAllTests()
 
             } while ([serialization hasPrefix:prefix] && j-- > 0);
 
-            if ([serialization hasPrefix:prefix])
-            {
+            if ([serialization hasPrefix:prefix]) {
                 NSLog(@"integer for prefix %@ is %d", prefix, i);
                 break;
             }
