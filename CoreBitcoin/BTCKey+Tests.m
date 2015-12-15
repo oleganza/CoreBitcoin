@@ -7,8 +7,7 @@
 
 @implementation BTCKey (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testRFC6979];
     [self testDiffieHellman];
     [self testCanonicality];
@@ -83,8 +82,7 @@
         NSData* data = BTCDataFromHex(@"304402207f5561ac3cfb05743cab6ca914f7eb93c489f276f10cdf4549e7f0b0ef4e85cd02200191c0c2fd10f10158973a0344fdaf2438390e083a509d2870bcf2b05445612b01");
 
         NSError* error = nil;
-        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
-        {
+        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error]) {
             NSLog(@"error: %@", error);
         }
     }
@@ -93,8 +91,7 @@
         NSData* data = BTCDataFromHex(@"3045022100e81a33ac22d0ef25d359a5353977f0f953608b2733141239ec02363237ab6781022045c71237e95b56079e9fa88591060e4c1a4bb02c0cad1ebeb092749d4aa9754701");
 
         NSError* error = nil;
-        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
-        {
+        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error]) {
             NSLog(@"error: %@", error);
         }
     }
@@ -103,20 +100,17 @@
         NSData* data = BTCDataFromHex(@"304402202692ad36ae12652c3f4bf068bd05477d867f654f2edf2cb15d335b25305d56b802206a4b51939b4b54fa62186e7bb78b4da8fe91475e5805897df11553dd1e08eb3e01");
 
         NSError* error = nil;
-        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error])
-        {
+        if (![BTCKey isCanonicalSignatureWithHashType:data verifyLowerS:YES error:&error]) {
             NSLog(@"error: %@", error);
         }
     }
 
 }
 
-+ (void) testRandomKeys
-{
++ (void) testRandomKeys {
     NSMutableArray* arr = [NSMutableArray array];
     // just a sanity check, not a serious randomness
-    for (int i = 0; i < 32; i++)
-    {
+    for (int i = 0; i < 32; i++) {
         BTCKey* k = [[BTCKey alloc] init];
         //NSLog(@"key = %@", BTCHexFromData(k.privateKey));
         
@@ -129,10 +123,8 @@
     }
 }
 
-+ (void) testECDSA
-{
-    for (int n = 0; n < 1000; n++)
-    {
++ (void) testECDSA {
+    for (int n = 0; n < 1000; n++) {
         NSString* message = [NSString stringWithFormat:@"Test message %d", n];
         NSData* messageData = [message dataUsingEncoding:NSUTF8StringEncoding];
         NSData* messageHash = messageData.SHA256;
@@ -148,8 +140,7 @@
     }
 }
 
-+ (void) testBasicSigning
-{
++ (void) testBasicSigning {
     NSString* message = @"Test message";
     NSData* messageData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSData* secret = BTCDataFromHex(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
@@ -181,15 +172,12 @@
     
     // Signature should be invalid if any bit is flipped.
     // This all works, of course, but takes a lot of time to compute.
-    if (0)
-    {
+    if (0) {
         NSData* digest = messageData.SHA256;
         NSMutableData* sig = [signature mutableCopy];
         unsigned char* buf = sig.mutableBytes;
-        for (int i = 0; i < signature.length; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
+        for (int i = 0; i < signature.length; i++) {
+            for (int j = 0; j < 8; j++) {
                 unsigned char mask = 1 << j;
                 buf[i] = buf[i] ^ mask;
                 NSAssert(![key isValidSignature:sig hash:digest], @"Signature must not be valid if any bit is flipped");
@@ -205,8 +193,7 @@
 
 
 
-+ (void) testBitcoinSignedMessage
-{
++ (void) testBitcoinSignedMessage {
     NSString* message = @"Test message";
     NSData* secret = BTCDataFromHex(@"c4bbcb1fbec99d65bf59d85c8cb62ee2db963f0fe106f483d9afa73bd4e39a8a");
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:secret];
