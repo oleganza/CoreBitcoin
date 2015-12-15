@@ -10,8 +10,7 @@
 static const unsigned char _BTCZeroString256[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 // This is designed to be not optimized out by compiler like memset
-void *BTCSecureMemset(void *v, unsigned char c, size_t n)
-{
+void *BTCSecureMemset(void *v, unsigned char c, size_t n) {
     if (!v) return v;
     volatile unsigned char *p = v;
     while (n--)
@@ -20,14 +19,12 @@ void *BTCSecureMemset(void *v, unsigned char c, size_t n)
     return v;
 }
 
-void BTCSecureClearCString(char *s)
-{
+void BTCSecureClearCString(char *s) {
     if (!s) return;
     BTCSecureMemset(s, 0, strlen(s));
 }
 
-void *BTCCreateRandomBytesOfLength(size_t length)
-{
+void *BTCCreateRandomBytesOfLength(size_t length) {
     FILE *fp = fopen("/dev/random", "r");
     if (!fp)
     {
@@ -47,8 +44,7 @@ void *BTCCreateRandomBytesOfLength(size_t length)
 }
 
 // Returns data with securely random bytes of the specified length. Uses /dev/random.
-NSMutableData* BTCRandomDataWithLength(NSUInteger length)
-{
+NSMutableData* BTCRandomDataWithLength(NSUInteger length) {
     void *bytes = BTCCreateRandomBytesOfLength(length);
     if (!bytes) return nil;
     return [[NSMutableData alloc] initWithBytesNoCopy:bytes length:length];
@@ -57,34 +53,29 @@ NSMutableData* BTCRandomDataWithLength(NSUInteger length)
 // Returns data produced by flipping the coin as proposed by Dan Kaminsky:
 // https://gist.github.com/PaulCapestany/6148566
 
-static inline int BTCCoinFlip()
-{
+static inline int BTCCoinFlip() {
     __block int n = 0;
     //int c = 0;
     dispatch_time_t then = dispatch_time(DISPATCH_TIME_NOW, 999000ull);
 
     // We need to increase variance of number of flips, so we force system to schedule some threads
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
-        {
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then) {
             n = !n;
         }
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
-        {
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then) {
             n = !n;
         }
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
-        {
+        while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then) {
             n = !n;
         }
     });
 
-    while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then)
-    {
+    while (dispatch_time(DISPATCH_TIME_NOW, 0) <= then) {
         //c++;
         n = !n; // flipping the coin
     }
@@ -93,28 +84,22 @@ static inline int BTCCoinFlip()
 }
 
 // Simple Von Neumann debiasing - throwing away two flips that return the same value.
-static inline int BTCFairCoinFlip()
-{
-    while(1)
-    {
+static inline int BTCFairCoinFlip() {
+    while(1) {
         int a = BTCCoinFlip();
-        if (a != BTCCoinFlip())
-        {
+        if (a != BTCCoinFlip()) {
             return a;
         }
     }
 }
 
-NSData* BTCCoinFlipDataWithLength(NSUInteger length)
-{
+NSData* BTCCoinFlipDataWithLength(NSUInteger length) {
     NSMutableData* data = [NSMutableData dataWithLength:length];
     unsigned char* bytes = data.mutableBytes;
-    for (int i = 0; i < length; i++)
-    {
+    for (int i = 0; i < length; i++) {
         unsigned char byte = 0;
         int bits = 8;
-        while(bits--)
-        {
+        while(bits--) {
             byte <<= 1;
             byte |= BTCFairCoinFlip();
         }
@@ -128,8 +113,7 @@ NSData* BTCDataWithUTF8String(const char* utf8string) { // deprecated
 }
 
 // Creates data with zero-terminated string in UTF-8 encoding.
-NSData* BTCDataWithUTF8CString(const char* utf8string)
-{
+NSData* BTCDataWithUTF8CString(const char* utf8string) {
     return [[NSData alloc] initWithBytes:utf8string length:strlen(utf8string)];
 }
 
@@ -138,14 +122,12 @@ NSData* BTCDataWithHexString(NSString* hexString) { // deprecated
 }
 
 // Init with hex string (lower- or uppercase, with optional 0x prefix)
-NSData* BTCDataFromHex(NSString* hexString)
-{
+NSData* BTCDataFromHex(NSString* hexString) {
     return BTCDataWithHexCString([hexString cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
 // Init with zero-terminated hex string (lower- or uppercase, with optional 0x prefix)
-NSData* BTCDataWithHexCString(const char* hexCString)
-{
+NSData* BTCDataWithHexCString(const char* hexCString) {
     if (hexCString == NULL) return nil;
     
     const unsigned char *psz = (const unsigned char*)hexCString;
@@ -185,8 +167,7 @@ NSData* BTCDataWithHexCString(const char* hexCString)
     
     unsigned char* bufpointer = buf;
     
-    while (1)
-    {
+    while (1) {
         unsigned char c1 = (unsigned char)*psz++;
         signed char n1 = digits[c1];
         if (n1 == (signed char)-1) break; // break when null-terminator is hit
@@ -203,8 +184,7 @@ NSData* BTCDataWithHexCString(const char* hexCString)
 }
 
 
-NSString* BTCHexFromDataWithFormat(NSData* data, const char* format)
-{
+NSString* BTCHexFromDataWithFormat(NSData* data, const char* format) {
     if (!data) return nil;
     
     NSUInteger length = data.length;
@@ -213,8 +193,7 @@ NSString* BTCHexFromDataWithFormat(NSData* data, const char* format)
     NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
     char *dest = resultdata.mutableBytes;
     unsigned const char *src = data.bytes;
-    for (int i = 0; i < length; ++i)
-    {
+    for (int i = 0; i < length; ++i) {
         sprintf(dest + i*2, format, (unsigned int)(src[i]));
     }
     return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
@@ -237,28 +216,24 @@ NSString* BTCUppercaseHexFromData(NSData* data) {
 }
 
 
-NSData* BTCReversedData(NSData* data)
-{
+NSData* BTCReversedData(NSData* data) {
     return BTCReversedMutableData(data);
 }
 
-NSMutableData* BTCReversedMutableData(NSData* data)
-{
+NSMutableData* BTCReversedMutableData(NSData* data) {
     if (!data) return nil;
     NSMutableData* md = [NSMutableData dataWithData:data];
     BTCDataReverse(md);
     return md;
 }
 
-void BTCReverseBytesLength(void* bytes, NSUInteger length)
-{
+void BTCReverseBytesLength(void* bytes, NSUInteger length) {
     // K&R
     if (length <= 1) return;
     unsigned char* buf = bytes;
     unsigned char byte;
     NSUInteger i, j;
-    for (i = 0, j = length - 1; i < j; i++, j--)
-    {
+    for (i = 0, j = length - 1; i < j; i++, j--) {
         byte = buf[i];
         buf[i] = buf[j];
         buf[j] = byte;
@@ -266,24 +241,20 @@ void BTCReverseBytesLength(void* bytes, NSUInteger length)
 }
 
 // Reverses byte order in the internal buffer of mutable data object.
-void BTCDataReverse(NSMutableData* self)
-{
+void BTCDataReverse(NSMutableData* self) {
     BTCReverseBytesLength(self.mutableBytes, self.length);
 }
 
 // Clears contents of the data to prevent leaks through swapping or buffer-overflow attacks.
-BOOL BTCDataClear(NSData* data)
-{
-    if ([data isKindOfClass:[NSMutableData class]])
-    {
+BOOL BTCDataClear(NSData* data) {
+    if ([data isKindOfClass:[NSMutableData class]]) {
         [(NSMutableData*)data resetBytesInRange:NSMakeRange(0, data.length)];
         return YES;
     }
     return NO;
 }
 
-NSMutableData* BTCDataRange(NSData* data, NSRange range)
-{
+NSMutableData* BTCDataRange(NSData* data, NSRange range) {
     NSCAssert(range.location != NSNotFound, @"range location should be correct");
     NSCAssert(range.location + range.length <= data.length, @"range should be within bounds of data");
     
@@ -294,8 +265,7 @@ NSMutableData* BTCDataRange(NSData* data, NSRange range)
     return [NSMutableData dataWithBytes:((unsigned char*)data.bytes) + range.location length:range.length];
 }
 
-NSMutableData* BTCSHA1(NSData* data)
-{
+NSMutableData* BTCSHA1(NSData* data) {
     if (!data) return nil;
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
 
@@ -311,8 +281,7 @@ NSMutableData* BTCSHA1(NSData* data)
     return result;
 }
 
-NSMutableData* BTCSHA256(NSData* data)
-{
+NSMutableData* BTCSHA256(NSData* data) {
     if (!data) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
 
@@ -328,8 +297,7 @@ NSMutableData* BTCSHA256(NSData* data)
     return result;
 }
 
-NSMutableData* BTCSHA512(NSData* data)
-{
+NSMutableData* BTCSHA512(NSData* data) {
     if (!data) return nil;
     unsigned char digest[CC_SHA512_DIGEST_LENGTH];
 
@@ -345,8 +313,7 @@ NSMutableData* BTCSHA512(NSData* data)
     return result;
 }
 
-NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2)
-{
+NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2) {
     if (!data1 || !data2) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
     
@@ -365,8 +332,7 @@ NSMutableData* BTCSHA256Concat(NSData* data1, NSData* data2)
     return result;
 }
 
-NSMutableData* BTCHash256(NSData* data)
-{
+NSMutableData* BTCHash256(NSData* data) {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[CC_SHA256_DIGEST_LENGTH];
@@ -383,8 +349,7 @@ NSMutableData* BTCHash256(NSData* data)
     return result;
 }
 
-NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2)
-{
+NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2) {
     if (!data1 || !data2) return nil;
     
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
@@ -407,23 +372,19 @@ NSMutableData* BTCHash256Concat(NSData* data1, NSData* data2)
     return result;
 }
 
-NSMutableData* BTCZero160()
-{
+NSMutableData* BTCZero160() {
     return [NSMutableData dataWithBytes:_BTCZeroString256 length:20];
 }
 
-NSMutableData* BTCZero256()
-{
+NSMutableData* BTCZero256() {
     return [NSMutableData dataWithBytes:_BTCZeroString256 length:32];
 }
 
-const unsigned char* BTCZeroString256()
-{
+const unsigned char* BTCZeroString256() {
     return _BTCZeroString256;
 }
 
-NSMutableData* BTCHMACSHA256(NSData* key, NSData* data)
-{
+NSMutableData* BTCHMACSHA256(NSData* key, NSData* data) {
     if (!key) return nil;
     if (!data) return nil;
     unsigned char digest[CC_SHA256_DIGEST_LENGTH];
@@ -433,8 +394,7 @@ NSMutableData* BTCHMACSHA256(NSData* key, NSData* data)
     return result;
 }
 
-NSMutableData* BTCHMACSHA512(NSData* key, NSData* data)
-{
+NSMutableData* BTCHMACSHA512(NSData* key, NSData* data) {
     if (!key) return nil;
     if (!data) return nil;
     unsigned char digest[CC_SHA512_DIGEST_LENGTH];
@@ -446,8 +406,7 @@ NSMutableData* BTCHMACSHA512(NSData* key, NSData* data)
 
 #if BTCDataRequiresOpenSSL
 
-NSMutableData* BTCRIPEMD160(NSData* data)
-{
+NSMutableData* BTCRIPEMD160(NSData* data) {
     if (!data) return nil;
     unsigned char digest[RIPEMD160_DIGEST_LENGTH];
     __block RIPEMD160_CTX ctx;
@@ -462,8 +421,7 @@ NSMutableData* BTCRIPEMD160(NSData* data)
     return result;
 }
 
-NSMutableData* BTCHash160(NSData* data)
-{
+NSMutableData* BTCHash160(NSData* data) {
     if (!data) return nil;
     unsigned char digest1[CC_SHA256_DIGEST_LENGTH];
     unsigned char digest2[RIPEMD160_DIGEST_LENGTH];
@@ -494,8 +452,7 @@ NSMutableData* BTCHash160(NSData* data)
 // The whole memory region is hashed after all rounds to generate the result.
 // Based on proposal by Sergio Demian Lerner http://bitslog.files.wordpress.com/2013/12/memohash-v0-3.pdf
 // Returns a mutable data, so you can cleanup the memory when needed.
-NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes)
-{
+NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes) {
     const unsigned int blockSize = CC_SHA256_DIGEST_LENGTH;
     
     // Will be used for intermediate hash computation
@@ -526,8 +483,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int 
     memcpy(spaceBytes, block, blockSize);
     
     // Produce a chain of hashes to fill the memory with initial data
-    for (unsigned int  i = 1; i < numberOfBlocks; i++)
-    {
+    for (unsigned int  i = 1; i < numberOfBlocks; i++) {
         // Put a hash of the previous block into the next block.
         CC_SHA256_Init(&ctx);
         CC_SHA256_Update(&ctx, spaceBytes + (i - 1) * blockSize, blockSize);
@@ -536,12 +492,10 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int 
     }
     
     // Each round consists of hashing the entire space block by block.
-    for (unsigned int r = 0; r < rounds; r++)
-    {
+    for (unsigned int r = 0; r < rounds; r++) {
         // For each block, update it with the hash of the previous block
         // mixed with the randomly shifted block around the current one.
-        for (unsigned int b = 0; b < numberOfBlocks; b++)
-        {
+        for (unsigned int b = 0; b < numberOfBlocks; b++) {
             unsigned int prevb = (numberOfBlocks + b - 1) % numberOfBlocks;
             
             // Interpret the previous block as an integer to provide some randomness to memory location.
@@ -566,8 +520,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int 
     
     // Hash the whole space to arrive at a final derived key.
     CC_SHA256_Init(&ctx);
-    for (unsigned int b = 0; b < numberOfBlocks; b++)
-    {
+    for (unsigned int b = 0; b < numberOfBlocks; b++) {
         CC_SHA256_Update(&ctx, spaceBytes + b * blockSize, blockSize);
     }
     CC_SHA256_Final(block, &ctx);
@@ -585,8 +538,7 @@ NSMutableData* BTCMemoryHardKDF256(NSData* password, NSData* salt, unsigned int 
 
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 128-bit blocks)
-NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes)
-{
+NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int rounds, unsigned int numberOfBytes) {
     // The idea is to use a highly optimized AES implementation in CBC mode to quickly transform a lot of memory.
     // For the first round, a SHA256(password+salt) is used as AES key and SHA256(key+salt) is used as Initialization Vector (IV).
     // After each round, last 256 bits of space are hashed with IV to produce new IV for the next round. Key remains the same.
@@ -645,10 +597,9 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
     
     // Each round consists of encrypting the entire space using AES-CBC
     BOOL failed = NO;
-    for (unsigned int r = 0; r < rounds; r++)
-    {
-        if (1) // Apple implementation - slightly faster than OpenSSL one.
-        {
+    for (unsigned int r = 0; r < rounds; r++) {
+        // Apple implementation - slightly faster than OpenSSL one.
+        if (1) {
             size_t dataOutMoved = 0;
             CCCryptorStatus cryptstatus = CCCrypt(
                                                   kCCEncrypt,                  // CCOperation op,         /* kCCEncrypt, kCCDecrypt */
@@ -664,14 +615,11 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
                                                   &dataOutMoved                // size_t *dataOutMoved
                                                   );
             
-            if (cryptstatus != kCCSuccess || dataOutMoved != (numberOfBytes + blockSize))
-            {
+            if (cryptstatus != kCCSuccess || dataOutMoved != (numberOfBytes + blockSize)) {
                 failed = YES;
                 break;
             }
-        }
-        else // OpenSSL implementation
-        {
+        } else { // OpenSSL implementation
 //            EVP_CIPHER_CTX evpctx;
 //            int outlen1, outlen2;
 //            
@@ -695,8 +643,7 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
     
     NSMutableData* derivedKey = nil;
     
-    if (!failed)
-    {
+    if (!failed) {
         // derivedKey = SHA256(key + tail)
         CC_SHA256_Init(&ctx);
         CC_SHA256_Update(&ctx, key, digestSize); // mix the current key.
@@ -725,8 +672,7 @@ NSMutableData* BTCMemoryHardAESKDF(NSData* password, NSData* salt, unsigned int 
 // Uses SHA512 as internal hash function.
 // Computational time is proportional to amount of memory.
 // Brutefore with half the memory raises amount of hash computations at least quadratically.
-NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberOfBytes, unsigned int outputLength)
-{
+NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberOfBytes, unsigned int outputLength) {
     @autoreleasepool {
         
         if (outputLength == 0) return [NSMutableData data];
@@ -776,8 +722,7 @@ NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberO
         uint64_t a;
         uint64_t b;
         
-        for (unsigned long i = 2*blockSize; i < numberOfBytes; i += blockSize)
-        {
+        for (unsigned long i = 2*blockSize; i < numberOfBytes; i += blockSize) {
             // A = previous block (filled).
             // A is composed of 8 64-bit numbers: {A1, A2, A3, A4, A5, A6, A7, A8}.
             // Each number is treated as a byte pointer to a 64-bit word located between the beginning and
@@ -821,13 +766,11 @@ NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberO
             for (int w = 0; w < 8; w++) { buf[w] = *(src+w); }
             
             // We have several rounds of jumps to make sure it's costlier to throw away previously computed values.
-            for (int jumps = 0; jumps < maxJumps; jumps++)
-            {
+            for (int jumps = 0; jumps < maxJumps; jumps++) {
                 // At each round of jumps we split the recently computed 512-bit block in 8 words (64 bit each).
                 // Each word acts as a random offset in the space before current block.
                 // The word at which we arrive is interpreted as another offset for next round of jumps.
-                for (int w = 0; w < 8; w++)
-                {
+                for (int w = 0; w < 8; w++) {
                     a = buf[w];
                     // Initial step modulo: (2*64 - 64 - 8 + 1) = 64-8 = 57. So the max offset is 56 and the whole last byte of the prev block can be consumed. This as
                     b = *(uint64_t *)(spaceBytes + (a % (i - blockSize - 8 + 1)));
@@ -869,23 +812,19 @@ NSMutableData* BTCLocustKDF(NSData* password, NSData* salt, unsigned int numberO
     }
 }
 
-NSMutableData* BTCLocustKDF128(NSData* password, NSData* salt, unsigned int numberOfBytes)
-{
+NSMutableData* BTCLocustKDF128(NSData* password, NSData* salt, unsigned int numberOfBytes) {
     return BTCLocustKDF(password, salt, numberOfBytes, 16);
 }
 
-NSMutableData* BTCLocustKDF160(NSData* password, NSData* salt, unsigned int numberOfBytes)
-{
+NSMutableData* BTCLocustKDF160(NSData* password, NSData* salt, unsigned int numberOfBytes) {
     return BTCLocustKDF(password, salt, numberOfBytes, 20);
 }
 
-NSMutableData* BTCLocustKDF256(NSData* password, NSData* salt, unsigned int numberOfBytes)
-{
+NSMutableData* BTCLocustKDF256(NSData* password, NSData* salt, unsigned int numberOfBytes) {
     return BTCLocustKDF(password, salt, numberOfBytes, 32);
 }
 
-NSMutableData* BTCLocustKDF512(NSData* password, NSData* salt, unsigned int numberOfBytes)
-{
+NSMutableData* BTCLocustKDF512(NSData* password, NSData* salt, unsigned int numberOfBytes) {
     return BTCLocustKDF(password, salt, numberOfBytes, 64);
 }
 
