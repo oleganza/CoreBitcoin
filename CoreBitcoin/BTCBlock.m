@@ -10,24 +10,21 @@
 
 @implementation BTCBlock
 
-- (id) init
-{
+- (id) init {
     if (self = [super init]) {
         self.header = [[BTCBlockHeader alloc] init];
     }
     return self;
 }
 
-- (id) initWithHeader:(BTCBlockHeader*)header
-{
+- (id) initWithHeader:(BTCBlockHeader*)header {
     if (self = [super init]) {
         self.header = header;
     }
     return self;
 }
 
-- (id) initWithData:(NSData*)data
-{
+- (id) initWithData:(NSData*)data {
     if (self = [super init])
     {
         if (![self parseData:data]) return nil;
@@ -35,47 +32,39 @@
     return self;
 }
 
-- (id) initWithStream:(NSInputStream*)stream
-{
-    if (self = [super init])
-    {
+- (id) initWithStream:(NSInputStream*)stream {
+    if (self = [super init]) {
         if (![self parseStream:stream]) return nil;
     }
     return self;
 }
 
-- (BOOL) parseData:(NSData*)data
-{
+- (BOOL) parseData:(NSData*)data {
 
     // TODO
 
     return YES;
 }
 
-- (BOOL) parseStream:(NSStream*)stream
-{
+- (BOOL) parseStream:(NSStream*)stream {
     // TODO
 
     return YES;
 }
 
-- (NSData*) blockHash
-{
+- (NSData*) blockHash {
     return self.header.blockHash;
 }
 
-- (NSString*) blockID
-{
+- (NSString*) blockID {
     return self.header.blockID;
 }
 
-- (NSData*) data
-{
+- (NSData*) data {
     return [self computePayload];
 }
 
-- (NSData*) computePayload
-{
+- (NSData*) computePayload {
     NSMutableData* data = [NSMutableData data];
 
     [data appendData:self.header.data];
@@ -119,19 +108,16 @@
 
 
 // Computes merkle root hash from the current transaction array.
-- (NSData*) computeMerkleRootHash
-{
+- (NSData*) computeMerkleRootHash {
     // TODO
     return nil;
 }
 
-- (void) updateMerkleTree
-{
+- (void) updateMerkleTree {
     self.header.merkleRootHash = [self computeMerkleRootHash];
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     BTCBlock* b = [[BTCBlock alloc] init];
     b.header = [self->_header copy];
     b.transactions = [[NSArray alloc] initWithArray:self.transactions copyItems:YES]; // so each element is copied individually
