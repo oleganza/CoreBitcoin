@@ -4,14 +4,12 @@
 
 @implementation BTCMnemonic (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testStandardTestVectors];
     [self testMnemonicsWithoutPassword];
 }
 
-+ (void) testStandardTestVectors
-{
++ (void) testStandardTestVectors {
     NSArray* testVectors = @[
                              @[@"00000000000000000000000000000000",
                                @"abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
@@ -87,8 +85,7 @@
                                @"b15509eaa2d09d3efd3e006ef42151b30367dc6e3aa5e44caba3fe4d3e352e65101fbdb86a96776b91946ff06f8eac594dc6ee1d3e82a42dfe1b40fef6bcc3fd"]
                              ];
 
-    for (NSArray* tuple in testVectors)
-    {
+    for (NSArray* tuple in testVectors) {
         NSData* entropy = BTCDataFromHex(tuple[0]);
         NSArray* words = [tuple[1] componentsSeparatedByString:@" "];
         NSData* seed = BTCDataFromHex(tuple[2]);
@@ -154,8 +151,7 @@
     }
 }
 
-+ (void) testMnemonicsWithoutPassword
-{
++ (void) testMnemonicsWithoutPassword {
     NSArray* words = [@"degree rain vendor coffee push math onion inside pyramid blush stick treat" componentsSeparatedByString:@" "];
     NSData* seed = BTCDataFromHex(@"a359cf47a6ddcc581f28133062dbc4cfacfbd79703e167b2a61438bf9f89efe5f2f12f8d39aea44709a5913965be93a5f805c6c614dcbfe620bceb161f0018c4");
 
@@ -166,8 +162,7 @@
     NSAssert([mnemonic.seed isEqual:seed], @"Should generate a correct seed.");
 }
 
-+ (void) testInvalidWords
-{
++ (void) testInvalidWords {
     {
         NSArray* phrases = @[
                              // invalid checksum
@@ -178,8 +173,7 @@
                              @"olegandreev rain vendor coffee push math onion inside pyramid blush stick treat"
                              ];
 
-        for (NSString* phrase in phrases)
-        {
+        for (NSString* phrase in phrases) {
             NSArray* words = [phrase componentsSeparatedByString:@" "];
 
             BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeEnglish];
@@ -199,8 +193,7 @@
                              @"zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo vote vote vote",
                              ];
 
-        for (NSString* phrase in phrases)
-        {
+        for (NSString* phrase in phrases) {
             NSArray* words = [phrase componentsSeparatedByString:@" "];
 
             BTCMnemonic* mnemonic = [[BTCMnemonic alloc] initWithWords:words password:nil wordListType:BTCMnemonicWordListTypeEnglish];
