@@ -32,8 +32,7 @@ const BTC512 BTC512Null = {0x6e6e8392dd64ce62LL,0x5236623fee3ed899LL,0xf27222c2f
 
 // 3. Comparison
 
-BOOL BTC160Equal(BTC160 chunk1, BTC160 chunk2)
-{
+BOOL BTC160Equal(BTC160 chunk1, BTC160 chunk2) {
 // Which one is faster: memcmp or word-by-word check? The latter does not need any loop or extra checks to compare bytes.
 //    return memcmp(&chunk1, &chunk2, sizeof(chunk1)) == 0;
     return chunk1.words32[0] == chunk2.words32[0]
@@ -43,16 +42,14 @@ BOOL BTC160Equal(BTC160 chunk1, BTC160 chunk2)
         && chunk1.words32[4] == chunk2.words32[4];
 }
 
-BOOL BTC256Equal(BTC256 chunk1, BTC256 chunk2)
-{
+BOOL BTC256Equal(BTC256 chunk1, BTC256 chunk2) {
     return chunk1.words64[0] == chunk2.words64[0]
         && chunk1.words64[1] == chunk2.words64[1]
         && chunk1.words64[2] == chunk2.words64[2]
         && chunk1.words64[3] == chunk2.words64[3];
 }
 
-BOOL BTC512Equal(BTC512 chunk1, BTC512 chunk2)
-{
+BOOL BTC512Equal(BTC512 chunk1, BTC512 chunk2) {
     return chunk1.words64[0] == chunk2.words64[0]
         && chunk1.words64[1] == chunk2.words64[1]
         && chunk1.words64[2] == chunk2.words64[2]
@@ -63,8 +60,7 @@ BOOL BTC512Equal(BTC512 chunk1, BTC512 chunk2)
         && chunk1.words64[7] == chunk2.words64[7];
 }
 
-NSComparisonResult BTC160Compare(BTC160 chunk1, BTC160 chunk2)
-{
+NSComparisonResult BTC160Compare(BTC160 chunk1, BTC160 chunk2) {
     int r = memcmp(&chunk1, &chunk2, sizeof(chunk1));
     
          if (r > 0) return NSOrderedDescending;
@@ -72,8 +68,7 @@ NSComparisonResult BTC160Compare(BTC160 chunk1, BTC160 chunk2)
     return NSOrderedSame;
 }
 
-NSComparisonResult BTC256Compare(BTC256 chunk1, BTC256 chunk2)
-{
+NSComparisonResult BTC256Compare(BTC256 chunk1, BTC256 chunk2) {
     int r = memcmp(&chunk1, &chunk2, sizeof(chunk1));
     
          if (r > 0) return NSOrderedDescending;
@@ -81,8 +76,7 @@ NSComparisonResult BTC256Compare(BTC256 chunk1, BTC256 chunk2)
     return NSOrderedSame;
 }
 
-NSComparisonResult BTC512Compare(BTC512 chunk1, BTC512 chunk2)
-{
+NSComparisonResult BTC512Compare(BTC512 chunk1, BTC512 chunk2) {
     int r = memcmp(&chunk1, &chunk2, sizeof(chunk1));
     
          if (r > 0) return NSOrderedDescending;
@@ -96,8 +90,7 @@ NSComparisonResult BTC512Compare(BTC512 chunk1, BTC512 chunk2)
 
 
 // Inverse (b = ~a)
-BTC160 BTC160Inverse(BTC160 chunk)
-{
+BTC160 BTC160Inverse(BTC160 chunk) {
     chunk.words32[0] = ~chunk.words32[0];
     chunk.words32[1] = ~chunk.words32[1];
     chunk.words32[2] = ~chunk.words32[2];
@@ -106,8 +99,7 @@ BTC160 BTC160Inverse(BTC160 chunk)
     return chunk;
 }
 
-BTC256 BTC256Inverse(BTC256 chunk)
-{
+BTC256 BTC256Inverse(BTC256 chunk) {
     chunk.words64[0] = ~chunk.words64[0];
     chunk.words64[1] = ~chunk.words64[1];
     chunk.words64[2] = ~chunk.words64[2];
@@ -115,8 +107,7 @@ BTC256 BTC256Inverse(BTC256 chunk)
     return chunk;
 }
 
-BTC512 BTC512Inverse(BTC512 chunk)
-{
+BTC512 BTC512Inverse(BTC512 chunk) {
     chunk.words64[0] = ~chunk.words64[0];
     chunk.words64[1] = ~chunk.words64[1];
     chunk.words64[2] = ~chunk.words64[2];
@@ -129,8 +120,7 @@ BTC512 BTC512Inverse(BTC512 chunk)
 }
 
 // Swap byte order
-BTC160 BTC160Swap(BTC160 chunk)
-{
+BTC160 BTC160Swap(BTC160 chunk) {
     BTC160 chunk2;
     chunk2.words32[4] = OSSwapConstInt32(chunk.words32[0]);
     chunk2.words32[3] = OSSwapConstInt32(chunk.words32[1]);
@@ -140,8 +130,7 @@ BTC160 BTC160Swap(BTC160 chunk)
     return chunk2;
 }
 
-BTC256 BTC256Swap(BTC256 chunk)
-{
+BTC256 BTC256Swap(BTC256 chunk) {
     BTC256 chunk2;
     chunk2.words64[3] = OSSwapConstInt64(chunk.words64[0]);
     chunk2.words64[2] = OSSwapConstInt64(chunk.words64[1]);
@@ -150,8 +139,7 @@ BTC256 BTC256Swap(BTC256 chunk)
     return chunk2;
 }
 
-BTC512 BTC512Swap(BTC512 chunk)
-{
+BTC512 BTC512Swap(BTC512 chunk) {
     BTC512 chunk2;
     chunk2.words64[7] = OSSwapConstInt64(chunk.words64[0]);
     chunk2.words64[6] = OSSwapConstInt64(chunk.words64[1]);
@@ -165,8 +153,7 @@ BTC512 BTC512Swap(BTC512 chunk)
 }
 
 // Bitwise AND operation (a & b)
-BTC160 BTC160AND(BTC160 chunk1, BTC160 chunk2)
-{
+BTC160 BTC160AND(BTC160 chunk1, BTC160 chunk2) {
     chunk1.words32[0] = chunk1.words32[0] & chunk2.words32[0];
     chunk1.words32[1] = chunk1.words32[1] & chunk2.words32[1];
     chunk1.words32[2] = chunk1.words32[2] & chunk2.words32[2];
@@ -175,8 +162,7 @@ BTC160 BTC160AND(BTC160 chunk1, BTC160 chunk2)
     return chunk1;
 }
 
-BTC256 BTC256AND(BTC256 chunk1, BTC256 chunk2)
-{
+BTC256 BTC256AND(BTC256 chunk1, BTC256 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] & chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] & chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] & chunk2.words64[2];
@@ -184,8 +170,7 @@ BTC256 BTC256AND(BTC256 chunk1, BTC256 chunk2)
     return chunk1;
 }
 
-BTC512 BTC512AND(BTC512 chunk1, BTC512 chunk2)
-{
+BTC512 BTC512AND(BTC512 chunk1, BTC512 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] & chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] & chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] & chunk2.words64[2];
@@ -198,8 +183,7 @@ BTC512 BTC512AND(BTC512 chunk1, BTC512 chunk2)
 }
 
 // Bitwise OR operation (a | b)
-BTC160 BTC160OR(BTC160 chunk1, BTC160 chunk2)
-{
+BTC160 BTC160OR(BTC160 chunk1, BTC160 chunk2) {
     chunk1.words32[0] = chunk1.words32[0] | chunk2.words32[0];
     chunk1.words32[1] = chunk1.words32[1] | chunk2.words32[1];
     chunk1.words32[2] = chunk1.words32[2] | chunk2.words32[2];
@@ -208,8 +192,7 @@ BTC160 BTC160OR(BTC160 chunk1, BTC160 chunk2)
     return chunk1;
 }
 
-BTC256 BTC256OR(BTC256 chunk1, BTC256 chunk2)
-{
+BTC256 BTC256OR(BTC256 chunk1, BTC256 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] | chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] | chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] | chunk2.words64[2];
@@ -217,8 +200,7 @@ BTC256 BTC256OR(BTC256 chunk1, BTC256 chunk2)
     return chunk1;
 }
 
-BTC512 BTC512OR(BTC512 chunk1, BTC512 chunk2)
-{
+BTC512 BTC512OR(BTC512 chunk1, BTC512 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] | chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] | chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] | chunk2.words64[2];
@@ -231,8 +213,7 @@ BTC512 BTC512OR(BTC512 chunk1, BTC512 chunk2)
 }
 
 // Bitwise exclusive-OR operation (a ^ b)
-BTC160 BTC160XOR(BTC160 chunk1, BTC160 chunk2)
-{
+BTC160 BTC160XOR(BTC160 chunk1, BTC160 chunk2) {
     chunk1.words32[0] = chunk1.words32[0] ^ chunk2.words32[0];
     chunk1.words32[1] = chunk1.words32[1] ^ chunk2.words32[1];
     chunk1.words32[2] = chunk1.words32[2] ^ chunk2.words32[2];
@@ -241,8 +222,7 @@ BTC160 BTC160XOR(BTC160 chunk1, BTC160 chunk2)
     return chunk1;
 }
 
-BTC256 BTC256XOR(BTC256 chunk1, BTC256 chunk2)
-{
+BTC256 BTC256XOR(BTC256 chunk1, BTC256 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] ^ chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] ^ chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] ^ chunk2.words64[2];
@@ -250,8 +230,7 @@ BTC256 BTC256XOR(BTC256 chunk1, BTC256 chunk2)
     return chunk1;
 }
 
-BTC512 BTC512XOR(BTC512 chunk1, BTC512 chunk2)
-{
+BTC512 BTC512XOR(BTC512 chunk1, BTC512 chunk2) {
     chunk1.words64[0] = chunk1.words64[0] ^ chunk2.words64[0];
     chunk1.words64[1] = chunk1.words64[1] ^ chunk2.words64[1];
     chunk1.words64[2] = chunk1.words64[2] ^ chunk2.words64[2];
@@ -263,8 +242,7 @@ BTC512 BTC512XOR(BTC512 chunk1, BTC512 chunk2)
     return chunk1;
 }
 
-BTC512 BTC512Concat(BTC256 chunk1, BTC256 chunk2)
-{
+BTC512 BTC512Concat(BTC256 chunk1, BTC256 chunk2) {
     BTC512 result;
     *((BTC256*)(&result)) = chunk1;
     *((BTC256*)(((unsigned char*)&result) + sizeof(chunk2))) = chunk2;
@@ -276,39 +254,33 @@ BTC512 BTC512Concat(BTC256 chunk1, BTC256 chunk2)
 
 
 // Conversion to NSData
-NSData* NSDataFromBTC160(BTC160 chunk)
-{
+NSData* NSDataFromBTC160(BTC160 chunk) {
     return [[NSData alloc] initWithBytes:&chunk length:sizeof(chunk)];
 }
 
-NSData* NSDataFromBTC256(BTC256 chunk)
-{
+NSData* NSDataFromBTC256(BTC256 chunk) {
     return [[NSData alloc] initWithBytes:&chunk length:sizeof(chunk)];
 }
 
-NSData* NSDataFromBTC512(BTC512 chunk)
-{
+NSData* NSDataFromBTC512(BTC512 chunk) {
     return [[NSData alloc] initWithBytes:&chunk length:sizeof(chunk)];
 }
 
 // Conversion from NSData.
 // If NSData is not big enough, returns BTCHash{160,256,512}Null.
-BTC160 BTC160FromNSData(NSData* data)
-{
+BTC160 BTC160FromNSData(NSData* data) {
     if (data.length < 160/8) return BTC160Null;
     BTC160 chunk = *((BTC160*)data.bytes);
     return chunk;
 }
 
-BTC256 BTC256FromNSData(NSData* data)
-{
+BTC256 BTC256FromNSData(NSData* data) {
     if (data.length < 256/8) return BTC256Null;
     BTC256 chunk = *((BTC256*)data.bytes);
     return chunk;
 }
 
-BTC512 BTC512FromNSData(NSData* data)
-{
+BTC512 BTC512FromNSData(NSData* data) {
     if (data.length < 512/8) return BTC512Null;
     BTC512 chunk = *((BTC512*)data.bytes);
     return chunk;
@@ -317,37 +289,31 @@ BTC512 BTC512FromNSData(NSData* data)
 
 // Returns lowercase hex representation of the chunk
 
-NSString* NSStringFromBTC160(BTC160 chunk)
-{
+NSString* NSStringFromBTC160(BTC160 chunk) {
     const int length = 20;
     char dest[2*length + 1];
     const unsigned char *src = (unsigned char *)&chunk;
-    for (int i = 0; i < length; ++i)
-    {
+    for (int i = 0; i < length; ++i) {
         sprintf(dest + i*2, "%02x", (unsigned int)(src[i]));
     }
     return [[NSString alloc] initWithBytes:dest length:2*length encoding:NSASCIIStringEncoding];
 }
 
-NSString* NSStringFromBTC256(BTC256 chunk)
-{
+NSString* NSStringFromBTC256(BTC256 chunk) {
     const int length = 32;
     char dest[2*length + 1];
     const unsigned char *src = (unsigned char *)&chunk;
-    for (int i = 0; i < length; ++i)
-    {
+    for (int i = 0; i < length; ++i) {
         sprintf(dest + i*2, "%02x", (unsigned int)(src[i]));
     }
     return [[NSString alloc] initWithBytes:dest length:2*length encoding:NSASCIIStringEncoding];
 }
 
-NSString* NSStringFromBTC512(BTC512 chunk)
-{
+NSString* NSStringFromBTC512(BTC512 chunk) {
     const int length = 64;
     char dest[2*length + 1];
     const unsigned char *src = (unsigned char *)&chunk;
-    for (int i = 0; i < length; ++i)
-    {
+    for (int i = 0; i < length; ++i) {
         sprintf(dest + i*2, "%02x", (unsigned int)(src[i]));
     }
     return [[NSString alloc] initWithBytes:dest length:2*length encoding:NSASCIIStringEncoding];
@@ -355,18 +321,15 @@ NSString* NSStringFromBTC512(BTC512 chunk)
 
 // Conversion from hex NSString (lower- or uppercase).
 // If string is invalid or data is too short, returns BTCHash{160,256,512}Null.
-BTC160 BTC160FromNSString(NSString* string)
-{
+BTC160 BTC160FromNSString(NSString* string) {
     return BTC160FromNSData(BTCDataFromHex(string));
 }
 
-BTC256 BTC256FromNSString(NSString* string)
-{
+BTC256 BTC256FromNSString(NSString* string) {
     return BTC256FromNSData(BTCDataFromHex(string));
 }
 
-BTC512 BTC512FromNSString(NSString* string)
-{
+BTC512 BTC512FromNSString(NSString* string) {
     return BTC512FromNSData(BTCDataFromHex(string));
 }
 
