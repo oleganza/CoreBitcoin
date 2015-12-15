@@ -8,8 +8,7 @@
 
 @implementation NSData (BTC_Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     NSAssert([[[NSData alloc] init].SHA256.hex
               isEqual:@"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"], @"Test vector");
     NSAssert([[[NSData alloc] init].SHA256.uppercaseHex
