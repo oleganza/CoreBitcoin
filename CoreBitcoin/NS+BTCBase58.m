@@ -13,13 +13,11 @@
 
 @implementation NSMutableData (BTCBase58)
 
-+ (NSMutableData*) dataFromBase58CString:(const char*)cstring
-{
++ (NSMutableData*) dataFromBase58CString:(const char*)cstring {
     return BTCDataFromBase58CString(cstring);
 }
 
-+ (NSMutableData*) dataFromBase58CheckCString:(const char*)cstring
-{
++ (NSMutableData*) dataFromBase58CheckCString:(const char*)cstring {
     return BTCDataFromBase58CheckCString(cstring);
 }
 
@@ -28,23 +26,19 @@
 
 @implementation NSData (BTCBase58)
 
-- (char*) base58CString
-{
+- (char*) base58CString {
     return BTCBase58CStringWithData(self);
 }
 
-- (char*) base58CheckCString
-{
+- (char*) base58CheckCString {
     return BTCBase58CheckCStringWithData(self);
 }
 
-- (NSString*) base58String
-{
+- (NSString*) base58String {
     return BTCBase58StringWithData(self);
 }
 
-- (NSString*) base58CheckString
-{
+- (NSString*) base58CheckString {
     return BTCBase58CheckStringWithData(self);
 }
 
