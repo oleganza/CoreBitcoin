@@ -8,15 +8,13 @@
 
 @implementation BTCKeychain (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testPaths];
     [self testStandardTestVectors];
     [self testZeroPaddedPrivateKeys];
 }
 
-+ (void) testPaths
-{
++ (void) testPaths {
     BTCKeychain* keychain = [[BTCKeychain alloc] initWithExtendedKey:@"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi"];
 
     NSAssert([[keychain derivedKeychainWithPath:@""].extendedPublicKey isEqual:keychain.extendedPublicKey], @"must return root key");
@@ -38,8 +36,7 @@
     NSAssert([keychain derivedKeychainWithPath:@"m/1.2^3"] == nil, @"must return nil if path contains irrelevant characters");
 }
 
-+ (void) testStandardTestVectors
-{
++ (void) testStandardTestVectors {
     // Test Vector 1
     /*
      
@@ -203,8 +200,7 @@
 
 }
 
-+ (void) testDeserializationWithKeychain:(BTCKeychain*)keychain
-{
++ (void) testDeserializationWithKeychain:(BTCKeychain*)keychain {
     BTCKeychain* pubchain = [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPublicKey];
     BTCKeychain* prvchain = [[BTCKeychain alloc] initWithExtendedKey:keychain.extendedPrivateKey];
     
@@ -215,8 +211,7 @@
     NSAssert([[prvchain keyAtIndex:123] isEqual:[pubchain keyAtIndex:123]], @"both chains should be able to derive the same key");
 }
 
-+ (void) testZeroPaddedPrivateKeys
-{
++ (void) testZeroPaddedPrivateKeys {
     BTCKeychain* keychain = [[BTCKeychain alloc] initWithSeed:[@"stress test" dataUsingEncoding:NSUTF8StringEncoding]];
     for (int i = 0; i < 2*256; i++)
     {
