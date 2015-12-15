@@ -7,14 +7,12 @@
 
 @implementation BTCCurvePoint (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testPublicKey];
     [self testDiffieHellman];
 }
 
-+ (void) testPublicKey
-{
++ (void) testPublicKey {
     // Should be able to create public key N = n*G via BTCKey API as well as raw EC arithmetic using BTCCurvePoint.
     
     NSData* privateKeyData = BTCHash256([@"Private Key Seed" dataUsingEncoding:NSUTF8StringEncoding]);
@@ -42,8 +40,7 @@
     NSAssert([key.curvePoint isEqual:pubkeyPoint], @"points should be equal");
 }
 
-+ (void) testDiffieHellman
-{
++ (void) testDiffieHellman {
     // Alice: a, A=a*G. Bob: b, B=b*G.
     // Test shared secret: a*B = b*A = (a*b)*G.
     
