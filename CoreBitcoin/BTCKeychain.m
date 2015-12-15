@@ -36,13 +36,11 @@
     BOOL _cleared;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [self clear];
 }
 
-- (void) clear
-{
+- (void) clear {
     BTCDataClear(_chainCode);
     BTCDataClear(_extendedPublicKeyData);
     BTCDataClear(_extendedPrivateKeyData);
@@ -70,8 +68,7 @@
     return self;
 }
 
-- (id) initWithExtendedKey:(NSString*)extkey
-{
+- (id) initWithExtendedKey:(NSString*)extkey {
     return [self initWithExtendedKeyDataInternal:BTCDataFromBase58Check(extkey)];
 }
 
@@ -79,10 +76,8 @@
     return [self initWithExtendedKeyDataInternal:data];
 }
 
-- (id) initWithExtendedKeyDataInternal:(NSData*)extendedKeyData
-{
-    if (self = [super init])
-    {
+- (id) initWithExtendedKeyDataInternal:(NSData*)extendedKeyData {
+    if (self = [super init]) {
         if (extendedKeyData.length != 78) return nil;
 
         const uint8_t* bytes = extendedKeyData.bytes;
@@ -95,14 +90,12 @@
             // Should have 0-prefixed private key (1 + 32 bytes).
             if (keyprefix != 0) return nil;
             _privateKey = BTCDataRange(extendedKeyData, NSMakeRange(46, 32));
-        }
-        else if (version == BTCKeychainMainnetPublicVersion ||
+        } else if (version == BTCKeychainMainnetPublicVersion ||
                  version == BTCKeychainTestnetPublicVersion) {
             // Should have a 33-byte public key with non-zero first byte.
             if (keyprefix == 0) return nil;
             _publicKey = BTCDataRange(extendedKeyData, NSMakeRange(45, 33));
-        }
-        else {
+        } else {
             // Unknown version.
             return nil;
         }
@@ -118,8 +111,7 @@
         _parentFingerprint = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 5)));
         _index = OSSwapBigToHostInt32(*((uint32_t*)(bytes + 9)));
         
-        if ((0x80000000 & _index) != 0)
-        {
+        if ((0x80000000 & _index) != 0) {
             _index = (~0x80000000) & _index;
             _hardened = YES;
         }
@@ -141,50 +133,41 @@
 }
 
 // deprecated
-- (BTCKey*) rootKey
-{
+- (BTCKey*) rootKey {
     return self.key;
 }
 
-- (NSString*) extendedPrivateKey
-{
+- (NSString*) extendedPrivateKey {
     CHECK_IF_CLEARED;
     return BTCBase58CheckStringWithData([self extendedPrivateKeyDataInternal]);
 }
 
-- (NSString*) extendedPublicKey
-{
+- (NSString*) extendedPublicKey {
     CHECK_IF_CLEARED;
     return BTCBase58CheckStringWithData([self extendedPublicKeyDataInternal]);
 }
 
 
-- (BTCKey*) key
-{
+- (BTCKey*) key {
     CHECK_IF_CLEARED;
 
-    if (_privateKey)
-    {
+    if (_privateKey) {
         BTCKey* key = [[BTCKey alloc] initWithPrivateKey:_privateKey];
         key.publicKeyCompressed = YES;
         return key;
-    }
-    else
-    {
+    } else {
         return [[BTCKey alloc] initWithPublicKey:self.publicKey];
     }
 }
 
 - (NSData*) extendedPrivateKeyData { return [self extendedPrivateKeyDataInternal]; }
 
-- (NSData*) extendedPrivateKeyDataInternal
-{
+- (NSData*) extendedPrivateKeyDataInternal {
     CHECK_IF_CLEARED;
 
     if (!_privateKey) return nil;
     
-    if (!_extendedPrivateKeyData)
-    {
+    if (!_extendedPrivateKeyData) {
         uint32_t version = [self.network isMainnet] ? BTCKeychainMainnetPrivateVersion : BTCKeychainTestnetPrivateVersion;
         NSMutableData* data = [self extendedKeyPrefixWithVersion:version];
         
@@ -199,12 +182,10 @@
 
 - (NSData*) extendedPublicKeyData { return [self extendedPublicKeyDataInternal]; }
 
-- (NSData*) extendedPublicKeyDataInternal
-{
+- (NSData*) extendedPublicKeyDataInternal {
     CHECK_IF_CLEARED;
 
-    if (!_extendedPublicKeyData)
-    {
+    if (!_extendedPublicKeyData) {
         NSData* pubkey = self.publicKey;
         
         if (!pubkey) return nil;
@@ -219,8 +200,7 @@
     return _extendedPublicKeyData;
 }
 
-- (NSMutableData*) extendedKeyPrefixWithVersion:(uint32_t)version
-{
+- (NSMutableData*) extendedKeyPrefixWithVersion:(uint32_t)version {
     CHECK_IF_CLEARED;
 
     NSMutableData* data = [NSMutableData data];
@@ -241,76 +221,63 @@
     return data;
 }
 
-- (NSData*) identifier
-{
+- (NSData*) identifier {
     CHECK_IF_CLEARED;
 
-    if (!_identifier)
-    {
+    if (!_identifier) {
         _identifier = BTCHash160(self.publicKey);
     }
     return _identifier;
 }
 
-- (uint32_t) fingerprint
-{
+- (uint32_t) fingerprint {
     CHECK_IF_CLEARED;
 
-    if (_fingerprint == 0)
-    {
+    if (_fingerprint == 0) {
         const uint32_t* words = self.identifier.bytes;
         _fingerprint = OSSwapBigToHostInt32(words[0]);
     }
     return _fingerprint;
 }
 
-- (NSData*) publicKey
-{
+- (NSData*) publicKey {
     CHECK_IF_CLEARED;
 
-    if (!_publicKey)
-    {
+    if (!_publicKey) {
         _publicKey = [[[BTCKey alloc] initWithPrivateKey:_privateKey] compressedPublicKey];
     }
     return _publicKey;
 }
 
-- (BOOL) isPrivate
-{
+- (BOOL) isPrivate {
     CHECK_IF_CLEARED;
     return !!_privateKey;
 }
 
-- (BOOL) isHardened
-{
+- (BOOL) isHardened {
     CHECK_IF_CLEARED;
     return _hardened;
 }
 
-- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index
-{
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index {
     return [self derivedKeychainAtIndex:index hardened:NO];
 }
 
-- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened
-{
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened {
     return [self derivedKeychainAtIndex:index hardened:hardened factor:NULL];
 }
 
-- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut
-{
+- (BTCKeychain*) derivedKeychainAtIndex:(uint32_t)index hardened:(BOOL)hardened factor:(BTCBigNumber**)factorOut {
     CHECK_IF_CLEARED;
 
     // As we use explicit parameter "hardened", do not allow higher bit set.
-    if ((0x80000000 & index) != 0)
-    {
+    if ((0x80000000 & index) != 0) {
         @throw [NSException exceptionWithName:@"BTCKeychain Exception"
                                        reason:@"Indexes >= 0x80000000 are invalid. Use hardened:YES argument instead." userInfo:nil];
         return nil;
     }
     
-    if (!_privateKey && hardened)
-    {
+    if (!_privateKey && hardened) {
         // Not possible to derive hardened keychain without a private key.
         return nil;
     }
@@ -319,14 +286,11 @@
 
     NSMutableData* data = [NSMutableData data];
     
-    if (hardened)
-    {
+    if (hardened) {
         uint8_t padding = 0;
         [data appendBytes:&padding length:1];
         [data appendData:_privateKey];
-    }
-    else
-    {
+    } else {
         [data appendData:self.publicKey];
     }
     
@@ -338,8 +302,7 @@
     BTCBigNumber* factor = [[BTCBigNumber alloc] initWithUnsignedBigEndian:[digest subdataWithRange:NSMakeRange(0, 32)]];
     
     // Factor is too big, this derivation is invalid.
-    if ([factor greaterOrEqual:[BTCCurvePoint curveOrder]])
-    {
+    if ([factor greaterOrEqual:[BTCCurvePoint curveOrder]]) {
         return nil;
     }
     
@@ -347,8 +310,7 @@
     
     derivedKeychain.chainCode = BTCDataRange(digest, NSMakeRange(32, 32));
     
-    if (_privateKey)
-    {
+    if (_privateKey) {
         BTCMutableBigNumber* pkNumber = [[BTCMutableBigNumber alloc] initWithUnsignedBigEndian:_privateKey];
         [pkNumber add:factor mod:[BTCCurvePoint curveOrder]];
         
@@ -360,9 +322,7 @@
         
         BTCDataClear(pkData);
         [pkNumber clear];
-    }
-    else
-    {
+    } else {
         BTCCurvePoint* point = [[BTCCurvePoint alloc] initWithData:_publicKey];
         [point addGeneratorMultipliedBy:factor];
         
@@ -383,12 +343,10 @@
     return derivedKeychain;
 }
 
-- (BTCKey*) keyAtIndex:(uint32_t)index
-{
+- (BTCKey*) keyAtIndex:(uint32_t)index {
     return [self keyAtIndex:index hardened:NO];
 }
-- (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened
-{
+- (BTCKey*) keyAtIndex:(uint32_t)index hardened:(BOOL)hardened {
     return [self derivedKeychainAtIndex:index hardened:hardened].key;
 }
 
@@ -453,8 +411,7 @@
     return [self derivedKeychainWithPath:path].key;
 }
 
-- (BTCKeychain*) publicKeychain
-{
+- (BTCKeychain*) publicKeychain {
     CHECK_IF_CLEARED;
 
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
@@ -479,35 +436,30 @@
 
 
 // Returns a subchain with path m/44'/0'
-- (BTCKeychain*) bitcoinMainnetKeychain
-{
+- (BTCKeychain*) bitcoinMainnetKeychain {
     return [[self derivedKeychainAtIndex:44 hardened:YES] derivedKeychainAtIndex:0 hardened:YES];
 }
 
 // Returns a subchain with path m/44'/1'
-- (BTCKeychain*) bitcoinTestnetKeychain
-{
+- (BTCKeychain*) bitcoinTestnetKeychain {
     return [[self derivedKeychainAtIndex:44 hardened:YES] derivedKeychainAtIndex:1 hardened:YES];
 }
 
 // Returns a hardened derivation for the given account index.
 // Equivalent to [keychain derivedKeychainAtIndex:accountIndex hardened:YES]
-- (BTCKeychain*) keychainForAccount:(uint32_t)accountIndex
-{
+- (BTCKeychain*) keychainForAccount:(uint32_t)accountIndex {
     return [self derivedKeychainAtIndex:accountIndex hardened:YES];
 }
 
 // Returns a key from an external chain (/0/i).
 // BTCKey may be public-only if the receiver is public-only keychain.
-- (BTCKey*) externalKeyAtIndex:(uint32_t)index
-{
+- (BTCKey*) externalKeyAtIndex:(uint32_t)index {
     return [[self derivedKeychainAtIndex:0 hardened:NO] keyAtIndex:index hardened:NO];
 }
 
 // Returns a key from an internal (change) chain (/1/i).
 // BTCKey may be public-only if the receiver is public-only keychain.
-- (BTCKey*) changeKeyAtIndex:(uint32_t)index
-{
+- (BTCKey*) changeKeyAtIndex:(uint32_t)index {
     return [[self derivedKeychainAtIndex:1 hardened:NO] keyAtIndex:index hardened:NO];
 }
 
@@ -519,32 +471,27 @@
 // Scans child keys till one is found that matches the given address.
 // Only BTCPublicKeyAddress and BTCPrivateKeyAddress are supported. For others nil is returned.
 // Limit is maximum number of keys to scan. If no key is found, returns nil.
-- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened limit:(NSUInteger)limit
-{
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened limit:(NSUInteger)limit {
     return [self findKeychainForAddress:address hardened:hardened from:0 limit:limit];
 }
 
-- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
-{
+- (BTCKeychain*) findKeychainForAddress:(BTCAddress*)address hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit {
     CHECK_IF_CLEARED;
 
     if (!address) return nil;
     if (!self.isPrivate) return nil;
     
-    if ([address isKindOfClass:[BTCPrivateKeyAddress class]])
-    {
+    if ([address isKindOfClass:[BTCPrivateKeyAddress class]]) {
         BTCPrivateKeyAddress* privkeyAddress = (BTCPrivateKeyAddress*)address;
         BTCKey* key = privkeyAddress.key;
         NSMutableData* privkeyData = key.privateKey;
         
         BTCKeychain* result = nil;
         
-        for (uint32_t i = startIndex; i < (startIndex + limit); i++)
-        {
+        for (uint32_t i = startIndex; i < (startIndex + limit); i++) {
             BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
             
-            if ([keychain.privateKey isEqual:privkeyData])
-            {
+            if ([keychain.privateKey isEqual:privkeyData]) {
                 result = keychain;
                 break;
             }
@@ -558,18 +505,15 @@
         return result;
     }
     
-    if ([address isKindOfClass:[BTCPublicKeyAddress class]])
-    {
+    if ([address isKindOfClass:[BTCPublicKeyAddress class]]) {
         NSData* hash160 = ((BTCPublicKeyAddress*)address).data;
         
         BTCKeychain* result = nil;
         
-        for (uint32_t i = startIndex; i < (startIndex + limit); i++)
-        {
+        for (uint32_t i = startIndex; i < (startIndex + limit); i++) {
             BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
             
-            if ([keychain.identifier isEqual:hash160])
-            {
+            if ([keychain.identifier isEqual:hash160]) {
                 result = keychain;
                 break;
             }
@@ -586,13 +530,11 @@
 
 // Scans child keys till one is found that matches the given public key.
 // Limit is maximum number of keys to scan. If no key is found, returns nil.
-- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened limit:(NSUInteger)limit
-{
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened limit:(NSUInteger)limit {
     return [self findKeychainForPublicKey:pubkey hardened:hardened from:0 limit:limit];
 }
 
-- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit
-{
+- (BTCKeychain*) findKeychainForPublicKey:(BTCKey*)pubkey hardened:(BOOL)hardened from:(uint32_t)startIndex limit:(NSUInteger)limit {
     CHECK_IF_CLEARED;
 
     if (!pubkey) return nil;
@@ -602,12 +544,10 @@
     
     BTCKeychain* result = nil;
     
-    for (uint32_t i = startIndex; i < (startIndex + limit); i++)
-    {
+    for (uint32_t i = startIndex; i < (startIndex + limit); i++) {
         BTCKeychain* keychain = [self derivedKeychainAtIndex:i hardened:hardened];
         
-        if ([keychain.publicKey isEqual:data])
-        {
+        if ([keychain.publicKey isEqual:data]) {
             result = keychain;
             break;
         }
@@ -625,8 +565,7 @@
 #pragma mark - NSObject
 
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     CHECK_IF_CLEARED;
 
     BTCKeychain* keychain = [[BTCKeychain alloc] init];
@@ -642,8 +581,7 @@
     return keychain;
 }
 
-- (BOOL) isEqual:(BTCKeychain*)other
-{
+- (BOOL) isEqual:(BTCKeychain*)other {
     CHECK_IF_CLEARED;
 
     if (self == other) return YES;
@@ -654,12 +592,9 @@
     if (self.index != other.index) return NO;
     if (self.hardened != other.hardened) return NO;
     
-    if (self.isPrivate)
-    {
+    if (self.isPrivate) {
         if (![self.privateKey isEqual:other.privateKey]) return NO;
-    }
-    else
-    {
+    } else {
         if (![self.publicKey isEqual:other.publicKey]) return NO;
     }
     
@@ -668,18 +603,15 @@
     return YES;
 }
 
-- (NSUInteger) hash
-{
+- (NSUInteger) hash {
     return self.fingerprint;
 }
 
-- (NSString*) description
-{
+- (NSString*) description {
     return [NSString stringWithFormat:@"<%@ %@>", [self class], self.extendedPublicKey];
 }
 
-- (NSString*) debugDescription
-{
+- (NSString*) debugDescription {
     return [NSString stringWithFormat:@"<%@:0x%p depth:%d index:%x%@ parentFingerprint:%x fingerprint:%x privkey:%@ pubkey:%@ chainCode:%@>", [self class], self,
             (int)_depth,
             _index,
