@@ -17,37 +17,31 @@
 
 @end
 
-static inline BOOL BTCMnemonicIsBitSet(uint8_t* buf, int bitIndex)
-{
+static inline BOOL BTCMnemonicIsBitSet(uint8_t* buf, int bitIndex) {
     int val = ((int) buf[bitIndex / 8]) & 0xFF;
     val = val << (bitIndex % 8);
     val = val & 0x80;
     return val == 0x80;
 }
 
-static inline void BTCMnemonicSetBit(uint8_t* buf, int bitIndex)
-{
+static inline void BTCMnemonicSetBit(uint8_t* buf, int bitIndex) {
     int value = ((int) buf[bitIndex / 8]) & 0xFF;
     value = value | (1 << (7 - (bitIndex % 8)));
     buf[bitIndex / 8] = (uint8_t) value;
 }
 
-static inline void BTCMnemonicIntegerTo11Bits(uint8_t* buf, int bitIndex, int integer)
-{
+static inline void BTCMnemonicIntegerTo11Bits(uint8_t* buf, int bitIndex, int integer) {
     for (int i = 0; i < 11; i++) {
-        if ((integer & 0x400) == 0x400)
-        {
+        if ((integer & 0x400) == 0x400) {
             BTCMnemonicSetBit(buf, bitIndex + i);
         }
         integer = integer << 1;
     }
 }
 
-static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex)
-{
+static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex) {
     NSUInteger value = 0;
-    for (int i = 0; i < 11; i++)
-    {
+    for (int i = 0; i < 11; i++) {
         if (BTCMnemonicIsBitSet(buf, bitIndex + i)) {
             value = (value << 1) | 0x01;
         } else {
@@ -62,13 +56,11 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 @implementation BTCMnemonic
 
 
-- (id) initWithEntropy:(NSData*)entropy password:(NSString*)password wordListType:(BTCMnemonicWordListType)wordListType
-{
+- (id) initWithEntropy:(NSData*)entropy password:(NSString*)password wordListType:(BTCMnemonicWordListType)wordListType {
     if (!entropy) return nil;
     if (wordListType == BTCMnemonicWordListTypeUnknown) return nil;
 
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _entropy = entropy;
         _password = password;
         _wordListType = wordListType;
@@ -76,36 +68,30 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     return self;
 }
 
-- (id) initWithWords:(NSArray*)words password:(NSString*)password wordListType:(BTCMnemonicWordListType)wordListType
-{
+- (id) initWithWords:(NSArray*)words password:(NSString*)password wordListType:(BTCMnemonicWordListType)wordListType {
     if (!words) return nil;
 
     if (words.count != 12 &&
         words.count != 15 &&
         words.count != 18 &&
         words.count != 21 &&
-        words.count != 24)
-    {
+        words.count != 24) {
         // Words count should be between 12 and 24 and be divisible by 13.
         return nil;
     }
 
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _words = words;
         _password = password ?: @"";
         _wordListType = wordListType;
 
         // If the list is given, get the entropy from it
-        if (wordListType != BTCMnemonicWordListTypeUnknown)
-        {
+        if (wordListType != BTCMnemonicWordListTypeUnknown) {
             _entropy = [self entropyFromWords:_words wordListType:wordListType];
 
             // If failed to read entropy it's because words are malformed and/or checksum failed.
             if (!_entropy) return nil;
-        }
-        else
-        {
+        } else {
             // leave entropy being nil. This instance is still useful for BIP32 seed.
         }
     }
@@ -113,16 +99,13 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 }
 
 
-- (id) initWithData:(NSData*)data
-{
+- (id) initWithData:(NSData*)data {
     if (!data) return nil;
 
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         NSAssert(sizeof(BTCMnemonicWordListType) == 1, @"must be 1 byte long");
 
-        if (data.length < sizeof(BTCMnemonicWordListType))
-        {
+        if (data.length < sizeof(BTCMnemonicWordListType)) {
             // Not enough bytes.
             return nil;
         }
@@ -133,8 +116,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
         offset += sizeof(BTCMnemonicWordListType);
 
-        if (_wordListType != BTCMnemonicWordListTypeEnglish)
-        {
+        if (_wordListType != BTCMnemonicWordListTypeEnglish) {
             // Not supported list.
             return nil;
         }
@@ -149,8 +131,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
             _entropy.length != 160 / 8 &&
             _entropy.length != 192 / 8 &&
             _entropy.length != 224 / 8 &&
-            _entropy.length != 256 / 8)
-        {
+            _entropy.length != 256 / 8) {
             // Not canonical size of the entropy.
             return nil;
         }
@@ -161,8 +142,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
                                 readBytes:&encodedPasswordLength];
         offset += encodedPasswordLength;
 
-        if (!passwordData)
-        {
+        if (!passwordData) {
             // Bad mnemonic encoding
             NSLog(@"ERROR: BTCMnemonic cannot decode password (if missing, password should be empty string with 0x00 length prefix).");
             return nil;
@@ -170,22 +150,19 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
         _password = [[NSString alloc] initWithData:passwordData encoding:NSUTF8StringEncoding];
 
-        if (!_password)
-        {
+        if (!_password) {
             // Bad password encoding (not representable in UTF8, wtf?)
             NSLog(@"ERROR: BTCMnemonic cannot convert password back to UTF8 string.");
             return nil;
         }
 
         // If we have some more data, try to read seed from there.
-        if (data.length > offset)
-        {
+        if (data.length > offset) {
             _seed = [BTCProtocolSerialization
                      readVarStringFromData:[data subdataWithRange:NSMakeRange(offset, data.length - offset)]
                      readBytes:NULL];
 
-            if (!_seed)
-            {
+            if (!_seed) {
                 NSLog(@"ERROR: BTCMnemonic failed to read encoded seed from mnemonic payload. Will recompute it lazily when needed.");
             }
         }
@@ -195,20 +172,16 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
 
 // Lazily-computed phrase of words
-- (NSArray*) words
-{
-    if (!_words)
-    {
+- (NSArray*) words {
+    if (!_words) {
         _words = [self wordsForEntropy:self.entropy wordListType:self.wordListType];
     }
     return _words;
 }
 
 // Lazily-computed seed for BIP32
-- (NSData*) seed
-{
-    if (!_seed)
-    {
+- (NSData*) seed {
+    if (!_seed) {
         _seed = [self seedForWords:self.words password:self.password];
     }
     return _seed;
@@ -217,25 +190,21 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 // Root keychain instantiated with a given seed.
 - (BTCKeychain*) keychain
 {
-    if (!_keychain)
-    {
+    if (!_keychain) {
         _keychain = [[BTCKeychain alloc] initWithSeed:self.seed];
     }
     return _keychain;
 }
 
-- (NSData*) data
-{
+- (NSData*) data {
     return [self dataWithSeed:NO];
 }
 
-- (NSData*) dataWithSeed
-{
+- (NSData*) dataWithSeed {
     return [self dataWithSeed:YES];
 }
 
-- (NSData*) dataWithSeed:(BOOL)withSeed
-{
+- (NSData*) dataWithSeed:(BOOL)withSeed {
     NSMutableData* data = [NSMutableData data];
 
     NSAssert(sizeof(_wordListType) == 1, @"must be 1 byte long");
@@ -253,8 +222,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
     [data appendData:[BTCProtocolSerialization dataForVarString:passwordData]];
 
-    if (withSeed)
-    {
+    if (withSeed) {
         NSData* seed = self.seed;
 
         [data appendData:[BTCProtocolSerialization dataForVarString:seed]];
@@ -263,23 +231,19 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     return data;
 }
 
-- (NSUInteger) hash
-{
+- (NSUInteger) hash {
     return [self.seed hash];
 }
 
-- (BOOL) isEqual:(BTCMnemonic*)other
-{
+- (BOOL) isEqual:(BTCMnemonic*)other {
     return [self.seed isEqual:other.seed];
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
     [self clear];
 }
 
-- (void) clear
-{
+- (void) clear {
     BTCDataClear(_entropy);
     BTCDataClear(_seed);
     [_keychain clear];
@@ -293,8 +257,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 #pragma mark - Private Helpers
 
 
-- (NSData*) seedForWords:(NSArray*)words password:(NSString*)password
-{
+- (NSData*) seedForWords:(NSArray*)words password:(NSString*)password {
     password = password ?: @"";
 
     NSData* mnemonic = [[words componentsJoinedByString:@" "] dataUsingEncoding:NSUTF8StringEncoding];
@@ -316,8 +279,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     return seed;
 }
 
-- (NSArray*) wordsForEntropy:(NSData*)entropy wordListType:(BTCMnemonicWordListType)listType
-{
+- (NSArray*) wordsForEntropy:(NSData*)entropy wordListType:(BTCMnemonicWordListType)listType {
     if (!entropy) return nil;
 
     NSArray* wordList = [[self class] wordListForType:listType];
@@ -330,8 +292,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
         bitLength != 160 &&
         bitLength != 192 &&
         bitLength != 224 &&
-        bitLength != 256)
-    {
+        bitLength != 256) {
         [[NSException exceptionWithName:@"Bad entropy length" reason:@"Raw entropy must be 128, 160, 192, 224, or 256 bits" userInfo:nil] raise];
     }
 
@@ -348,8 +309,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     NSUInteger wordsCount = (bitLength + checksumLength) / 11;
     NSMutableArray* words = [[NSMutableArray alloc] initWithCapacity:wordsCount];
 
-    for (int i = 0; i < wordsCount; i++)
-    {
+    for (int i = 0; i < wordsCount; i++) {
         NSUInteger wordIndex = BTCMnemonicIntegerFrom11Bits((uint8_t*)buf.bytes, i * 11);
 
         [words addObject:wordList[wordIndex]];
@@ -357,8 +317,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     return words;
 }
 
-- (NSData*) entropyFromWords:(NSArray*)words wordListType:(BTCMnemonicWordListType)listType
-{
+- (NSData*) entropyFromWords:(NSArray*)words wordListType:(BTCMnemonicWordListType)listType {
     if (listType == BTCMnemonicWordListTypeUnknown) return nil;
     if (!words) return nil;
 
@@ -366,8 +325,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
         words.count != 15 &&
         words.count != 18 &&
         words.count != 21 &&
-        words.count != 24)
-    {
+        words.count != 24) {
         // Words count should be between 12 and 24 and be divisible by 13.
         return nil;
     }
@@ -378,13 +336,11 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
     NSMutableData* buf = [NSMutableData dataWithLength:bitLength / 8 + ((bitLength % 8) > 0 ? 1 : 0)];
 
-    for (int i = 0; i < words.count; i++)
-    {
+    for (int i = 0; i < words.count; i++) {
         NSString* word = words[i];
         NSUInteger wordIndex = [wordList indexOfObject:word];
 
-        if (wordIndex == NSNotFound)
-        {
+        if (wordIndex == NSNotFound) {
             return nil;
         }
 
@@ -401,8 +357,7 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
     uint8_t lastByte = ((uint8_t*)buf.bytes)[buf.length - 1];
 
     // Verify the checksum
-    if (lastByte != checksumByte)
-    {
+    if (lastByte != checksumByte) {
         return nil;
     }
 
@@ -421,18 +376,15 @@ static inline NSUInteger BTCMnemonicIntegerFrom11Bits(uint8_t* buf, int bitIndex
 
 
 
-+ (NSArray*) wordListForType:(BTCMnemonicWordListType)type
-{
-    if (type == BTCMnemonicWordListTypeEnglish)
-    {
++ (NSArray*) wordListForType:(BTCMnemonicWordListType)type {
+    if (type == BTCMnemonicWordListTypeEnglish) {
         return [self englishWordList];
     }
 
     return nil;
 }
 
-+ (NSArray*) englishWordList
-{
++ (NSArray*) englishWordList {
     static NSArray* list;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
