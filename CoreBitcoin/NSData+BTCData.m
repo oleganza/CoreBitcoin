@@ -25,23 +25,19 @@
 #pragma mark - Formatting
 
 
-- (NSString*) hex
-{
+- (NSString*) hex {
     return BTCHexFromData(self);
 }
 
-- (NSString*) uppercaseHex
-{
+- (NSString*) uppercaseHex {
     return BTCUppercaseHexFromData(self);
 }
 
-- (NSString*) hexString
-{
+- (NSString*) hexString {
     return BTCHexFromData(self);
 }
 
-- (NSString*) hexUppercaseString
-{
+- (NSString*) hexUppercaseString {
     return BTCUppercaseHexFromData(self);
 }
 
@@ -54,19 +50,16 @@
 
 
 
-+ (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector
-{
++ (NSMutableData*) encryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector {
     return [self cryptData:data key:key iv:initializationVector operation:kCCEncrypt];
 }
 
-+ (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector
-{
++ (NSMutableData*) decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)initializationVector {
     return [self cryptData:data key:key iv:initializationVector operation:kCCDecrypt];
 }
 
 
-+ (NSMutableData*) cryptData:(NSData*)data key:(NSData*)key iv:(NSData*)iv operation:(CCOperation)operation
-{
++ (NSMutableData*) cryptData:(NSData*)data key:(NSData*)key iv:(NSData*)iv operation:(CCOperation)operation {
     if (!data || !key) return nil;
     
     int blockSize = kCCBlockSizeAES128;
@@ -74,24 +67,17 @@
     NSMutableData* encryptedData = [[NSMutableData alloc] initWithLength:encryptedDataCapacity];
     
     // Treat empty IV as nil
-    if (iv.length == 0)
-    {
+    if (iv.length == 0) {
         iv = nil;
     }
     
     // If IV is supplied, validate it.
-    if (iv)
-    {
-        if (iv.length == blockSize)
-        {
+    if (iv) {
+        if (iv.length == blockSize) {
             // perfect.
-        }
-        else if (iv.length > blockSize)
-        {
+        } else if (iv.length > blockSize) {
             // IV is bigger than the block size. CCCrypt will take only the first 16 bytes.
-        }
-        else
-        {
+        } else {
             // IV is smaller than needed. This should not happen. It's better to crash than to leak something.
             @throw [NSException exceptionWithName:@"NSData+BTC IV is invalid"
                                            reason:[NSString stringWithFormat:@"Invalid size of IV: %d", (int)iv.length]
@@ -114,14 +100,11 @@
                                           &dataOutMoved                // size_t *dataOutMoved
                                           );
     
-    if (cryptstatus == kCCSuccess)
-    {
+    if (cryptstatus == kCCSuccess) {
         // Resize the result key to the correct size.
         encryptedData.length = dataOutMoved;
         return encryptedData;
-    }
-    else
-    {
+    } else {
         //kCCSuccess          = 0,
         //kCCParamError       = -4300,
         //kCCBufferTooSmall   = -4301,
