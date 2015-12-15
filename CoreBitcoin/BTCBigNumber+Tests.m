@@ -5,8 +5,7 @@
 
 @implementation BTCBigNumber (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     NSAssert([[[BTCBigNumber alloc] init] isEqual:[BTCBigNumber zero]], @"default bignum should be zero");
     NSAssert(![[[BTCBigNumber alloc] init] isEqual:[BTCBigNumber one]], @"default bignum should not be one");
     NSAssert([@"0" isEqualToString:[[[BTCBigNumber alloc] init] stringInBase:10]], @"default bignum should be zero");
