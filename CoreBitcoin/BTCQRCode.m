@@ -14,13 +14,11 @@
 @implementation BTCQRCode
 
 #if TARGET_OS_IPHONE
-+ (UIImage*) imageForURL:(NSURL*)url size:(CGSize)size scale:(CGFloat)scale
-{
++ (UIImage*) imageForURL:(NSURL*)url size:(CGSize)size scale:(CGFloat)scale {
     return [self imageForString:url.absoluteString size:size scale:scale];
 }
 
-+ (UIImage*) imageForString:(NSString*)string size:(CGSize)size scale:(CGFloat)scale
-{
++ (UIImage*) imageForString:(NSString*)string size:(CGSize)size scale:(CGFloat)scale {
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
 
     [filter setValue:[string dataUsingEncoding:NSISOLatin1StringEncoding] forKey:@"inputMessage"];
@@ -33,8 +31,7 @@
                                                               fromRect:filter.outputImage.extent];
 
     UIImage* image = nil;
-    if (context)
-    {
+    if (context) {
         CGContextSetInterpolationQuality(context, kCGInterpolationNone);
         CGContextDrawImage(context, CGContextGetClipBoundingBox(context), cgimage);
         image = [UIImage imageWithCGImage:UIGraphicsGetImageFromCurrentImageContext().CGImage
@@ -48,8 +45,7 @@
     return image;
 }
 
-+ (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock
-{
++ (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock {
     return [[BTCQRCodeScannerView alloc] initWithDetectionBlock:detectionBlock];
 }
 #endif
@@ -61,10 +57,8 @@
 #if TARGET_OS_IPHONE
 @implementation BTCQRCodeScannerView
 
-- (id) initWithDetectionBlock:(void(^)(NSString* message))detection
-{
-    if (self = [super initWithFrame:[UIScreen mainScreen].bounds])
-    {
+- (id) initWithDetectionBlock:(void(^)(NSString* message))detection {
+    if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
         self.sessionQueue = dispatch_queue_create("BTCQRCodeScannerView", NULL);
         self.detectionBlock = detection;
         self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
@@ -72,59 +66,47 @@
     return self;
 }
 
-- (void) cleanup
-{
+- (void) cleanup {
     [self.session removeOutput:self.session.outputs.firstObject];
     self.sessionQueue = nil;
     self.detectionBlock = nil;
     self.session = nil;
 }
 
-- (void) didMoveToWindow
-{
+- (void) didMoveToWindow {
     [super didMoveToWindow];
 
     if (!self.sessionQueue) return;
 
-    if (self.window)
-    {
+    if (self.window) {
         [self prepareScanner];
-    }
-    else
-    {
+    } else {
         [self cleanup];
     }
 }
 
-- (void) prepareScanner
-{
+- (void) prepareScanner {
     NSError *error = nil;
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     AVCaptureMetadataOutput *output = [AVCaptureMetadataOutput new];
 
-    if (!input)
-    {
+    if (!input) {
         NSLog(@"BTCQRCodeScannerView: Failed to instantiate a video device: %@", [error localizedDescription]);
         return;
     }
 
-    if ([device lockForConfiguration:&error])
-    {
-        if (device.isAutoFocusRangeRestrictionSupported)
-        {
+    if ([device lockForConfiguration:&error]) {
+        if (device.isAutoFocusRangeRestrictionSupported) {
             device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
         }
 
-        if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus])
-        {
+        if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
             device.focusMode = AVCaptureFocusModeContinuousAutoFocus;
         }
 
         [device unlockForConfiguration];
-    }
-    else
-    {
+    } else {
         NSLog(@"BTCQRCodeScannerView: Failed to lock device for configuration: %@", [error localizedDescription]);
     }
 
@@ -135,12 +117,9 @@
     [self.session addOutput:output];
     [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
 
-    if ([output.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeQRCode])
-    {
+    if ([output.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeQRCode]) {
         output.metadataObjectTypes = @[ AVMetadataObjectTypeQRCode ];
-    }
-    else
-    {
+    } else {
         NSLog(@"BTCQRCodeScannerView: QRCode not found in availableMetadataObjectTypes: %@", output.availableMetadataObjectTypes);
         [self cleanup];
         return;
@@ -164,11 +143,9 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
-    for (AVMetadataMachineReadableCodeObject *object in metadataObjects)
-    {
+    for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         // Take the first detected QR code.
-        if ([object.type isEqual:AVMetadataObjectTypeQRCode])
-        {
+        if ([object.type isEqual:AVMetadataObjectTypeQRCode]) {
             if (self.detectionBlock) self.detectionBlock(object.stringValue);
 
             // Do not cleanup - the owner of this view will remove it from window if detection succeeded.
