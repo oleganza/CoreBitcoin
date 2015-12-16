@@ -24,8 +24,7 @@ typedef enum : NSUInteger {
 
 @implementation BTCTransaction (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testSerialization];
     [self testFees];
     [self testSpendCoins:BTCAPIChain];
@@ -33,15 +32,13 @@ typedef enum : NSUInteger {
 }
 
 
-+ (void) testFees
-{
++ (void) testFees {
     NSAssert([[BTCTransaction new] estimatedFee] == BTCTransactionDefaultFeeRate, @"smallest tx must have a fee == default fee rate");
     NSAssert([[BTCTransaction new] estimatedFeeWithRate:12345] == 12345, @"smallest tx must have a fee == fee rate");
     NSAssert([[BTCTransaction new] estimatedFeeWithRate:0] == 0, @"zero fee rate should always yield zero fee");
 
     BTCTransaction* tx = [BTCTransaction new];
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         BTCTransactionInput* txin = [BTCTransactionInput new];
         txin.previousIndex = 0;
         txin.signatureScript = [BTCScript new];
@@ -55,8 +52,7 @@ typedef enum : NSUInteger {
     NSAssert([tx estimatedFeeWithRate:0] == 0, @"Must have zero fee for zero rate.");
 }
 
-+ (void) testSerialization
-{
++ (void) testSerialization {
     //NSLog(@"EMPTY TX: %@", BTCHexFromData([[BTCTransaction alloc] init].transactionHash));
 
     NSData* txdata = BTCDataFromHex(@"010000000150869eb405cdd81ac4a1ccfa74f256a176f3139dece7e36e038c8b38cdfee6a4020000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88acffffffff03a0860100000000001976a9149c7bce1f45e6743fa1fde9e507f768cb3de3fbd988aca0860100000000001976a91424b70bbd9f4c75e9a6f7f30abf183d15d3bab87188acf035a601000000001976a914f1ca8440982d7bd086f64b3bf6dbb1244f5dbc4c88ac00000000");
@@ -75,8 +71,7 @@ typedef enum : NSUInteger {
 
 
 
-    if (0)
-    {
+    if (0) {
     //
     //    BTCScript* script = txin.signatureScript;
     //
@@ -226,8 +221,7 @@ typedef enum : NSUInteger {
 }
 
 
-+ (void) testSpendCoins:(BTCAPI)btcAPI
-{
++ (void) testSpendCoins:(BTCAPI)btcAPI {
     // For safety I'm not putting a private key in the source code, but copy-paste here from Keychain on each run.
     printf("Private key in hex:\n");
     char str[1000] = {0};
@@ -240,8 +234,7 @@ typedef enum : NSUInteger {
     
     NSLog(@"Address: %@", key.compressedPublicKeyAddress);
     
-    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.compressedPublicKeyAddress.string])
-    {
+    if (![@"1TipsuQ7CSqfQsjA9KU5jarSB1AnrVLLo" isEqualToString:key.compressedPublicKeyAddress.string]) {
         NSLog(@"WARNING: incorrect private key is supplied");
         return;
     }
@@ -255,8 +248,7 @@ typedef enum : NSUInteger {
                                                                       api:btcAPI
                                                                     error:&error];
     
-    if (!transaction)
-    {
+    if (!transaction) {
         NSLog(@"Can't make a transaction: %@", error);
     }
     
@@ -313,8 +305,7 @@ typedef enum : NSUInteger {
     NSLog(@"UTXOs for %@: %@ %@", key.compressedPublicKeyAddress, utxos, error);
 
     // Can't download unspent outputs - return with error.
-    if (!utxos)
-    {
+    if (!utxos) {
         *errorOut = error;
         return nil;
     }
@@ -356,10 +347,8 @@ typedef enum : NSUInteger {
     
     NSArray* txouts = nil;
     
-    for (BTCTransactionOutput* txout in utxos)
-    {
-        if (txout.value > (totalAmount + dustThreshold) && txout.script.isPayToPublicKeyHashScript)
-        {
+    for (BTCTransactionOutput* txout in utxos) {
+        if (txout.value > (totalAmount + dustThreshold) && txout.script.isPayToPublicKeyHashScript) {
             txouts = @[ txout ];
             break;
         }
@@ -374,8 +363,7 @@ typedef enum : NSUInteger {
     BTCAmount spentCoins = 0;
     
     // Add all outputs as inputs
-    for (BTCTransactionOutput* txout in txouts)
-    {
+    for (BTCTransactionOutput* txout in txouts) {
         BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
         txin.previousHash = txout.transactionHash;
         txin.previousIndex = txout.index;
@@ -402,8 +390,7 @@ typedef enum : NSUInteger {
     
     
     // Sign all inputs. We now have both inputs and outputs defined, so we can sign the transaction.
-    for (int i = 0; i < txouts.count; i++)
-    {
+    for (int i = 0; i < txouts.count; i++) {
         // Normally, we have to find proper keys to sign this txin, but in this
         // example we already know that we use a single private key.
         
@@ -424,8 +411,7 @@ typedef enum : NSUInteger {
         
         // 134675e153a5df1b8e0e0f0c45db0822f8f681a2eb83a0f3492ea8f220d4d3e4
         NSLog(@"Hash for input %d: %@", i, BTCHexFromData(hash));
-        if (!hash)
-        {
+        if (!hash) {
             return nil;
         }
         
