@@ -6,8 +6,7 @@
 @implementation BTCBlockchainInfo
 
 // Builds a request from a list of BTCAddress objects.
-- (NSMutableURLRequest*) requestForUnspentOutputsWithAddresses:(NSArray*)addresses
-{
+- (NSMutableURLRequest*) requestForUnspentOutputsWithAddresses:(NSArray*)addresses {
     if (addresses.count == 0) return nil;
     
     NSString* urlstring = [NSString stringWithFormat:@"https://blockchain.info/unspent?active=%@", [[addresses valueForKey:@"base58String"] componentsJoinedByString:@"%7C"]];
@@ -17,17 +16,14 @@
 }
 
 // List of BTCTransactionOutput instances.
-- (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut
-{
+- (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut {
     if (!responseData) return nil;
     NSError* parseError = nil;
     NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&parseError];
-    if (!dict || ![dict isKindOfClass:[NSDictionary class]])
-    {
+    if (!dict || ![dict isKindOfClass:[NSDictionary class]]) {
         // Blockchain.info returns "No free outputs to spend" instead of a valid JSON.
         NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-        if (responseString && [responseString rangeOfString:@"No free outputs to spend"].length > 0)
-        {
+        if (responseString && [responseString rangeOfString:@"No free outputs to spend"].length > 0) {
             return @[];
         }
         if (errorOut) *errorOut = parseError;
@@ -36,8 +32,7 @@
     
     NSMutableArray* outputs = [NSMutableArray array];
     
-    for (NSDictionary* item in dict[@"unspent_outputs"])
-    {
+    for (NSDictionary* item in dict[@"unspent_outputs"]) {
         BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
         
         txout.value = [item[@"value"] longLongValue];
@@ -79,20 +74,17 @@
     */
 }
 
-- (NSArray*) unspentOutputsWithAddresses:(NSArray*)addresses error:(NSError**)errorOut
-{
+- (NSArray*) unspentOutputsWithAddresses:(NSArray*)addresses error:(NSError**)errorOut {
     NSURLRequest* req = [self requestForUnspentOutputsWithAddresses:addresses];
     NSURLResponse* response = nil;
     NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
-    if (!data)
-    {
+    if (!data) {
         return nil;
     }
     return [self unspentOutputsForResponseData:data error:errorOut];
 }
 
-- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data
-{
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data {
     if (data.length == 0) return nil;
     
     NSString* urlstring = @"https://blockchain.info/pushtx";
@@ -103,13 +95,11 @@
     return request;
 }
 
-- (BOOL) broadcastTransactionData:(NSData*)data error:(NSError**)errorOut
-{
+- (BOOL) broadcastTransactionData:(NSData*)data error:(NSError**)errorOut {
     NSURLRequest* req = [self requestForTransactionBroadcastWithData:data];
     NSURLResponse* response = nil;
     NSData* resultData = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
-    if (!resultData)
-    {
+    if (!resultData) {
         return NO;
     }
     
