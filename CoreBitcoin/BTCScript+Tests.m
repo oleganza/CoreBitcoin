@@ -13,8 +13,7 @@
 
 @implementation BTCScript (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testP2SHMultisig];
     [self testMultisignatureScripts];
     
@@ -29,8 +28,7 @@
     [self testInvalidBitcoinQTScripts];
 }
 
-+ (void) testP2SHMultisig
-{
++ (void) testP2SHMultisig {
 //    BTCTransaction* tx = [[BTCTransaction alloc] initWithData:BTCDataFromHex(@"0100000002e7131826715b36b47b149177b0f2f3169af74b9188d3d02433d7f3b5e6c796a701000000fc00473044022075968c0bd5dd89872cb4793f60e30bcaa44b73f2c4ff31f0ad184f216d2b081202205b6e0d4dbe07d826baeef346d8ff9d02d40c5aa9b0f74b0fafb370aee068a9ae0147304402204b287822f29e683fc0cb16935d11b9401fee5a97893a798b4ca7d43e53eaf8c602207e42f8749083d871ea7d1e0a90e02d44f25f6276787d3c04ed72da681fb3e70f014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff12780cf6595ce7d34ca2e2c104dad5a2ea8709348a280cefc2246bdbd0bf142a01000000fb00473044022056c9d4177774917f9a91be9b5f7c458d9d142bd5ac22d219942dd6eec7b98c140220732715ed6ffee27d446792a11578b63b5db13e52898dae26e6dc965b9dc87fb20146304302206882ff20af49797da8a5758024e32517216ec66c119199a3dc9a9f89c24cc56d021f6bf1d49a83fc73f93a2139e519ed31e3ae8b04fbe7bb7245f35da9dd22c6f7014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff03e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87c60700000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d8700000000")];
 
     BTCTransaction* tx = [[BTCTransaction alloc] initWithData:BTCDataFromHex(@"0100000002e7131826715b36b47b149177b0f2f3169af74b9188d3d02433d7f3b5e6c796a701000000fdfd0000473044022032e7b327ccf5e7f19029134c50d881daa178a1233d09ac9e6e93081e8f33efaf02202e2bf8b57d1c34554f65fac9c6df4986d31b3f6a7bee6cbab9a3ed835e3f57c301483045022100a355f5cde0b7643a1cbb813df4b29ddca13ddd7ee3685e77b1972179832bbd9a0220391bb9661fdab9f38bcce2abaebde39f3b5874b65758b61e1961c64f8b74d288014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff12780cf6595ce7d34ca2e2c104dad5a2ea8709348a280cefc2246bdbd0bf142a01000000fdfd0000483045022100a6967dcd995712007a647d5466131ebc2f5cd3f46c7b314ccf428ea4e46684c502202716cf49125a67627dc2837b747898b38e8c4f58abb13cd3c1c362f0f4094ff301473044022056fc5265f4508e1baf4d837894d5e6e3df8925c68c1f2f8ca83476b73fabd64202200ad5c9928db2d7096a3d19ac2d6fc9eab3db69cd00b9dbcb923bb2e709c5b64f014c6952210378d430274f8c5ec1321338151e9f27f4c676a008bdf8638d07c0b6be9ab35c7121026a361b855808aeba02d3143b3ec884f709b24d5391c515bd4eafd69d1afae337210355e9d91d63acb15a75c1a9205fc4c0a0878778e08e0a9ca22adb0c2c33fa880153aeffffffff03e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87e80300000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d87c60700000000000017a914df91b0c30b7d6ec20c50e066c07add242dcfcc1d8700000000")];
@@ -41,21 +39,18 @@
 //    NSLog(@"p2sh inner = %@", redeemScript.string);
 //    NSLog(@"tx = %@", tx.dictionary);
 
-    for (uint32_t i = 0; i < tx.inputs.count; i++)
-    {
+    for (uint32_t i = 0; i < tx.inputs.count; i++) {
         BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:tx inputIndex:i];
         NSError* error = nil;
         BOOL r = [sm verifyWithOutputScript:outputScript error:&error];
-        if (!r)
-        {
+        if (!r) {
             NSLog(@"BTCScriptMachine error: %@", error);
         }
         NSAssert(r, @"should verify first input");
     }
 }
 
-+ (void) testMultisignatureScripts
-{
++ (void) testMultisignatureScripts {
     // 1. Create some keys
     
     BTCKey* alice = [[BTCKey alloc] initWithPrivateKey:BTCHash256(BTCDataWithUTF8CString("alice"))];
@@ -121,13 +116,11 @@
                                    @[alice, alice, bob],
                                    @[david, alice, carl],
                                    @[alice, bob,   carl],
-                                   ])
-    {
+                                   ]) {
         BTCScript* signatureScript = [[BTCScript alloc] init];
         
         [signatureScript appendOpcode:OP_0];
-        for (BTCKey* key in keys)
-        {
+        for (BTCKey* key in keys) {
             [signatureScript appendData:[key signatureForHash:hash hashType:hashtype]];
         }
         
@@ -138,8 +131,7 @@
         BTCScriptMachine* sm = [[BTCScriptMachine alloc] initWithTransaction:dstTx inputIndex:0];
         NSError* error = nil;
         BOOL r = [sm verifyWithOutputScript:[srcTxOut.script copy] error:&error];
-        if (!r)
-        {
+        if (!r) {
             NSLog(@"BTCScriptMachine error: %@", error);
         }
         NSAssert(r, @"should verify first input");
@@ -169,13 +161,11 @@
                                @[bob, alice],
                                @[carl, bob],
                                @[carl, alice],
-                               ])
-    {
+                               ]) {
         BTCScript* signatureScript = [[BTCScript alloc] init];
         
         [signatureScript appendOpcode:OP_0];
-        for (BTCKey* key in keys)
-        {
+        for (BTCKey* key in keys) {
             [signatureScript appendData:[key signatureForHash:hash hashType:hashtype]];
         }
         
@@ -192,8 +182,7 @@
     
 }
 
-+ (void) testBinarySerialization
-{
++ (void) testBinarySerialization {
     // Empty script
     {
         NSAssert([[[BTCScript alloc] init].data isEqual:[NSData data]], @"Default script should be empty.");
@@ -202,8 +191,7 @@
     
 }
 
-+ (void) testStringSerialization
-{
++ (void) testStringSerialization {
     //NSLog(@"tx = %@", BTCHexFromData(BTCReversedData(BTCDataFromHex(@"..."))));
     
     NSData* yrashkScript = BTCDataFromHex(@"52210391e4786b4c7637c160247ad6d5702d9bb2860cbb8130d59b0fd9808a0220d50f2102e191fcff2849099988fbe1592b6788707a61401058c09ef97363c9d96c43a0cf21027f10a51295e8e96d5957f3665168426249a006e548e48cbfa5882d2bf89ab67e2103d39801bafef0cc3c211101a54a47874c0a835efa2c17c47ebbe380c803345a2354ae");
@@ -214,8 +202,7 @@
     //NSLog(@"Script: %@", script);
 }
 
-+ (void) testStandardScripts
-{
++ (void) testStandardScripts {
     BTCScript *script = [[BTCScript alloc] initWithData:BTCDataFromHex(@"76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac")];
     
     //NSLog(@"TEST: String: %@\nIs P2PKH Script: %d", script.string, script.isPayToPublicKeyHashScript);
@@ -277,13 +264,11 @@
     
 }
 
-+ (void) testScriptModifications
-{
++ (void) testScriptModifications {
     // 
 }
 
-+ (void) testStrangeScripts
-{
++ (void) testStrangeScripts {
 //    @[@"2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "],
 //    @[@"-2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "],
 //    @[@"2147483647 DUP ADD", @"4294967294 NUMEQUAL", @"NUMEQUAL must be in numeric range"],
@@ -297,12 +282,9 @@
     scriptMachine.inputScript = script;
     
     NSError* error = nil;
-    if (![scriptMachine verifyWithOutputScript:[[BTCScript alloc] initWithString:@"OP_NOP"] error:&error])
-    {
+    if (![scriptMachine verifyWithOutputScript:[[BTCScript alloc] initWithString:@"OP_NOP"] error:&error]) {
 //        NSLog(@"error: %@", error);
-    }
-    else
-    {
+    } else {
 //        NSLog(@"script passed: %@", script);
     }
 }
@@ -343,28 +325,24 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
 
 
 
-+ (void) testValidBitcoinQTScripts
-{
++ (void) testValidBitcoinQTScripts {
 //    // 7f33a2f5ace097f071010d5105e7fd01f22c83d8d5daa741a41f2a630a2af23b
 //    NSLog(@"crediting tx: %@", BuildCreditingTransaction([BTCScript new]).transactionID);
 //    // add55eb99bb1f653ab822ea4177cb0f9673bcc5c2c4c729894ab0c626c8fa1e1
 //    NSLog(@"spending tx:  %@", BuildSpendingTransaction([BTCScript new], BuildCreditingTransaction([BTCScript new])).transactionID);
 
-    for (NSArray* tuple in [self validBitcoinQTScripts])
-    {
+    for (NSArray* tuple in [self validBitcoinQTScripts]) {
         NSString* inputScriptString = tuple[0];
         NSString* outputScriptString = tuple[1];
         NSString* comment = tuple.count > 2 ? tuple[2] : @"Script should not fail";
         
         BTCScript* inputScript = [[BTCScript alloc] initWithString:inputScriptString];
-        if (!inputScript)
-        {
+        if (!inputScript) {
             // for breakpoint
             inputScript = [[BTCScript alloc] initWithString:inputScriptString];
         }
         BTCScript* outputScript = [[BTCScript alloc] initWithString:outputScriptString];
-        if (!outputScript)
-        {
+        if (!outputScript) {
             // for breakpoint
             outputScript = [[BTCScript alloc] initWithString:outputScriptString];
         }
@@ -379,8 +357,7 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
         scriptMachine.inputScript = inputScript;
         
         NSError* error = nil;
-        if (![scriptMachine verifyWithOutputScript:outputScript error:&error])
-        {
+        if (![scriptMachine verifyWithOutputScript:outputScript error:&error]) {
             NSLog(@"BTCScript validation error: %@ (%@)", error, comment);
             
             // for breakpoint.
@@ -390,10 +367,8 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
     }
 }
 
-+ (void) testInvalidBitcoinQTScripts
-{
-    for (NSArray* tuple in [self invalidBitcoinQTScripts])
-    {
++ (void) testInvalidBitcoinQTScripts {
+    for (NSArray* tuple in [self invalidBitcoinQTScripts]) {
         NSString* inputScriptString = tuple[0];
         NSString* outputScriptString = tuple[1];
         NSString* comment = tuple.count > 2 ? tuple[2] : @"Script should not fail";
@@ -415,8 +390,7 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
         scriptMachine.inputScript = inputScript;
         
         NSError* error = nil;
-        if ([scriptMachine verifyWithOutputScript:outputScript error:&error])
-        {
+        if ([scriptMachine verifyWithOutputScript:outputScript error:&error]) {
             // for breakpoint.
             [scriptMachine verifyWithOutputScript:outputScript error:&error];
             NSAssert(0, comment);
@@ -428,8 +402,7 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
 
 // Data
 
-+ (NSArray*) validBitcoinQTScripts
-{
++ (NSArray*) validBitcoinQTScripts {
     return @[
                               @[@"0x01 0x0b", @"11 EQUAL", @"push 1 byte"],
                               @[@"0x02 0x417a", @"'Az' EQUAL"],
@@ -861,8 +834,7 @@ BTCTransaction* BuildSpendingTransaction(BTCScript* scriptSig, BTCTransaction* t
                               ];
 }
 
-+ (NSArray*) invalidBitcoinQTScripts
-{
++ (NSArray*) invalidBitcoinQTScripts {
     return @[
   @[@"", @""],
   @[@"", @"NOP"],
