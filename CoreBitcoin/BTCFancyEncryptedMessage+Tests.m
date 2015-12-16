@@ -15,14 +15,12 @@
 
 @implementation BTCFancyEncryptedMessage (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testProofOfWork];
     [self testMessages];
 }
 
-+ (void) testMessages
-{
++ (void) testMessages {
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:BTCSHA256([@"some key" dataUsingEncoding:NSUTF8StringEncoding])];
     
     NSString* originalString = @"Hello!";
@@ -55,8 +53,7 @@
     NSAssert([string isEqualToString:originalString], @"should decrypt the original string");
 }
 
-+ (void) testProofOfWork
-{
++ (void) testProofOfWork {
     NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:0] == 0, @"0x00 -> 0");
     NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:0xFF] == 0xFFFFFFFF, @"0x00 -> 0");
     NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:1] == 0, @"order is zero");
@@ -71,8 +68,7 @@
     NSAssert([BTCFancyEncryptedMessage targetForCompactTarget:8+4] == 3, @"order is one, and tail starts with 1");
     
     uint8_t t = 0;
-    do
-    {
+    do {
         // normalize t
         uint8_t nt = t;
         uint32_t order = t >> 3;
@@ -96,8 +92,7 @@
     } while (1);
 }
 
-+ (NSString*) binaryString8:(uint8_t)byte
-{
++ (NSString*) binaryString8:(uint8_t)byte {
     return [NSString stringWithFormat:@"%d%d%d%d%d%d%d%d",
             (int)((byte >> 7) & 1),
             (int)((byte >> 6) & 1),
@@ -110,8 +105,7 @@
             ];
 }
 
-+ (NSString*) binaryString32:(uint32_t)eent
-{
++ (NSString*) binaryString32:(uint32_t)eent {
     return [NSString stringWithFormat:@"%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d",
             (int)((eent >> 31) & 1),
             (int)((eent >> 30) & 1),
