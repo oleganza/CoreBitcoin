@@ -23,8 +23,7 @@
     return self;
 }
 
-+ (BTCNetwork*) mainnet
-{
++ (BTCNetwork*) mainnet {
     static BTCNetwork* network;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -38,8 +37,7 @@
     return network;
 }
 
-+ (BTCNetwork*) testnet
-{
++ (BTCNetwork*) testnet {
     static BTCNetwork* network;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -97,8 +95,7 @@
 #pragma mark - NSCopying
 
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     BTCNetwork* network = [[BTCNetwork alloc] copy];
     
     network->_isTestnet      = _isTestnet;
