@@ -59,10 +59,8 @@
     NSInteger _opCount;
 }
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         // Constants used in script execution.
         _blobFalse = [NSData data];
         _blobZero = _blobFalse;
@@ -81,30 +79,26 @@
     return self;
 }
 
-- (void) resetStack
-{
+- (void) resetStack {
     _stack = [NSMutableArray array];
     _altStack = [NSMutableArray array];
     _conditionStack = [NSMutableArray array];
 }
 
-- (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex
-{
+- (id) initWithTransaction:(BTCTransaction*)tx inputIndex:(uint32_t)inputIndex {
     if (!tx) return nil;
     // BitcoinQT would crash right before VerifyScript if the input index was out of bounds.
     // So even though it returns 1 from SignatureHash() function when checking for this condition,
     // it never actually happens. So we too will not check for it when calculating a hash.
     if (inputIndex >= tx.inputs.count) return nil;
-    if (self = [self init])
-    {
+    if (self = [self init]) {
         _transaction = tx;
         _inputIndex = inputIndex;
     }
     return self;
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     BTCScriptMachine* sm = [[BTCScriptMachine alloc] init];
     sm.transaction = self.transaction;
     sm.inputIndex = self.inputIndex;
@@ -114,26 +108,21 @@
     return sm;
 }
 
-- (BOOL) shouldVerifyP2SH
-{
+- (BOOL) shouldVerifyP2SH {
     return (_blockTimestamp >= BTC_BIP16_TIMESTAMP);
 }
 
-- (BOOL) verifyWithOutputScript:(BTCScript*)outputScript error:(NSError**)errorOut
-{
+- (BOOL) verifyWithOutputScript:(BTCScript*)outputScript error:(NSError**)errorOut {
     // self.inputScript allows to override transaction so we can simply testing.
     BTCScript* inputScript = self.inputScript;
     
-    if (!inputScript)
-    {
+    if (!inputScript) {
         // Sanity check: transaction and its input should be consistent.
-        if (!(self.transaction && self.inputIndex < self.transaction.inputs.count))
-        {
+        if (!(self.transaction && self.inputIndex < self.transaction.inputs.count)) {
             [NSException raise:@"BTCScriptMachineException"  format:@"transaction and valid inputIndex are required for script verification."];
             return NO;
         }
-        if (!outputScript)
-        {
+        if (!outputScript) {
             [NSException raise:@"BTCScriptMachineException"  format:@"non-nil outputScript is required for script verification."];
             return NO;
         }
@@ -143,8 +132,7 @@
     }
     
     // First step: run the input script which typically places signatures, pubkeys and other static data needed for outputScript.
-    if (![self runScript:inputScript error:errorOut])
-    {
+    if (![self runScript:inputScript error:errorOut]) {
         // errorOut is set by runScript
         return NO;
     }
@@ -155,38 +143,32 @@
     NSMutableArray* stackForP2SH = shouldVerifyP2SH ? [_stack mutableCopy] : nil;
     
     // Second step: run output script to see that the input satisfies all conditions laid in the output script.
-    if (![self runScript:outputScript error:errorOut])
-    {
+    if (![self runScript:outputScript error:errorOut]) {
         // errorOut is set by runScript
         return NO;
     }
     
     // We need to have something on stack
-    if (_stack.count == 0)
-    {
+    if (_stack.count == 0) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Stack is empty after script execution.", @"")];
         return NO;
     }
     
     // The last value must be YES.
-    if ([self boolAtIndex:-1] == NO)
-    {
+    if ([self boolAtIndex:-1] == NO) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Last item on the stack is boolean NO.", @"")];
         return NO;
     }
     
     // Additional validation for spend-to-script-hash transactions:
-    if (shouldVerifyP2SH)
-    {
+    if (shouldVerifyP2SH) {
         // BitcoinQT: scriptSig must be literals-only
-        if (![inputScript isDataOnly])
-        {
+        if (![inputScript isDataOnly]) {
             if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Input script for P2SH spending must be literals-only.", @"")];
             return NO;
         }
         
-        if (stackForP2SH.count == 0)
-        {
+        if (stackForP2SH.count == 0) {
             // stackForP2SH cannot be empty here, because if it was the
             // P2SH  HASH <> EQUAL  scriptPubKey would be evaluated with
             // an empty stack and the runScript: above would return NO.
@@ -204,21 +186,18 @@
         [self resetStack];
         _stack = stackForP2SH;
         
-        if (![self runScript:providedScript error:errorOut])
-        {
+        if (![self runScript:providedScript error:errorOut]) {
             return NO;
         }
         
         // We need to have something on stack
-        if (_stack.count == 0)
-        {
+        if (_stack.count == 0) {
             if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Stack is empty after script execution.", @"")];
             return NO;
         }
         
         // The last value must be YES.
-        if ([self boolAtIndex:-1] == NO)
-        {
+        if ([self boolAtIndex:-1] == NO) {
             if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Last item on the stack is boolean NO.", @"")];
             return NO;
         }
@@ -229,16 +208,13 @@
 }
 
 
-- (BOOL) runScript:(BTCScript*)script error:(NSError**)errorOut
-{
-    if (!script)
-    {
+- (BOOL) runScript:(BTCScript*)script error:(NSError**)errorOut {
+    if (!script) {
         [NSException raise:@"BTCScriptMachineException"  format:@"non-nil script is required for -runScript:error: method."];
         return NO;
     }
     
-    if (script.data.length > BTC_MAX_SCRIPT_SIZE)
-    {
+    if (script.data.length > BTC_MAX_SCRIPT_SIZE) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Script binary is too long.", @"")];
         return NO;
     }
@@ -267,14 +243,12 @@
         }
     }];
     
-    if (opFailed)
-    {
+    if (opFailed) {
         // Error is already set by executeOpcode, return immediately.
         return NO;
     }
     
-    if (_conditionStack.count > 0)
-    {
+    if (_conditionStack.count > 0) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Condition branches not balanced.", @"")];
         return NO;
     }
@@ -283,20 +257,17 @@
 }
 
 
-- (BOOL) executeOpcodeError:(NSError**)errorOut
-{
+- (BOOL) executeOpcodeError:(NSError**)errorOut {
     NSUInteger opcodeIndex = _opIndex;
     BTCOpcode opcode = _opcode;
     NSData* pushdata = _pushdata;
     
-    if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE)
-    {
+    if (pushdata.length > BTC_MAX_SCRIPT_ELEMENT_SIZE) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Pushdata chunk size is too big.", @"")];
         return NO;
     }
     
-    if (opcode > OP_16 && !_pushdata && ++_opCount > BTC_MAX_OPS_PER_SCRIPT)
-    {
+    if (opcode > OP_16 && !_pushdata && ++_opCount > BTC_MAX_OPS_PER_SCRIPT) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Exceeded the allowed number of operations per script.", @"")];
         return NO;
     }
@@ -317,23 +288,18 @@
         opcode == OP_DIV ||
         opcode == OP_MOD ||
         opcode == OP_LSHIFT ||
-        opcode == OP_RSHIFT)
-    {
+        opcode == OP_RSHIFT) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Attempt to execute a disabled opcode.", @"")];
         return NO;
     }
     
     BOOL shouldExecute = ([_conditionStack indexOfObject:@NO] == NSNotFound);
     
-    if (shouldExecute && pushdata)
-    {
+    if (shouldExecute && pushdata) {
         [_stack addObject:pushdata];
-    }
+    } else if (shouldExecute || (OP_IF <= opcode && opcode <= OP_ENDIF)) {
     // this basically means that OP_VERIF and OP_VERNOTIF will always fail the script, even if not executed.
-    else if (shouldExecute || (OP_IF <= opcode && opcode <= OP_ENDIF))
-    {
-        switch (opcode)
-        {
+        switch (opcode) {
             //
             // Push value
             //
@@ -353,8 +319,7 @@
             case OP_13:
             case OP_14:
             case OP_15:
-            case OP_16:
-            {
+            case OP_16: {
                 // ( -- value)
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:(int)opcode - (int)(OP_1 - 1)];
                 [_stack addObject:bn.signedLittleEndian];
@@ -372,20 +337,16 @@
             
             
             case OP_IF:
-            case OP_NOTIF:
-            {
+            case OP_NOTIF: {
                 // <expression> if [statements] [else [statements]] endif
                 BOOL value = NO;
-                if (shouldExecute)
-                {
-                    if (_stack.count < 1)
-                    {
+                if (shouldExecute) {
+                    if (_stack.count < 1) {
                         if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                         return NO;
                     }
                     value = [self boolAtIndex:-1];
-                    if (opcode == OP_NOTIF)
-                    {
+                    if (opcode == OP_NOTIF) {
                         value = !value;
                     }
                     [self popFromStack];
@@ -394,10 +355,8 @@
             }
             break;
             
-            case OP_ELSE:
-            {
-                if (_conditionStack.count == 0)
-                {
+            case OP_ELSE: {
+                if (_conditionStack.count == 0) {
                     if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ELSE.", @"")];
                     return NO;
                 }
@@ -409,10 +368,8 @@
             }
             break;
                 
-            case OP_ENDIF:
-            {
-                if (_conditionStack.count == 0)
-                {
+            case OP_ENDIF: {
+                if (_conditionStack.count == 0) {
                     if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Expected an OP_IF or OP_NOTIF branch before OP_ENDIF.", @"")];
                     return NO;
                 }
@@ -420,31 +377,25 @@
             }
             break;
             
-            case OP_VERIFY:
-            {
+            case OP_VERIFY: {
                 // (true -- ) or
                 // (false -- false) and return
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
 
                 BOOL value = [self boolAtIndex:-1];
-                if (value)
-                {
+                if (value) {
                     [self popFromStack];
-                }
-                else
-                {
+                } else {
                     if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_VERIFY failed.", @"")];
                     return NO;
                 }
             }
             break;
                 
-            case OP_RETURN:
-            {
+            case OP_RETURN: {
                 if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_RETURN executed.", @"")];
                 return NO;
             }
@@ -454,10 +405,8 @@
             //
             // Stack ops
             //
-            case OP_TOALTSTACK:
-            {
-                if (_stack.count < 1)
-                {
+            case OP_TOALTSTACK: {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
@@ -466,10 +415,8 @@
             }
             break;
                 
-            case OP_FROMALTSTACK:
-            {
-                if (_altStack.count < 1)
-                {
+            case OP_FROMALTSTACK: {
+                if (_altStack.count < 1) {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"%@ requires one item on altstack", @""), BTCNameForOpcode(opcode)]];
                     return NO;
                 }
@@ -478,11 +425,9 @@
             }
             break;
                 
-            case OP_2DROP:
-            {
+            case OP_2DROP: {
                 // (x1 x2 -- )
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -491,11 +436,9 @@
             }
             break;
                 
-            case OP_2DUP:
-            {
+            case OP_2DUP: {
                 // (x1 x2 -- x1 x2 x1 x2)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -506,11 +449,9 @@
             }
             break;
                 
-            case OP_3DUP:
-            {
+            case OP_3DUP: {
                 // (x1 x2 x3 -- x1 x2 x3 x1 x2 x3)
-                if (_stack.count < 3)
-                {
+                if (_stack.count < 3) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
@@ -523,11 +464,9 @@
             }
             break;
                 
-            case OP_2OVER:
-            {
+            case OP_2OVER: {
                 // (x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2)
-                if (_stack.count < 4)
-                {
+                if (_stack.count < 4) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:4];
                     return NO;
                 }
@@ -538,11 +477,9 @@
             }
             break;
                 
-            case OP_2ROT:
-            {
+            case OP_2ROT: {
                 // (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
-                if (_stack.count < 6)
-                {
+                if (_stack.count < 6) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:6];
                     return NO;
                 }
@@ -554,11 +491,9 @@
             }
             break;
                 
-            case OP_2SWAP:
-            {
+            case OP_2SWAP: {
                 // (x1 x2 x3 x4 -- x3 x4 x1 x2)
-                if (_stack.count < 4)
-                {
+                if (_stack.count < 4) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:4];
                     return NO;
                 }
@@ -568,36 +503,30 @@
             }
             break;
                 
-            case OP_IFDUP:
-            {
+            case OP_IFDUP: {
                 // (x -- x x)
                 // (0 -- 0)
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex:-1];
-                if ([self boolAtIndex:-1])
-                {
+                if ([self boolAtIndex:-1]) {
                     [_stack addObject:data];
                 }
             }
             break;
                 
-            case OP_DEPTH:
-            {
+            case OP_DEPTH: {
                 // -- stacksize
                 BTCBigNumber* bn = [[BTCBigNumber alloc] initWithInt64:_stack.count];
                 [_stack addObject:bn.signedLittleEndian];
             }
             break;
                 
-            case OP_DROP:
-            {
+            case OP_DROP: {
                 // (x -- )
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
@@ -605,11 +534,9 @@
             }
             break;
                 
-            case OP_DUP:
-            {
+            case OP_DUP: {
                 // (x -- x x)
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
@@ -618,11 +545,9 @@
             }
             break;
                 
-            case OP_NIP:
-            {
+            case OP_NIP: {
                 // (x1 x2 -- x2)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -630,11 +555,9 @@
             }
             break;
                 
-            case OP_OVER:
-            {
+            case OP_OVER: {
                 // (x1 x2 -- x1 x2 x1)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -644,12 +567,10 @@
             break;
                 
             case OP_PICK:
-            case OP_ROLL:
-            {
+            case OP_ROLL: {
                 // pick: (xn ... x2 x1 x0 n -- xn ... x2 x1 x0 xn)
                 // roll: (xn ... x2 x1 x0 n --    ... x2 x1 x0 xn)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -658,8 +579,7 @@
                 // Take it and pop it from the stack.
                 BTCBigNumber* bn = [self bigNumberAtIndex:-1];
                 
-                if (!bn)
-                {
+                if (!bn) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
@@ -667,27 +587,23 @@
                 int32_t n = [bn int32value];
                 [self popFromStack];
                 
-                if (n < 0 || n >= _stack.count)
-                {
+                if (n < 0 || n >= _stack.count) {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of items for %@: %d.", @""), BTCNameForOpcode(opcode), n]];
                     return NO;
                 }
                 NSData* data = [self dataAtIndex: -n - 1];
-                if (opcode == OP_ROLL)
-                {
+                if (opcode == OP_ROLL) {
                     [self removeAtIndex: -n - 1];
                 }
                 [_stack addObject:data];
             }
             break;
                 
-            case OP_ROT:
-            {
+            case OP_ROT: {
                 // (x1 x2 x3 -- x2 x3 x1)
                 //  x2 x1 x3  after first swap
                 //  x2 x3 x1  after second swap
-                if (_stack.count < 3)
-                {
+                if (_stack.count < 3) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
@@ -696,11 +612,9 @@
             }
             break;
                 
-            case OP_SWAP:
-            {
+            case OP_SWAP: {
                 // (x1 x2 -- x2 x1)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -708,11 +622,9 @@
             }
             break;
                 
-            case OP_TUCK:
-            {
+            case OP_TUCK: {
                 // (x1 x2 -- x2 x1 x2)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -722,11 +634,9 @@
             break;
                 
                 
-            case OP_SIZE:
-            {
+            case OP_SIZE: {
                 // (in -- in size)
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
@@ -740,12 +650,10 @@
             // Bitwise logic
             //
             case OP_EQUAL:
-            case OP_EQUALVERIFY:
+            case OP_EQUALVERIFY: {
                 //case OP_NOTEQUAL: // use OP_NUMNOTEQUAL
-            {
                 // (x1 x2 - bool)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -764,14 +672,10 @@
                 
                 [_stack addObject:equal ? _blobTrue : _blobFalse];
                 
-                if (opcode == OP_EQUALVERIFY)
-                {
-                    if (equal)
-                    {
+                if (opcode == OP_EQUALVERIFY) {
+                    if (equal) {
                         [self popFromStack];
-                    }
-                    else
-                    {
+                    } else {
                         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_EQUALVERIFY failed.", @"")];
                         return NO;
                     }
@@ -787,25 +691,21 @@
             case OP_NEGATE:
             case OP_ABS:
             case OP_NOT:
-            case OP_0NOTEQUAL:
-            {
+            case OP_0NOTEQUAL: {
                 // (in -- out)
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
                 
                 BTCMutableBigNumber* bn = [self bigNumberAtIndex:-1];
                 
-                if (!bn)
-                {
+                if (!bn) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
                 
-                switch (opcode)
-                {
+                switch (opcode) {
                     case OP_1ADD:       [bn add:_bigNumberOne]; break;
                     case OP_1SUB:       [bn subtract:_bigNumberOne]; break;
                     case OP_NEGATE:     [bn multiply:[BTCBigNumber negativeOne]]; break;
@@ -831,11 +731,9 @@
             case OP_LESSTHANOREQUAL:
             case OP_GREATERTHANOREQUAL:
             case OP_MIN:
-            case OP_MAX:
-            {
+            case OP_MAX: {
                 // (x1 x2 -- out)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -845,16 +743,14 @@
                 BTCMutableBigNumber* bn1 = [self bigNumberAtIndex:-2];
                 BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-1];
                 
-                if (!bn1 || !bn2)
-                {
+                if (!bn1 || !bn2) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
                 
                 BTCMutableBigNumber* bn = nil;
                 
-                switch (opcode)
-                {
+                switch (opcode) {
                     case OP_ADD:
                         bn = [bn1 add:bn2];
                         break;
@@ -881,14 +777,10 @@
                 [self popFromStack];
                 [_stack addObject:bn.signedLittleEndian];
                 
-                if (opcode == OP_NUMEQUALVERIFY)
-                {
-                    if ([self boolAtIndex:-1])
-                    {
+                if (opcode == OP_NUMEQUALVERIFY) {
+                    if ([self boolAtIndex:-1]) {
                         [self popFromStack];
-                    }
-                    else
-                    {
+                    } else {
                         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"OP_NUMEQUALVERIFY failed.", @"")];
                         return NO;
                     }
@@ -896,11 +788,9 @@
             }
             break;
                 
-            case OP_WITHIN:
-            {
+            case OP_WITHIN: {
                 // (x min max -- out)
-                if (_stack.count < 3)
-                {
+                if (_stack.count < 3) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:3];
                     return NO;
                 }
@@ -909,8 +799,7 @@
                 BTCMutableBigNumber* bn2 = [self bigNumberAtIndex:-2];
                 BTCMutableBigNumber* bn3 = [self bigNumberAtIndex:-1];
                 
-                if (!bn1 || !bn2 || !bn3)
-                {
+                if (!bn1 || !bn2 || !bn3) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
@@ -933,11 +822,9 @@
             case OP_SHA1:
             case OP_SHA256:
             case OP_HASH160:
-            case OP_HASH256:
-            {
+            case OP_HASH256: {
                 // (in -- hash)
-                if (_stack.count < 1)
-                {
+                if (_stack.count < 1) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:1];
                     return NO;
                 }
@@ -945,24 +832,15 @@
                 NSData* data = [self dataAtIndex:-1];
                 NSData* hash = nil;
                 
-                if (opcode == OP_RIPEMD160)
-                {
+                if (opcode == OP_RIPEMD160) {
                     hash = BTCRIPEMD160(data);
-                }
-                else if (opcode == OP_SHA1)
-                {
+                } else if (opcode == OP_SHA1) {
                     hash = BTCSHA1(data);
-                }
-                else if (opcode == OP_SHA256)
-                {
+                } else if (opcode == OP_SHA256) {
                     hash = BTCSHA256(data);
-                }
-                else if (opcode == OP_HASH160)
-                {
+                } else if (opcode == OP_HASH160) {
                     hash = BTCHash160(data);
-                }
-                else if (opcode == OP_HASH256)
-                {
+                } else if (opcode == OP_HASH256) {
                     hash = BTCHash256(data);
                 }
                 [self popFromStack];
@@ -971,8 +849,7 @@
             break;
             
             
-            case OP_CODESEPARATOR:
-            {
+            case OP_CODESEPARATOR: {
                 // Code separator is almost never used and no one knows why it could be useful. Maybe it's Satoshi's design mistake.
                 // It affects how OP_CHECKSIG and OP_CHECKMULTISIG compute the hash of transaction for verifying the signature.
                 // That hash should be computed after the most recent OP_CODESEPARATOR before current OP_CHECKSIG (or OP_CHECKMULTISIG).
@@ -985,11 +862,9 @@
 
             
             case OP_CHECKSIG:
-            case OP_CHECKSIGVERIFY:
-            {
+            case OP_CHECKSIGVERIFY: {
                 // (sig pubkey -- bool)
-                if (_stack.count < 2)
-                {
+                if (_stack.count < 2) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:2];
                     return NO;
                 }
@@ -1014,16 +889,13 @@
 
                 NSError* sigerror = nil;
                 BOOL failed = NO;
-                if (_verificationFlags & BTCScriptVerificationStrictEncoding)
-                {
-                    if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror])
-                    {
+                if (_verificationFlags & BTCScriptVerificationStrictEncoding) {
+                    if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror]) {
                         failed = YES;
                     }
                     if (!failed && ![BTCKey isCanonicalSignatureWithHashType:signature
                                                                  verifyLowerS:!!(_verificationFlags & BTCScriptVerificationEvenS)
-                                                                       error:&sigerror])
-                    {
+                                                                       error:&sigerror]) {
                         failed = YES;
                     }
                 }
@@ -1035,14 +907,10 @@
                 
                 [_stack addObject:success ? _blobTrue : _blobFalse];
                 
-                if (opcode == OP_CHECKSIGVERIFY)
-                {
-                    if (success)
-                    {
+                if (opcode == OP_CHECKSIGVERIFY) {
+                    if (success) {
                         [self popFromStack];
-                    }
-                    else
-                    {
+                    } else {
                         if (sigerror && errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Signature check failed. %@", @""),
                                                                                  [sigerror localizedDescription]] underlyingError:sigerror];
                         return NO;
@@ -1053,36 +921,31 @@
             
             
             case OP_CHECKMULTISIG:
-            case OP_CHECKMULTISIGVERIFY:
-            {
+            case OP_CHECKMULTISIGVERIFY: {
                 // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
                 
                 int i = 1;
-                if (_stack.count < i)
-                {
+                if (_stack.count < i) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
                 
                 BTCBigNumber* bn = [self bigNumberAtIndex:-i];
                 
-                if (!bn)
-                {
+                if (!bn) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
 
                 int32_t keysCount = bn.int32value;
-                if (keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG)
-                {
+                if (keysCount < 0 || keysCount > BTC_MAX_KEYS_FOR_CHECKMULTISIG) {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of keys for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
                     return NO;
                 }
                 
                 _opCount += keysCount;
                 
-                if (_opCount > BTC_MAX_OPS_PER_SCRIPT)
-                {
+                if (_opCount > BTC_MAX_OPS_PER_SCRIPT) {
                     if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Exceeded allowed number of operations per script.", @"")];
                     return NO;
                 }
@@ -1092,8 +955,7 @@
                 
                 i += keysCount;
                 
-                if (_stack.count < i)
-                {
+                if (_stack.count < i) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
@@ -1101,15 +963,13 @@
                 // Read the required number of signatures.
                 BTCBigNumber* bn2 = [self bigNumberAtIndex:-i];
                 
-                if (!bn2)
-                {
+                if (!bn2) {
                     if (errorOut) *errorOut = [self scriptErrorInvalidBignum];
                     return NO;
                 }
 
                 int sigsCount = bn2.int32value;
-                if (sigsCount < 0 || sigsCount > keysCount)
-                {
+                if (sigsCount < 0 || sigsCount > keysCount) {
                     if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Invalid number of signatures for %@: %d.", @""), BTCNameForOpcode(opcode), keysCount]];
                     return NO;
                 }
@@ -1119,8 +979,7 @@
                 
                 i += sigsCount;
                 
-                if (_stack.count < i)
-                {
+                if (_stack.count < i) {
                     if (errorOut) *errorOut = [self scriptErrorOpcodeRequiresItemsOnStack:i];
                     return NO;
                 }
@@ -1131,8 +990,7 @@
                 // Drop the signatures, since there's no way for a signature to sign itself.
                 // Essentially this is noop because signatures are never present in scripts.
                 // See also a comment to a similar code in OP_CHECKSIG.
-                for (int k = 0; k < sigsCount; k++)
-                {
+                for (int k = 0; k < sigsCount; k++) {
                     NSData* sig = [self dataAtIndex: - isig - k];
                     [subscript deleteOccurrencesOfData:sig];
                 }
@@ -1141,38 +999,30 @@
                 NSError* firstsigerror = nil;
 
                 // Signatures must come in the same order as their keys.
-                while (success && sigsCount > 0)
-                {
+                while (success && sigsCount > 0) {
                     NSData* signature = [self dataAtIndex:-isig];
                     NSData* pubkeyData = [self dataAtIndex:-ikey];
                     
                     BOOL validMatch = YES;
                     NSError* sigerror = nil;
-                    if (_verificationFlags & BTCScriptVerificationStrictEncoding)
-                    {
-                        if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror])
-                        {
+                    if (_verificationFlags & BTCScriptVerificationStrictEncoding) {
+                        if (![BTCKey isCanonicalPublicKey:pubkeyData error:&sigerror]) {
                             validMatch = NO;
                         }
                         if (validMatch && ![BTCKey isCanonicalSignatureWithHashType:signature
                                                                         verifyLowerS:!!(_verificationFlags & BTCScriptVerificationEvenS)
-                                                                              error:&sigerror])
-                        {
+                                                                              error:&sigerror]) {
                             validMatch = NO;
                         }
                     }
-                    if (validMatch)
-                    {
+                    if (validMatch) {
                         validMatch = [self checkSignature:signature publicKey:pubkeyData subscript:subscript error:&sigerror];
                     }
                     
-                    if (validMatch)
-                    {
+                    if (validMatch) {
                         isig++;
                         sigsCount--;
-                    }
-                    else
-                    {
+                    } else {
                         if (!firstsigerror) firstsigerror = sigerror;
                     }
                     ikey++;
@@ -1180,8 +1030,7 @@
                     
                     // If there are more signatures left than keys left,
                     // then too many signatures have failed
-                    if (sigsCount > keysCount)
-                    {
+                    if (sigsCount > keysCount) {
                         success = NO;
                     }
                 }
@@ -1190,21 +1039,16 @@
                 // Note: 'i' points past the signatures. Due to postfix decrement (i--) this loop will pop one extra item from the stack.
                 // We can't change this code to use prefix decrement (--i) until every node does the same.
                 // This means that to redeem multisig script you have to prepend a dummy OP_0 item before all signatures so it can be popped here.
-                while (i-- > 0)
-                {
+                while (i-- > 0) {
                     [self popFromStack];
                 }
                 
                 [_stack addObject:success ? _blobTrue : _blobFalse];
                 
-                if (opcode == OP_CHECKMULTISIGVERIFY)
-                {
-                    if (success)
-                    {
+                if (opcode == OP_CHECKMULTISIGVERIFY) {
+                    if (success) {
                         [self popFromStack];
-                    }
-                    else
-                    {
+                    } else {
                         if (firstsigerror && errorOut) *errorOut =
                             [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Multisignature check failed. %@", @""),
                                                [firstsigerror localizedDescription]] underlyingError:firstsigerror];
@@ -1221,8 +1065,7 @@
         }
     }
     
-    if (_stack.count + _altStack.count > 1000)
-    {
+    if (_stack.count + _altStack.count > 1000) {
         return NO;
     }
     
@@ -1230,20 +1073,17 @@
 }
 
 
-- (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkeyData subscript:(BTCScript*)subscript error:(NSError**)errorOut
-{
+- (BOOL) checkSignature:(NSData*)signature publicKey:(NSData*)pubkeyData subscript:(BTCScript*)subscript error:(NSError**)errorOut {
     BTCKey* pubkey = [[BTCKey alloc] initWithPublicKey:pubkeyData];
     
-    if (!pubkey)
-    {
+    if (!pubkey) {
         if (errorOut) *errorOut = [self scriptError:[NSString stringWithFormat:NSLocalizedString(@"Public key is not valid: %@.", @""),
                                                      BTCHexFromData(pubkeyData)]];
         return NO;
     }
     
     // Hash type is one byte tacked on to the end of the signature. So the signature shouldn't be empty.
-    if (signature.length == 0)
-    {
+    if (signature.length == 0) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Signature is empty.", @"")];
         return NO;
     }
@@ -1258,14 +1098,12 @@
     
     //NSLog(@"BTCScriptMachine: Hash for input %d [%d]: %@", _inputIndex, hashType, BTCHexFromData(sighash));
     
-    if (!sighash)
-    {
+    if (!sighash) {
         // errorOut is set already.
         return NO;
     }
     
-    if (![pubkey isValidSignature:signature hash:sighash])
-    {
+    if (![pubkey isValidSignature:signature hash:sighash]) {
         if (errorOut) *errorOut = [self scriptError:NSLocalizedString(@"Signature is not valid.", @"")];
         return NO;
     }
@@ -1273,13 +1111,11 @@
     return YES;
 }
 
-- (NSArray*) stack
-{
+- (NSArray*) stack {
     return [_stack copy] ?: @[];
 }
 
-- (NSArray*) altstack
-{
+- (NSArray*) altstack {
     return [_altStack copy] ?: @[];
 }
 
@@ -1291,15 +1127,13 @@
 
 
 
-- (NSError*) scriptError:(NSString*)localizedString
-{
+- (NSError*) scriptError:(NSString*)localizedString {
     return [NSError errorWithDomain:BTCErrorDomain
                                code:BTCErrorScriptError
                            userInfo:@{NSLocalizedDescriptionKey: localizedString}];
 }
 
-- (NSError*) scriptError:(NSString*)localizedString underlyingError:(NSError*)underlyingError
-{
+- (NSError*) scriptError:(NSString*)localizedString underlyingError:(NSError*)underlyingError {
     if (!underlyingError) return [self scriptError:localizedString];
     
     return [NSError errorWithDomain:BTCErrorDomain
@@ -1308,10 +1142,8 @@
                                       NSUnderlyingErrorKey: underlyingError}];
 }
 
-- (NSError*) scriptErrorOpcodeRequiresItemsOnStack:(NSUInteger)items
-{
-    if (items == 1)
-    {
+- (NSError*) scriptErrorOpcodeRequiresItemsOnStack:(NSUInteger)items {
+    if (items == 1) {
         return [NSError errorWithDomain:BTCErrorDomain
                                    code:BTCErrorScriptError
                                userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d item on stack.", @""), BTCNameForOpcode(_opcode), items]}];
@@ -1319,8 +1151,7 @@
     return [NSError errorWithDomain:BTCErrorDomain code:BTCErrorScriptError userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"%@ requires %d items on stack.", @""), BTCNameForOpcode(_opcode), items]}];
 }
 
-- (NSError*) scriptErrorInvalidBignum
-{
+- (NSError*) scriptErrorInvalidBignum {
     return [NSError errorWithDomain:BTCErrorDomain
                                code:BTCErrorScriptError
                            userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid bignum data.", @"")}];
@@ -1334,27 +1165,23 @@
 // -1 is the last item, -2 is the pre-last item.
 #define BTCNormalizeIndex(list, i) (i < 0 ? (list.count + i) : i)
 
-- (NSData*) dataAtIndex:(NSInteger)index
-{
+- (NSData*) dataAtIndex:(NSInteger)index {
     return _stack[BTCNormalizeIndex(_stack, index)];
 }
 
-- (void) swapDataAtIndex:(NSInteger)index1 withIndex:(NSInteger)index2
-{
+- (void) swapDataAtIndex:(NSInteger)index1 withIndex:(NSInteger)index2 {
     [_stack exchangeObjectAtIndex:BTCNormalizeIndex(_stack, index1)
                 withObjectAtIndex:BTCNormalizeIndex(_stack, index2)];
 }
 
 // Returns bignum from pushdata or nil.
-- (BTCMutableBigNumber*) bigNumberAtIndex:(NSInteger)index
-{
+- (BTCMutableBigNumber*) bigNumberAtIndex:(NSInteger)index {
     NSData* data = [self dataAtIndex:index];
     if (!data) return nil;
     
     // BitcoinQT throws "CastToBigNum() : overflow" and then catches it inside EvalScript to return false.
     // This is catched in unit test for invalid scripts: @[@"2147483648 0 ADD", @"NOP", @"arithmetic operands must be in range @[-2^31...2^31] "]
-    if (data.length > 4)
-    {
+    if (data.length > 4) {
         return nil;
     }
 
@@ -1365,8 +1192,7 @@
     return bn;
 }
 
-- (BOOL) boolAtIndex:(NSInteger)index
-{
+- (BOOL) boolAtIndex:(NSInteger)index {
     NSData* data = [self dataAtIndex:index];
     if (!data) return NO;
     
@@ -1374,13 +1200,10 @@
     if (len == 0) return NO;
     
     const unsigned char* bytes = data.bytes;
-    for (NSUInteger i = 0; i < len; i++)
-    {
-        if (bytes[i] != 0)
-        {
+    for (NSUInteger i = 0; i < len; i++) {
+        if (bytes[i] != 0) {
             // Can be negative zero, also counts as NO
-            if (i == (len - 1) && bytes[i] == 0x80)
-            {
+            if (i == (len - 1) && bytes[i] == 0x80) {
                 return NO;
             }
             return YES;
@@ -1390,14 +1213,12 @@
 }
 
 // -1 means last item
-- (void) removeAtIndex:(NSInteger)index
-{
+- (void) removeAtIndex:(NSInteger)index {
     [_stack removeObjectAtIndex:BTCNormalizeIndex(_stack, index)];
 }
 
 // -1 means last item
-- (void) popFromStack
-{
+- (void) popFromStack {
     [_stack removeObjectAtIndex:BTCNormalizeIndex(_stack, -1)];
 }
 
