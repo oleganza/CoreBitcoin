@@ -21,8 +21,7 @@ static const uint8_t BTCAssetIDVersionTestnet = 115;
 
 + (instancetype) assetIDWithHash:(NSData*)data {
     if (!data) return nil;
-    if (data.length != BTCAssetIDLength)
-    {
+    if (data.length != BTCAssetIDLength) {
         NSLog(@"+[BTCAssetID addressWithData] cannot init with hash %d bytes long", (int)data.length);
         return nil;
     }
@@ -32,8 +31,7 @@ static const uint8_t BTCAssetIDVersionTestnet = 115;
 }
 
 + (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring version:(uint8_t)version {
-    if (composedData.length != (1 + BTCAssetIDLength))
-    {
+    if (composedData.length != (1 + BTCAssetIDLength)) {
         NSLog(@"BTCAssetID: cannot init with %d bytes (need 20+1 bytes)", (int)composedData.length);
         return nil;
     }
