@@ -11,18 +11,15 @@
 @implementation BTCChainCom
 
 // Initalizes a BTCChainCom object with a free API Token from http://chain.com
-- (id)initWithToken:(NSString *)token
-{
-    if (self = [super init])
-    {
+- (id)initWithToken:(NSString *)token {
+    if (self = [super init]) {
         self.token = token;
     }
     return self;
 }
 
 // Builds a request from a list of BTCAddress objects.
-- (NSMutableURLRequest*) requestForUnspentOutputsWithAddress:(BTCAddress*)address
-{
+- (NSMutableURLRequest*) requestForUnspentOutputsWithAddress:(BTCAddress*)address {
     NSString* pathString = [NSString stringWithFormat:@"addresses/%@/unspents", [address valueForKey:@"base58String"]];
     NSURL* url = [self  chainURLWithV1BitcoinPath:pathString];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -31,16 +28,14 @@
 }
 
 // List of BTCTransactionOutput instances parsed from the response.
-- (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut
-{
+- (NSArray*) unspentOutputsForResponseData:(NSData*)responseData error:(NSError**)errorOut {
     if (!responseData) return nil;
     NSArray* array = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:errorOut];
     if (!array || ![array isKindOfClass:[NSArray class]]) return nil;
     
     NSMutableArray* outputs = [NSMutableArray array];
 
-    for (NSDictionary* item in array)
-    {
+    for (NSDictionary* item in array) {
         BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
 
         txout.value = [item[@"value"] longLongValue];
@@ -58,16 +53,14 @@
     NSURLRequest* req = [self requestForUnspentOutputsWithAddress:address];
     NSURLResponse* response = nil;
     NSData* data = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:errorOut];
-    if (!data)
-    {
+    if (!data) {
         return nil;
     }
     return [self unspentOutputsForResponseData:data error:errorOut];
 }
 
 
-- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data
-{
+- (NSMutableURLRequest*) requestForTransactionBroadcastWithData:(NSData*)data {
     if (data.length == 0) return nil;
     
     NSString* pathString = @"transactions";
