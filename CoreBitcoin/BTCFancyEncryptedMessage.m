@@ -28,12 +28,10 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 }
 
 // Instantiates unencrypted message with its content
-- (id) initWithData:(NSData*)data
-{
+- (id) initWithData:(NSData*)data {
     if (!data) return nil;
     
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _difficultyTarget = 0xFFFFFFFF;
         _addressLength = BTCFancyEncryptedMessageAddressLengthNone;
         _decryptedData = data;
@@ -41,8 +39,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     return self;
 }
 
-- (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed0
-{
+- (NSData*) encryptedDataWithKey:(BTCKey*)recipientKey seed:(NSData*)seed0 {
     // These will be used for various purposes.
     unsigned char digest256[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256_CTX ctx256;
@@ -57,12 +54,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     // Transform seed into a unique per-message seed.
     // TODO: perform raw SHA computation to be able to erase digests from memory.
     CC_SHA256_Init(&ctx256);
-    if (seed0)
-    {
+    if (seed0) {
         CC_SHA256_Update(&ctx256, seed0.bytes, (CC_LONG)seed0.length);
-    }
-    else
-    {
+    } else {
         // If no seed given, use random bytes.
         void* randomBytes = BTCCreateRandomBytesOfLength(32);
         CC_SHA256_Update(&ctx256, randomBytes, 32);
@@ -78,8 +72,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
     BTCDataClear(recipientPubKey);
     
-    if (self.timestampVariance > 0)
-    {
+    if (self.timestampVariance > 0) {
         NSData* varianceHash = BTCSHA256(seed); // extra hashing to not leak our seed that we'll use for private key nonce.
         uint32_t rand = *((uint32_t*)varianceHash.bytes);
         self.timestamp -= (rand % self.timestampVariance);
@@ -116,8 +109,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         [messageData appendBytes:self.address.bytes length:_addressLength / 8];
         
-        if (partialByte > 0)
-        {
+        if (partialByte > 0) {
             // Add one more byte, but mask lower bits with zeros. (We treat address as a big endian number.)
             
             uint8_t lastByte = ((uint8_t*)self.address.bytes)[_addressLength/8] & (0xFF << (8 - partialByte));
@@ -183,30 +175,25 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
                                               &dataOutMoved                // size_t *dataOutMoved
                                               );
         
-        if (cryptstatus != kCCSuccess)
-        {
+        if (cryptstatus != kCCSuccess) {
             BTCDataClear(encryptedData);
             BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
             encryptedData = nil;
-        }
-        else
-        {
+        } else {
             // Resize the result key to the correct size.
             encryptedData.length = dataOutMoved;
         }
         
         // Clear sensitive info from memory.
         
-        if ([pointX isKindOfClass:[NSMutableData class]])
-        {
+        if ([pointX isKindOfClass:[NSMutableData class]]) {
             BTCDataClear((NSMutableData*)pointX);
         }
         [pk clear];
         [curvePoint clear];
         BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
-        if (!encryptedData)
-        {
+        if (!encryptedData) {
             BTCDataClear(seed);
             return nil;
         }
@@ -228,8 +215,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         
         // Do not even compute the full hash if we don't need PoW.
-        if (_difficultyTarget == 0xFFFFFFFF)
-        {
+        if (_difficultyTarget == 0xFFFFFFFF) {
             BTCDataClear(seed);
             return messageData;
         }
@@ -257,14 +243,12 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
             // To avoid bignum math, we only check 32-bit prefixes for PoW.
             uint32_t prefix = OSSwapBigToHostConstInt32(*((uint32_t*)digest512));
             
-            if (prefix <= _difficultyTarget)
-            {
+            if (prefix <= _difficultyTarget) {
                 BTCDataClear(seed);
                 return messageData;
             }
             
-            if (nonce2 == 255)
-            {
+            if (nonce2 == 255) {
                 break; // go back to main loop and try another pubkey.
             }
             
@@ -278,10 +262,8 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 
 // Instantiates encrypted message with its binary representation. Checks that difficulty matches the actual proof of work.
 // To decrypt the message, use -decryptedDataWithKey:
-- (id) initWithEncryptedData:(NSData*)data
-{
-    if (self = [super init])
-    {
+- (id) initWithEncryptedData:(NSData*)data {
+    if (self = [super init]) {
         // Check for minimum length.
         uint32_t datalength = (uint32_t)data.length;
         
@@ -297,8 +279,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         uint8_t* msgbytes = (uint8_t*)data.bytes;
         
         // Check the magic prefix.
-        if (memcmp(BTCFancyEncryptedMessageVersion, msgbytes, sizeof(BTCFancyEncryptedMessageVersion)) != 0)
-        {
+        if (memcmp(BTCFancyEncryptedMessageVersion, msgbytes, sizeof(BTCFancyEncryptedMessageVersion)) != 0) {
             return nil;
         }
         
@@ -317,8 +298,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         
         uint32_t target = BTCEMFullTargetForCompactTarget(msgbytes[4]);
         
-        if (prefix > target)
-        {
+        if (prefix > target) {
             return nil;
         }
         
@@ -331,12 +311,9 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
         _addressLength = msgbytes[10];
         
         uint8_t realAddrLength = _addressLength/8 + (_addressLength % 8 == 0 ? 0 : 1);
-        if (_addressLength > 0)
-        {
+        if (_addressLength > 0) {
             _address = [data subdataWithRange:NSMakeRange(11, realAddrLength)];
-        }
-        else
-        {
+        } else {
             _address = [NSData data];
         }
         
@@ -380,8 +357,7 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 }
 
 // Attempts to decrypt the message with a given private key and returns result.
-- (NSData*) decryptedDataWithKey:(BTCKey*)key error:(NSError**)errorOut
-{
+- (NSData*) decryptedDataWithKey:(BTCKey*)key error:(NSError**)errorOut {
     // 1. Reconstruct a shared secret from key and _nonceKey.
     // 2. Decrypt message.
     // 3. Verify the checksum.
@@ -430,30 +406,25 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
                                           &dataOutMoved                // size_t *dataOutMoved
                                           );
     
-    if (cryptstatus != kCCSuccess)
-    {
+    if (cryptstatus != kCCSuccess) {
         BTCDataClear(decryptedData);
         BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
         decryptedData = nil;
-    }
-    else
-    {
+    } else {
         // Resize the result key to the correct size.
         decryptedData.length = dataOutMoved;
     }
     
     // Clear sensitive info from memory.
     
-    if ([pointX isKindOfClass:[NSMutableData class]])
-    {
+    if ([pointX isKindOfClass:[NSMutableData class]]) {
         BTCDataClear((NSMutableData*)pointX);
     }
     [pk clear];
     [curvePoint clear];
     BTCSecureMemset(&ctx256, 0, sizeof(ctx256));
     
-    if (!decryptedData)
-    {
+    if (!decryptedData) {
         BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         return nil;
     }
@@ -468,14 +439,12 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
     CC_SHA256_Update(&ctx256, digest256, CC_SHA256_DIGEST_LENGTH);
     CC_SHA256_Final(digest256, &ctx256);
     
-    if (_checksum.length != BTCFancyEncryptedMessageChecksumLength)
-    {
+    if (_checksum.length != BTCFancyEncryptedMessageChecksumLength) {
         BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         return nil;
     }
     
-    if (memcmp(digest256, _checksum.bytes, BTCFancyEncryptedMessageChecksumLength) != 0)
-    {
+    if (memcmp(digest256, _checksum.bytes, BTCFancyEncryptedMessageChecksumLength) != 0) {
         BTCSecureMemset(digest256, 0, CC_SHA256_DIGEST_LENGTH);
         return nil;
     }
@@ -489,15 +458,13 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 
 // Returns 1-byte representation of a target not higher than a given one.
 // Maximum difficulty is the minimum target and vice versa.
-+ (uint8_t) compactTargetForTarget:(uint32_t)target
-{
++ (uint8_t) compactTargetForTarget:(uint32_t)target {
     return BTCEMCompactTargetForFullTarget(target);
 }
 
 
 // Returns a full 32-bit target from its compact representation.
-+ (uint32_t) targetForCompactTarget:(uint8_t)compactTarget
-{
++ (uint32_t) targetForCompactTarget:(uint8_t)compactTarget {
     return BTCEMFullTargetForCompactTarget(compactTarget);
 }
 
@@ -506,13 +473,10 @@ static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget);
 @end
 
 
-static uint8_t BTCEMCompactTargetForFullTarget(uint32_t fullTarget)
-{
+static uint8_t BTCEMCompactTargetForFullTarget(uint32_t fullTarget) {
     // Simply find the highest target that is not greater than a given one.
-    for (uint8_t ct = 0xFF; ct >= 0; --ct)
-    {
-        if (BTCEMFullTargetForCompactTarget(ct) <= fullTarget)
-        {
+    for (uint8_t ct = 0xFF; ct >= 0; --ct) {
+        if (BTCEMFullTargetForCompactTarget(ct) <= fullTarget) {
             uint32_t order = ct >> 3;
             if (order == 0) return ct >> 2;
             if (order == 1) return ct & (0xff - 1 - 2);
@@ -523,8 +487,7 @@ static uint8_t BTCEMCompactTargetForFullTarget(uint32_t fullTarget)
     return 0;
 }
 
-static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget)
-{
+static uint32_t BTCEMFullTargetForCompactTarget(uint8_t compactTarget) {
     // 8 bits: a b c d e f g h
     // a,b,c,d,e (higher bits) are used to determine the order (2^(0..31))
     // f,g,h are following the order bit. The rest are 1's till the lowest bit.
