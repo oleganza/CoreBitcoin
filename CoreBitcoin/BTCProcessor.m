@@ -12,10 +12,8 @@ NSString* const BTCProcessorErrorDomain = @"BTCProcessorErrorDomain";
 
 @implementation BTCProcessor
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         self.network = [BTCNetwork mainnet];
     }
     return self;
@@ -46,10 +44,8 @@ NSString* const BTCProcessorErrorDomain = @"BTCProcessorErrorDomain";
 
 
 // Attempts to process the block. Returns YES on success, NO and error on failure.
-- (BOOL) processBlock:(BTCBlock*)block error:(NSError**)errorOut
-{
-    if (!self.dataSource)
-    {
+- (BOOL) processBlock:(BTCBlock*)block error:(NSError**)errorOut {
+    if (!self.dataSource) {
         @throw [NSException exceptionWithName:@"Cannot process block" reason:@"-[BTCProcessor dataSource] is nil." userInfo:nil];
     }
     
@@ -57,13 +53,11 @@ NSString* const BTCProcessorErrorDomain = @"BTCProcessorErrorDomain";
     
     NSData* hash = block.blockHash;
     
-    if ([self.dataSource blockExistsWithHash:hash])
-    {
+    if ([self.dataSource blockExistsWithHash:hash]) {
         REJECT_BLOCK_WITH_ERROR(BTCProcessorErrorDuplicateBlock, NSLocalizedString(@"Already have block %@", @""), hash);
     }
     
-    if ([self.dataSource orphanBlockExistsWithHash:hash])
-    {
+    if ([self.dataSource orphanBlockExistsWithHash:hash]) {
         REJECT_BLOCK_WITH_ERROR(BTCProcessorErrorDuplicateOrphanBlock, NSLocalizedString(@"Already have orphan block %@", @""), hash);
     }
     
@@ -74,8 +68,7 @@ NSString* const BTCProcessorErrorDomain = @"BTCProcessorErrorDomain";
 
 
 // Attempts to add transaction to "memory pool" of unconfirmed transactions.
-- (BOOL) processTransaction:(BTCTransaction*)transaction error:(NSError**)errorOut
-{
+- (BOOL) processTransaction:(BTCTransaction*)transaction error:(NSError**)errorOut {
     
     // TODO: ...
     
@@ -87,16 +80,13 @@ NSString* const BTCProcessorErrorDomain = @"BTCProcessorErrorDomain";
 #pragma mark - Helpers
 
 
-- (BOOL) shouldRejectBlock:(BTCBlock*)block withError:(NSError*)error
-{
+- (BOOL) shouldRejectBlock:(BTCBlock*)block withError:(NSError*)error {
     return (![self.delegate respondsToSelector:@selector(processor:shouldRejectBlock:withError:)] ||
             [self.delegate processor:self shouldRejectBlock:block withError:error]);
 }
 
-- (void) notifyDidRejectBlock:(BTCBlock*)block withError:(NSError*)error
-{
-    if ([self.delegate respondsToSelector:@selector(processor:didRejectBlock:withError:)])
-    {
+- (void) notifyDidRejectBlock:(BTCBlock*)block withError:(NSError*)error {
+    if ([self.delegate respondsToSelector:@selector(processor:didRejectBlock:withError:)]) {
         [self.delegate processor:self didRejectBlock:block withError:error];
     }
 }
