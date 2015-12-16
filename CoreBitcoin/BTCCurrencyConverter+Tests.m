@@ -11,15 +11,13 @@
 
 @implementation BTCCurrencyConverter (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testRateUpdates];
     [self testAsksAndBids];
     [self testFiatConversions];
 }
 
-+ (void) testRateUpdates
-{
++ (void) testRateUpdates {
     BTCCurrencyConverter* converter = [[BTCCurrencyConverter alloc] init];
     [converter setBuyRate:[NSDecimalNumber decimalNumberWithString:@"210.0"]];
     [converter setSellRate:[NSDecimalNumber decimalNumberWithString:@"200.0"]];
@@ -32,8 +30,7 @@
     NSAssert(converter.buyRate.doubleValue == 300.0, @"Setting average should reassign buy rate");
 }
 
-+ (void) testAsksAndBids
-{
++ (void) testAsksAndBids {
     BTCCurrencyConverter* converter = [[BTCCurrencyConverter alloc] init];
     [converter setBuyRate:[NSDecimalNumber decimalNumberWithString:@"210.0"]];
     [converter setSellRate:[NSDecimalNumber decimalNumberWithString:@"200.0"]];
@@ -51,8 +48,7 @@
 //    NSAssert([converter.sellRate isEqualTo:[NSDecimalNumber decimalNumberWithString:@"201.0"]], @"Sell rate should equal maximum of bids array");
 }
 
-+ (void) testFiatConversions
-{
++ (void) testFiatConversions {
     BTCCurrencyConverter* converter = [[BTCCurrencyConverter alloc] init];
     [converter setBuyRate:[NSDecimalNumber decimalNumberWithString:@"205.0"]];
     [converter setSellRate:[NSDecimalNumber decimalNumberWithString:@"195.0"]];
