@@ -4,16 +4,14 @@
 
 @implementation BTCAddress (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testPublicKeyAddress];
     [self testPrivateKeyAddress];
     [self testPrivateKeyAddressWithCompressedPoint];
     [self testScriptHashKeyAddress];
 }
 
-+ (void) testPublicKeyAddress
-{
++ (void) testPublicKeyAddress {
     BTCPublicKeyAddress* addr = [BTCPublicKeyAddress addressWithString:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPublicKeyAddress class]], @"Address should be an instance of BTCPublicKeyAddress");
@@ -25,8 +23,7 @@
     NSAssert([@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T" isEqualToString:addr2.string], @"Must encode hash160 correctly.");
 }
 
-+ (void) testPrivateKeyAddress
-{
++ (void) testPrivateKeyAddress {
     BTCPrivateKeyAddress* addr = [BTCPrivateKeyAddress addressWithString:@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
@@ -39,8 +36,7 @@
     NSAssert([@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS" isEqualToString:addr2.string], @"Must encode secret key correctly.");
 }
 
-+ (void) testPrivateKeyAddressWithCompressedPoint
-{
++ (void) testPrivateKeyAddressWithCompressedPoint {
     BTCPrivateKeyAddress* addr = [BTCPrivateKeyAddress addressWithString:@"L3p8oAcQTtuokSCRHQ7i4MhjWc9zornvpJLfmg62sYpLRJF9woSu"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCPrivateKeyAddress class]], @"Address should be an instance of BTCPrivateKeyAddress");
@@ -56,8 +52,7 @@
     NSAssert([@"5KJvsngHeMpm884wtkJNzQGaCErckhHJBGFsvd3VyK5qMZXj3hS" isEqualToString:addr2.string], @"Must encode secret key correctly.");
 }
 
-+ (void) testScriptHashKeyAddress
-{
++ (void) testScriptHashKeyAddress {
     BTCScriptHashAddress* addr = [BTCScriptHashAddress addressWithString:@"3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8"];
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[BTCScriptHashAddress class]], @"Address should be an instance of BTCScriptHashAddress");
