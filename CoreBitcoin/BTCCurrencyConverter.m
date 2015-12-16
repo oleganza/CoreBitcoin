@@ -3,21 +3,17 @@
 
 @implementation BTCCurrencyConverter
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         _mode = BTCCurrencyConverterModeAverage;
     }
     return self;
 }
 
-- (id) initWithDictionary:(NSDictionary *)dict
-{
+- (id) initWithDictionary:(NSDictionary *)dict {
     if (!dict) return nil;
 
-    if (self = [self init])
-    {
+    if (self = [self init]) {
         if (dict[@"mode"])     _mode = [dict[@"mode"] unsignedIntegerValue];
         if (dict[@"currency"]) _currencyCode = dict[@"currency"];
         if (dict[@"mkt"])      _sourceName = dict[@"mkt"];
@@ -31,8 +27,7 @@
     return self;
 }
 
-- (NSDictionary*) dictionary
-{
+- (NSDictionary*) dictionary {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
 
     if (_mode)         dict[@"mode"] = @(_mode);
@@ -47,12 +42,10 @@
     return dict;
 }
 
-- (NSArray*) encodeTuples:(NSArray*)tuples
-{
+- (NSArray*) encodeTuples:(NSArray*)tuples {
     NSMutableArray* arr = [NSMutableArray array];
 
-    for (NSArray* tuple in tuples)
-    {
+    for (NSArray* tuple in tuples) {
         [arr addObject:@[ [tuple[0] stringValue], [tuple[1] stringValue] ]];
     }
 
@@ -67,8 +60,7 @@
     return self.sourceName;
 }
 
-- (void) setAverageRate:(NSDecimalNumber *)averageRate
-{
+- (void) setAverageRate:(NSDecimalNumber *)averageRate {
     _averageRate = averageRate;
     _buyRate = averageRate;
     _sellRate = averageRate;
@@ -77,8 +69,7 @@
     _date = [NSDate date];
 }
 
-- (void) setBuyRate:(NSDecimalNumber *)buyRate
-{
+- (void) setBuyRate:(NSDecimalNumber *)buyRate {
     _buyRate = buyRate;
     _sellRate = _sellRate ?: buyRate;
     _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:5 exponent:-1 isNegative:NO]];
@@ -87,8 +78,7 @@
     _date = [NSDate date];
 }
 
-- (void) setSellRate:(NSDecimalNumber *)sellRate
-{
+- (void) setSellRate:(NSDecimalNumber *)sellRate {
     _buyRate = _buyRate ?: sellRate;
     _sellRate = sellRate;
     _averageRate = [[_sellRate decimalNumberByAdding:_buyRate] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithMantissa:5 exponent:-1 isNegative:NO]];
@@ -97,10 +87,8 @@
     _date = [NSDate date];
 }
 
-- (void) setAsks:(NSArray *)asks
-{
-    if (!asks || asks.count == 0)
-    {
+- (void) setAsks:(NSArray *)asks {
+    if (!asks || asks.count == 0) {
         _asks = nil;
         return;
     }
@@ -111,10 +99,8 @@
     _asks = asks;
 }
 
-- (void) setBids:(NSArray *)bids
-{
-    if (!bids || bids.count == 0)
-    {
+- (void) setBids:(NSArray *)bids {
+    if (!bids || bids.count == 0) {
         _bids = nil;
         return;
     }
@@ -125,8 +111,7 @@
 }
 
 
-- (BTCAmount) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount
-{
+- (BTCAmount) bitcoinFromFiat:(NSDecimalNumber*)fiatAmount {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
             if ([self isZero:_averageRate]) return 0;
@@ -150,8 +135,7 @@
     return 0;
 }
 
-- (NSDecimalNumber*) fiatFromBitcoin:(BTCAmount)satoshis
-{
+- (NSDecimalNumber*) fiatFromBitcoin:(BTCAmount)satoshis {
     switch (_mode) {
         case BTCCurrencyConverterModeAverage:
             if ([self isZero:_averageRate]) return nil;
@@ -174,15 +158,13 @@
     return nil;
 }
 
-- (BOOL) isZero:(NSDecimalNumber*)dn
-{
+- (BOOL) isZero:(NSDecimalNumber*)dn {
     if (!dn) return YES;
     if ([dn isEqual:[NSDecimalNumber zero]]) return YES;
     return NO;
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     return [[BTCCurrencyConverter alloc] initWithDictionary:self.dictionary];
 }
 
