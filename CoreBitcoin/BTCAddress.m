@@ -93,17 +93,14 @@ enum
     return address;
 }
 
-- (void) setBase58CString:(const char*)cstring
-{
-    if (_cstring)
-    {
+- (void) setBase58CString:(const char*)cstring {
+    if (_cstring) {
         BTCSecureClearCString(_cstring);
         free(_cstring);
         _cstring = NULL;
     }
 
-    if (cstring)
-    {
+    if (cstring) {
         size_t len = strlen(cstring) + 1; // with \0
         _cstring = malloc(len);
         memcpy(_cstring, cstring, len);
@@ -116,8 +113,7 @@ enum
 }
 
 - (const char*) base58CString {
-    if (!_cstring)
-    {
+    if (!_cstring) {
         NSMutableData* data = [self dataForBase58Encoding];
         _cstring = BTCBase58CheckCStringWithData(data);
         BTCDataClear(data);
@@ -208,11 +204,9 @@ enum
 
 #define BTCPublicKeyAddressLength 20
 
-+ (instancetype) addressWithData:(NSData*)data
-{
++ (instancetype) addressWithData:(NSData*)data {
     if (!data) return nil;
-    if (data.length != BTCPublicKeyAddressLength)
-    {
+    if (data.length != BTCPublicKeyAddressLength) {
         NSLog(@"+[BTCPublicKeyAddress addressWithData] cannot init with hash %d bytes long", (int)data.length);
         return nil;
     }
@@ -221,10 +215,8 @@ enum
     return addr;
 }
 
-+ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring version:(uint8_t)version
-{
-    if (composedData.length != (1 + BTCPublicKeyAddressLength))
-    {
++ (instancetype) addressWithComposedData:(NSData*)composedData cstring:(const char*)cstring version:(uint8_t)version {
+    if (composedData.length != (1 + BTCPublicKeyAddressLength)) {
         NSLog(@"BTCPublicKeyAddress: cannot init with %d bytes (need 20+1 bytes)", (int)composedData.length);
         return nil;
     }
@@ -234,8 +226,7 @@ enum
     return addr;
 }
 
-- (NSMutableData*) dataForBase58Encoding
-{
+- (NSMutableData*) dataForBase58Encoding {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPublicKeyAddressLength];
     char* buf = data.mutableBytes;
     buf[0] = [self versionByte];
@@ -255,8 +246,7 @@ enum
     return BTCPublicKeyAddressVersionTestnet;
 }
 
-- (BOOL) isTestnet
-{
+- (BOOL) isTestnet {
     return YES;
 }
 
@@ -282,16 +272,13 @@ enum
 
 #define BTCPrivateKeyAddressLength 32
 
-+ (instancetype) addressWithData:(NSData*)data
-{
++ (instancetype) addressWithData:(NSData*)data {
     return [self addressWithData:data publicKeyCompressed:NO];
 }
 
-+ (instancetype) addressWithData:(NSData*)data publicKeyCompressed:(BOOL)compressedPubkey
-{
++ (instancetype) addressWithData:(NSData*)data publicKeyCompressed:(BOOL)compressedPubkey {
     if (!data) return nil;
-    if (data.length != BTCPrivateKeyAddressLength)
-    {
+    if (data.length != BTCPrivateKeyAddressLength) {
         NSLog(@"+[BTCPrivateKeyAddress addressWithData] cannot init with secret of %d bytes long", (int)data.length);
         return nil;
     }
@@ -301,10 +288,8 @@ enum
     return addr;
 }
 
-+ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version
-{
-    if (data.length != (1 + BTCPrivateKeyAddressLength + 1) &&  data.length != (1 + BTCPrivateKeyAddressLength))
-    {
++ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version {
+    if (data.length != (1 + BTCPrivateKeyAddressLength + 1) &&  data.length != (1 + BTCPrivateKeyAddressLength)) {
         NSLog(@"BTCPrivateKeyAddress: cannot init with %d bytes (need 1+32(+1) bytes)", (int)data.length);
         return nil;
     }
@@ -321,42 +306,35 @@ enum
     return addr;
 }
 
-- (BTCKey*) key
-{
+- (BTCKey*) key {
     BTCKey* key = [[BTCKey alloc] initWithPrivateKey:self.data];
     key.publicKeyCompressed = self.isPublicKeyCompressed;
     return key;
 }
 
-- (BTCAddress*) publicAddress
-{
+- (BTCAddress*) publicAddress {
     return [BTCPublicKeyAddress addressWithData:BTCHash160(self.key.publicKey)];
 }
 
 // Private key itself is not compressed, but it has extra 0x01 byte to indicate
 // that derived pubkey must be compressed (as this affects the pubkey address).
-- (BOOL) isPublicKeyCompressed
-{
+- (BOOL) isPublicKeyCompressed {
     return _publicKeyCompressed;
 }
 
-- (void) setPublicKeyCompressed:(BOOL)compressed
-{
-    if (_publicKeyCompressed != compressed)
-    {
+- (void) setPublicKeyCompressed:(BOOL)compressed {
+    if (_publicKeyCompressed != compressed) {
         _publicKeyCompressed = compressed;
         self.base58CString = NULL;
     }
 }
 
-- (NSMutableData*) dataForBase58Encoding
-{
+- (NSMutableData*) dataForBase58Encoding {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCPrivateKeyAddressLength + (_publicKeyCompressed ? 1 : 0)];
     char* buf = data.mutableBytes;
     buf[0] = [self versionByte];
     memcpy(buf + 1, self.data.bytes, BTCPrivateKeyAddressLength);
-    if (_publicKeyCompressed)
-    {
+    if (_publicKeyCompressed) {
         // Add extra byte 0x01 in the end.
         buf[1 + BTCPrivateKeyAddressLength] = (unsigned char)1;
     }
@@ -406,11 +384,9 @@ enum
 
 #define BTCScriptHashAddressLength 20
 
-+ (instancetype) addressWithData:(NSData*)data
-{
++ (instancetype) addressWithData:(NSData*)data {
     if (!data) return nil;
-    if (data.length != BTCScriptHashAddressLength)
-    {
+    if (data.length != BTCScriptHashAddressLength) {
         NSLog(@"+[BTCScriptHashAddress addressWithData] cannot init with hash %d bytes long", (int)data.length);
         return nil;
     }
@@ -419,10 +395,8 @@ enum
     return addr;
 }
 
-+ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version
-{
-    if (data.length != (1 + BTCScriptHashAddressLength))
-    {
++ (id) addressWithComposedData:(NSData*)data cstring:(const char*)cstring version:(uint8_t)version {
+    if (data.length != (1 + BTCScriptHashAddressLength)) {
         NSLog(@"BTCPublicKeyAddress: cannot init with %d bytes (need 20+1 bytes)", (int)data.length);
         return nil;
     }
@@ -433,8 +407,7 @@ enum
     return addr;
 }
 
-- (NSMutableData*) dataForBase58Encoding
-{
+- (NSMutableData*) dataForBase58Encoding {
     NSMutableData* data = [NSMutableData dataWithLength:1 + BTCScriptHashAddressLength];
     char* buf = data.mutableBytes;
     buf[0] = [self versionByte];
