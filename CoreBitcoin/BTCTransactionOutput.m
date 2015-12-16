@@ -13,25 +13,20 @@
 
 @implementation BTCTransactionOutput
 
-- (id) init
-{
+- (id) init {
     return [self initWithValue:-1 script:[[BTCScript alloc] init]];
 }
 
-- (id) initWithValue:(BTCAmount)value
-{
+- (id) initWithValue:(BTCAmount)value {
     return [self initWithValue:value script:[[BTCScript alloc] init]];
 }
 
-- (id) initWithValue:(BTCAmount)value address:(BTCAddress*)address
-{
+- (id) initWithValue:(BTCAmount)value address:(BTCAddress*)address {
     return [self initWithValue:value script:[[BTCScript alloc] initWithAddress:address]];
 }
 
-- (id) initWithValue:(BTCAmount)value script:(BTCScript*)script
-{
-    if (self = [super init])
-    {
+- (id) initWithValue:(BTCAmount)value script:(BTCScript*)script {
+    if (self = [super init]) {
         _value = value;
         _script = script;
 
@@ -44,30 +39,24 @@
 }
 
 // Parses tx output from a data buffer.
-- (id) initWithData:(NSData*)data
-{
-    if (self = [self init])
-    {
+- (id) initWithData:(NSData*)data {
+    if (self = [self init]) {
         if (![self parseData:data]) return nil;
     }
     return self;
 }
 
 // Reads tx output from the stream.
-- (id) initWithStream:(NSInputStream*)stream
-{
-    if (self = [self init])
-    {
+- (id) initWithStream:(NSInputStream*)stream {
+    if (self = [self init]) {
         if (![self parseStream:stream]) return nil;
     }
     return self;
 }
 
 // Constructs transaction input from a dictionary representation
-- (id) initWithDictionary:(NSDictionary*)dictionary
-{
-    if (self = [self init])
-    {
+- (id) initWithDictionary:(NSDictionary*)dictionary {
+    if (self = [self init]) {
         NSString* valueString = dictionary[@"value"];
         if (!valueString) valueString = @"0";
         
@@ -87,8 +76,7 @@
     return self;
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     BTCTransactionOutput* txout = [[BTCTransactionOutput alloc] init];
     txout.value = self.value;
     txout.script = [self.script copy];
@@ -104,13 +92,11 @@
     return txout;
 }
 
-- (NSData*) data
-{
+- (NSData*) data {
     return [self computePayload];
 }
 
-- (NSData*) computePayload
-{
+- (NSData*) computePayload {
     NSMutableData* payload = [NSMutableData data];
     
     [payload appendBytes:&_value length:sizeof(_value)];
@@ -122,8 +108,7 @@
     return payload;
 }
 
-- (NSString*) description
-{
+- (NSString*) description {
     NSData* txhash = self.transactionHash;
     return [NSString stringWithFormat:@"<%@:0x%p%@%@ %@ BTC '%@'%@>", [self class], self,
             (txhash ? [NSString stringWithFormat:@" %@", BTCHexFromData(txhash)]: @""),
@@ -133,19 +118,16 @@
             (_confirmations == NSNotFound ? @"" : [NSString stringWithFormat:@" %d confirmations", (unsigned int)_confirmations])];
 }
 
-- (NSString*) formattedBTCValue:(BTCAmount)value
-{
+- (NSString*) formattedBTCValue:(BTCAmount)value {
     return [NSString stringWithFormat:@"%lld.%@", value / BTCCoin, [NSString stringWithFormat:@"%08lld", value % BTCCoin]];
 }
 
 // Returns a dictionary representation suitable for encoding in JSON or Plist.
-- (NSDictionary*) dictionaryRepresentation
-{
+- (NSDictionary*) dictionaryRepresentation {
     return self.dictionary;
 }
 
-- (NSDictionary*) dictionary
-{
+- (NSDictionary*) dictionary {
     return @{
              @"value": [self formattedBTCValue:_value],
              // TODO: like in BTCTransactionInput, have an option to put both "asm" and "hex" representations of the script.
@@ -153,35 +135,29 @@
              };
 }
 
-- (uint32_t) index
-{
+- (uint32_t) index {
     // Remember the index as it does not change when we add more outputs.
-    if (_transaction && _index == BTCTransactionOutputIndexUnknown)
-    {
+    if (_transaction && _index == BTCTransactionOutputIndexUnknown) {
         NSUInteger idx = [_transaction.outputs indexOfObject:self];
-        if (idx != NSNotFound)
-        {
+        if (idx != NSNotFound) {
             _index = (uint32_t)idx;
         }
     }
     return _index;
 }
 
-- (NSData*) transactionHash
-{
+- (NSData*) transactionHash {
     // Do not remember transaction hash as it changes when we add another output or change some metadata of the tx.
     if (_transactionHash) return _transactionHash;
     if (_transaction) return _transaction.transactionHash;
     return nil;
 }
 
-- (NSString*) transactionID
-{
+- (NSString*) transactionID {
     return BTCIDFromHash(self.transactionHash);
 }
 
-- (void) setTransactionID:(NSString *)transactionID
-{
+- (void) setTransactionID:(NSString *)transactionID {
     self.transactionHash = BTCHashFromID(transactionID);
 }
 
@@ -191,8 +167,7 @@
 
 
 
-- (BOOL) parseData:(NSData*)data
-{
+- (BOOL) parseData:(NSData*)data {
     if (!data) return NO;
     NSInputStream* stream = [NSInputStream inputStreamWithData:data];
     [stream open];
@@ -201,8 +176,7 @@
     return result;
 }
 
-- (BOOL) parseStream:(NSInputStream*)stream
-{
+- (BOOL) parseStream:(NSInputStream*)stream {
     if (!stream) return NO;
     if (stream.streamStatus == NSStreamStatusClosed) return NO;
     if (stream.streamStatus == NSStreamStatusNotOpen) return NO;
@@ -225,23 +199,19 @@
 #pragma mark - Informational Properties
 
 
-- (NSString*) blockID
-{
+- (NSString*) blockID {
     return BTCIDFromHash(self.blockHash);
 }
 
-- (void) setBlockID:(NSString *)blockID
-{
+- (void) setBlockID:(NSString *)blockID {
     self.blockHash = BTCHashFromID(blockID);
 }
 
-- (NSData*) blockHash
-{
+- (NSData*) blockHash {
     return _blockHash ?: self.transaction.blockHash;
 }
 
-- (NSInteger) blockHeight
-{
+- (NSInteger) blockHeight {
     if (_blockHeight != 0) {
         return _blockHeight;
     }
@@ -251,13 +221,11 @@
     return _blockHeight;
 }
 
-- (NSDate*) blockDate
-{
+- (NSDate*) blockDate {
     return _blockDate ?: self.transaction.blockDate;
 }
 
-- (NSUInteger) confirmations
-{
+- (NSUInteger) confirmations {
     if (_confirmations != NSNotFound) {
         return _confirmations;
     }
