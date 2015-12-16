@@ -6,46 +6,38 @@
 
 @implementation BTCOutpoint
 
-- (id) initWithHash:(NSData*)hash index:(uint32_t)index
-{
+- (id) initWithHash:(NSData*)hash index:(uint32_t)index {
     if (hash.length != 32) return nil;
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _txHash = hash;
         _index = index;
     }
     return self;
 }
 
-- (id) initWithTxID:(NSString*)txid index:(uint32_t)index
-{
+- (id) initWithTxID:(NSString*)txid index:(uint32_t)index {
     NSData* hash = BTCHashFromID(txid);
     return [self initWithHash:hash index:index];
 }
 
-- (NSString*) txID
-{
+- (NSString*) txID {
     return BTCIDFromHash(self.txHash);
 }
 
-- (void) setTxID:(NSString *)txID
-{
+- (void) setTxID:(NSString *)txID {
     self.txHash = BTCHashFromID(txID);
 }
 
-- (NSUInteger) hash
-{
+- (NSUInteger) hash {
     const NSUInteger* words = _txHash.bytes;
     return words[0] + self.index;
 }
 
-- (BOOL) isEqual:(BTCOutpoint*)object
-{
+- (BOOL) isEqual:(BTCOutpoint*)object {
     return [self.txHash isEqual:object.txHash] && self.index == object.index;
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     return [[BTCOutpoint alloc] initWithHash:_txHash index:_index];
 }
 
