@@ -23,16 +23,14 @@
 // This is BIP32-based API to keep track of just a single private key for multiple signatures.
 
 // Alice as a client needs private client keychain and public custodian keychain (provided by Bob).
-- (id) initWithClientKeychain:(BTCKeychain*)clientKeychain custodianKeychain:(BTCKeychain*)custodianKeychain;
-{
+- (id) initWithClientKeychain:(BTCKeychain*)clientKeychain custodianKeychain:(BTCKeychain*)custodianKeychain {
     if (!clientKeychain || !custodianKeychain) return nil;
     
     // Sanity check: client keychain must be private and custodian keychain must be public.
     if (!clientKeychain.isPrivate) return nil;
     if (custodianKeychain.isPrivate) return nil;
 
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _clientKeychain = clientKeychain;
         _custodianKeychain = custodianKeychain;
     }
@@ -40,23 +38,20 @@
 }
 
 // Bob as a custodian only needs his own private keychain.
-- (id) initWithCustodianKeychain:(BTCKeychain*)custodianKeychain
-{
+- (id) initWithCustodianKeychain:(BTCKeychain*)custodianKeychain {
     if (!custodianKeychain) return nil;
     
     // Sanity check: custodian keychain must be private.
     if (!custodianKeychain.isPrivate) return nil;
     
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _custodianKeychain = custodianKeychain;
     }
     return self;
 }
 
 // Steps 4-6: Alice generates public key to use in a transaction.
-- (BTCKey*) publicKeyAtIndex:(uint32_t)index
-{
+- (BTCKey*) publicKeyAtIndex:(uint32_t)index {
     BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
     BTCBigNumber* b = [self privateNumberFromKeychain:_clientKeychain index:4*index + 1];
     BTCBigNumber* c = [self privateNumberFromKeychain:_clientKeychain index:4*index + 2];
@@ -90,8 +85,7 @@
 
 // Steps 7-8: Alice blinds her message and sends it to Bob.
 // Note: the index will be encoded in the blinded hash so you don't need to carry it to Bob separately.
-- (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index
-{
+- (NSData*) blindedHashForHash:(NSData*)hash index:(uint32_t)index {
     if (!hash) return nil;
     
     BTCBigNumber* a = [self privateNumberFromKeychain:_clientKeychain index:4*index + 0];
@@ -115,8 +109,7 @@
 
 // Step 9-10: Bob computes a signature for Alice.
 // Note: the index is encoded in the blinded hash and blind signature so we don't need to carry it back and forth.
-- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash
-{
+- (NSData*) blindSignatureForBlindedHash:(NSData*)blindedHash {
     if (!blindedHash) return nil;
     if (blindedHash.length != (4 + 32)) return nil; // blinded hash must contain 32-bit index and 256-bit hash.
     
@@ -168,13 +161,11 @@
 
 // Step 11: Alice receives signature from Bob and generates final DER-encoded signature to use in transaction.
 // Note: Do not forget to add SIGHASH byte in the end when placing in a Bitcoin transaction.
-- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature
-{
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature {
     return [self unblindedSignatureForBlindSignature:blindSignature verifyHash:nil];
 }
 
-- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature verifyHash:(NSData*)hashToVerify
-{
+- (NSData*) unblindedSignatureForBlindSignature:(NSData*)blindSignature verifyHash:(NSData*)hashToVerify {
     if (!blindSignature) return nil;
     if (blindSignature.length < 5) return nil;
     
@@ -217,12 +208,10 @@
     [d clear];
     
     // Verify signature
-    if (hashToVerify)
-    {
+    if (hashToVerify) {
         BTCKey* pubkey = [self publicKeyAtIndex:index];
     
-        if (![pubkey isValidSignature:sig hash:hashToVerify])
-        {
+        if (![pubkey isValidSignature:sig hash:hashToVerify]) {
             sig = nil;
         }
         
@@ -233,8 +222,7 @@
 }
 
 
-- (BTCBigNumber*) privateNumberFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index
-{
+- (BTCBigNumber*) privateNumberFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index {
     BTCKeychain* derivedKC = [keychain derivedKeychainAtIndex:index hardened:YES];
     
     NSAssert(derivedKC, @"sanity check");
@@ -256,8 +244,7 @@
     return bn;
 }
 
-- (BTCCurvePoint*) pointFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index
-{
+- (BTCCurvePoint*) pointFromKeychain:(BTCKeychain*)keychain index:(uint32_t)index {
     BTCKeychain* derivedKC = [keychain derivedKeychainAtIndex:index hardened:NO];
     
     NSAssert(derivedKC, @"sanity check");
@@ -300,8 +287,7 @@
 //    If she uses it in a Bitcoin transaction, she will be able to redeem her locked funds without Bob knowing which transaction he just helped to sign.
 
 // Step 2: P and Q from Bob as blinded "public keys". Both P and C are BTCCurvePoint instances.
-- (NSArray*) bob_P_and_Q_for_p:(BTCBigNumber*)p q:(BTCBigNumber*)q
-{
+- (NSArray*) bob_P_and_Q_for_p:(BTCBigNumber*)p q:(BTCBigNumber*)q {
     if (!p || !q) return nil;
     
     BTCCurvePoint* P = nil;
@@ -323,8 +309,7 @@
 
 // 3. Alice computes K = (c·a)^-1·P and public key T = (a·Kx)^-1·(b·G + Q + d·c^-1·P).
 //    Bob cannot know if his parameters were involved in K or T without the knowledge of a, b, c and d.
-- (NSArray*) alice_K_and_T_for_a:(BTCBigNumber*)a b:(BTCBigNumber*)b c:(BTCBigNumber*)c d:(BTCBigNumber*)d P:(BTCCurvePoint*)P Q:(BTCCurvePoint*)Q
-{
+- (NSArray*) alice_K_and_T_for_a:(BTCBigNumber*)a b:(BTCBigNumber*)b c:(BTCBigNumber*)c d:(BTCBigNumber*)d P:(BTCCurvePoint*)P Q:(BTCCurvePoint*)Q {
     if (!a || !b || !c || !d || !P || !Q) return nil;
     
     // K = (c·a)^-1·P
@@ -369,8 +354,7 @@
 }
 
 // Helper for steps 5, 7, 8.
-- (BTCBigNumber*) linearTransformOfNumber:(BTCBigNumber*)number multiply:(BTCBigNumber*)a add:(BTCBigNumber*)b
-{
+- (BTCBigNumber*) linearTransformOfNumber:(BTCBigNumber*)number multiply:(BTCBigNumber*)a add:(BTCBigNumber*)b {
     if (!number || !a || !b) return nil;
     
     BTCBigNumber* curveOrder = [BTCCurvePoint curveOrder];
@@ -379,20 +363,17 @@
 }
 
 // 5. Alice blinds the hash and sends h2 = a·h + b (mod n) to Bob.
-- (BTCBigNumber*) aliceBlindedHashForHash:(BTCBigNumber*)hash a:(BTCBigNumber*)a b:(BTCBigNumber*)b
-{
+- (BTCBigNumber*) aliceBlindedHashForHash:(BTCBigNumber*)hash a:(BTCBigNumber*)a b:(BTCBigNumber*)b {
     return [self linearTransformOfNumber:hash multiply:a add:b];
 }
 
 // 7. Bob signs the blinded hash and returns the signature to Alice: s1 = p·h2 + q (mod n).
-- (BTCBigNumber*) bobBlindedSignatureForHash:(BTCBigNumber*)hash p:(BTCBigNumber*)p q:(BTCBigNumber*)q
-{
+- (BTCBigNumber*) bobBlindedSignatureForHash:(BTCBigNumber*)hash p:(BTCBigNumber*)p q:(BTCBigNumber*)q {
     return [self linearTransformOfNumber:hash multiply:p add:q];
 }
 
 // 8. Alice unblinds the signature: s2 = c·s1 + d (mod n).
-- (BTCBigNumber*) aliceUnblindedSignatureForSignature:(BTCBigNumber*)blindSignature c:(BTCBigNumber*)c d:(BTCBigNumber*)d
-{
+- (BTCBigNumber*) aliceUnblindedSignatureForSignature:(BTCBigNumber*)blindSignature c:(BTCBigNumber*)c d:(BTCBigNumber*)d {
     return [self linearTransformOfNumber:blindSignature multiply:c add:d];
 }
 
@@ -408,8 +389,7 @@
 // 0x20 - s length (32)
 // 0x303f16b06e03f0719cadb001ea55f6f2d4f96807291802c2f26c09eb19ca0874 // not prefixed by 0x00 because 0x30 is below 0x7F, so "sign bit" is 0.
 // 0x01 - hash type
-- (NSData*) aliceCompleteSignatureForKx:(BTCBigNumber*)Kx unblindedSignature:(BTCBigNumber*)unblindedSignature
-{
+- (NSData*) aliceCompleteSignatureForKx:(BTCBigNumber*)Kx unblindedSignature:(BTCBigNumber*)unblindedSignature {
     ECDSA_SIG sigValue;
     ECDSA_SIG *sig = &sigValue;
     
@@ -429,8 +409,7 @@
     BIGNUM *halforder = BN_CTX_get(ctx);
     EC_GROUP_get_order(group, order, ctx);
     BN_rshift1(halforder, order);
-    if (BN_cmp(sig->s, halforder) > 0)
-    {
+    if (BN_cmp(sig->s, halforder) > 0) {
         // enforce low S values, by negating the value (modulo the order) if above order/2.
         BN_sub(sig->s, order, sig->s);
     }
