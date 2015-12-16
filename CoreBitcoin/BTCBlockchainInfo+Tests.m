@@ -6,13 +6,11 @@
 
 @implementation BTCBlockchainInfo (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testUnspentOutputs];
 }
 
-+ (void) testUnspentOutputs
-{
++ (void) testUnspentOutputs {
     // our donations address with some outputs: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG
     // some temp address without outputs: 1LKF45kfvHAaP7C4cF91pVb3bkAsmQ8nBr
 
