@@ -11,10 +11,8 @@ NSString* const BTCNumberFormatterSymbolMilliBTC = @"mɃ";
 NSString* const BTCNumberFormatterSymbolBit      = @"ƀ";
 NSString* const BTCNumberFormatterSymbolSatoshi  = @"ṡ";
 
-BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
-{
-    if ([num isKindOfClass:[NSDecimalNumber class]])
-    {
+BTCAmount BTCAmountFromDecimalNumber(NSNumber* num) {
+    if ([num isKindOfClass:[NSDecimalNumber class]]) {
         NSDecimalNumber* dnum = (id)num;
         // Starting iOS 8.0.2, the longLongValue method returns 0 for some non rounded values.
         // Rounding the number looks like a work around.
@@ -34,15 +32,12 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     NSDecimalNumber* _myMultiplier; // because standard multiplier when below 1e-6 leads to a rounding no matter what the settings.
 }
 
-- (id) initWithBitcoinUnit:(BTCNumberFormatterUnit)unit
-{
+- (id) initWithBitcoinUnit:(BTCNumberFormatterUnit)unit {
     return [self initWithBitcoinUnit:unit symbolStyle:BTCNumberFormatterSymbolStyleNone];
 }
 
-- (id) initWithBitcoinUnit:(BTCNumberFormatterUnit)unit symbolStyle:(BTCNumberFormatterSymbolStyle)symbolStyle
-{
-    if (self = [super init])
-    {
+- (id) initWithBitcoinUnit:(BTCNumberFormatterUnit)unit symbolStyle:(BTCNumberFormatterSymbolStyle)symbolStyle {
+    if (self = [super init]) {
         _bitcoinUnit = unit;
         _symbolStyle = symbolStyle;
 
@@ -51,22 +46,19 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     return self;
 }
 
-- (void) setBitcoinUnit:(BTCNumberFormatterUnit)bitcoinUnit
-{
+- (void) setBitcoinUnit:(BTCNumberFormatterUnit)bitcoinUnit {
     if (_bitcoinUnit == bitcoinUnit) return;
     _bitcoinUnit = bitcoinUnit;
     [self updateFormatterProperties];
 }
 
-- (void) setSymbolStyle:(BTCNumberFormatterSymbolStyle)suffixStyle
-{
+- (void) setSymbolStyle:(BTCNumberFormatterSymbolStyle)suffixStyle {
     if (_symbolStyle == suffixStyle) return;
     _symbolStyle = suffixStyle;
     [self updateFormatterProperties];
 }
 
-- (void) updateFormatterProperties
-{
+- (void) updateFormatterProperties {
     // Reset formats so they are recomputed after we change properties.
     self.positiveFormat = nil;
     self.negativeFormat = nil;
@@ -82,8 +74,7 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     self.internationalCurrencySymbol = self.currencySymbol;
 
     // On iOS 8 we have to set these *after* setting the currency symbol.
-    switch (_bitcoinUnit)
-    {
+    switch (_bitcoinUnit) {
         case BTCNumberFormatterUnitSatoshi:
             _myMultiplier = [NSDecimalNumber decimalNumberWithMantissa:1 exponent:0 isNegative:NO];
             self.minimumFractionDigits = 0;
@@ -108,8 +99,7 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
             [[NSException exceptionWithName:@"BTCNumberFormatter: not supported bitcoin unit" reason:@"" userInfo:nil] raise];
     }
 
-    switch (_symbolStyle)
-    {
+    switch (_symbolStyle) {
         case BTCNumberFormatterSymbolStyleNone:
             self.minimumFractionDigits = 0;
             self.positivePrefix = @"";
@@ -138,30 +128,24 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     self.negativeFormat = [self.positiveFormat stringByReplacingCharactersInRange:[self.positiveFormat rangeOfString:@"#"] withString:@"–#"];
 }
 
-- (NSString *) standaloneSymbol
-{
+- (NSString *) standaloneSymbol {
     NSString* sym = [self bitcoinUnitSymbol];
-    if (!sym)
-    {
+    if (!sym) {
         sym = [self bitcoinUnitSymbolForUnit:_bitcoinUnit];
     }
     return sym;
 }
 
-- (NSString*) bitcoinUnitSymbol
-{
+- (NSString*) bitcoinUnitSymbol {
     return [self bitcoinUnitSymbolForStyle:_symbolStyle unit:_bitcoinUnit];
 }
 
-- (NSString*) unitCode
-{
+- (NSString*) unitCode {
     return [self bitcoinUnitCodeForUnit:_bitcoinUnit];
 }
 
-- (NSString*) bitcoinUnitCodeForUnit:(BTCNumberFormatterUnit)unit
-{
-    switch (unit)
-    {
+- (NSString*) bitcoinUnitCodeForUnit:(BTCNumberFormatterUnit)unit {
+    switch (unit) {
         case BTCNumberFormatterUnitSatoshi:
             return NSLocalizedStringFromTable(@"SAT", @"CoreBitcoin", @"");
         case BTCNumberFormatterUnitBit:
@@ -175,10 +159,8 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     }
 }
 
-- (NSString*) bitcoinUnitSymbolForUnit:(BTCNumberFormatterUnit)unit
-{
-    switch (unit)
-    {
+- (NSString*) bitcoinUnitSymbolForUnit:(BTCNumberFormatterUnit)unit {
+    switch (unit) {
         case BTCNumberFormatterUnitSatoshi:
             return BTCNumberFormatterSymbolSatoshi;
         case BTCNumberFormatterUnitBit:
@@ -192,10 +174,8 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     }
 }
 
-- (NSString*) bitcoinUnitSymbolForStyle:(BTCNumberFormatterSymbolStyle)symbolStyle unit:(BTCNumberFormatterUnit)bitcoinUnit
-{
-    switch (symbolStyle)
-    {
+- (NSString*) bitcoinUnitSymbolForStyle:(BTCNumberFormatterSymbolStyle)symbolStyle unit:(BTCNumberFormatterUnit)bitcoinUnit {
+    switch (symbolStyle) {
         case BTCNumberFormatterSymbolStyleNone:
             return nil;
         case BTCNumberFormatterSymbolStyleCode:
@@ -210,12 +190,10 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     return nil;
 }
 
-- (NSString *) placeholderText
-{
+- (NSString *) placeholderText {
     //NSString* groupSeparator = self.currencyGroupingSeparator ?: @"";
     NSString* decimalPoint = self.currencyDecimalSeparator ?: @".";
-    switch (_bitcoinUnit)
-    {
+    switch (_bitcoinUnit) {
         case BTCNumberFormatterUnitSatoshi:
             return @"0";
         case BTCNumberFormatterUnitBit:
@@ -243,18 +221,15 @@ BTCAmount BTCAmountFromDecimalNumber(NSNumber* num)
     return [number decimalNumberByDividingBy:_myMultiplier];
 }
 
-- (NSString *) stringFromAmount:(BTCAmount)amount
-{
+- (NSString *) stringFromAmount:(BTCAmount)amount {
     return [self stringFromNumber:@(amount)];
 }
 
-- (BTCAmount) amountFromString:(NSString *)string
-{
+- (BTCAmount) amountFromString:(NSString *)string {
     return BTCAmountFromDecimalNumber([self numberFromString:string]);
 }
 
-- (id) copyWithZone:(NSZone *)zone
-{
+- (id) copyWithZone:(NSZone *)zone {
     return [[BTCNumberFormatter alloc] initWithBitcoinUnit:self.bitcoinUnit symbolStyle:self.symbolStyle];
 }
 
