@@ -13,14 +13,12 @@
 
 @implementation BTCBlindSignature (Tests)
 
-+ (void) runAllTests
-{
++ (void) runAllTests {
     [self testCoreAlgorithm];
     [self testConvenienceAPI];
 }
 
-+ (void) testCoreAlgorithm
-{
++ (void) testCoreAlgorithm {
     BTCBlindSignature* api = [[BTCBlindSignature alloc] init];
     
     BTCBigNumber* a = [[BTCBigNumber alloc] initWithUnsignedBigEndian:BTCHash256([@"a" dataUsingEncoding:NSUTF8StringEncoding])];
@@ -76,8 +74,7 @@
 
 
 
-+ (void) testConvenienceAPI
-{
++ (void) testConvenienceAPI {
     BTCKeychain* aliceKeychain = [[BTCKeychain alloc] initWithSeed:[@"Alice" dataUsingEncoding:NSUTF8StringEncoding]];
     BTCKeychain* bobKeychain = [[BTCKeychain alloc] initWithSeed:[@"Bob" dataUsingEncoding:NSUTF8StringEncoding]];
     BTCKeychain* bobPublicKeychain = [[BTCKeychain alloc] initWithExtendedKey:bobKeychain.extendedPublicKey];
@@ -92,8 +89,7 @@
     NSAssert(alice, @"sanity check");
     NSAssert(bob, @"sanity check");
     
-    for (uint32_t i = 0; i < 32; i++)
-    {
+    for (uint32_t i = 0; i < 32; i++) {
         // This will be Alice's pubkey that she can use in a destination script.
         BTCKey* pubkey = [alice publicKeyAtIndex:i];
         NSAssert(pubkey, @"sanity check");
