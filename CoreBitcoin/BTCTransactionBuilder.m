@@ -19,10 +19,8 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 @implementation BTCTransactionBuilder
 
-- (id) init
-{
-    if (self = [super init])
-    {
+- (id) init {
+    if (self = [super init]) {
         _feeRate = BTCTransactionDefaultFeeRate;
         _minimumChange = -1; // so it picks feeRate at runtime.
         _dustChange = -1; // so it picks minimumChange at runtime.
@@ -32,18 +30,15 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     return self;
 }
 
-- (BTCTransactionBuilderResult*) buildTransaction:(NSError**)errorOut
-{
-    if (!self.changeScript)
-    {
+- (BTCTransactionBuilderResult*) buildTransaction:(NSError**)errorOut {
+    if (!self.changeScript) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderInsufficientFunds userInfo:nil];
         return nil;
     }
 
     NSEnumerator* unspentsEnumerator = self.unspentOutputsEnumerator;
 
-    if (!unspentsEnumerator)
-    {
+    if (!unspentsEnumerator) {
         if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderUnspentOutputsMissing userInfo:nil];
         return nil;
     }
@@ -52,20 +47,17 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     result.transaction = [[BTCTransaction alloc] init];
 
     // If no outputs given, try to spend all available unspents.
-    if (self.outputs.count == 0)
-    {
+    if (self.outputs.count == 0) {
         result.inputsAmount = 0;
 
-        for (BTCTransactionOutput* utxo in unspentsEnumerator)
-        {
+        for (BTCTransactionOutput* utxo in unspentsEnumerator) {
             result.inputsAmount += utxo.value;
 
             BTCTransactionInput* txin = [self makeTransactionInputWithUnspentOutput:utxo];
             [result.transaction addInput:txin];
         }
 
-        if (result.transaction.inputs.count == 0)
-        {
+        if (result.transaction.inputs.count == 0) {
             if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderUnspentOutputsMissing userInfo:nil];
             return nil;
         }
@@ -79,8 +71,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         result.outputsAmount = result.inputsAmount - result.fee;
 
         // Check if inputs cover the fees
-        if (result.outputsAmount < 0)
-        {
+        if (result.outputsAmount < 0) {
             if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderInsufficientFunds userInfo:nil];
             return nil;
         }
@@ -89,8 +80,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         changeOutput.value = result.outputsAmount;
 
         result.unsignedInputsIndexes = [self attemptToSignTransaction:result.transaction error:errorOut];
-        if (!result.unsignedInputsIndexes)
-        {
+        if (!result.unsignedInputsIndexes) {
             return nil;
         }
 
@@ -105,8 +95,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
     result.outputsAmount = 0; // will contain change value after all inputs are finalized
 
-    for (BTCTransactionOutput* txout in self.outputs)
-    {
+    for (BTCTransactionOutput* txout in self.outputs) {
         result.outputsAmount += txout.value;
         [result.transaction addOutput:txout];
     }
@@ -121,8 +110,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
     result.inputsAmount = 0;
 
-    for (BTCTransactionOutput* utxo in unspentsEnumerator)
-    {
+    for (BTCTransactionOutput* utxo in unspentsEnumerator) {
         result.inputsAmount += utxo.value;
 
         BTCTransactionInput* txin = [self makeTransactionInputWithUnspentOutput:utxo];
@@ -130,8 +118,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
         // Before computing the fee, quick check if we have enough inputs to cover the outputs.
         // If not, go and add one more utxo before wasting time computing fees.
-        if (result.inputsAmount < result.outputsAmount)
-        {
+        if (result.inputsAmount < result.outputsAmount) {
             // Try adding more unspent outputs on the next cycle.
             continue;
         }
@@ -140,27 +127,21 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
         BTCAmount change = result.inputsAmount - result.outputsAmount - fee;
 
-        if (change >= self.minimumChange)
-        {
+        if (change >= self.minimumChange) {
             // We have a big enough change, set missing values and return.
             changeOutput.value = change;
             result.outputsAmount += change;
             result.fee = fee;
 
             result.unsignedInputsIndexes = [self attemptToSignTransaction:result.transaction error:errorOut];
-            if (!result.unsignedInputsIndexes)
-            {
+            if (!result.unsignedInputsIndexes) {
                 return nil;
             }
             return result;
-        }
-        else if (change > self.dustChange && change < self.minimumChange)
-        {
+        } else if (change > self.dustChange && change < self.minimumChange) {
             // We have a shitty change: not small enough to forgo, not big enough to be useful.
             // Try adding more utxos on the next cycle (or fail if no more utxos are available).
-        }
-        else if (change >= 0 && change <= self.dustChange)
-        {
+        } else if (change >= 0 && change <= self.dustChange) {
             // This also includes the case when change is exactly zero satoshis.
             // Remove the change output, keep existing outputsAmount, set fee and try to sign.
 
@@ -174,9 +155,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
                 return nil;
             }
             return result;
-        }
-        else
-        {
+        } else {
             // Change is negative, we need more funds for this transaction.
             // Try adding more utxos on the next cycle.
         }
@@ -185,8 +164,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     // If we haven't finished within the loop, then we don't have enough unspent outputs and should fail.
 
     BTCTransactionBuilderError errorCode = BTCTransactionBuilderInsufficientFunds;
-    if (result.transaction.inputs.count == 0)
-    {
+    if (result.transaction.inputs.count == 0) {
         errorCode = BTCTransactionBuilderUnspentOutputsMissing;
     }
     if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:errorCode userInfo:nil];
@@ -200,12 +178,10 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 
 
-- (BTCTransactionInput*) makeTransactionInputWithUnspentOutput:(BTCTransactionOutput*)utxo
-{
+- (BTCTransactionInput*) makeTransactionInputWithUnspentOutput:(BTCTransactionOutput*)utxo {
     BTCTransactionInput* txin = [[BTCTransactionInput alloc] init];
 
-    if (!utxo.transactionHash || utxo.index == BTCTransactionOutputIndexUnknown)
-    {
+    if (!utxo.transactionHash || utxo.index == BTCTransactionOutputIndexUnknown) {
         [[NSException exceptionWithName:@"Incorrect unspent transaction output" reason:@"Unspent output must have valid -transactionHash and -index properties" userInfo:nil] raise];
     }
 
@@ -218,18 +194,15 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 }
 
 
-- (BTCAmount) computeFeeForTransaction:(BTCTransaction*)tx
-{
+- (BTCAmount) computeFeeForTransaction:(BTCTransaction*)tx {
     // Compute fees for this tx by composing a tx with properly sized dummy signatures.
     BTCTransaction* simtx = [tx copy];
     uint32_t i = 0;
-    for (BTCTransactionInput* txin in simtx.inputs)
-    {
+    for (BTCTransactionInput* txin in simtx.inputs) {
         NSAssert(!!txin.transactionOutput, @"must have transactionOutput");
         BTCScript* txoutScript = txin.transactionOutput.script;
 
-        if (![self attemptToSignTransactionInput:txin tx:simtx inputIndex:i error:NULL])
-        {
+        if (![self attemptToSignTransactionInput:txin tx:simtx inputIndex:i error:NULL]) {
             // TODO: if cannot match the simulated signature, use data source to provide one. (If signing API available, then use it.)
             txin.signatureScript = [txoutScript simulatedSignatureScriptWithOptions:BTCScriptSimulationMultisigP2SH];
         }
@@ -243,36 +216,29 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 
 // Tries to sign a transaction and returns index set of unsigned inputs.
-- (NSIndexSet*) attemptToSignTransaction:(BTCTransaction*)tx error:(NSError**)errorOut
-{
+- (NSIndexSet*) attemptToSignTransaction:(BTCTransaction*)tx error:(NSError**)errorOut {
     // By default, all inputs are marked to be signed.
     NSMutableIndexSet* unsignedIndexes = [NSMutableIndexSet indexSet];
-    for (NSUInteger i = 0; i < tx.inputs.count; i++)
-    {
+    for (NSUInteger i = 0; i < tx.inputs.count; i++) {
         [unsignedIndexes addIndex:i];
     }
 
     // Check if we can possibly sign anything. Otherwise return early.
-    if (!_shouldSign || tx.inputs.count == 0 || !self.dataSource)
-    {
+    if (!_shouldSign || tx.inputs.count == 0 || !self.dataSource) {
         return unsignedIndexes;
     }
 
-    if (_shouldShuffle && _shouldSign)
-    {
+    if (_shouldShuffle && _shouldSign) {
         // Shuffle both the inputs and outputs.
         NSData* seed = nil;
 
-        if ([self.dataSource respondsToSelector:@selector(shuffleSeedForTransactionBuilder:)])
-        {
+        if ([self.dataSource respondsToSelector:@selector(shuffleSeedForTransactionBuilder:)]) {
             seed = [self.dataSource shuffleSeedForTransactionBuilder:self];
         }
 
-        if (!seed && [self.dataSource respondsToSelector:@selector(transactionBuilder:keyForUnspentOutput:)])
-        {
+        if (!seed && [self.dataSource respondsToSelector:@selector(transactionBuilder:keyForUnspentOutput:)]) {
             // find the first key
-            for (BTCTransactionInput* txin in tx.inputs)
-            {
+            for (BTCTransactionInput* txin in tx.inputs) {
                 BTCKey* k = [self.dataSource transactionBuilder:self keyForUnspentOutput:txin.transactionOutput];
                 seed = k.privateKey;
                 if (seed) break;
@@ -280,22 +246,19 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         }
 
         // If finally have something as a seed, shuffle
-        if (seed)
-        {
+        if (seed) {
             tx.inputs = [self shuffleInputs:tx.inputs withSeed:seed];
             tx.outputs = [self shuffleOutputs:tx.outputs withSeed:seed];
         }
     }
 
     // Try to sign each input.
-    for (uint32_t i = 0; i < tx.inputs.count; i++)
-    {
+    for (uint32_t i = 0; i < tx.inputs.count; i++) {
         // We support two kinds of scripts: p2pkh (modern style) and p2pk (old style)
         // For each of these we support compressed and uncompressed pubkeys.
         BTCTransactionInput* txin = tx.inputs[i];
 
-        if ([self attemptToSignTransactionInput:txin tx:tx inputIndex:i error:errorOut])
-        {
+        if ([self attemptToSignTransactionInput:txin tx:tx inputIndex:i error:errorOut]) {
             [unsignedIndexes removeIndex:i];
         }
     } // each input
@@ -303,8 +266,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     return unsignedIndexes;
 }
 
-- (NSArray*) shuffleInputs:(NSArray*)txins withSeed:(NSData*)seed
-{
+- (NSArray*) shuffleInputs:(NSArray*)txins withSeed:(NSData*)seed {
     return [txins sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(BTCTransactionInput* a, BTCTransactionInput* b) {
         NSData* d1 = BTCHash256Concat(a.data, seed);
         NSData* d2 = BTCHash256Concat(b.data, seed);
@@ -312,8 +274,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     }];
 }
 
-- (NSArray*) shuffleOutputs:(NSArray*)txouts withSeed:(NSData*)seed
-{
+- (NSArray*) shuffleOutputs:(NSArray*)txouts withSeed:(NSData*)seed {
     return [txouts sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(BTCTransactionOutput* a, BTCTransactionOutput* b) {
         NSData* d1 = BTCHash256Concat(a.data, seed);
         NSData* d2 = BTCHash256Concat(b.data, seed);
@@ -321,44 +282,38 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     }];
 }
 
-- (BOOL) attemptToSignTransactionInput:(BTCTransactionInput*)txin tx:(BTCTransaction*)tx inputIndex:(uint32_t)i error:(NSError**)errorOut
-{
+- (BOOL) attemptToSignTransactionInput:(BTCTransactionInput*)txin tx:(BTCTransaction*)tx inputIndex:(uint32_t)i error:(NSError**)errorOut {
     if (!_shouldSign) return NO;
 
     // We stored output script here earlier.
     BTCScript* outputScript = txin.signatureScript;
     BTCKey* key = nil;
 
-    if ([self.dataSource respondsToSelector:@selector(transactionBuilder:keyForUnspentOutput:)])
-    {
+    if ([self.dataSource respondsToSelector:@selector(transactionBuilder:keyForUnspentOutput:)]) {
         key = [self.dataSource transactionBuilder:self keyForUnspentOutput:txin.transactionOutput];
     }
 
-    if (key)
-    {
+    if (key) {
         NSData* cpk = key.compressedPublicKey;
         NSData* ucpk = key.uncompressedPublicKey;
 
         BTCSignatureHashType hashtype = SIGHASH_ALL;
 
         NSData* sighash = [tx signatureHashForScript:[outputScript copy] inputIndex:i hashType:hashtype error:errorOut];
-        if (!sighash)
-        {
+        if (!sighash) {
             return NO;
         }
 
         // Most common case: P2PKH with compressed pubkey (because of BIP32)
         BTCScript* p2cpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(cpk)]];
-        if ([outputScript.data isEqual:p2cpkhScript.data])
-        {
+        if ([outputScript.data isEqual:p2cpkhScript.data]) {
             txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:cpk];
             return YES;
         }
 
         // Less common case: P2PKH with uncompressed pubkey (when not using BIP32)
         BTCScript* p2ucpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(ucpk)]];
-        if ([outputScript.data isEqual:p2ucpkhScript.data])
-        {
+        if ([outputScript.data isEqual:p2ucpkhScript.data]) {
             txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:ucpk];
             return YES;
         }
@@ -367,24 +322,19 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         BTCScript* p2ucpkScript = [[[BTCScript new] appendData:ucpk] appendOpcode:OP_CHECKSIG];
 
         if ([outputScript.data isEqual:p2cpkScript] ||
-            [outputScript.data isEqual:p2ucpkScript])
-        {
+            [outputScript.data isEqual:p2ucpkScript]) {
             txin.signatureScript = [[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]];
             return YES;
-        }
-        else
-        {
+        } else {
             // Not supported script type.
             // Try custom signature.
         }
     } // if key
 
     // Ask to sign the transaction input to sign this if that's some kind of special input or script.
-    if ([self.dataSource respondsToSelector:@selector(transactionBuilder:signatureScriptForTransaction:script:inputIndex:)])
-    {
+    if ([self.dataSource respondsToSelector:@selector(transactionBuilder:signatureScriptForTransaction:script:inputIndex:)]) {
         BTCScript* sigScript = [self.dataSource transactionBuilder:self signatureScriptForTransaction:tx script:outputScript inputIndex:i];
-        if (sigScript)
-        {
+        if (sigScript) {
             txin.signatureScript = sigScript;
             return YES;
         }
@@ -400,8 +350,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 
 
-- (BTCScript*) changeScript
-{
+- (BTCScript*) changeScript {
     if (_changeScript) return _changeScript;
 
     if (!self.changeAddress) return nil;
@@ -409,26 +358,22 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
     return [[BTCScript alloc] initWithAddress:self.changeAddress.publicAddress];
 }
 
-- (NSEnumerator*) unspentOutputsEnumerator
-{
+- (NSEnumerator*) unspentOutputsEnumerator {
     if (_unspentOutputsEnumerator) return _unspentOutputsEnumerator;
 
-    if (self.dataSource)
-    {
+    if (self.dataSource) {
         return [self.dataSource unspentOutputsForTransactionBuilder:self];
     }
 
     return nil;
 }
 
-- (BTCAmount) minimumChange
-{
+- (BTCAmount) minimumChange {
     if (_minimumChange < 0) return self.feeRate;
     return _minimumChange;
 }
 
-- (BTCAmount) dustChange
-{
+- (BTCAmount) dustChange {
     if (_dustChange < 0) return self.minimumChange;
     return _dustChange;
 }
