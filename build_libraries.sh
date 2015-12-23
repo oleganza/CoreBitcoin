@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Cleanup to start with a blank slate
 
