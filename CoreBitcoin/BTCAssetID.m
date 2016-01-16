@@ -49,7 +49,7 @@ static const uint8_t BTCAssetIDVersionTestnet = 115;
 }
 
 - (uint8_t) versionByte {
-#warning TODO: support testnet
+// TODO: support testnet
     return BTCAssetIDVersionMainnet;
 }
 
