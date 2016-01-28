@@ -7,6 +7,7 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue;
+@property (nonatomic, assign) AVCaptureDevicePosition cameraPosition;
 - (id) initWithDetectionBlock:(void(^)(NSString* message))detectionBlock;
 @end
 #endif
@@ -45,9 +46,18 @@
     return image;
 }
 
-+ (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock {
-    return [[BTCQRCodeScannerView alloc] initWithDetectionBlock:detectionBlock];
++ (UIView*) scannerViewUsingDevice:(AVCaptureDevicePosition) devicePosition
+                         WithBlock:(void(^)(NSString* message))detectionBlock {
+    BTCQRCodeScannerView *view = [[BTCQRCodeScannerView alloc] initWithDetectionBlock:detectionBlock];
+    view.cameraPosition = devicePosition;
+    return view;
 }
+
++ (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock {
+    return [self scannerViewUsingDevice:AVCaptureDevicePositionUnspecified
+                              WithBlock:detectionBlock];
+}
+
 #endif
 
 @end
@@ -56,6 +66,7 @@
 
 #if TARGET_OS_IPHONE
 @implementation BTCQRCodeScannerView
+@synthesize cameraPosition;
 
 - (id) initWithDetectionBlock:(void(^)(NSString* message))detection {
     if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
@@ -85,9 +96,24 @@
     }
 }
 
+- (AVCaptureDevice *)deviceFromPosition:(AVCaptureDevicePosition) position {
+    if (position != AVCaptureDevicePositionUnspecified) {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        for (AVCaptureDevice *device in devices) {
+            if ([device position] == position) {
+                return device;
+            }
+        }
+    }
+    return [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+}
+
 - (void) prepareScanner {
+    [self prepareScannerWithDevice:[self deviceFromPosition:self.cameraPosition]];
+}
+
+- (void) prepareScannerWithDevice:(AVCaptureDevice *)device {
     NSError *error = nil;
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     AVCaptureMetadataOutput *output = [AVCaptureMetadataOutput new];
 
