@@ -8,6 +8,7 @@
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue;
 @property (nonatomic, assign) AVCaptureDevicePosition cameraPosition;
+@property (nonatomic, assign) AVCaptureVideoOrientation cameraOrientation;
 - (id) initWithDetectionBlock:(void(^)(NSString* message))detectionBlock;
 @end
 #endif
@@ -47,14 +48,17 @@
 }
 
 + (UIView*) scannerViewUsingDevice:(AVCaptureDevicePosition) devicePosition
+                    andOrientation:(AVCaptureVideoOrientation) orientation
                          WithBlock:(void(^)(NSString* message))detectionBlock {
     BTCQRCodeScannerView *view = [[BTCQRCodeScannerView alloc] initWithDetectionBlock:detectionBlock];
     view.cameraPosition = devicePosition;
+    view.cameraOrientation = orientation;
     return view;
 }
 
 + (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock {
     return [self scannerViewUsingDevice:AVCaptureDevicePositionUnspecified
+                         andOrientation:0
                               WithBlock:detectionBlock];
 }
 
@@ -66,7 +70,7 @@
 
 #if TARGET_OS_IPHONE
 @implementation BTCQRCodeScannerView
-@synthesize cameraPosition;
+@synthesize cameraPosition, cameraOrientation;
 
 - (id) initWithDetectionBlock:(void(^)(NSString* message))detection {
     if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
@@ -158,6 +162,13 @@
 
     dispatch_async(self.sessionQueue, ^{
         [self.session startRunning];
+        
+        if (self.cameraOrientation != 0) {
+            //Get Preview Layer connection
+            AVCaptureConnection *previewLayerConnection=self.previewLayer.connection;
+            if ([previewLayerConnection isVideoOrientationSupported])
+                [previewLayerConnection setVideoOrientation:self.cameraOrientation];
+        }
     });
 }
 

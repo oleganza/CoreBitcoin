@@ -41,6 +41,7 @@
  * The device position helps selecting the camera (front or back)
  */
 + (UIView*) scannerViewUsingDevice:(AVCaptureDevicePosition) devicePosition
+                    andOrientation:(AVCaptureVideoOrientation) orientation
                          WithBlock:(void(^)(NSString* message))detectionBlock;
 #endif
 
