@@ -48,8 +48,8 @@
 }
 
 + (UIView*) scannerViewUsingDevice:(AVCaptureDevicePosition) devicePosition
-                    andOrientation:(AVCaptureVideoOrientation) orientation
-                         WithBlock:(void(^)(NSString* message))detectionBlock {
+                       orientation:(AVCaptureVideoOrientation) orientation
+                             block:(void(^)(NSString* message))detectionBlock {
     BTCQRCodeScannerView *view = [[BTCQRCodeScannerView alloc] initWithDetectionBlock:detectionBlock];
     view.cameraPosition = devicePosition;
     view.cameraOrientation = orientation;
@@ -58,8 +58,8 @@
 
 + (UIView*) scannerViewWithBlock:(void(^)(NSString* message))detectionBlock {
     return [self scannerViewUsingDevice:AVCaptureDevicePositionUnspecified
-                         andOrientation:0
-                              WithBlock:detectionBlock];
+                            orientation:0
+                                  block:detectionBlock];
 }
 
 #endif
