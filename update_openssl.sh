@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # based on:
 # https://gist.github.com/tmiz/1441111
