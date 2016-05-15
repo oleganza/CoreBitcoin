@@ -32,7 +32,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 - (BTCTransactionBuilderResult*) buildTransaction:(NSError**)errorOut {
     if (!self.changeScript) {
-        if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderInsufficientFunds userInfo:nil];
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderChangeAddressMissing userInfo:nil];
         return nil;
     }
 
