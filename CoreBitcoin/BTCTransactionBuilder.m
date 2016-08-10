@@ -95,16 +95,30 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
     result.outputsAmount = 0; // will contain change value after all inputs are finalized
 
-    for (BTCTransactionOutput* txout in self.outputs) {
-        result.outputsAmount += txout.value;
-        [result.transaction addOutput:txout];
-    }
-
     // We'll determine final change value depending on inputs.
     // Setting default to MAX_MONEY will protect against a bug when we fail to update the amount and
     // spend unexpected amount on mining fees.
     BTCTransactionOutput* changeOutput = [[BTCTransactionOutput alloc] initWithValue:BTC_MAX_MONEY script:self.changeScript];
-    [result.transaction addOutput:changeOutput];
+    
+    NSMutableArray * txoutputs = [self.outputs mutableCopy];
+    [txoutputs addObject:changeOutput];
+    
+    // Enhance privacy by shuffling all outputs so change address cannot be reliably determined
+    NSUInteger txoutputsCount = txoutputs.count;
+    for (NSUInteger i = 0; i < txoutputsCount - 1; ++i) {
+        NSInteger remainingCount = txoutputsCount - i;
+        NSInteger exchangeIndex = i + arc4random_uniform((u_int32_t) remainingCount);
+        [txoutputs exchangeObjectAtIndex:i withObjectAtIndex:exchangeIndex];
+    }
+    
+    // Add shuffled txoutputs to transaction
+    for (BTCTransactionOutput* txout in txoutputs) {
+        result.outputsAmount += txout.value;
+        [result.transaction addOutput:txout];
+    }
+    
+    // Subtract changeOutput value to maintain correct amount being sent
+    result.outputsAmount -= changeOutput.value;
 
     // We have specific outputs with specific amounts, so we need to select the best amount of coins.
 
