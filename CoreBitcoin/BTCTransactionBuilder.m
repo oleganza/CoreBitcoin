@@ -21,7 +21,7 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
 
 - (id) init {
     if (self = [super init]) {
-        _feeRate = BTCTransactionDefaultFeeRate;
+        _feeRate = -1;
         _minimumChange = -1; // so it picks feeRate at runtime.
         _dustChange = -1; // so it picks minimumChange at runtime.
         _shouldSign = YES;
@@ -36,6 +36,11 @@ NSString* const BTCTransactionBuilderErrorDomain = @"com.oleganza.CoreBitcoin.Tr
         return nil;
     }
 
+    if (self.feeRate < 0) {
+        if (errorOut) *errorOut = [NSError errorWithDomain:BTCTransactionBuilderErrorDomain code:BTCTransactionBuilderFeeRateNotSet userInfo:nil];
+        return nil;
+    }
+    
     NSEnumerator* unspentsEnumerator = self.unspentOutputsEnumerator;
 
     if (!unspentsEnumerator) {

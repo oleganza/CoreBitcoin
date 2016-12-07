@@ -14,6 +14,9 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 
     // Unspent outputs are not sufficient to build the transaction.
     BTCTransactionBuilderInsufficientFunds = 3,
+    
+    // Fee rate has not been set.
+    BTCTransactionBuilderFeeRateNotSet = 4,
 };
 
 @class BTCKey;
@@ -85,6 +88,8 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 // Must not be nil. Default value is derived from `changeAddress`.
 @property(nonatomic) BTCScript* changeScript;
 
+// Fee per 1000 bytes.
+@property(nonatomic) BTCAmount feeRate;
 
 // Attempts to build and possibly sign a transaction (if sign = YES).
 // Returns a result object containing the transaction itself
@@ -96,9 +101,6 @@ typedef NS_ENUM(NSUInteger, BTCTransactionBuilderError) {
 
 // Optional configuration properties
 // ---------------------------------
-
-// Fee per 1000 bytes. Default is BTCTransactionDefaultFeeRate.
-@property(nonatomic) BTCAmount feeRate;
 
 // Minimum amount of change below which transaction is not composed.
 // If change amount is non-zero and below this value, more unspent outputs are used.

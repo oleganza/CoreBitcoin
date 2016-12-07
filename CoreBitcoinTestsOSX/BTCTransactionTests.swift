@@ -19,9 +19,6 @@ class BTCTransactionTests: XCTestCase {
     
     func testFees() {
         
-        let TransactionDefaultFeeRate: BTCAmount = 10000 //Because Xcode is having trouble with BTCTransactionDefaultFeeRate
-        
-        XCTAssertEqual(BTCTransaction().estimatedFee, TransactionDefaultFeeRate, "smallest tx must have a fee == default fee rate")
         XCTAssertEqual(BTCTransaction().estimatedFeeWithRate(12345), 12345, "smallest tx must have a fee == fee rate")
         XCTAssertEqual(BTCTransaction().estimatedFeeWithRate(0), 0, "zero fee rate should always yield zero fee")
         
@@ -35,7 +32,6 @@ class BTCTransactionTests: XCTestCase {
         }
         
         XCTAssertEqual(tx.data.length, 1200, "Must be over 1K")
-        XCTAssertEqual(tx.estimatedFee, 2 * TransactionDefaultFeeRate, "Must have double the fee rate if there is more than 1000 bytes")
         XCTAssertEqual(tx.estimatedFeeWithRate(123), 246, "Must have double the fee rate if there is more than 1000 bytes")
         XCTAssertEqual(tx.estimatedFeeWithRate(0), 0, "Must have zero fee for zero rate.")
     }

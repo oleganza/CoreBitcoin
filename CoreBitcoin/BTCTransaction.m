@@ -519,12 +519,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) {
 
 
 
-// Computes estimated fee for this tx size using default fee rate.
-// @see BTCTransactionDefaultFeeRate.
-- (BTCAmount) estimatedFee {
-    return [self estimatedFeeWithRate:BTCTransactionDefaultFeeRate];
-}
-
 // Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
 - (BTCAmount) estimatedFeeWithRate:(BTCAmount)feePerK {
     return [BTCTransaction estimateFeeForSize:self.data.length feeRate:feePerK];

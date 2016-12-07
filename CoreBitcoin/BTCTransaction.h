@@ -5,7 +5,6 @@
 #import "BTCSignatureHashType.h"
 
 static const uint32_t BTCTransactionCurrentVersion = 1;
-static const BTCAmount BTCTransactionDefaultFeeRate = 10000; // 10K satoshis per 1000 bytes
 
 
 @class BTCScript;
@@ -142,10 +141,6 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 
 // Returns YES if this txin generates new coins.
 @property(nonatomic, readonly) BOOL isCoinbase;
-
-// Computes estimated fee for this tx size using default fee rate.
-// @see BTCTransactionDefaultFeeRate.
-@property(nonatomic, readonly) BTCAmount estimatedFee;
 
 // Computes estimated fee for this tx size using specified fee rate (satoshis per 1000 bytes).
 - (BTCAmount) estimatedFeeWithRate:(BTCAmount)feePerK;
