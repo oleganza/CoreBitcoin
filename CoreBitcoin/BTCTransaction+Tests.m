@@ -33,7 +33,7 @@ typedef enum : NSUInteger {
 
 
 + (void) testFees {
-    NSAssert([[BTCTransaction new] estimatedFeeWithRate:12345] == 12345, @"smallest tx must have a fee == fee rate");
+    NSAssert([[BTCTransaction new] estimatedFeeWithRate:12345] == 124, @"Must have fee of ceil(10 * 12345 / 1000) = 124");
     NSAssert([[BTCTransaction new] estimatedFeeWithRate:0] == 0, @"zero fee rate should always yield zero fee");
 
     BTCTransaction* tx = [BTCTransaction new];
@@ -46,7 +46,7 @@ typedef enum : NSUInteger {
     }
 
     NSAssert(tx.data.length == 1200, @"Must be over 1K");
-    NSAssert([tx estimatedFeeWithRate:123] == 246, @"Must have double the fee rate if there is more than 1000 bytes");
+    NSAssert([tx estimatedFeeWithRate:123] == 148, @"Must have fee of ceil(1200 * 123 / 1000) = 148");
     NSAssert([tx estimatedFeeWithRate:0] == 0, @"Must have zero fee for zero rate.");
 }
 

@@ -527,11 +527,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) {
 // Computes estimated fee for the given tx size using specified fee rate (satoshis per 1000 bytes).
 + (BTCAmount) estimateFeeForSize:(NSInteger)txsize feeRate:(BTCAmount)feePerK {
     if (feePerK <= 0) return 0;
-    BTCAmount fee = 0;
-    while (txsize > 0) { // add fee rate for each (even incomplete) 1K byte chunk
-        txsize -= 1000;
-        fee += feePerK;
-    }
+    BTCAmount fee = ceilf(txsize * ((float) feePerK) / 1000.0);
     return fee;
 }
 
