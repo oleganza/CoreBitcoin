@@ -26,3 +26,7 @@ DerivedData
 CVS
 CoreBitcoin.xcodeproj/project.xcworkspace/xcshareddata/
 openssl.bak
+
+# VIM
+*.swo
+*.swp
