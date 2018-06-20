@@ -10,12 +10,7 @@
 #import "BTCKey+Tests.h"
 #import "BTCKeychain+Tests.h"
 #import "BTCCurvePoint+Tests.h"
-#import "BTCBlindSignature+Tests.h"
-#import "BTCEncryptedBackup+Tests.h"
-#import "BTCEncryptedMessage+Tests.h"
-#import "BTCFancyEncryptedMessage+Tests.h"
 #import "BTCScript+Tests.h"
-#import "BTCTransaction+Tests.h"
 #import "BTCBlockchainInfo+Tests.h"
 #import "BTCMerkleTree+Tests.h"
 
@@ -33,15 +28,10 @@ int main(int argc, const char * argv[])
         [BTCKey runAllTests];
         [BTCCurvePoint runAllTests];
         [BTCKeychain runAllTests];
-        [BTCBlindSignature runAllTests];
-        [BTCEncryptedBackup runAllTests];
-        [BTCEncryptedMessage runAllTests];
-        [BTCFancyEncryptedMessage runAllTests];
         [BTCScript runAllTests];
         [BTCMerkleTree runAllTests];
         [BTCBlockchainInfo runAllTests];
 
-        [BTCTransaction runAllTests]; // has some interactive features to ask for private key
         NSLog(@"All tests passed.");
     }
     return 0;
