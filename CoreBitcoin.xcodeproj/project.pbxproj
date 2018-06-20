@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		200459E91C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 200459E71C0720FC00BC9EE8 /* BTCSecretSharing.h */; };
-		200459EA1C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 200459E71C0720FC00BC9EE8 /* BTCSecretSharing.h */; };
-		200459EB1C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 200459E71C0720FC00BC9EE8 /* BTCSecretSharing.h */; };
-		200459EC1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */; };
-		200459ED1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */; };
-		200459EE1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */; };
-		200459EF1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */; };
-		200459F01C07210100BC9EE8 /* BTCSecretSharing.m in Sources */ = {isa = PBXBuildFile; fileRef = 200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */; };
 		200AAE3F19FA3EFA0004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
 		200AAE4019FA3F010004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
 		200AAE4119FA3F010004F908 /* BTCOutpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */; };
@@ -405,8 +397,6 @@
 
 /* Begin PBXFileReference section */
 		124BDBC4DBF996624753CE09 /* Pods-CoreBitcoin-CoreBitcoinOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBitcoin-CoreBitcoinOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBitcoin-CoreBitcoinOSX/Pods-CoreBitcoin-CoreBitcoinOSX.release.xcconfig"; sourceTree = "<group>"; };
-		200459E71C0720FC00BC9EE8 /* BTCSecretSharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCSecretSharing.h; sourceTree = "<group>"; };
-		200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCSecretSharing.m; sourceTree = "<group>"; };
 		200AAE3D19FA3EFA0004F908 /* BTCOutpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCOutpoint.h; sourceTree = "<group>"; };
 		200AAE3E19FA3EFA0004F908 /* BTCOutpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCOutpoint.m; sourceTree = "<group>"; };
 		200FA8D91C07A8B80039029D /* BTCSecretSharingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCSecretSharingTests.swift; sourceTree = "<group>"; };
@@ -722,8 +712,6 @@
 				20C2D7F919E2B2920022CAAC /* BTCMnemonic.m */,
 				20C2D80219E2F2280022CAAC /* BTCMnemonic+Tests.h */,
 				20C2D80319E2F2280022CAAC /* BTCMnemonic+Tests.m */,
-				200459E71C0720FC00BC9EE8 /* BTCSecretSharing.h */,
-				200459E81C0720FC00BC9EE8 /* BTCSecretSharing.m */,
 			);
 			name = Crypto;
 			sourceTree = "<group>";
@@ -1054,7 +1042,6 @@
 				207646E71A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
 				20148C331835650B00E68E9C /* NS+BTCBase58.h in Headers */,
 				20148C341835650B00E68E9C /* BTCBigNumber.h in Headers */,
-				200459EA1C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */,
 				205D8BC51B172D8100F9EA4E /* BTCPaymentMethodRequest.h in Headers */,
 				207B2606188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA518BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
@@ -1108,7 +1095,6 @@
 				207646E81A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
 				20148CDD183643FC00E68E9C /* NS+BTCBase58.h in Headers */,
 				20148CDE183643FC00E68E9C /* BTCBigNumber.h in Headers */,
-				200459EB1C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */,
 				205D8BC61B172D8100F9EA4E /* BTCPaymentMethodRequest.h in Headers */,
 				207B2607188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA618BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
@@ -1162,7 +1148,6 @@
 				207646E61A0A8A37000F00F2 /* BTCTransactionBuilder.h in Headers */,
 				206B01441835484300878B8D /* BTCBase58.h in Headers */,
 				206B01471835484300878B8D /* BTCBigNumber.h in Headers */,
-				200459E91C0720FC00BC9EE8 /* BTCSecretSharing.h in Headers */,
 				205D8BC41B172D8100F9EA4E /* BTCPaymentMethodRequest.h in Headers */,
 				207B2605188DC47800916AE6 /* BTCBlockchainInfo.h in Headers */,
 				20D09BA418BA14F900794209 /* CoreBitcoin+Categories.h in Headers */,
@@ -1459,7 +1444,6 @@
 				205D8BD31B176DC000F9EA4E /* BTCPaymentMethodDetails.m in Sources */,
 				20148B1918355DAD00E68E9C /* BTCTransactionInput.m in Sources */,
 				20A443BA1AC55F52008B3447 /* BTCPaymentProtocol.m in Sources */,
-				200459ED1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */,
 				20148B1A18355DAD00E68E9C /* BTCTransactionOutput.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1501,7 +1485,6 @@
 				205D8BD41B176DC000F9EA4E /* BTCPaymentMethodDetails.m in Sources */,
 				20148C27183563D000E68E9C /* BTCTransactionInput.m in Sources */,
 				20A443BB1AC55F52008B3447 /* BTCPaymentProtocol.m in Sources */,
-				200459EE1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */,
 				20148C28183563D000E68E9C /* BTCTransactionOutput.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1543,7 +1526,6 @@
 				205D8BD51B176DC000F9EA4E /* BTCPaymentMethodDetails.m in Sources */,
 				20148CD2183643E700E68E9C /* BTCTransactionInput.m in Sources */,
 				20A443BC1AC55F52008B3447 /* BTCPaymentProtocol.m in Sources */,
-				200459EF1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */,
 				20148CD3183643E700E68E9C /* BTCTransactionOutput.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1585,7 +1567,6 @@
 				205D8BD21B176DC000F9EA4E /* BTCPaymentMethodDetails.m in Sources */,
 				206B01611835485D00878B8D /* BTCProtocolSerialization.m in Sources */,
 				20A443B91AC55F52008B3447 /* BTCPaymentProtocol.m in Sources */,
-				200459EC1C0720FC00BC9EE8 /* BTCSecretSharing.m in Sources */,
 				206B015F1835485D00878B8D /* BTCKey.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1602,7 +1583,6 @@
 				20B8AB9F189F0CEF00008138 /* BTCKeychain+Tests.m in Sources */,
 				2084DD8717B8FF76005AC9E6 /* BTCAddress+Tests.m in Sources */,
 				2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */,
-				200459F01C07210100BC9EE8 /* BTCSecretSharing.m in Sources */,
 				2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */,
 				2084DD8A17B8FF76005AC9E6 /* BTCBigNumber+Tests.m in Sources */,
 				2084DD8B17B8FF76005AC9E6 /* BTCKey.m in Sources */,
