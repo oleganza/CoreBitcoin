@@ -1,0 +1,6 @@
+framework module Pods_CoreBitcoin_CoreBitcoinOSX {
+  umbrella header "Pods-CoreBitcoin-CoreBitcoinOSX-umbrella.h"
+
+  export *
+  module * { export * }
+}
