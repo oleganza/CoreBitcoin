@@ -9,4 +9,8 @@ abstract_target 'CoreBitcoin' do
     target 'CoreBitcoinOSX' do
         platform :osx, '10.8'
     end
+
+    target 'UnitTests' do
+        platform :osx, '10.8'
+    end
 end
