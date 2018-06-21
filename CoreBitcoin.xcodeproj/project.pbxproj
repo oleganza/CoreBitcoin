@@ -379,6 +379,7 @@
 		BE9AAF7920DC610E00C9BA17 /* bn_recp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */; };
 		BE9AAF7A20DC610E00C9BA17 /* bn_recp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */; };
 		BE9AAF7B20DC610E00C9BA17 /* bn_recp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */; };
+		BEF5D14820DC687300B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -574,6 +575,7 @@
 		BE9AAF5B20DC60BE00C9BA17 /* bn_sqr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_sqr.c; sourceTree = "<group>"; };
 		BE9AAF6E20DC610E00C9BA17 /* bn_mul.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_mul.c; sourceTree = "<group>"; };
 		BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_recp.c; sourceTree = "<group>"; };
+		BEF5D14720DC687300B0C6D8 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem.c; path = src/crypto/mem.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -837,6 +839,7 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BEF5D14720DC687300B0C6D8 /* mem.c */,
 				BEF5D14620DC682400B0C6D8 /* BN */,
 				BE9AAF1920DB409700C9BA17 /* LICENSE */,
 				2084DD9A17B90081005AC9E6 /* openssl */,
@@ -1520,6 +1523,7 @@
 				2084DD9117B8FF76005AC9E6 /* BTCTransactionOutput.m in Sources */,
 				209D1E1518D48EA200293483 /* BTCNetwork.m in Sources */,
 				20C2D80719E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
+				BEF5D14820DC687300B0C6D8 /* mem.c in Sources */,
 				207646E91A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BE9AAF5320DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */,
