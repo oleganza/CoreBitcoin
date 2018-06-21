@@ -380,6 +380,23 @@
 		BE9AAF7A20DC610E00C9BA17 /* bn_recp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */; };
 		BE9AAF7B20DC610E00C9BA17 /* bn_recp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */; };
 		BEF5D14820DC687300B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D14A20DC696900B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D14B20DC697C00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D14C20DC697D00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D14D20DC697E00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D14E20DC697E00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D14F20DC698200B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D15020DC698300B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D15120DC698300B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D15220DC698400B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D15320DC698D00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
+		BEF5D15420DC698D00B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
+		BEF5D15620DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
+		BEF5D15720DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
+		BEF5D15820DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
+		BEF5D15920DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
+		BEF5D15A20DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
+		BEF5D15B20DC69B800B0C6D8 /* mem_sec.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D15520DC69B800B0C6D8 /* mem_sec.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -576,6 +593,8 @@
 		BE9AAF6E20DC610E00C9BA17 /* bn_mul.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_mul.c; sourceTree = "<group>"; };
 		BE9AAF6F20DC610E00C9BA17 /* bn_recp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_recp.c; sourceTree = "<group>"; };
 		BEF5D14720DC687300B0C6D8 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem.c; path = src/crypto/mem.c; sourceTree = "<group>"; };
+		BEF5D14920DC696900B0C6D8 /* threads_pthread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = threads_pthread.c; path = src/crypto/threads_pthread.c; sourceTree = "<group>"; };
+		BEF5D15520DC69B800B0C6D8 /* mem_sec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem_sec.c; path = src/crypto/mem_sec.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -839,6 +858,8 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BEF5D15520DC69B800B0C6D8 /* mem_sec.c */,
+				BEF5D14920DC696900B0C6D8 /* threads_pthread.c */,
 				BEF5D14720DC687300B0C6D8 /* mem.c */,
 				BEF5D14620DC682400B0C6D8 /* BN */,
 				BE9AAF1920DB409700C9BA17 /* LICENSE */,
@@ -1318,6 +1339,7 @@
 				20148B0818355DAD00E68E9C /* BTCErrors.m in Sources */,
 				20584B2218CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148B0918355DAD00E68E9C /* BTCAddress.m in Sources */,
+				BEF5D15020DC698300B0C6D8 /* mem.c in Sources */,
 				20148B0B18355DAD00E68E9C /* BTCBase58.m in Sources */,
 				BE9AAF4720DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148B0D18355DAD00E68E9C /* NS+BTCBase58.m in Sources */,
@@ -1326,6 +1348,7 @@
 				20148B0E18355DAD00E68E9C /* BTCBigNumber.m in Sources */,
 				BE9AAF3220DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				BE9AAF2B20DC5E7200C9BA17 /* bn_word.c in Sources */,
+				BEF5D14C20DC697D00B0C6D8 /* threads_pthread.c in Sources */,
 				BE9AAF5520DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				207646EB1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148B1018355DAD00E68E9C /* BTCKey.m in Sources */,
@@ -1349,6 +1372,7 @@
 				2061D1DB1A2CA771004F1E40 /* BTCHashID.m in Sources */,
 				20148B1918355DAD00E68E9C /* BTCTransactionInput.m in Sources */,
 				20148B1A18355DAD00E68E9C /* BTCTransactionOutput.m in Sources */,
+				BEF5D15820DC69B800B0C6D8 /* mem_sec.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1365,6 +1389,7 @@
 				20148C16183563D000E68E9C /* BTCErrors.m in Sources */,
 				20584B2318CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148C17183563D000E68E9C /* BTCAddress.m in Sources */,
+				BEF5D15120DC698300B0C6D8 /* mem.c in Sources */,
 				20148C19183563D000E68E9C /* BTCBase58.m in Sources */,
 				BE9AAF4820DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148C1B183563D000E68E9C /* NS+BTCBase58.m in Sources */,
@@ -1373,6 +1398,7 @@
 				20148C1C183563D000E68E9C /* BTCBigNumber.m in Sources */,
 				BE9AAF3320DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				BE9AAF2920DC5E7100C9BA17 /* bn_word.c in Sources */,
+				BEF5D14D20DC697E00B0C6D8 /* threads_pthread.c in Sources */,
 				BE9AAF5620DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				207646EC1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148C1E183563D000E68E9C /* BTCKey.m in Sources */,
@@ -1396,6 +1422,7 @@
 				2061D1DC1A2CA771004F1E40 /* BTCHashID.m in Sources */,
 				20148C27183563D000E68E9C /* BTCTransactionInput.m in Sources */,
 				20148C28183563D000E68E9C /* BTCTransactionOutput.m in Sources */,
+				BEF5D15920DC69B800B0C6D8 /* mem_sec.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1412,6 +1439,7 @@
 				20148CC1183643E700E68E9C /* BTCErrors.m in Sources */,
 				20584B2418CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148CC2183643E700E68E9C /* BTCAddress.m in Sources */,
+				BEF5D15220DC698400B0C6D8 /* mem.c in Sources */,
 				20148CC4183643E700E68E9C /* BTCBase58.m in Sources */,
 				BE9AAF4920DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148CC6183643E700E68E9C /* NS+BTCBase58.m in Sources */,
@@ -1420,6 +1448,7 @@
 				20148CC7183643E700E68E9C /* BTCBigNumber.m in Sources */,
 				BE9AAF3420DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				BE9AAF2720DC5E7100C9BA17 /* bn_word.c in Sources */,
+				BEF5D14E20DC697E00B0C6D8 /* threads_pthread.c in Sources */,
 				BE9AAF5720DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				207646ED1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148CC9183643E700E68E9C /* BTCKey.m in Sources */,
@@ -1443,6 +1472,7 @@
 				2061D1DD1A2CA771004F1E40 /* BTCHashID.m in Sources */,
 				20148CD2183643E700E68E9C /* BTCTransactionInput.m in Sources */,
 				20148CD3183643E700E68E9C /* BTCTransactionOutput.m in Sources */,
+				BEF5D15A20DC69B800B0C6D8 /* mem_sec.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1459,6 +1489,7 @@
 				206B01581835485D00878B8D /* BTCAddress.m in Sources */,
 				206B01541835485D00878B8D /* BTCData.m in Sources */,
 				206B01661835485D00878B8D /* BTCScriptMachine.m in Sources */,
+				BEF5D14F20DC698200B0C6D8 /* mem.c in Sources */,
 				206B01681835485D00878B8D /* BTCTransactionInput.m in Sources */,
 				BE9AAF4620DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				206B015C1835485D00878B8D /* NS+BTCBase58.m in Sources */,
@@ -1467,6 +1498,7 @@
 				206B01571835485D00878B8D /* BTCErrors.m in Sources */,
 				BE9AAF3120DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				BE9AAF2D20DC5E7300C9BA17 /* bn_word.c in Sources */,
+				BEF5D14B20DC697C00B0C6D8 /* threads_pthread.c in Sources */,
 				BE9AAF5420DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				207646EA1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				206B01691835485D00878B8D /* BTCTransactionOutput.m in Sources */,
@@ -1490,6 +1522,7 @@
 				2061D1DA1A2CA771004F1E40 /* BTCHashID.m in Sources */,
 				206B01611835485D00878B8D /* BTCProtocolSerialization.m in Sources */,
 				206B015F1835485D00878B8D /* BTCKey.m in Sources */,
+				BEF5D15720DC69B800B0C6D8 /* mem_sec.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1523,6 +1556,7 @@
 				2084DD9117B8FF76005AC9E6 /* BTCTransactionOutput.m in Sources */,
 				209D1E1518D48EA200293483 /* BTCNetwork.m in Sources */,
 				20C2D80719E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
+				BEF5D14A20DC696900B0C6D8 /* threads_pthread.c in Sources */,
 				BEF5D14820DC687300B0C6D8 /* mem.c in Sources */,
 				207646E91A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BE9AAF5320DC604F00C9BA17 /* bn_gcd.c in Sources */,
@@ -1538,6 +1572,7 @@
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,
 				BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */,
 				BE9AAF7620DC610E00C9BA17 /* bn_recp.c in Sources */,
+				BEF5D15620DC69B800B0C6D8 /* mem_sec.c in Sources */,
 				BE9AAF6220DC60BE00C9BA17 /* bn_mont.c in Sources */,
 				2084DD9317B8FF76005AC9E6 /* BTCData.m in Sources */,
 				20D008BF18CFEAD300079B79 /* BTC256.m in Sources */,
@@ -1573,7 +1608,9 @@
 				75AF30371C152EE3002187AF /* BTCEncryptedMessageTests.swift in Sources */,
 				BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */,
 				75AF303B1C153009002187AF /* BTCMerkleTreeTests.swift in Sources */,
+				BEF5D15320DC698D00B0C6D8 /* threads_pthread.c in Sources */,
 				75B8190A1B04E69A0055F8B1 /* BTCPriceSourceTests.swift in Sources */,
+				BEF5D15420DC698D00B0C6D8 /* mem.c in Sources */,
 				BE9AAF4320DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BE9AAF5120DC601600C9BA17 /* bn_shift.c in Sources */,
 				200FA8DA1C07A8B80039029D /* BTCSecretSharingTests.swift in Sources */,
@@ -1582,6 +1619,7 @@
 				BE9AAF6D20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				75FB13E61B449661006D8935 /* BTCFancyEncryptedMessageTests.swift in Sources */,
 				75BCBB661C08FADD00D5876A /* BTCBase58Tests.swift in Sources */,
+				BEF5D15B20DC69B800B0C6D8 /* mem_sec.c in Sources */,
 				75B819061B04E65A0055F8B1 /* BTCAddressTests.swift in Sources */,
 				75BD89A41B46269E0073A611 /* BTCDataTests.swift in Sources */,
 				BE9AAF5820DC604F00C9BA17 /* bn_gcd.c in Sources */,
