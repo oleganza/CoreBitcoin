@@ -485,6 +485,9 @@
 		75EB9FF01B39C61500C26E70 /* BTC256Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTC256Tests.swift; sourceTree = "<group>"; };
 		75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCFancyEncryptedMessageTests.swift; sourceTree = "<group>"; };
 		B2C6298C5898B3608AF385EF /* Pods-CoreBitcoin-CoreBitcoinIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBitcoin-CoreBitcoinIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBitcoin-CoreBitcoinIOS/Pods-CoreBitcoin-CoreBitcoinIOS.release.xcconfig"; sourceTree = "<group>"; };
+		BE9AAD0B20DB350F00C9BA17 /* hmac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		BE9AAD0C20DB353500C9BA17 /* obj_mac.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = obj_mac.h; sourceTree = "<group>"; };
+		BE9AAD0D20DB358000C9BA17 /* evp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = evp.h; sourceTree = "<group>"; };
 		DD4766701FB6F8BF3581F6F1 /* Pods-CoreBitcoin-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBitcoin-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBitcoin-UnitTests/Pods-CoreBitcoin-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F18615C255A548CEDC9E5FC2 /* Pods-CoreBitcoin-CoreBitcoinIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBitcoin-CoreBitcoinIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBitcoin-CoreBitcoinIOS/Pods-CoreBitcoin-CoreBitcoinIOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -753,6 +756,9 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BE9AAD0D20DB358000C9BA17 /* evp.h */,
+				BE9AAD0B20DB350F00C9BA17 /* hmac.h */,
+				BE9AAD0C20DB353500C9BA17 /* obj_mac.h */,
 				2084DD9A17B90081005AC9E6 /* openssl */,
 			);
 			name = OpenSSL;
