@@ -186,8 +186,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
 
     //NSLog(@"ECDSA: r = %@", Kx.hexString);
     //NSLog(@"ECDSA: s = %@", signatureBN.hexString);
-    BIGNUM r; BN_init(&r); BN_copy(&r, Kx.BIGNUM);
-    BIGNUM s; BN_init(&s); BN_copy(&s, signatureBN.BIGNUM);
+    BIGNUM *r = BN_new(); BN_copy(r, Kx.BIGNUM);
+    BIGNUM *s = BN_new(); BN_copy(s, signatureBN.BIGNUM);
 
     [privkeyBN clear];
     [k clear];
@@ -196,8 +196,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
     [Kx clear];
     [signatureBN clear];
 
-    sig->r = &r;
-    sig->s = &s;
+    sig->r = r;
+    sig->s = s;
 
     BN_CTX *ctx = BN_CTX_new();
     BN_CTX_start(ctx);

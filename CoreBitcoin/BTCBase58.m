@@ -3,7 +3,6 @@
 #import "BTCBase58.h"
 #import "BTCData.h"
 #import <openssl/bn.h>
-#import "bn_lcl.h"
 
 static const char* BTCBase58Alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
@@ -24,15 +23,15 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring) {
     NSMutableData* result = nil;
     
     BN_CTX* pctx = BN_CTX_new();
-    __block BIGNUM bn58;   BN_init(&bn58);   BN_set_word(&bn58, 58);
-    __block BIGNUM bn;     BN_init(&bn);     BN_zero(&bn);
-    __block BIGNUM bnChar; BN_init(&bnChar);
+    BIGNUM *bn58 = BN_new();   BN_set_word(bn58, 58);
+    BIGNUM *bn = BN_new();     BN_zero(bn);
+    BIGNUM *bnChar = BN_new();
     
     void(^finish)() = ^{
         if (pctx) BN_CTX_free(pctx);
-        BN_clear_free(&bn58);
-        BN_clear_free(&bn);
-        BN_clear_free(&bnChar);
+        BN_clear_free(bn58);
+        BN_clear_free(bn);
+        BN_clear_free(bnChar);
     };
     
     while (isspace(*cstring)) cstring++;
@@ -51,14 +50,14 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring) {
             break;
         }
         
-        BN_set_word(&bnChar, (BN_ULONG)(p1 - BTCBase58Alphabet));
+        BN_set_word(bnChar, (BN_ULONG)(p1 - BTCBase58Alphabet));
         
-        if (!BN_mul(&bn, &bn, &bn58, pctx)) {
+        if (!BN_mul(bn, bn, bn58, pctx)) {
             finish();
             return nil;
         }
         
-        if (!BN_add(&bn, &bn, &bnChar)) {
+        if (!BN_add(bn, bn, bnChar)) {
             finish();
             return nil;
         }
@@ -68,12 +67,12 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring) {
     
     NSMutableData* bndata = nil;
     {
-        size_t bnsize = BN_bn2mpi(&bn, NULL);
+        size_t bnsize = BN_bn2mpi(bn, NULL);
         if (bnsize <= 4) {
             bndata = [NSMutableData data];
         } else {
             bndata = [NSMutableData dataWithLength:bnsize];
-            BN_bn2mpi(&bn, bndata.mutableBytes);
+            BN_bn2mpi(bn, bndata.mutableBytes);
             [bndata replaceBytesInRange:NSMakeRange(0, 4) withBytes:NULL length:0];
             BTCDataReverse(bndata);
         }
@@ -129,19 +128,19 @@ char* BTCBase58CStringWithData(NSData* data) {
     if (!data) return NULL;
     
     BN_CTX* pctx = BN_CTX_new();
-    __block BIGNUM bn58; BN_init(&bn58); BN_set_word(&bn58, 58);
-    __block BIGNUM bn0;  BN_init(&bn0);  BN_zero(&bn0);
-    __block BIGNUM bn; BN_init(&bn); BN_zero(&bn);
-    __block BIGNUM dv; BN_init(&dv); BN_zero(&dv);
-    __block BIGNUM rem; BN_init(&rem); BN_zero(&rem);
+    __block BIGNUM *bn58 = BN_new(); BN_set_word(bn58, 58);
+    __block BIGNUM *bn0 = BN_new();  BN_zero(bn0);
+    __block BIGNUM *bn = BN_new(); BN_zero(bn);
+    __block BIGNUM *dv = BN_new(); BN_zero(dv);
+    __block BIGNUM *rem = BN_new(); BN_zero(rem);
     
     void(^finish)() = ^{
         if (pctx) BN_CTX_free(pctx);
-        BN_clear_free(&bn58);
-        BN_clear_free(&bn0);
-        BN_clear_free(&bn);
-        BN_clear_free(&dv);
-        BN_clear_free(&rem);
+        BN_clear_free(bn58);
+        BN_clear_free(bn0);
+        BN_clear_free(bn);
+        BN_clear_free(dv);
+        BN_clear_free(rem);
     };
     
     // Convert big endian data to little endian.
@@ -166,20 +165,20 @@ char* BTCBase58CStringWithData(NSData* data) {
         bytes[2] = (size >> 8) & 0xff;
         bytes[3] = (size >> 0) & 0xff;
         
-        BN_mpi2bn(bytes, (int)mdata.length, &bn);
+        BN_mpi2bn(bytes, (int)mdata.length, bn);
     }
     
     // Expected size increase from base58 conversion is approximately 137%
     // use 138% to be safe
     NSMutableData* stringData = [NSMutableData dataWithCapacity:data.length*138/100 + 1];
     
-    while (BN_cmp(&bn, &bn0) > 0) {
-        if (!BN_div(&dv, &rem, &bn, &bn58, pctx)) {
+    while (BN_cmp(bn, bn0) > 0) {
+        if (!BN_div(dv, rem, bn, bn58, pctx)) {
             finish();
             return nil;
         }
-        BN_copy(&bn, &dv);
-        unsigned long c = BN_get_word(&rem);
+        BN_copy(bn, dv);
+        unsigned long c = BN_get_word(rem);
         [stringData appendBytes:BTCBase58Alphabet + c length:1];
     }
     finish();
