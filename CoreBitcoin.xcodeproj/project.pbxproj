@@ -301,6 +301,42 @@
 		BE9AAF1E20DC4B7B00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
 		BE9AAF1F20DC4B7B00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
 		BE9AAF2020DC4B7C00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF2220DC5E4A00C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF2420DC5E6D00C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2520DC5E7000C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2620DC5E7000C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF2720DC5E7100C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2820DC5E7100C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF2920DC5E7100C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2A20DC5E7100C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF2B20DC5E7200C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2C20DC5E7200C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF2D20DC5E7300C9BA17 /* bn_word.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */; };
+		BE9AAF2E20DC5E7300C9BA17 /* bn_add.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */; };
+		BE9AAF3020DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3120DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3220DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3320DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3420DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3520DC5EBA00C9BA17 /* bn_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */; };
+		BE9AAF3820DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3920DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3A20DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3B20DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3C20DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3D20DC5EE300C9BA17 /* bn_div.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3620DC5EE300C9BA17 /* bn_div.c */; };
+		BE9AAF3E20DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF3F20DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF4020DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF4120DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF4220DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF4320DC5EE300C9BA17 /* bn_mod.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */; };
+		BE9AAF4520DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
+		BE9AAF4620DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
+		BE9AAF4720DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
+		BE9AAF4820DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
+		BE9AAF4920DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
+		BE9AAF4A20DC5F1100C9BA17 /* bn_exp.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +519,12 @@
 		75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCFancyEncryptedMessageTests.swift; sourceTree = "<group>"; };
 		BE9AAF1920DB409700C9BA17 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_ctx.c; path = src/crypto/bn/bn_ctx.c; sourceTree = "<group>"; };
+		BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_add.c; path = src/crypto/bn/bn_add.c; sourceTree = "<group>"; };
+		BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_word.c; path = src/crypto/bn/bn_word.c; sourceTree = "<group>"; };
+		BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_lib.c; path = src/crypto/bn/bn_lib.c; sourceTree = "<group>"; };
+		BE9AAF3620DC5EE300C9BA17 /* bn_div.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_div.c; path = src/crypto/bn/bn_div.c; sourceTree = "<group>"; };
+		BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_mod.c; path = src/crypto/bn/bn_mod.c; sourceTree = "<group>"; };
+		BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_exp.c; path = src/crypto/bn/bn_exp.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -746,6 +788,12 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BE9AAF4420DC5F1100C9BA17 /* bn_exp.c */,
+				BE9AAF3620DC5EE300C9BA17 /* bn_div.c */,
+				BE9AAF3720DC5EE300C9BA17 /* bn_mod.c */,
+				BE9AAF2320DC5E6D00C9BA17 /* bn_word.c */,
+				BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */,
+				BE9AAF2F20DC5EBA00C9BA17 /* bn_lib.c */,
 				BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */,
 				BE9AAF1920DB409700C9BA17 /* LICENSE */,
 				2084DD9A17B90081005AC9E6 /* openssl */,
@@ -1200,14 +1248,20 @@
 				20584B2218CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148B0918355DAD00E68E9C /* BTCAddress.m in Sources */,
 				20148B0B18355DAD00E68E9C /* BTCBase58.m in Sources */,
+				BE9AAF4720DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148B0D18355DAD00E68E9C /* NS+BTCBase58.m in Sources */,
+				BE9AAF4020DC5EE300C9BA17 /* bn_mod.c in Sources */,
+				BE9AAF3A20DC5EE300C9BA17 /* bn_div.c in Sources */,
 				20148B0E18355DAD00E68E9C /* BTCBigNumber.m in Sources */,
+				BE9AAF3220DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BE9AAF2B20DC5E7200C9BA17 /* bn_word.c in Sources */,
 				207646EB1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148B1018355DAD00E68E9C /* BTCKey.m in Sources */,
 				209D1E1718D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9A189EE88300008138 /* BTCKeychain.m in Sources */,
 				BE9AAF1F20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
 				20148B1218355DAD00E68E9C /* BTCProtocolSerialization.m in Sources */,
+				BE9AAF2C20DC5E7200C9BA17 /* bn_add.c in Sources */,
 				20148B1418355DAD00E68E9C /* BTCOpcode.m in Sources */,
 				20CD68DF189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
 				20148B1518355DAD00E68E9C /* BTCScript.m in Sources */,
@@ -1234,14 +1288,20 @@
 				20584B2318CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148C17183563D000E68E9C /* BTCAddress.m in Sources */,
 				20148C19183563D000E68E9C /* BTCBase58.m in Sources */,
+				BE9AAF4820DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148C1B183563D000E68E9C /* NS+BTCBase58.m in Sources */,
+				BE9AAF4120DC5EE300C9BA17 /* bn_mod.c in Sources */,
+				BE9AAF3B20DC5EE300C9BA17 /* bn_div.c in Sources */,
 				20148C1C183563D000E68E9C /* BTCBigNumber.m in Sources */,
+				BE9AAF3320DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BE9AAF2920DC5E7100C9BA17 /* bn_word.c in Sources */,
 				207646EC1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148C1E183563D000E68E9C /* BTCKey.m in Sources */,
 				209D1E1818D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9B189EE88300008138 /* BTCKeychain.m in Sources */,
 				BE9AAF1E20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
 				20148C20183563D000E68E9C /* BTCProtocolSerialization.m in Sources */,
+				BE9AAF2A20DC5E7100C9BA17 /* bn_add.c in Sources */,
 				20148C22183563D000E68E9C /* BTCOpcode.m in Sources */,
 				20CD68E0189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
 				20148C23183563D000E68E9C /* BTCScript.m in Sources */,
@@ -1268,14 +1328,20 @@
 				20584B2418CD0DA000FDD410 /* BTC256.m in Sources */,
 				20148CC2183643E700E68E9C /* BTCAddress.m in Sources */,
 				20148CC4183643E700E68E9C /* BTCBase58.m in Sources */,
+				BE9AAF4920DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148CC6183643E700E68E9C /* NS+BTCBase58.m in Sources */,
+				BE9AAF4220DC5EE300C9BA17 /* bn_mod.c in Sources */,
+				BE9AAF3C20DC5EE300C9BA17 /* bn_div.c in Sources */,
 				20148CC7183643E700E68E9C /* BTCBigNumber.m in Sources */,
+				BE9AAF3420DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BE9AAF2720DC5E7100C9BA17 /* bn_word.c in Sources */,
 				207646ED1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				20148CC9183643E700E68E9C /* BTCKey.m in Sources */,
 				209D1E1918D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9C189EE88300008138 /* BTCKeychain.m in Sources */,
 				BE9AAF1D20DC4B7A00C9BA17 /* bn_ctx.c in Sources */,
 				20148CCB183643E700E68E9C /* BTCProtocolSerialization.m in Sources */,
+				BE9AAF2820DC5E7100C9BA17 /* bn_add.c in Sources */,
 				20148CCD183643E700E68E9C /* BTCOpcode.m in Sources */,
 				20CD68E1189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
 				20148CCE183643E700E68E9C /* BTCScript.m in Sources */,
@@ -1302,14 +1368,20 @@
 				206B01541835485D00878B8D /* BTCData.m in Sources */,
 				206B01661835485D00878B8D /* BTCScriptMachine.m in Sources */,
 				206B01681835485D00878B8D /* BTCTransactionInput.m in Sources */,
+				BE9AAF4620DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				206B015C1835485D00878B8D /* NS+BTCBase58.m in Sources */,
+				BE9AAF3F20DC5EE300C9BA17 /* bn_mod.c in Sources */,
+				BE9AAF3920DC5EE300C9BA17 /* bn_div.c in Sources */,
 				206B01571835485D00878B8D /* BTCErrors.m in Sources */,
+				BE9AAF3120DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BE9AAF2D20DC5E7300C9BA17 /* bn_word.c in Sources */,
 				207646EA1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				206B01691835485D00878B8D /* BTCTransactionOutput.m in Sources */,
 				209D1E1618D48EA200293483 /* BTCNetwork.m in Sources */,
 				20D008BE18CFEAD000079B79 /* BTC256.m in Sources */,
 				BE9AAF2020DC4B7C00C9BA17 /* bn_ctx.c in Sources */,
 				206B01671835485D00878B8D /* BTCTransaction.m in Sources */,
+				BE9AAF2E20DC5E7300C9BA17 /* bn_add.c in Sources */,
 				20B8AB99189EE88300008138 /* BTCKeychain.m in Sources */,
 				206B01641835485D00878B8D /* BTCScript.m in Sources */,
 				20CD68DE189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
@@ -1330,6 +1402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
+				BE9AAF4520DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20B8AB98189EE88300008138 /* BTCKeychain.m in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
 				2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */,
@@ -1345,6 +1418,7 @@
 				20D008C218D1AFA800079B79 /* BTC256+Tests.m in Sources */,
 				2084DD8E17B8FF76005AC9E6 /* BTCScript.m in Sources */,
 				20B66C8717BFE4F9007128CE /* BTCErrors.m in Sources */,
+				BE9AAF3E20DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				2084DD8F17B8FF76005AC9E6 /* BTCTransaction.m in Sources */,
 				2084DD9017B8FF76005AC9E6 /* BTCTransactionInput.m in Sources */,
 				2057A9CD17CD555F00353D54 /* BTCKey+Tests.m in Sources */,
@@ -1354,7 +1428,10 @@
 				207646E91A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */,
 				20E154DA195D0DB400DA40D3 /* BTCBlockchainInfo+Tests.m in Sources */,
+				BE9AAF2220DC5E4A00C9BA17 /* bn_add.c in Sources */,
 				20A443C01AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
+				BE9AAF3820DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BE9AAF3020DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				20C2D7FD19E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,
 				BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */,
@@ -1368,6 +1445,7 @@
 				2037AB1817D3D1F900DB248C /* BTCBase58+Tests.m in Sources */,
 				20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */,
 				200AAE3F19FA3EFA0004F908 /* BTCOutpoint.m in Sources */,
+				BE9AAF2420DC5E6D00C9BA17 /* bn_word.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1376,8 +1454,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7558460E1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift in Sources */,
+				BE9AAF4A20DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				75EB9FF11B39C61500C26E70 /* BTC256Tests.swift in Sources */,
 				75BBC6E51B0E721700A61690 /* BTCCurvePointTests.swift in Sources */,
+				BE9AAF3D20DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BE9AAF2620DC5E7000C9BA17 /* bn_add.c in Sources */,
 				75A06DA01B17B7FE00ED7E79 /* BTCKeyTests.swift in Sources */,
 				752834A91B699BEC00CD92E3 /* BTCScriptTests.swift in Sources */,
 				758C8C451C08F111000C1796 /* BTCBigNumberTests.swift in Sources */,
@@ -1385,6 +1466,7 @@
 				BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */,
 				75AF303B1C153009002187AF /* BTCMerkleTreeTests.swift in Sources */,
 				75B8190A1B04E69A0055F8B1 /* BTCPriceSourceTests.swift in Sources */,
+				BE9AAF4320DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				200FA8DA1C07A8B80039029D /* BTCSecretSharingTests.swift in Sources */,
 				75E565AE1B7927C800CCCFA5 /* BTCTransactionTests.swift in Sources */,
 				7549DAD11B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift in Sources */,
@@ -1392,12 +1474,14 @@
 				75BCBB661C08FADD00D5876A /* BTCBase58Tests.swift in Sources */,
 				75B819061B04E65A0055F8B1 /* BTCAddressTests.swift in Sources */,
 				75BD89A41B46269E0073A611 /* BTCDataTests.swift in Sources */,
+				BE9AAF3520DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				754564761B07F9AB008F34DC /* BTCBitcoinURLTests.swift in Sources */,
 				75A1A3721B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift in Sources */,
 				20FFD8001B1F85F300CCA48D /* BTCPaymentProtocolTests.swift in Sources */,
 				758DDAFE1BD2D83600AEDFFB /* BTCMnemonicTests.swift in Sources */,
 				75B819081B04E68B0055F8B1 /* BTCBlockchainInfoTests.swift in Sources */,
 				753118261B6042A400A102E2 /* BTCKeychainTests.swift in Sources */,
+				BE9AAF2520DC5E7000C9BA17 /* bn_word.c in Sources */,
 				75AF30351C152B1D002187AF /* BTCProtocolSerializationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
