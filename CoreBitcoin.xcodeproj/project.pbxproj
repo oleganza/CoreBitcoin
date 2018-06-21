@@ -295,6 +295,12 @@
 		75E565AE1B7927C800CCCFA5 /* BTCTransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E565AD1B7927C800CCCFA5 /* BTCTransactionTests.swift */; };
 		75EB9FF11B39C61500C26E70 /* BTC256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EB9FF01B39C61500C26E70 /* BTC256Tests.swift */; };
 		75FB13E61B449661006D8935 /* BTCFancyEncryptedMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */; };
+		BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF1D20DC4B7A00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF1E20DC4B7B00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF1F20DC4B7B00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
+		BE9AAF2020DC4B7C00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -476,6 +482,7 @@
 		75EB9FF01B39C61500C26E70 /* BTC256Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTC256Tests.swift; sourceTree = "<group>"; };
 		75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCFancyEncryptedMessageTests.swift; sourceTree = "<group>"; };
 		BE9AAF1920DB409700C9BA17 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bn_ctx.c; path = src/crypto/bn/bn_ctx.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -739,6 +746,7 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */,
 				BE9AAF1920DB409700C9BA17 /* LICENSE */,
 				2084DD9A17B90081005AC9E6 /* openssl */,
 			);
@@ -1198,6 +1206,7 @@
 				20148B1018355DAD00E68E9C /* BTCKey.m in Sources */,
 				209D1E1718D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9A189EE88300008138 /* BTCKeychain.m in Sources */,
+				BE9AAF1F20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
 				20148B1218355DAD00E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148B1418355DAD00E68E9C /* BTCOpcode.m in Sources */,
 				20CD68DF189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
@@ -1231,6 +1240,7 @@
 				20148C1E183563D000E68E9C /* BTCKey.m in Sources */,
 				209D1E1818D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9B189EE88300008138 /* BTCKeychain.m in Sources */,
+				BE9AAF1E20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
 				20148C20183563D000E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148C22183563D000E68E9C /* BTCOpcode.m in Sources */,
 				20CD68E0189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
@@ -1264,6 +1274,7 @@
 				20148CC9183643E700E68E9C /* BTCKey.m in Sources */,
 				209D1E1918D48EA200293483 /* BTCNetwork.m in Sources */,
 				20B8AB9C189EE88300008138 /* BTCKeychain.m in Sources */,
+				BE9AAF1D20DC4B7A00C9BA17 /* bn_ctx.c in Sources */,
 				20148CCB183643E700E68E9C /* BTCProtocolSerialization.m in Sources */,
 				20148CCD183643E700E68E9C /* BTCOpcode.m in Sources */,
 				20CD68E1189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
@@ -1297,6 +1308,7 @@
 				206B01691835485D00878B8D /* BTCTransactionOutput.m in Sources */,
 				209D1E1618D48EA200293483 /* BTCNetwork.m in Sources */,
 				20D008BE18CFEAD000079B79 /* BTC256.m in Sources */,
+				BE9AAF2020DC4B7C00C9BA17 /* bn_ctx.c in Sources */,
 				206B01671835485D00878B8D /* BTCTransaction.m in Sources */,
 				20B8AB99189EE88300008138 /* BTCKeychain.m in Sources */,
 				206B01641835485D00878B8D /* BTCScript.m in Sources */,
@@ -1345,6 +1357,7 @@
 				20A443C01AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				20C2D7FD19E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,
+				BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */,
 				2084DD9317B8FF76005AC9E6 /* BTCData.m in Sources */,
 				20D008BF18CFEAD300079B79 /* BTC256.m in Sources */,
 				20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */,
@@ -1369,6 +1382,7 @@
 				752834A91B699BEC00CD92E3 /* BTCScriptTests.swift in Sources */,
 				758C8C451C08F111000C1796 /* BTCBigNumberTests.swift in Sources */,
 				75AF30371C152EE3002187AF /* BTCEncryptedMessageTests.swift in Sources */,
+				BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */,
 				75AF303B1C153009002187AF /* BTCMerkleTreeTests.swift in Sources */,
 				75B8190A1B04E69A0055F8B1 /* BTCPriceSourceTests.swift in Sources */,
 				200FA8DA1C07A8B80039029D /* BTCSecretSharingTests.swift in Sources */,
@@ -1616,6 +1630,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)/openssl/src/**",
+				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1627,6 +1645,10 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/openssl/include",
+					"$(SRCROOT)/openssl/src/**",
+				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -14,6 +14,7 @@
 #include <openssl/obj_mac.h>
 #include <openssl/bn.h>
 #include <openssl/rand.h>
+#include "ec_lcl.h"
 
 #define CHECK_IF_CLEARED if (_cleared) { [[NSException exceptionWithName:@"BTCKey: instance was already cleared." reason:@"" userInfo:nil] raise]; }
 
