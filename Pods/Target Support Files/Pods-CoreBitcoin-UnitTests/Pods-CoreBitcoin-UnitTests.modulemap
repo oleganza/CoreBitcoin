@@ -1,6 +1,0 @@
-framework module Pods_CoreBitcoin_UnitTests {
-  umbrella header "Pods-CoreBitcoin-UnitTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
