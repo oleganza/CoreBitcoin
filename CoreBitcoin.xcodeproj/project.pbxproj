@@ -1052,18 +1052,18 @@
 		BEF5D14920DC696900B0C6D8 /* threads_pthread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = threads_pthread.c; path = src/crypto/threads_pthread.c; sourceTree = "<group>"; };
 		BEF5D15520DC69B800B0C6D8 /* mem_sec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem_sec.c; path = src/crypto/mem_sec.c; sourceTree = "<group>"; };
 		BEF5D15C20DC6A9D00B0C6D8 /* ec_asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ec_asn1.c; path = src/crypto/ec/ec_asn1.c; sourceTree = "<group>"; };
-		BEF5D16320DC6EB400B0C6D8 /* tasn_typ.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_typ.c; path = src/crypto/asn1/tasn_typ.c; sourceTree = "<group>"; };
-		BEF5D16A20DC6EFC00B0C6D8 /* a_bitstr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_bitstr.c; path = src/crypto/asn1/a_bitstr.c; sourceTree = "<group>"; };
-		BEF5D17120DC6F4B00B0C6D8 /* a_int.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_int.c; path = src/crypto/asn1/a_int.c; sourceTree = "<group>"; };
-		BEF5D17820DC6F9300B0C6D8 /* a_object.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_object.c; path = src/crypto/asn1/a_object.c; sourceTree = "<group>"; };
-		BEF5D17F20DC6FEA00B0C6D8 /* a_octet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_octet.c; path = src/crypto/asn1/a_octet.c; sourceTree = "<group>"; };
-		BEF5D18620DC702200B0C6D8 /* asn1_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1_lib.c; path = src/crypto/asn1/asn1_lib.c; sourceTree = "<group>"; };
-		BEF5D18D20DC708F00B0C6D8 /* tasn_enc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_enc.c; path = src/crypto/asn1/tasn_enc.c; sourceTree = "<group>"; };
-		BEF5D18E20DC709000B0C6D8 /* tasn_new.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_new.c; path = src/crypto/asn1/tasn_new.c; sourceTree = "<group>"; };
-		BEF5D18F20DC709000B0C6D8 /* tasn_dec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_dec.c; path = src/crypto/asn1/tasn_dec.c; sourceTree = "<group>"; };
-		BEF5D1A220DC70CD00B0C6D8 /* a_type.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_type.c; path = src/crypto/asn1/a_type.c; sourceTree = "<group>"; };
-		BEF5D1A920DC713900B0C6D8 /* tasn_fre.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_fre.c; path = src/crypto/asn1/tasn_fre.c; sourceTree = "<group>"; };
-		BEF5D1B020DC71A200B0C6D8 /* asn_pack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn_pack.c; path = src/crypto/asn1/asn_pack.c; sourceTree = "<group>"; };
+		BEF5D16320DC6EB400B0C6D8 /* tasn_typ.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_typ.c; sourceTree = "<group>"; };
+		BEF5D16A20DC6EFC00B0C6D8 /* a_bitstr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_bitstr.c; sourceTree = "<group>"; };
+		BEF5D17120DC6F4B00B0C6D8 /* a_int.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_int.c; sourceTree = "<group>"; };
+		BEF5D17820DC6F9300B0C6D8 /* a_object.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_object.c; sourceTree = "<group>"; };
+		BEF5D17F20DC6FEA00B0C6D8 /* a_octet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_octet.c; sourceTree = "<group>"; };
+		BEF5D18620DC702200B0C6D8 /* asn1_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asn1_lib.c; sourceTree = "<group>"; };
+		BEF5D18D20DC708F00B0C6D8 /* tasn_enc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_enc.c; sourceTree = "<group>"; };
+		BEF5D18E20DC709000B0C6D8 /* tasn_new.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_new.c; sourceTree = "<group>"; };
+		BEF5D18F20DC709000B0C6D8 /* tasn_dec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_dec.c; sourceTree = "<group>"; };
+		BEF5D1A220DC70CD00B0C6D8 /* a_type.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_type.c; sourceTree = "<group>"; };
+		BEF5D1A920DC713900B0C6D8 /* tasn_fre.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_fre.c; sourceTree = "<group>"; };
+		BEF5D1B020DC71A200B0C6D8 /* asn_pack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asn_pack.c; sourceTree = "<group>"; };
 		BEF5D1B720DC722600B0C6D8 /* bio_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bio_lib.c; path = src/crypto/bio/bio_lib.c; sourceTree = "<group>"; };
 		BEF5D1BE20DC727600B0C6D8 /* b_dump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b_dump.c; path = src/crypto/bio/b_dump.c; sourceTree = "<group>"; };
 		BEF5D1C520DC72A600B0C6D8 /* b_print.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b_print.c; path = src/crypto/bio/b_print.c; sourceTree = "<group>"; };
@@ -1082,14 +1082,14 @@
 		BEF5D22720DC767F00B0C6D8 /* ec_key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ec_key.c; path = src/crypto/ec/ec_key.c; sourceTree = "<group>"; };
 		BEF5D22820DC767F00B0C6D8 /* ec_curve.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ec_curve.c; path = src/crypto/ec/ec_curve.c; sourceTree = "<group>"; };
 		BEF5D23520DC77F100B0C6D8 /* pk7_asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pk7_asn1.c; path = src/crypto/pkcs7/pk7_asn1.c; sourceTree = "<group>"; };
-		BEF5D23C20DC792A00B0C6D8 /* a_dup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_dup.c; path = src/crypto/asn1/a_dup.c; sourceTree = "<group>"; };
-		BEF5D24320DC796100B0C6D8 /* tasn_prn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tasn_prn.c; path = src/crypto/asn1/tasn_prn.c; sourceTree = "<group>"; };
-		BEF5D24A20DC7A1D00B0C6D8 /* a_gentm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_gentm.c; path = src/crypto/asn1/a_gentm.c; sourceTree = "<group>"; };
-		BEF5D25120DC7A4600B0C6D8 /* a_strex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_strex.c; path = src/crypto/asn1/a_strex.c; sourceTree = "<group>"; };
-		BEF5D25820DC7A7600B0C6D8 /* a_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_time.c; path = src/crypto/asn1/a_time.c; sourceTree = "<group>"; };
-		BEF5D25F20DC7AAB00B0C6D8 /* a_utctm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_utctm.c; path = src/crypto/asn1/a_utctm.c; sourceTree = "<group>"; };
-		BEF5D26D20DC7B1B00B0C6D8 /* a_mbstr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a_mbstr.c; path = src/crypto/asn1/a_mbstr.c; sourceTree = "<group>"; };
-		BEF5D27420DC7B4500B0C6D8 /* asn1_par.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1_par.c; path = src/crypto/asn1/asn1_par.c; sourceTree = "<group>"; };
+		BEF5D23C20DC792A00B0C6D8 /* a_dup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_dup.c; sourceTree = "<group>"; };
+		BEF5D24320DC796100B0C6D8 /* tasn_prn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_prn.c; sourceTree = "<group>"; };
+		BEF5D24A20DC7A1D00B0C6D8 /* a_gentm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_gentm.c; sourceTree = "<group>"; };
+		BEF5D25120DC7A4600B0C6D8 /* a_strex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_strex.c; sourceTree = "<group>"; };
+		BEF5D25820DC7A7600B0C6D8 /* a_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_time.c; sourceTree = "<group>"; };
+		BEF5D25F20DC7AAB00B0C6D8 /* a_utctm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_utctm.c; sourceTree = "<group>"; };
+		BEF5D26D20DC7B1B00B0C6D8 /* a_mbstr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_mbstr.c; sourceTree = "<group>"; };
+		BEF5D27420DC7B4500B0C6D8 /* asn1_par.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = asn1_par.c; sourceTree = "<group>"; };
 		BEF5D27B20DC7B9F00B0C6D8 /* bss_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bss_file.c; path = src/crypto/bio/bss_file.c; sourceTree = "<group>"; };
 		BEF5D28220DC7BF700B0C6D8 /* bn_rand.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_rand.c; sourceTree = "<group>"; };
 		BEF5D28920DC7CA600B0C6D8 /* ec_cvt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ec_cvt.c; path = src/crypto/ec/ec_cvt.c; sourceTree = "<group>"; };
@@ -1391,82 +1391,62 @@
 			isa = PBXGroup;
 			children = (
 				BEF5D37F20DC97B000B0C6D8 /* asn1 */,
-				BEF5D37720DC968A00B0C6D8 /* lhash.c */,
-				BEF5D36920DC95DB00B0C6D8 /* stack.c */,
-				BEF5D36220DC958700B0C6D8 /* o_time.c */,
-				BEF5D35B20DC953800B0C6D8 /* o_names.c */,
-				BEF5D35420DC950700B0C6D8 /* cryptlib.c */,
-				BEF5D2E420DC827B00B0C6D8 /* x_int64.c */,
-				BEF5D34D20DC94A400B0C6D8 /* names.c */,
-				BEF5D34620DC945600B0C6D8 /* pmeth_lib.c */,
-				BEF5D33F20DC942100B0C6D8 /* evp_lib.c */,
-				BEF5D33820DC92D300B0C6D8 /* tb_cipher.c */,
-				BEF5D33120DC924400B0C6D8 /* evp_enc.c */,
-				BEF5D32A20DC920200B0C6D8 /* tb_pkmeth.c */,
-				BEF5D32320DC91B600B0C6D8 /* tb_asnmth.c */,
+				BEF5D1F620DC74FF00B0C6D8 /* b_addr.c */,
+				BEF5D1BE20DC727600B0C6D8 /* b_dump.c */,
+				BEF5D1C520DC72A600B0C6D8 /* b_print.c */,
+				BEF5D1FD20DC752300B0C6D8 /* b_sock.c */,
+				BEF5D20420DC754300B0C6D8 /* b_sock2.c */,
+				BEF5D1B720DC722600B0C6D8 /* bio_lib.c */,
+				BEF5D14620DC682400B0C6D8 /* BN */,
+				BEF5D27B20DC7B9F00B0C6D8 /* bss_file.c */,
+				BEF5D20B20DC756F00B0C6D8 /* bss_sock.c */,
+				BEF5D1CC20DC72FC00B0C6D8 /* buffer.c */,
 				BEF5D31520DC90EC00B0C6D8 /* cmac.c */,
-				BEF5D30E20DC902000B0C6D8 /* obj_dat.c */,
-				BEF5D30720DC8FA600B0C6D8 /* p_lib.c */,
-				BEF5D30020DC8F1F00B0C6D8 /* obj_lib.c */,
-				BEF5D2F920DC8E6F00B0C6D8 /* err.c */,
-				BEF5D2F220DC8E0E00B0C6D8 /* eng_ctrl.c */,
-				BEF5D2EB20DC82BF00B0C6D8 /* eng_list.c */,
-				BEF5D2DD20DC81D900B0C6D8 /* tb_eckey.c */,
-				BEF5D2D020DC817B00B0C6D8 /* eng_init.c */,
-				BEF5D2CF20DC817B00B0C6D8 /* eng_lib.c */,
+				BEF5D35420DC950700B0C6D8 /* cryptlib.c */,
+				BEF5D15C20DC6A9D00B0C6D8 /* ec_asn1.c */,
+				BEF5D22820DC767F00B0C6D8 /* ec_curve.c */,
+				BEF5D28920DC7CA600B0C6D8 /* ec_cvt.c */,
+				BEF5D22720DC767F00B0C6D8 /* ec_key.c */,
+				BEF5D2B320DC807F00B0C6D8 /* ec_kmeth.c */,
+				BEF5D22020DC75FC00B0C6D8 /* ec_lib.c */,
 				BEF5D2C820DC811200B0C6D8 /* ec_mult.c */,
 				BEF5D2C120DC80F100B0C6D8 /* ec_oct.c */,
 				BEF5D2BA20DC80CA00B0C6D8 /* ec_print.c */,
-				BEF5D2B320DC807F00B0C6D8 /* ec_kmeth.c */,
-				BEF5D2AC20DC804400B0C6D8 /* ecp_nist.c */,
-				BEF5D2A520DC7FFC00B0C6D8 /* ecp_mont.c */,
 				BEF5D29720DC7D7200B0C6D8 /* ec2_smpl.c */,
-				BEF5D28920DC7CA600B0C6D8 /* ec_cvt.c */,
-				BEF5D27B20DC7B9F00B0C6D8 /* bss_file.c */,
-				BEF5D27420DC7B4500B0C6D8 /* asn1_par.c */,
-				BEF5D26D20DC7B1B00B0C6D8 /* a_mbstr.c */,
-				BEF5D25F20DC7AAB00B0C6D8 /* a_utctm.c */,
-				BEF5D25820DC7A7600B0C6D8 /* a_time.c */,
-				BEF5D25120DC7A4600B0C6D8 /* a_strex.c */,
-				BEF5D24A20DC7A1D00B0C6D8 /* a_gentm.c */,
-				BEF5D24320DC796100B0C6D8 /* tasn_prn.c */,
-				BEF5D23C20DC792A00B0C6D8 /* a_dup.c */,
-				BEF5D23520DC77F100B0C6D8 /* pk7_asn1.c */,
-				BEF5D22820DC767F00B0C6D8 /* ec_curve.c */,
-				BEF5D22720DC767F00B0C6D8 /* ec_key.c */,
-				BEF5D22020DC75FC00B0C6D8 /* ec_lib.c */,
 				BEF5D21220DC75D400B0C6D8 /* ecdsa_sign.c */,
 				BEF5D21320DC75D400B0C6D8 /* ecdsa_vrf.c */,
-				BEF5D20B20DC756F00B0C6D8 /* bss_sock.c */,
-				BEF5D20420DC754300B0C6D8 /* b_sock2.c */,
-				BEF5D1FD20DC752300B0C6D8 /* b_sock.c */,
-				BEF5D1F620DC74FF00B0C6D8 /* b_addr.c */,
-				BEF5D1EF20DC748A00B0C6D8 /* o_str.c */,
+				BEF5D2A520DC7FFC00B0C6D8 /* ecp_mont.c */,
+				BEF5D2AC20DC804400B0C6D8 /* ecp_nist.c */,
+				BEF5D2F220DC8E0E00B0C6D8 /* eng_ctrl.c */,
+				BEF5D2D020DC817B00B0C6D8 /* eng_init.c */,
+				BEF5D2CF20DC817B00B0C6D8 /* eng_lib.c */,
+				BEF5D2EB20DC82BF00B0C6D8 /* eng_list.c */,
+				BEF5D2F920DC8E6F00B0C6D8 /* err.c */,
+				BEF5D33120DC924400B0C6D8 /* evp_enc.c */,
+				BEF5D33F20DC942100B0C6D8 /* evp_lib.c */,
 				BEF5D1E820DC744B00B0C6D8 /* ex_data.c */,
-				BEF5D1D320DC738700B0C6D8 /* x_bignum.c */,
-				BEF5D1CC20DC72FC00B0C6D8 /* buffer.c */,
-				BEF5D1C520DC72A600B0C6D8 /* b_print.c */,
-				BEF5D1BE20DC727600B0C6D8 /* b_dump.c */,
-				BEF5D1B720DC722600B0C6D8 /* bio_lib.c */,
-				BEF5D1B020DC71A200B0C6D8 /* asn_pack.c */,
-				BEF5D1A920DC713900B0C6D8 /* tasn_fre.c */,
-				BEF5D1A220DC70CD00B0C6D8 /* a_type.c */,
-				BEF5D18F20DC709000B0C6D8 /* tasn_dec.c */,
-				BEF5D18D20DC708F00B0C6D8 /* tasn_enc.c */,
-				BEF5D18E20DC709000B0C6D8 /* tasn_new.c */,
-				BEF5D18620DC702200B0C6D8 /* asn1_lib.c */,
-				BEF5D17F20DC6FEA00B0C6D8 /* a_octet.c */,
-				BEF5D17820DC6F9300B0C6D8 /* a_object.c */,
-				BEF5D17120DC6F4B00B0C6D8 /* a_int.c */,
-				BEF5D16A20DC6EFC00B0C6D8 /* a_bitstr.c */,
-				BEF5D16320DC6EB400B0C6D8 /* tasn_typ.c */,
-				BEF5D15C20DC6A9D00B0C6D8 /* ec_asn1.c */,
-				BEF5D15520DC69B800B0C6D8 /* mem_sec.c */,
-				BEF5D14920DC696900B0C6D8 /* threads_pthread.c */,
-				BEF5D14720DC687300B0C6D8 /* mem.c */,
-				BEF5D14620DC682400B0C6D8 /* BN */,
+				BEF5D37720DC968A00B0C6D8 /* lhash.c */,
 				BE9AAF1920DB409700C9BA17 /* LICENSE */,
+				BEF5D15520DC69B800B0C6D8 /* mem_sec.c */,
+				BEF5D14720DC687300B0C6D8 /* mem.c */,
+				BEF5D34D20DC94A400B0C6D8 /* names.c */,
+				BEF5D35B20DC953800B0C6D8 /* o_names.c */,
+				BEF5D1EF20DC748A00B0C6D8 /* o_str.c */,
+				BEF5D36220DC958700B0C6D8 /* o_time.c */,
+				BEF5D30E20DC902000B0C6D8 /* obj_dat.c */,
+				BEF5D30020DC8F1F00B0C6D8 /* obj_lib.c */,
 				2084DD9A17B90081005AC9E6 /* openssl */,
+				BEF5D30720DC8FA600B0C6D8 /* p_lib.c */,
+				BEF5D23520DC77F100B0C6D8 /* pk7_asn1.c */,
+				BEF5D34620DC945600B0C6D8 /* pmeth_lib.c */,
+				BEF5D36920DC95DB00B0C6D8 /* stack.c */,
+				BEF5D32320DC91B600B0C6D8 /* tb_asnmth.c */,
+				BEF5D33820DC92D300B0C6D8 /* tb_cipher.c */,
+				BEF5D2DD20DC81D900B0C6D8 /* tb_eckey.c */,
+				BEF5D32A20DC920200B0C6D8 /* tb_pkmeth.c */,
+				BEF5D14920DC696900B0C6D8 /* threads_pthread.c */,
+				BEF5D1D320DC738700B0C6D8 /* x_bignum.c */,
+				BEF5D2E420DC827B00B0C6D8 /* x_int64.c */,
 			);
 			name = OpenSSL;
 			path = openssl;
@@ -1625,8 +1605,28 @@
 		BEF5D37F20DC97B000B0C6D8 /* asn1 */ = {
 			isa = PBXGroup;
 			children = (
-				BEF5D37020DC964200B0C6D8 /* x_algor.c */,
+				BEF5D16A20DC6EFC00B0C6D8 /* a_bitstr.c */,
+				BEF5D23C20DC792A00B0C6D8 /* a_dup.c */,
+				BEF5D24A20DC7A1D00B0C6D8 /* a_gentm.c */,
+				BEF5D17120DC6F4B00B0C6D8 /* a_int.c */,
+				BEF5D26D20DC7B1B00B0C6D8 /* a_mbstr.c */,
+				BEF5D17820DC6F9300B0C6D8 /* a_object.c */,
+				BEF5D17F20DC6FEA00B0C6D8 /* a_octet.c */,
+				BEF5D25120DC7A4600B0C6D8 /* a_strex.c */,
+				BEF5D25820DC7A7600B0C6D8 /* a_time.c */,
+				BEF5D1A220DC70CD00B0C6D8 /* a_type.c */,
+				BEF5D25F20DC7AAB00B0C6D8 /* a_utctm.c */,
 				BEF5D31C20DC914500B0C6D8 /* ameth_lib.c */,
+				BEF5D1B020DC71A200B0C6D8 /* asn_pack.c */,
+				BEF5D18620DC702200B0C6D8 /* asn1_lib.c */,
+				BEF5D27420DC7B4500B0C6D8 /* asn1_par.c */,
+				BEF5D18F20DC709000B0C6D8 /* tasn_dec.c */,
+				BEF5D18D20DC708F00B0C6D8 /* tasn_enc.c */,
+				BEF5D1A920DC713900B0C6D8 /* tasn_fre.c */,
+				BEF5D18E20DC709000B0C6D8 /* tasn_new.c */,
+				BEF5D24320DC796100B0C6D8 /* tasn_prn.c */,
+				BEF5D16320DC6EB400B0C6D8 /* tasn_typ.c */,
+				BEF5D37020DC964200B0C6D8 /* x_algor.c */,
 			);
 			name = asn1;
 			path = src/crypto/asn1;
