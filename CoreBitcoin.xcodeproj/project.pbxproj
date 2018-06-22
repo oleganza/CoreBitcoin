@@ -803,6 +803,414 @@
 		BEE9AE7E20DCC2C200AB4A3D /* ecp_smpl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE7A20DCC2C200AB4A3D /* ecp_smpl.c */; };
 		BEE9AE7F20DCC2C200AB4A3D /* ecp_smpl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE7A20DCC2C200AB4A3D /* ecp_smpl.c */; };
 		BEE9AE8020DCC2C200AB4A3D /* ecp_smpl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE7A20DCC2C200AB4A3D /* ecp_smpl.c */; };
+		BEE9AE8220DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8320DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8420DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8520DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8620DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8720DCC43400AB4A3D /* a_print.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8120DCC43400AB4A3D /* a_print.c */; };
+		BEE9AE8920DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE8A20DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE8B20DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE8C20DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE8D20DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE8E20DCC45D00AB4A3D /* a_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE8820DCC45C00AB4A3D /* a_verify.c */; };
+		BEE9AE9120DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9220DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9320DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9420DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9520DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9620DD78CF00AB4A3D /* v3_crld.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */; };
+		BEE9AE9820DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9920DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9A20DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9B20DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9C20DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9D20DD795800AB4A3D /* x_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9720DD795700AB4A3D /* x_x509.c */; };
+		BEE9AE9F20DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA020DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA120DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA220DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA320DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA420DD797D00AB4A3D /* x_pubkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */; };
+		BEE9AEA620DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEA720DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEA820DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEA920DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEAA20DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEAB20DD79C000AB4A3D /* x509_vfy.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */; };
+		BEE9AEAD20DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEAE20DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEAF20DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEB020DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEB120DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEB220DD79F600AB4A3D /* x509_trs.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */; };
+		BEE9AEB420DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEB520DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEB620DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEB720DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEB820DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEB920DD7A1500AB4A3D /* x_all.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEB320DD7A1500AB4A3D /* x_all.c */; };
+		BEE9AEBB20DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEBC20DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEBD20DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEBE20DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEBF20DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEC020DD7A5C00AB4A3D /* x509_ext.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */; };
+		BEE9AEC220DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC320DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC420DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC520DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC620DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC720DD7A8500AB4A3D /* x509_v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */; };
+		BEE9AEC920DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AECA20DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AECB20DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AECC20DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AECD20DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AECE20DD7AB100AB4A3D /* x509_vpm.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */; };
+		BEE9AED020DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED120DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED220DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED320DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED420DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED520DD7AE300AB4A3D /* x_val.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AECF20DD7AE300AB4A3D /* x_val.c */; };
+		BEE9AED720DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AED820DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AED920DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AEDA20DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AEDB20DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AEDC20DD7B2A00AB4A3D /* x_exten.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AED620DD7B2900AB4A3D /* x_exten.c */; };
+		BEE9AEDE20DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEDF20DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEE020DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEE120DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEE220DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEE320DD7B6700AB4A3D /* v3_purp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */; };
+		BEE9AEE520DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEE620DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEE720DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEE820DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEE920DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEEA20DD7B8B00AB4A3D /* pcy_tree.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */; };
+		BEE9AEEC20DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEED20DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEEE20DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEEF20DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEF020DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEF120DD7BBB00AB4A3D /* v3_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */; };
+		BEE9AEF320DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEF420DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEF520DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEF620DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEF720DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEF820DD7BEA00AB4A3D /* x_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF220DD7BEA00AB4A3D /* x_req.c */; };
+		BEE9AEFA20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AEFB20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AEFC20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AEFD20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AEFE20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AEFF20DD7C2000AB4A3D /* x509cset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */; };
+		BEE9AF0120DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0220DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0320DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0420DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0520DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0620DD7C5500AB4A3D /* v3_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */; };
+		BEE9AF0820DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0920DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0A20DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0B20DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0C20DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0D20DD7C9400AB4A3D /* v3_addr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */; };
+		BEE9AF0F20DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1020DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1120DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1220DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1320DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1420DD7CCC00AB4A3D /* x509_req.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */; };
+		BEE9AF1620DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1720DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1820DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1920DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1A20DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1B20DD7CFD00AB4A3D /* x509_att.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */; };
+		BEE9AF1D20DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF1E20DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF1F20DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF2020DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF2120DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF2220DD7D2800AB4A3D /* x509rset.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */; };
+		BEE9AF2420DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2520DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2620DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2720DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2820DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2920DD7D5700AB4A3D /* v3_int.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2320DD7D5700AB4A3D /* v3_int.c */; };
+		BEE9AF2B20DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF2C20DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF2D20DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF2E20DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF2F20DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF3020DD7D7600AB4A3D /* v3_asid.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */; };
+		BEE9AF3320DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3420DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3520DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3620DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3720DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3820DD7DBD00AB4A3D /* v3_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */; };
+		BEE9AF3A20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF3B20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF3C20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF3D20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF3E20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF3F20DD7DF700AB4A3D /* pcy_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */; };
+		BEE9AF4120DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4220DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4320DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4420DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4520DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4620DD7E1B00AB4A3D /* v3_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */; };
+		BEE9AF4820DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4920DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4A20DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4B20DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4C20DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4D20DD7E3B00AB4A3D /* v3_bcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */; };
+		BEE9AF4F20DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5020DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5120DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5220DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5320DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5420DD7E5300AB4A3D /* v3_alt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */; };
+		BEE9AF5620DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5720DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5820DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5920DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5A20DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5B20DD7E6D00AB4A3D /* v3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */; };
+		BEE9AF5D20DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF5E20DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF5F20DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF6020DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF6120DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF6220DD7E8600AB4A3D /* v3_enum.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */; };
+		BEE9AF6420DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6520DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6620DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6720DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6820DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6920DD7EA200AB4A3D /* v3_cpols.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */; };
+		BEE9AF6B20DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF6C20DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF6D20DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF6E20DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF6F20DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF7020DD7EBA00AB4A3D /* v3_bitst.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */; };
+		BEE9AF7220DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7320DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7420DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7520DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7620DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7720DD7ED100AB4A3D /* v3_pci.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */; };
+		BEE9AF7920DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF7A20DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF7B20DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF7C20DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF7D20DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF7E20DD7EE800AB4A3D /* v3_extku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */; };
+		BEE9AF8020DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8120DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8220DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8320DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8420DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8520DD7F0000AB4A3D /* v3_ncons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */; };
+		BEE9AF8720DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8820DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8920DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8A20DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8B20DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8C20DD7F1900AB4A3D /* v3_akey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */; };
+		BEE9AF8E20DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF8F20DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF9020DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF9120DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF9220DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF9320DD7F3400AB4A3D /* v3_ia5.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */; };
+		BEE9AF9620DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9720DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9820DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9920DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9A20DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9B20DD7F9F00AB4A3D /* ct_x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */; };
+		BEE9AF9D20DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AF9E20DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AF9F20DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AFA020DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AFA120DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AFA220DD7FE800AB4A3D /* v3_pku.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */; };
+		BEE9AFA420DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFA520DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFA620DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFA720DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFA820DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFA920DD800000AB4A3D /* v3_admis.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFA320DD800000AB4A3D /* v3_admis.c */; };
+		BEE9AFAB20DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFAC20DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFAD20DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFAE20DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFAF20DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFB020DD802400AB4A3D /* v3_pmaps.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */; };
+		BEE9AFB220DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB320DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB420DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB520DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB620DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB720DD803D00AB4A3D /* v3_skey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB120DD803C00AB4A3D /* v3_skey.c */; };
+		BEE9AFB920DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFBA20DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFBB20DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFBC20DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFBD20DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFBE20DD805300AB4A3D /* v3_sxnet.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */; };
+		BEE9AFC020DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC120DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC220DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC320DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC420DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC520DD806C00AB4A3D /* v3_pcons.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */; };
+		BEE9AFC720DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFC820DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFC920DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFCA20DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFCB20DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFCC20DD808D00AB4A3D /* v3_tlsf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */; };
+		BEE9AFCF20DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD020DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD120DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD220DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD320DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD420DD80DE00AB4A3D /* tls1_prf.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */; };
+		BEE9AFD620DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFD720DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFD820DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFD920DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFDA20DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFDB20DD812200AB4A3D /* rsa_chk.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFD520DD812200AB4A3D /* rsa_chk.c */; };
+		BEE9AFDD20DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFDE20DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFDF20DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFE020DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFE120DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFE220DD815300AB4A3D /* x509_lu.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFDC20DD815300AB4A3D /* x509_lu.c */; };
+		BEE9AFE420DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFE520DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFE620DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFE720DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFE820DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFE920DD819500AB4A3D /* pcy_node.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFE320DD819500AB4A3D /* pcy_node.c */; };
+		BEE9AFEB20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFEC20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFED20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFEE20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFEF20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFF020DD81CE00AB4A3D /* dsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */; };
+		BEE9AFF220DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF320DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF420DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF520DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF620DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF720DD81F700AB4A3D /* rsa_oaep.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */; };
+		BEE9AFF920DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9AFFA20DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9AFFB20DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9AFFC20DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9AFFD20DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9AFFE20DD857D00AB4A3D /* rsa_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */; };
+		BEE9B00020DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00120DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00220DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00320DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00420DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00520DD85C100AB4A3D /* rsa_ameth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */; };
+		BEE9B00720DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00820DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00920DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00A20DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00B20DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00C20DD85F300AB4A3D /* rsa_crpt.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */; };
+		BEE9B00E20DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B00F20DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B01020DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B01120DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B01220DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B01320DD861E00AB4A3D /* ecp_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */; };
+		BEE9B01520DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01620DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01720DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01820DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01920DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01A20DD863C00AB4A3D /* dsa_key.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01420DD863C00AB4A3D /* dsa_key.c */; };
+		BEE9B01C20DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B01D20DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B01E20DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B01F20DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B02020DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B02120DD868B00AB4A3D /* v3_genn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B01B20DD868B00AB4A3D /* v3_genn.c */; };
+		BEE9B02320DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02420DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02520DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02620DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02720DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02820DD86B300AB4A3D /* x509_def.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02220DD86B300AB4A3D /* x509_def.c */; };
+		BEE9B02A20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B02B20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B02C20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B02D20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B02E20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B02F20DD871D00AB4A3D /* v3_akeya.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B02920DD871D00AB4A3D /* v3_akeya.c */; };
+		BEE9B03120DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03220DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03320DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03420DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03520DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03620DD874A00AB4A3D /* x_spki.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03020DD874A00AB4A3D /* x_spki.c */; };
+		BEE9B03820DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03920DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03A20DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03B20DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03C20DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03D20DD877400AB4A3D /* rsa_x931.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03720DD877400AB4A3D /* rsa_x931.c */; };
+		BEE9B03F20DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04020DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04120DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04220DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04320DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04420DD879C00AB4A3D /* ec_pmeth.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */; };
+		BEE9B04620DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04720DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04820DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04920DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04A20DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04B20DD884400AB4A3D /* evp_pkey.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04520DD884400AB4A3D /* evp_pkey.c */; };
+		BEE9B04D20DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B04E20DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B04F20DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B05020DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B05120DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B05220DD886E00AB4A3D /* eng_table.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B04C20DD886E00AB4A3D /* eng_table.c */; };
+		BEE9B05420DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05520DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05620DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05720DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05820DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05920DD88B800AB4A3D /* t_x509.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05320DD88B800AB4A3D /* t_x509.c */; };
+		BEE9B05B20DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
+		BEE9B05C20DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
+		BEE9B05D20DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
+		BEE9B05E20DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
+		BEE9B05F20DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
+		BEE9B06020DD88DC00AB4A3D /* tasn_utl.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */; };
 		BEF5D14820DC687300B0C6D8 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14720DC687300B0C6D8 /* mem.c */; };
 		BEF5D14A20DC696900B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
 		BEF5D14B20DC697C00B0C6D8 /* threads_pthread.c in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D14920DC696900B0C6D8 /* threads_pthread.c */; };
@@ -1546,6 +1954,74 @@
 		BEE9AE6C20DCC24B00AB4A3D /* md5_dgst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5_dgst.c; sourceTree = "<group>"; };
 		BEE9AE7320DCC27F00AB4A3D /* rsa_none.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_none.c; sourceTree = "<group>"; };
 		BEE9AE7A20DCC2C200AB4A3D /* ecp_smpl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ecp_smpl.c; sourceTree = "<group>"; };
+		BEE9AE8120DCC43400AB4A3D /* a_print.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_print.c; sourceTree = "<group>"; };
+		BEE9AE8820DCC45C00AB4A3D /* a_verify.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_verify.c; sourceTree = "<group>"; };
+		BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_crld.c; sourceTree = "<group>"; };
+		BEE9AE9720DD795700AB4A3D /* x_x509.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_x509.c; sourceTree = "<group>"; };
+		BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_pubkey.c; sourceTree = "<group>"; };
+		BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_vfy.c; sourceTree = "<group>"; };
+		BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_trs.c; sourceTree = "<group>"; };
+		BEE9AEB320DD7A1500AB4A3D /* x_all.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_all.c; sourceTree = "<group>"; };
+		BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_ext.c; sourceTree = "<group>"; };
+		BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_v3.c; sourceTree = "<group>"; };
+		BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_vpm.c; sourceTree = "<group>"; };
+		BEE9AECF20DD7AE300AB4A3D /* x_val.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_val.c; sourceTree = "<group>"; };
+		BEE9AED620DD7B2900AB4A3D /* x_exten.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_exten.c; sourceTree = "<group>"; };
+		BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_purp.c; sourceTree = "<group>"; };
+		BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcy_tree.c; sourceTree = "<group>"; };
+		BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_lib.c; sourceTree = "<group>"; };
+		BEE9AEF220DD7BEA00AB4A3D /* x_req.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_req.c; sourceTree = "<group>"; };
+		BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509cset.c; sourceTree = "<group>"; };
+		BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_utl.c; sourceTree = "<group>"; };
+		BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_addr.c; sourceTree = "<group>"; };
+		BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_req.c; sourceTree = "<group>"; };
+		BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_att.c; sourceTree = "<group>"; };
+		BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509rset.c; sourceTree = "<group>"; };
+		BEE9AF2320DD7D5700AB4A3D /* v3_int.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_int.c; sourceTree = "<group>"; };
+		BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_asid.c; sourceTree = "<group>"; };
+		BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_ocsp.c; sourceTree = "<group>"; };
+		BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcy_lib.c; sourceTree = "<group>"; };
+		BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_conf.c; sourceTree = "<group>"; };
+		BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_bcons.c; sourceTree = "<group>"; };
+		BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_alt.c; sourceTree = "<group>"; };
+		BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_info.c; sourceTree = "<group>"; };
+		BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_enum.c; sourceTree = "<group>"; };
+		BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_cpols.c; sourceTree = "<group>"; };
+		BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_bitst.c; sourceTree = "<group>"; };
+		BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_pci.c; sourceTree = "<group>"; };
+		BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_extku.c; sourceTree = "<group>"; };
+		BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_ncons.c; sourceTree = "<group>"; };
+		BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_akey.c; sourceTree = "<group>"; };
+		BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_ia5.c; sourceTree = "<group>"; };
+		BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ct_x509v3.c; sourceTree = "<group>"; };
+		BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_pku.c; sourceTree = "<group>"; };
+		BEE9AFA320DD800000AB4A3D /* v3_admis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_admis.c; sourceTree = "<group>"; };
+		BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_pmaps.c; sourceTree = "<group>"; };
+		BEE9AFB120DD803C00AB4A3D /* v3_skey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_skey.c; sourceTree = "<group>"; };
+		BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_sxnet.c; sourceTree = "<group>"; };
+		BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_pcons.c; sourceTree = "<group>"; };
+		BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_tlsf.c; sourceTree = "<group>"; };
+		BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tls1_prf.c; sourceTree = "<group>"; };
+		BEE9AFD520DD812200AB4A3D /* rsa_chk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_chk.c; sourceTree = "<group>"; };
+		BEE9AFDC20DD815300AB4A3D /* x509_lu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_lu.c; sourceTree = "<group>"; };
+		BEE9AFE320DD819500AB4A3D /* pcy_node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pcy_node.c; sourceTree = "<group>"; };
+		BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dsa_pmeth.c; sourceTree = "<group>"; };
+		BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_oaep.c; sourceTree = "<group>"; };
+		BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_pmeth.c; sourceTree = "<group>"; };
+		BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_ameth.c; sourceTree = "<group>"; };
+		BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_crpt.c; sourceTree = "<group>"; };
+		BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ecp_oct.c; sourceTree = "<group>"; };
+		BEE9B01420DD863C00AB4A3D /* dsa_key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dsa_key.c; sourceTree = "<group>"; };
+		BEE9B01B20DD868B00AB4A3D /* v3_genn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_genn.c; sourceTree = "<group>"; };
+		BEE9B02220DD86B300AB4A3D /* x509_def.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x509_def.c; sourceTree = "<group>"; };
+		BEE9B02920DD871D00AB4A3D /* v3_akeya.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = v3_akeya.c; sourceTree = "<group>"; };
+		BEE9B03020DD874A00AB4A3D /* x_spki.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_spki.c; sourceTree = "<group>"; };
+		BEE9B03720DD877400AB4A3D /* rsa_x931.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_x931.c; sourceTree = "<group>"; };
+		BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ec_pmeth.c; sourceTree = "<group>"; };
+		BEE9B04520DD884400AB4A3D /* evp_pkey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = evp_pkey.c; sourceTree = "<group>"; };
+		BEE9B04C20DD886E00AB4A3D /* eng_table.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = eng_table.c; sourceTree = "<group>"; };
+		BEE9B05320DD88B800AB4A3D /* t_x509.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = t_x509.c; sourceTree = "<group>"; };
+		BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tasn_utl.c; sourceTree = "<group>"; };
 		BEF5D14720DC687300B0C6D8 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem.c; path = src/crypto/mem.c; sourceTree = "<group>"; };
 		BEF5D14920DC696900B0C6D8 /* threads_pthread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = threads_pthread.c; path = src/crypto/threads_pthread.c; sourceTree = "<group>"; };
 		BEF5D15520DC69B800B0C6D8 /* mem_sec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mem_sec.c; path = src/crypto/mem_sec.c; sourceTree = "<group>"; };
@@ -1895,6 +2371,7 @@
 				BEF5D38220DC9ACC00B0C6D8 /* cmac */,
 				BEE9A85E20DCA29500AB4A3D /* conf */,
 				BEF5D35420DC950700B0C6D8 /* cryptlib.c */,
+				BEE9AF9420DD7F8600AB4A3D /* ct */,
 				BEE9A83A20DCA0D100AB4A3D /* dh */,
 				BEE9A83220DCA01D00AB4A3D /* dsa */,
 				BEE9A80320DC9DE000AB4A3D /* dso */,
@@ -1903,6 +2380,7 @@
 				BEF5D2F920DC8E6F00B0C6D8 /* err.c */,
 				BEE9A7FD20DC9B8300AB4A3D /* evp */,
 				BEF5D1E820DC744B00B0C6D8 /* ex_data.c */,
+				BEE9AFCD20DD80CA00AB4A3D /* kdf */,
 				BEE9A95320DCB80E00AB4A3D /* hmac */,
 				BEE9A80120DC9CAD00AB4A3D /* init.c */,
 				BEE9AE6B20DCC23A00AB4A3D /* md5 */,
@@ -1924,8 +2402,10 @@
 				BEE9A94B20DCB78100AB4A3D /* rsa */,
 				BEE9A94320DCB6B700AB4A3D /* sha */,
 				BEF5D36920DC95DB00B0C6D8 /* stack.c */,
+				BEE9AF3120DD7DA800AB4A3D /* ocsp */,
 				BEE9AE1620DCBCC500AB4A3D /* x509 */,
 				BEF5D14920DC696900B0C6D8 /* threads_pthread.c */,
+				BEE9AE8F20DD78B900AB4A3D /* x509v3 */,
 				BEE9ADDE20DCBA0600AB4A3D /* uid.c */,
 			);
 			name = OpenSSL;
@@ -2059,6 +2539,8 @@
 		BEE9A7FB20DC9B0E00AB4A3D /* ec */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B03E20DD879B00AB4A3D /* ec_pmeth.c */,
+				BEE9B00D20DD861E00AB4A3D /* ecp_oct.c */,
 				BEE9AE7A20DCC2C200AB4A3D /* ecp_smpl.c */,
 				BEF5D15C20DC6A9D00B0C6D8 /* ec_asn1.c */,
 				BEF5D22820DC767F00B0C6D8 /* ec_curve.c */,
@@ -2082,6 +2564,7 @@
 		BEE9A7FC20DC9B3F00AB4A3D /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B04C20DD886E00AB4A3D /* eng_table.c */,
 				BEF5D2F220DC8E0E00B0C6D8 /* eng_ctrl.c */,
 				BEE9A80820DC9F0800AB4A3D /* eng_fat.c */,
 				BEF5D2D020DC817B00B0C6D8 /* eng_init.c */,
@@ -2104,6 +2587,7 @@
 		BEE9A7FD20DC9B8300AB4A3D /* evp */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B04520DD884400AB4A3D /* evp_pkey.c */,
 				BEE9AE4820DCBEAA00AB4A3D /* m_md5.c */,
 				BEE9A8EF20DCA92C00AB4A3D /* bio_enc.c */,
 				BEE9A8F620DCA94E00AB4A3D /* bio_md.c */,
@@ -2151,6 +2635,8 @@
 		BEE9A83220DCA01D00AB4A3D /* dsa */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B01420DD863C00AB4A3D /* dsa_key.c */,
+				BEE9AFEA20DD81CE00AB4A3D /* dsa_pmeth.c */,
 				BEE9A87C20DCA3DD00AB4A3D /* dsa_sign.c */,
 				BEE9A87B20DCA3DC00AB4A3D /* dsa_vrf.c */,
 				BEE9A87420DCA3B300AB4A3D /* dsa_asn1.c */,
@@ -2237,6 +2723,12 @@
 		BEE9A94B20DCB78100AB4A3D /* rsa */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B03720DD877400AB4A3D /* rsa_x931.c */,
+				BEE9B00620DD85F200AB4A3D /* rsa_crpt.c */,
+				BEE9AFFF20DD85C100AB4A3D /* rsa_ameth.c */,
+				BEE9AFF820DD857D00AB4A3D /* rsa_pmeth.c */,
+				BEE9AFF120DD81F600AB4A3D /* rsa_oaep.c */,
+				BEE9AFD520DD812200AB4A3D /* rsa_chk.c */,
 				BEE9AE7320DCC27F00AB4A3D /* rsa_none.c */,
 				BEE9AE5E20DCC1CF00AB4A3D /* rsa_pk1.c */,
 				BEE9AE5D20DCC1CF00AB4A3D /* rsa_ssl.c */,
@@ -2260,13 +2752,30 @@
 		BEE9AE1620DCBCC500AB4A3D /* x509 */ = {
 			isa = PBXGroup;
 			children = (
-				BEE9AE4F20DCC0B000AB4A3D /* x509_set.c */,
-				BEE9AE4120DCBE6B00AB4A3D /* x509_obj.c */,
-				BEE9AE3A20DCBE0C00AB4A3D /* x509_cmp.c */,
-				BEE9AE3320DCBDE200AB4A3D /* x509name.c */,
-				BEE9AE2C20DCBD9C00AB4A3D /* x_name.c */,
-				BEE9AE2520DCBD6B00AB4A3D /* x_crl.c */,
+				BEE9B05320DD88B800AB4A3D /* t_x509.c */,
+				BEE9B02220DD86B300AB4A3D /* x509_def.c */,
+				BEE9AEB320DD7A1500AB4A3D /* x_all.c */,
 				BEE9AE1720DCBCDE00AB4A3D /* x_attrib.c */,
+				BEE9AE2520DCBD6B00AB4A3D /* x_crl.c */,
+				BEE9AED620DD7B2900AB4A3D /* x_exten.c */,
+				BEE9AE2C20DCBD9C00AB4A3D /* x_name.c */,
+				BEE9AE9E20DD797D00AB4A3D /* x_pubkey.c */,
+				BEE9AEF220DD7BEA00AB4A3D /* x_req.c */,
+				BEE9AE9720DD795700AB4A3D /* x_x509.c */,
+				BEE9AF1520DD7CFC00AB4A3D /* x509_att.c */,
+				BEE9AE3A20DCBE0C00AB4A3D /* x509_cmp.c */,
+				BEE9AEBA20DD7A5C00AB4A3D /* x509_ext.c */,
+				BEE9AFDC20DD815300AB4A3D /* x509_lu.c */,
+				BEE9AE4120DCBE6B00AB4A3D /* x509_obj.c */,
+				BEE9AF0E20DD7CCB00AB4A3D /* x509_req.c */,
+				BEE9AE4F20DCC0B000AB4A3D /* x509_set.c */,
+				BEE9AEAC20DD79F600AB4A3D /* x509_trs.c */,
+				BEE9AEC120DD7A8500AB4A3D /* x509_v3.c */,
+				BEE9AEA520DD79C000AB4A3D /* x509_vfy.c */,
+				BEE9AEC820DD7AB100AB4A3D /* x509_vpm.c */,
+				BEE9AEF920DD7C1F00AB4A3D /* x509cset.c */,
+				BEE9AE3320DCBDE200AB4A3D /* x509name.c */,
+				BEE9AF1C20DD7D2800AB4A3D /* x509rset.c */,
 			);
 			name = x509;
 			path = src/crypto/x509;
@@ -2279,6 +2788,72 @@
 			);
 			name = md5;
 			path = src/crypto/md5;
+			sourceTree = "<group>";
+		};
+		BEE9AE8F20DD78B900AB4A3D /* x509v3 */ = {
+			isa = PBXGroup;
+			children = (
+				BEE9B02920DD871D00AB4A3D /* v3_akeya.c */,
+				BEE9B01B20DD868B00AB4A3D /* v3_genn.c */,
+				BEE9AF3920DD7DF700AB4A3D /* pcy_lib.c */,
+				BEE9AFE320DD819500AB4A3D /* pcy_node.c */,
+				BEE9AEE420DD7B8B00AB4A3D /* pcy_tree.c */,
+				BEE9AF0720DD7C9400AB4A3D /* v3_addr.c */,
+				BEE9AFA320DD800000AB4A3D /* v3_admis.c */,
+				BEE9AF8620DD7F1900AB4A3D /* v3_akey.c */,
+				BEE9AF4E20DD7E5300AB4A3D /* v3_alt.c */,
+				BEE9AF2A20DD7D7600AB4A3D /* v3_asid.c */,
+				BEE9AF4720DD7E3B00AB4A3D /* v3_bcons.c */,
+				BEE9AF6A20DD7EB900AB4A3D /* v3_bitst.c */,
+				BEE9AF4020DD7E1B00AB4A3D /* v3_conf.c */,
+				BEE9AF6320DD7EA200AB4A3D /* v3_cpols.c */,
+				BEE9AE9020DD78CF00AB4A3D /* v3_crld.c */,
+				BEE9AF5C20DD7E8600AB4A3D /* v3_enum.c */,
+				BEE9AF7820DD7EE800AB4A3D /* v3_extku.c */,
+				BEE9AF8D20DD7F3400AB4A3D /* v3_ia5.c */,
+				BEE9AF5520DD7E6D00AB4A3D /* v3_info.c */,
+				BEE9AF2320DD7D5700AB4A3D /* v3_int.c */,
+				BEE9AEEB20DD7BBA00AB4A3D /* v3_lib.c */,
+				BEE9AF7F20DD7F0000AB4A3D /* v3_ncons.c */,
+				BEE9AF7120DD7ED100AB4A3D /* v3_pci.c */,
+				BEE9AFBF20DD806C00AB4A3D /* v3_pcons.c */,
+				BEE9AF9C20DD7FE700AB4A3D /* v3_pku.c */,
+				BEE9AFAA20DD802400AB4A3D /* v3_pmaps.c */,
+				BEE9AEDD20DD7B6600AB4A3D /* v3_purp.c */,
+				BEE9AFB120DD803C00AB4A3D /* v3_skey.c */,
+				BEE9AFB820DD805300AB4A3D /* v3_sxnet.c */,
+				BEE9AFC620DD808D00AB4A3D /* v3_tlsf.c */,
+				BEE9AF0020DD7C5500AB4A3D /* v3_utl.c */,
+			);
+			name = x509v3;
+			path = src/crypto/x509v3;
+			sourceTree = "<group>";
+		};
+		BEE9AF3120DD7DA800AB4A3D /* ocsp */ = {
+			isa = PBXGroup;
+			children = (
+				BEE9AF3220DD7DBD00AB4A3D /* v3_ocsp.c */,
+			);
+			name = ocsp;
+			path = src/crypto/ocsp;
+			sourceTree = "<group>";
+		};
+		BEE9AF9420DD7F8600AB4A3D /* ct */ = {
+			isa = PBXGroup;
+			children = (
+				BEE9AF9520DD7F9F00AB4A3D /* ct_x509v3.c */,
+			);
+			name = ct;
+			path = src/crypto/ct;
+			sourceTree = "<group>";
+		};
+		BEE9AFCD20DD80CA00AB4A3D /* kdf */ = {
+			isa = PBXGroup;
+			children = (
+				BEE9AFCE20DD80DE00AB4A3D /* tls1_prf.c */,
+			);
+			name = kdf;
+			path = src/crypto/kdf;
 			sourceTree = "<group>";
 		};
 		BEF5D14620DC682400B0C6D8 /* BN */ = {
@@ -2311,6 +2886,11 @@
 		BEF5D37F20DC97B000B0C6D8 /* asn1 */ = {
 			isa = PBXGroup;
 			children = (
+				BEE9B05A20DD88DC00AB4A3D /* tasn_utl.c */,
+				BEE9B03020DD874A00AB4A3D /* x_spki.c */,
+				BEE9AECF20DD7AE300AB4A3D /* x_val.c */,
+				BEE9AE8820DCC45C00AB4A3D /* a_verify.c */,
+				BEE9AE8120DCC43400AB4A3D /* a_print.c */,
 				BEE9AE1E20DCBD1A00AB4A3D /* x_sig.c */,
 				BEE9ADFA20DCBB6C00AB4A3D /* a_d2i_fp.c */,
 				BEE9ADF320DCBB1800AB4A3D /* a_i2d_fp.c */,
@@ -2702,51 +3282,69 @@
 				BEE9AE2820DCBD6B00AB4A3D /* x_crl.c in Sources */,
 				BEF5D34920DC945700B0C6D8 /* pmeth_lib.c in Sources */,
 				BEF5D15F20DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
+				BEE9AFED20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
+				BEE9B00220DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D35020DC94A400B0C6D8 /* names.c in Sources */,
 				20148B0518355DAD00E68E9C /* BTCData.m in Sources */,
+				BEE9AEFC20DD7C2000AB4A3D /* x509cset.c in Sources */,
 				20C2D7FF19E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				BE9AAF7220DC610E00C9BA17 /* bn_mul.c in Sources */,
+				BEE9AEF520DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEE9A81B20DC9F6B00AB4A3D /* tb_rand.c in Sources */,
 				BEE9A83E20DCA0E400AB4A3D /* dh_lib.c in Sources */,
+				BEE9AEAF20DD79F600AB4A3D /* x509_trs.c in Sources */,
+				BEE9AFE620DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A93F20DCB5E900AB4A3D /* m_sha1.c in Sources */,
 				BEE9AE0B20DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEF5D18920DC702200B0C6D8 /* asn1_lib.c in Sources */,
 				BEE9A82020DC9F7800AB4A3D /* eng_fat.c in Sources */,
 				BEE9A88520DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
+				BEE9AF2620DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEF5D23120DC768000B0C6D8 /* ec_curve.c in Sources */,
 				BEF5D2FC20DC8E6F00B0C6D8 /* err.c in Sources */,
 				BEE9AE0420DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BEF5D35E20DC953800B0C6D8 /* o_names.c in Sources */,
+				BEE9AEEE20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BEE9A84520DCA16600AB4A3D /* dh_key.c in Sources */,
 				BE9AAF6A20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				BEF5D1F220DC748A00B0C6D8 /* o_str.c in Sources */,
 				20148B0718355DAD00E68E9C /* NSData+BTCData.m in Sources */,
 				BEF5D2EE20DC82C000B0C6D8 /* eng_list.c in Sources */,
 				BEF5D1A520DC70CD00B0C6D8 /* a_type.c in Sources */,
+				BEE9AFF420DD81F700AB4A3D /* rsa_oaep.c in Sources */,
+				BEE9AF7420DD7ED100AB4A3D /* v3_pci.c in Sources */,
 				BEE9A8DD20DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				BEE9A94F20DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D35720DC950700B0C6D8 /* cryptlib.c in Sources */,
 				BEF5D2E720DC827B00B0C6D8 /* x_int64.c in Sources */,
 				BE9AAF6420DC60BE00C9BA17 /* bn_mont.c in Sources */,
+				BEE9AF1820DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEE9A95E20DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
 				20148B0818355DAD00E68E9C /* BTCErrors.m in Sources */,
 				BEF5D1C120DC727600B0C6D8 /* b_dump.c in Sources */,
+				BEE9AED220DD7AE300AB4A3D /* x_val.c in Sources */,
 				BEE9AE3D20DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				BEE9AE6720DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				20584B2218CD0DA000FDD410 /* BTC256.m in Sources */,
+				BEE9AED920DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BEF5D27020DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
 				BEF5D33420DC924400B0C6D8 /* evp_enc.c in Sources */,
 				20148B0918355DAD00E68E9C /* BTCAddress.m in Sources */,
+				BEE9AFC220DD806C00AB4A3D /* v3_pcons.c in Sources */,
 				BEE9A8BF20DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEF5D17420DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				BEE9A8F920DCA94E00AB4A3D /* bio_md.c in Sources */,
+				BEE9B04120DD879C00AB4A3D /* ec_pmeth.c in Sources */,
 				BEF5D15020DC698300B0C6D8 /* mem.c in Sources */,
+				BEE9AEBD20DD7A5C00AB4A3D /* x509_ext.c in Sources */,
 				BEF5D2C420DC80F100B0C6D8 /* ec_oct.c in Sources */,
 				BEF5D2F520DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
 				BEF5D23F20DC792A00B0C6D8 /* a_dup.c in Sources */,
 				BEE9AE6120DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A93120DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
+				BEE9B02C20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				20148B0B18355DAD00E68E9C /* BTCBase58.m in Sources */,
+				BEE9AFD820DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEE9A84C20DCA18B00AB4A3D /* dh_check.c in Sources */,
 				BE9AAF4720DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148B0D18355DAD00E68E9C /* NS+BTCBase58.m in Sources */,
@@ -2756,23 +3354,33 @@
 				BEE9A94720DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BE9AAF4020DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BE9AAF3A20DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BEE9AEC420DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				BEE9AE1220DCBC1700AB4A3D /* rsa_asn1.c in Sources */,
 				BEF5D1B320DC71A200B0C6D8 /* asn_pack.c in Sources */,
 				BEF5D1AC20DC713900B0C6D8 /* tasn_fre.c in Sources */,
+				BEE9AF4320DD7E1B00AB4A3D /* v3_conf.c in Sources */,
 				BEF5D37320DC964200B0C6D8 /* x_algor.c in Sources */,
 				BEE9A90020DCA97900AB4A3D /* bss_mem.c in Sources */,
 				BEF5D28520DC7BF700B0C6D8 /* bn_rand.c in Sources */,
 				BEE9A91C20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
+				BEE9AFDF20DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEF5D19E20DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				20148B0E18355DAD00E68E9C /* BTCBigNumber.m in Sources */,
+				BEE9AEA120DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BEF5D17B20DC6F9300B0C6D8 /* a_object.c in Sources */,
+				BEE9AF8220DD7F0000AB4A3D /* v3_ncons.c in Sources */,
 				BE9AAF3220DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BEE9AF9820DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
+				BEE9AEE020DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEE9A8A920DCA58C00AB4A3D /* rand_lib.c in Sources */,
 				BEE9A95720DCB82100AB4A3D /* hmac.c in Sources */,
 				BE9AAF2B20DC5E7200C9BA17 /* bn_word.c in Sources */,
+				BEE9AE9320DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D14C20DC697D00B0C6D8 /* threads_pthread.c in Sources */,
 				BEE9A85A20DCA1F100AB4A3D /* evp_pbe.c in Sources */,
 				BEF5D30A20DC8FA600B0C6D8 /* p_lib.c in Sources */,
+				BEE9AF5F20DD7E8600AB4A3D /* v3_enum.c in Sources */,
+				BEE9AFAD20DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEE9A8D620DCA88000AB4A3D /* pmeth_fn.c in Sources */,
 				BEF5D21620DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
 				BEE9A82E20DC9FE100AB4A3D /* tb_dh.c in Sources */,
@@ -2785,9 +3393,12 @@
 				BEF5D1D620DC738700B0C6D8 /* x_bignum.c in Sources */,
 				BEF5D1DD20DC73BF00B0C6D8 /* bn_print.c in Sources */,
 				20148B1018355DAD00E68E9C /* BTCKey.m in Sources */,
+				BEE9AE8B20DCC45D00AB4A3D /* a_verify.c in Sources */,
 				BEF5D31120DC902000B0C6D8 /* obj_dat.c in Sources */,
+				BEE9AF5820DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				209D1E1718D48EA200293483 /* BTCNetwork.m in Sources */,
 				BEE9A82720DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9AF6620DD7EA200AB4A3D /* v3_cpols.c in Sources */,
 				BEE9AE2F20DCBD9C00AB4A3D /* x_name.c in Sources */,
 				20B8AB9A189EE88300008138 /* BTCKeychain.m in Sources */,
 				BEF5D1BA20DC722600B0C6D8 /* bio_lib.c in Sources */,
@@ -2796,31 +3407,42 @@
 				BEF5D22B20DC768000B0C6D8 /* ec_key.c in Sources */,
 				BEE9A8B820DCA73900AB4A3D /* p12_crpt.c in Sources */,
 				BEE9ADE120DCBA0600AB4A3D /* uid.c in Sources */,
+				BEE9AE9A20DD795800AB4A3D /* x_x509.c in Sources */,
 				BE9AAF1F20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
+				BEE9B05620DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEE9A87020DCA36E00AB4A3D /* dsa_ossl.c in Sources */,
 				BEF5D36C20DC95DB00B0C6D8 /* stack.c in Sources */,
+				BEE9AEB620DD7A1500AB4A3D /* x_all.c in Sources */,
 				BEF5D25420DC7A4600B0C6D8 /* a_strex.c in Sources */,
 				BEE9A8EB20DCA90500AB4A3D /* drbg_lib.c in Sources */,
+				BEE9AF9020DD7F3400AB4A3D /* v3_ia5.c in Sources */,
 				BEE9A89A20DCA4EE00AB4A3D /* digest.c in Sources */,
 				BEE9A8CF20DCA84E00AB4A3D /* pk7_doit.c in Sources */,
+				BEE9AF0320DD7C5500AB4A3D /* v3_utl.c in Sources */,
 				BEE9AE7620DCC27F00AB4A3D /* rsa_none.c in Sources */,
+				BEE9AFBB20DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				BEE9AE2120DCBD1A00AB4A3D /* x_sig.c in Sources */,
 				BEF5D29320DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEE9A86220DCA2C900AB4A3D /* conf_mod.c in Sources */,
 				BEE9AE4420DCBE6B00AB4A3D /* x509_obj.c in Sources */,
 				BEF5D34220DC942100B0C6D8 /* evp_lib.c in Sources */,
+				BEE9B02520DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEF5D2A820DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
 				BEE9A90720DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEE9A8B020DCA6AB00AB4A3D /* obj_xref.c in Sources */,
+				BEE9AF0A20DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				20148B1218355DAD00E68E9C /* BTCProtocolSerialization.m in Sources */,
 				BEF5D31820DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AF8920DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A8F220DCA92C00AB4A3D /* bio_enc.c in Sources */,
 				BEE9AE5920DCC10F00AB4A3D /* rsa_ossl.c in Sources */,
 				BEF5D2CB20DC811200B0C6D8 /* ec_mult.c in Sources */,
+				BEE9AF1F20DD7D2800AB4A3D /* x509rset.c in Sources */,
 				BEF5D1F920DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				BEE9A88C20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9A8A120DCA53100AB4A3D /* p5_pbe.c in Sources */,
 				BEF5D19820DC709000B0C6D8 /* tasn_new.c in Sources */,
+				BEE9AFD120DD80DE00AB4A3D /* tls1_prf.c in Sources */,
 				BE9AAF2C20DC5E7200C9BA17 /* bn_add.c in Sources */,
 				BEE9A90E20DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEF5D26220DC7AAB00B0C6D8 /* a_utctm.c in Sources */,
@@ -2828,24 +3450,34 @@
 				BEE9AE1A20DCBCDE00AB4A3D /* x_attrib.c in Sources */,
 				BEF5D24D20DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
 				BEF5D2A120DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
+				BEE9B04F20DD886E00AB4A3D /* eng_table.c in Sources */,
 				BEF5D19220DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				20148B1418355DAD00E68E9C /* BTCOpcode.m in Sources */,
 				BEF5D16620DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A89320DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
+				BEE9B00920DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				BEF5D36520DC958700B0C6D8 /* o_time.c in Sources */,
 				BEE9A92320DCAAE400AB4A3D /* o_dir.c in Sources */,
+				BEE9AF9F20DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				20CD68DF189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEE9AF1120DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BEF5D2BD20DC80CA00B0C6D8 /* ec_print.c in Sources */,
 				BEE9AE5220DCC0B000AB4A3D /* x509_set.c in Sources */,
+				BEE9B04820DD884400AB4A3D /* evp_pkey.c in Sources */,
 				BEF5D23820DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
+				BEE9AECB20DD7AB100AB4A3D /* x509_vpm.c in Sources */,
 				BEF5D16D20DC6EFC00B0C6D8 /* a_bitstr.c in Sources */,
 				BEF5D20E20DC756F00B0C6D8 /* bss_sock.c in Sources */,
+				BEE9AFC920DD808D00AB4A3D /* v3_tlsf.c in Sources */,
+				BEE9AF6D20DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEF5D1CF20DC72FC00B0C6D8 /* buffer.c in Sources */,
+				BEE9AF4A20DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
 				BEF5D18220DC6FEA00B0C6D8 /* a_octet.c in Sources */,
 				BEF5D2B620DC808000B0C6D8 /* ec_kmeth.c in Sources */,
 				BE9AAF7820DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEF5D1EB20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				20148B1518355DAD00E68E9C /* BTCScript.m in Sources */,
+				BEE9AF3520DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				20148B1718355DAD00E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2D920DC817B00B0C6D8 /* eng_init.c in Sources */,
 				20A443C21AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
@@ -2856,19 +3488,27 @@
 				BEF5D2AF20DC804400B0C6D8 /* ecp_nist.c in Sources */,
 				BEF5D27E20DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEF5D33B20DC92D400B0C6D8 /* tb_cipher.c in Sources */,
+				BEE9B01020DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				20148B1818355DAD00E68E9C /* BTCTransaction.m in Sources */,
+				BEE9AF7B20DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEE9A87F20DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				207B260A188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
 				BEF5D37A20DC968B00B0C6D8 /* lhash.c in Sources */,
 				BEE9AE4B20DCBEAA00AB4A3D /* m_md5.c in Sources */,
+				BEE9B05D20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEF5D20720DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEE9AE6F20DCC24B00AB4A3D /* md5_dgst.c in Sources */,
+				BEE9AF2D20DD7D7600AB4A3D /* v3_asid.c in Sources */,
+				BEE9AFB420DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BE9AAF5E20DC60BE00C9BA17 /* bn_mpi.c in Sources */,
+				BEE9AFA620DD800000AB4A3D /* v3_admis.c in Sources */,
+				BEE9B01720DD863C00AB4A3D /* dsa_key.c in Sources */,
 				BEF5D2D320DC817B00B0C6D8 /* eng_lib.c in Sources */,
 				BEF5D22320DC75FD00B0C6D8 /* ec_lib.c in Sources */,
 				200AAE4119FA3F010004F908 /* BTCOutpoint.m in Sources */,
 				20C2D80919E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
 				BEF5D25B20DC7A7600B0C6D8 /* a_time.c in Sources */,
+				BEE9AF5120DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEF5D28C20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BEF5D24620DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				2061D1DB1A2CA771004F1E40 /* BTCHashID.m in Sources */,
@@ -2881,12 +3521,20 @@
 				BEF5D20020DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A87720DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEE9A80F20DC9F6B00AB4A3D /* tb_rsa.c in Sources */,
+				BEE9B03A20DD877400AB4A3D /* rsa_x931.c in Sources */,
 				BEE9ADFD20DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
 				BEF5D2E020DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D32D20DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
+				BEE9AE8420DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9A86920DCA2FF00AB4A3D /* conf_lib.c in Sources */,
 				BEF5D27720DC7B4500B0C6D8 /* asn1_par.c in Sources */,
+				BEE9AEA820DD79C000AB4A3D /* x509_vfy.c in Sources */,
+				BEE9B01E20DD868B00AB4A3D /* v3_genn.c in Sources */,
+				BEE9AF3C20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
 				BEE9AE7D20DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
+				BEE9AEE720DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
+				BEE9AFFB20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9B03320DD874A00AB4A3D /* x_spki.c in Sources */,
 				BEE9A8E420DCA8C900AB4A3D /* bss_null.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2898,51 +3546,69 @@
 				BEE9AE2920DCBD6B00AB4A3D /* x_crl.c in Sources */,
 				BEF5D34A20DC945700B0C6D8 /* pmeth_lib.c in Sources */,
 				BEF5D16020DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
+				BEE9AFEE20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
+				BEE9B00320DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D35120DC94A400B0C6D8 /* names.c in Sources */,
 				20148C13183563D000E68E9C /* BTCData.m in Sources */,
+				BEE9AEFD20DD7C2000AB4A3D /* x509cset.c in Sources */,
 				20C2D80019E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				BE9AAF7320DC610E00C9BA17 /* bn_mul.c in Sources */,
+				BEE9AEF620DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEE9A81C20DC9F6B00AB4A3D /* tb_rand.c in Sources */,
 				BEE9A83F20DCA0E400AB4A3D /* dh_lib.c in Sources */,
+				BEE9AEB020DD79F600AB4A3D /* x509_trs.c in Sources */,
+				BEE9AFE720DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A94020DCB5E900AB4A3D /* m_sha1.c in Sources */,
 				BEE9AE0C20DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEF5D18A20DC702200B0C6D8 /* asn1_lib.c in Sources */,
 				BEE9A82120DC9F7800AB4A3D /* eng_fat.c in Sources */,
 				BEE9A88620DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
+				BEE9AF2720DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEF5D23220DC768000B0C6D8 /* ec_curve.c in Sources */,
 				BEF5D2FD20DC8E6F00B0C6D8 /* err.c in Sources */,
 				BEE9AE0520DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BEF5D35F20DC953800B0C6D8 /* o_names.c in Sources */,
+				BEE9AEEF20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BEE9A84620DCA16600AB4A3D /* dh_key.c in Sources */,
 				BE9AAF6B20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				BEF5D1F320DC748A00B0C6D8 /* o_str.c in Sources */,
 				20148C15183563D000E68E9C /* NSData+BTCData.m in Sources */,
 				BEF5D2EF20DC82C000B0C6D8 /* eng_list.c in Sources */,
 				BEF5D1A620DC70CD00B0C6D8 /* a_type.c in Sources */,
+				BEE9AFF520DD81F700AB4A3D /* rsa_oaep.c in Sources */,
+				BEE9AF7520DD7ED100AB4A3D /* v3_pci.c in Sources */,
 				BEE9A8DE20DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				BEE9A95020DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D35820DC950700B0C6D8 /* cryptlib.c in Sources */,
 				BEF5D2E820DC827B00B0C6D8 /* x_int64.c in Sources */,
 				BE9AAF6520DC60BE00C9BA17 /* bn_mont.c in Sources */,
+				BEE9AF1920DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEE9A95F20DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
 				20148C16183563D000E68E9C /* BTCErrors.m in Sources */,
 				BEF5D1C220DC727600B0C6D8 /* b_dump.c in Sources */,
+				BEE9AED320DD7AE300AB4A3D /* x_val.c in Sources */,
 				BEE9AE3E20DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				BEE9AE6820DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				20584B2318CD0DA000FDD410 /* BTC256.m in Sources */,
+				BEE9AEDA20DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BEF5D27120DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
 				BEF5D33520DC924400B0C6D8 /* evp_enc.c in Sources */,
 				20148C17183563D000E68E9C /* BTCAddress.m in Sources */,
+				BEE9AFC320DD806C00AB4A3D /* v3_pcons.c in Sources */,
 				BEE9A8C020DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEF5D17520DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				BEE9A8FA20DCA94E00AB4A3D /* bio_md.c in Sources */,
+				BEE9B04220DD879C00AB4A3D /* ec_pmeth.c in Sources */,
 				BEF5D15120DC698300B0C6D8 /* mem.c in Sources */,
+				BEE9AEBE20DD7A5C00AB4A3D /* x509_ext.c in Sources */,
 				BEF5D2C520DC80F100B0C6D8 /* ec_oct.c in Sources */,
 				BEF5D2F620DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
 				BEF5D24020DC792A00B0C6D8 /* a_dup.c in Sources */,
 				BEE9AE6220DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A93220DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
+				BEE9B02D20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				20148C19183563D000E68E9C /* BTCBase58.m in Sources */,
+				BEE9AFD920DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEE9A84D20DCA18B00AB4A3D /* dh_check.c in Sources */,
 				BE9AAF4820DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148C1B183563D000E68E9C /* NS+BTCBase58.m in Sources */,
@@ -2952,23 +3618,33 @@
 				BEE9A94820DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BE9AAF4120DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BE9AAF3B20DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BEE9AEC520DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				BEE9AE1320DCBC1700AB4A3D /* rsa_asn1.c in Sources */,
 				BEF5D1B420DC71A200B0C6D8 /* asn_pack.c in Sources */,
 				BEF5D1AD20DC713900B0C6D8 /* tasn_fre.c in Sources */,
+				BEE9AF4420DD7E1B00AB4A3D /* v3_conf.c in Sources */,
 				BEF5D37420DC964200B0C6D8 /* x_algor.c in Sources */,
 				BEE9A90120DCA97900AB4A3D /* bss_mem.c in Sources */,
 				BEF5D28620DC7BF700B0C6D8 /* bn_rand.c in Sources */,
 				BEE9A91D20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
+				BEE9AFE020DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEF5D19F20DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				20148C1C183563D000E68E9C /* BTCBigNumber.m in Sources */,
+				BEE9AEA220DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BEF5D17C20DC6F9300B0C6D8 /* a_object.c in Sources */,
+				BEE9AF8320DD7F0000AB4A3D /* v3_ncons.c in Sources */,
 				BE9AAF3320DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BEE9AF9920DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
+				BEE9AEE120DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEE9A8AA20DCA58C00AB4A3D /* rand_lib.c in Sources */,
 				BEE9A95820DCB82100AB4A3D /* hmac.c in Sources */,
 				BE9AAF2920DC5E7100C9BA17 /* bn_word.c in Sources */,
+				BEE9AE9420DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D14D20DC697E00B0C6D8 /* threads_pthread.c in Sources */,
 				BEE9A85B20DCA1F100AB4A3D /* evp_pbe.c in Sources */,
 				BEF5D30B20DC8FA600B0C6D8 /* p_lib.c in Sources */,
+				BEE9AF6020DD7E8600AB4A3D /* v3_enum.c in Sources */,
+				BEE9AFAE20DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEE9A8D720DCA88000AB4A3D /* pmeth_fn.c in Sources */,
 				BEF5D21720DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
 				BEE9A82F20DC9FE100AB4A3D /* tb_dh.c in Sources */,
@@ -2981,9 +3657,12 @@
 				BEF5D1D720DC738700B0C6D8 /* x_bignum.c in Sources */,
 				BEF5D1DE20DC73BF00B0C6D8 /* bn_print.c in Sources */,
 				20148C1E183563D000E68E9C /* BTCKey.m in Sources */,
+				BEE9AE8C20DCC45D00AB4A3D /* a_verify.c in Sources */,
 				BEF5D31220DC902000B0C6D8 /* obj_dat.c in Sources */,
+				BEE9AF5920DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				209D1E1818D48EA200293483 /* BTCNetwork.m in Sources */,
 				BEE9A82820DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9AF6720DD7EA200AB4A3D /* v3_cpols.c in Sources */,
 				BEE9AE3020DCBD9C00AB4A3D /* x_name.c in Sources */,
 				20B8AB9B189EE88300008138 /* BTCKeychain.m in Sources */,
 				BEF5D1BB20DC722600B0C6D8 /* bio_lib.c in Sources */,
@@ -2992,31 +3671,42 @@
 				BEF5D22C20DC768000B0C6D8 /* ec_key.c in Sources */,
 				BEE9A8B920DCA73900AB4A3D /* p12_crpt.c in Sources */,
 				BEE9ADE220DCBA0600AB4A3D /* uid.c in Sources */,
+				BEE9AE9B20DD795800AB4A3D /* x_x509.c in Sources */,
 				BE9AAF1E20DC4B7B00C9BA17 /* bn_ctx.c in Sources */,
+				BEE9B05720DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEE9A87120DCA36E00AB4A3D /* dsa_ossl.c in Sources */,
 				BEF5D36D20DC95DB00B0C6D8 /* stack.c in Sources */,
+				BEE9AEB720DD7A1500AB4A3D /* x_all.c in Sources */,
 				BEF5D25520DC7A4600B0C6D8 /* a_strex.c in Sources */,
 				BEE9A8EC20DCA90500AB4A3D /* drbg_lib.c in Sources */,
+				BEE9AF9120DD7F3400AB4A3D /* v3_ia5.c in Sources */,
 				BEE9A89B20DCA4EE00AB4A3D /* digest.c in Sources */,
 				BEE9A8D020DCA84E00AB4A3D /* pk7_doit.c in Sources */,
+				BEE9AF0420DD7C5500AB4A3D /* v3_utl.c in Sources */,
 				BEE9AE7720DCC27F00AB4A3D /* rsa_none.c in Sources */,
+				BEE9AFBC20DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				BEE9AE2220DCBD1A00AB4A3D /* x_sig.c in Sources */,
 				BEF5D29420DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEE9A86320DCA2C900AB4A3D /* conf_mod.c in Sources */,
 				BEE9AE4520DCBE6B00AB4A3D /* x509_obj.c in Sources */,
 				BEF5D34320DC942100B0C6D8 /* evp_lib.c in Sources */,
+				BEE9B02620DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEF5D2A920DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
 				BEE9A90820DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEE9A8B120DCA6AB00AB4A3D /* obj_xref.c in Sources */,
+				BEE9AF0B20DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				20148C20183563D000E68E9C /* BTCProtocolSerialization.m in Sources */,
 				BEF5D31920DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AF8A20DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A8F320DCA92C00AB4A3D /* bio_enc.c in Sources */,
 				BEE9AE5A20DCC10F00AB4A3D /* rsa_ossl.c in Sources */,
 				BEF5D2CC20DC811200B0C6D8 /* ec_mult.c in Sources */,
+				BEE9AF2020DD7D2800AB4A3D /* x509rset.c in Sources */,
 				BEF5D1FA20DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				BEE9A88D20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9A8A220DCA53100AB4A3D /* p5_pbe.c in Sources */,
 				BEF5D19920DC709000B0C6D8 /* tasn_new.c in Sources */,
+				BEE9AFD220DD80DE00AB4A3D /* tls1_prf.c in Sources */,
 				BE9AAF2A20DC5E7100C9BA17 /* bn_add.c in Sources */,
 				BEE9A90F20DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEF5D26320DC7AAB00B0C6D8 /* a_utctm.c in Sources */,
@@ -3024,24 +3714,34 @@
 				BEE9AE1B20DCBCDE00AB4A3D /* x_attrib.c in Sources */,
 				BEF5D24E20DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
 				BEF5D2A220DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
+				BEE9B05020DD886E00AB4A3D /* eng_table.c in Sources */,
 				BEF5D19320DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				20148C22183563D000E68E9C /* BTCOpcode.m in Sources */,
 				BEF5D16720DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A89420DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
+				BEE9B00A20DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				BEF5D36620DC958700B0C6D8 /* o_time.c in Sources */,
 				BEE9A92420DCAAE400AB4A3D /* o_dir.c in Sources */,
+				BEE9AFA020DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				20CD68E0189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEE9AF1220DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BEF5D2BE20DC80CA00B0C6D8 /* ec_print.c in Sources */,
 				BEE9AE5320DCC0B000AB4A3D /* x509_set.c in Sources */,
+				BEE9B04920DD884400AB4A3D /* evp_pkey.c in Sources */,
 				BEF5D23920DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
+				BEE9AECC20DD7AB100AB4A3D /* x509_vpm.c in Sources */,
 				BEF5D16E20DC6EFC00B0C6D8 /* a_bitstr.c in Sources */,
 				BEF5D20F20DC756F00B0C6D8 /* bss_sock.c in Sources */,
+				BEE9AFCA20DD808D00AB4A3D /* v3_tlsf.c in Sources */,
+				BEE9AF6E20DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEF5D1D020DC72FC00B0C6D8 /* buffer.c in Sources */,
+				BEE9AF4B20DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
 				BEF5D18320DC6FEA00B0C6D8 /* a_octet.c in Sources */,
 				BEF5D2B720DC808000B0C6D8 /* ec_kmeth.c in Sources */,
 				BE9AAF7920DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEF5D1EC20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				20148C23183563D000E68E9C /* BTCScript.m in Sources */,
+				BEE9AF3620DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				20148C25183563D000E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2DA20DC817B00B0C6D8 /* eng_init.c in Sources */,
 				20A443C31AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
@@ -3052,19 +3752,27 @@
 				BEF5D2B020DC804400B0C6D8 /* ecp_nist.c in Sources */,
 				BEF5D27F20DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEF5D33C20DC92D400B0C6D8 /* tb_cipher.c in Sources */,
+				BEE9B01120DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				20148C26183563D000E68E9C /* BTCTransaction.m in Sources */,
+				BEE9AF7C20DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEE9A88020DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				207B260B188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
 				BEF5D37B20DC968B00B0C6D8 /* lhash.c in Sources */,
 				BEE9AE4C20DCBEAA00AB4A3D /* m_md5.c in Sources */,
+				BEE9B05E20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEF5D20820DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEE9AE7020DCC24B00AB4A3D /* md5_dgst.c in Sources */,
+				BEE9AF2E20DD7D7600AB4A3D /* v3_asid.c in Sources */,
+				BEE9AFB520DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BE9AAF5F20DC60BE00C9BA17 /* bn_mpi.c in Sources */,
+				BEE9AFA720DD800000AB4A3D /* v3_admis.c in Sources */,
+				BEE9B01820DD863C00AB4A3D /* dsa_key.c in Sources */,
 				BEF5D2D420DC817B00B0C6D8 /* eng_lib.c in Sources */,
 				BEF5D22420DC75FD00B0C6D8 /* ec_lib.c in Sources */,
 				200AAE4219FA3F020004F908 /* BTCOutpoint.m in Sources */,
 				20C2D80A19E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
 				BEF5D25C20DC7A7600B0C6D8 /* a_time.c in Sources */,
+				BEE9AF5220DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEF5D28D20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BEF5D24720DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				2061D1DC1A2CA771004F1E40 /* BTCHashID.m in Sources */,
@@ -3077,12 +3785,20 @@
 				BEF5D20120DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A87820DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEE9A81020DC9F6B00AB4A3D /* tb_rsa.c in Sources */,
+				BEE9B03B20DD877400AB4A3D /* rsa_x931.c in Sources */,
 				BEE9ADFE20DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
 				BEF5D2E120DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D32E20DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
+				BEE9AE8520DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9A86A20DCA2FF00AB4A3D /* conf_lib.c in Sources */,
 				BEF5D27820DC7B4500B0C6D8 /* asn1_par.c in Sources */,
+				BEE9AEA920DD79C000AB4A3D /* x509_vfy.c in Sources */,
+				BEE9B01F20DD868B00AB4A3D /* v3_genn.c in Sources */,
+				BEE9AF3D20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
 				BEE9AE7E20DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
+				BEE9AEE820DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
+				BEE9AFFC20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9B03420DD874A00AB4A3D /* x_spki.c in Sources */,
 				BEE9A8E520DCA8C900AB4A3D /* bss_null.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3094,51 +3810,69 @@
 				BEE9AE2A20DCBD6B00AB4A3D /* x_crl.c in Sources */,
 				BEF5D34B20DC945700B0C6D8 /* pmeth_lib.c in Sources */,
 				BEF5D16120DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
+				BEE9AFEF20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
+				BEE9B00420DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D35220DC94A400B0C6D8 /* names.c in Sources */,
 				20148CBE183643E700E68E9C /* BTCData.m in Sources */,
+				BEE9AEFE20DD7C2000AB4A3D /* x509cset.c in Sources */,
 				20C2D80119E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				BE9AAF7420DC610E00C9BA17 /* bn_mul.c in Sources */,
+				BEE9AEF720DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEE9A81D20DC9F6B00AB4A3D /* tb_rand.c in Sources */,
 				BEE9A84020DCA0E400AB4A3D /* dh_lib.c in Sources */,
+				BEE9AEB120DD79F600AB4A3D /* x509_trs.c in Sources */,
+				BEE9AFE820DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A94120DCB5E900AB4A3D /* m_sha1.c in Sources */,
 				BEE9AE0D20DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEF5D18B20DC702200B0C6D8 /* asn1_lib.c in Sources */,
 				BEE9A82220DC9F7900AB4A3D /* eng_fat.c in Sources */,
 				BEE9A88720DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
+				BEE9AF2820DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEF5D23320DC768000B0C6D8 /* ec_curve.c in Sources */,
 				BEF5D2FE20DC8E6F00B0C6D8 /* err.c in Sources */,
 				BEE9AE0620DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BEF5D36020DC953800B0C6D8 /* o_names.c in Sources */,
+				BEE9AEF020DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BEE9A84720DCA16600AB4A3D /* dh_key.c in Sources */,
 				BE9AAF6C20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				BEF5D1F420DC748A00B0C6D8 /* o_str.c in Sources */,
 				20148CC0183643E700E68E9C /* NSData+BTCData.m in Sources */,
 				BEF5D2F020DC82C000B0C6D8 /* eng_list.c in Sources */,
 				BEF5D1A720DC70CD00B0C6D8 /* a_type.c in Sources */,
+				BEE9AFF620DD81F700AB4A3D /* rsa_oaep.c in Sources */,
+				BEE9AF7620DD7ED100AB4A3D /* v3_pci.c in Sources */,
 				BEE9A8DF20DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				BEE9A95120DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D35920DC950700B0C6D8 /* cryptlib.c in Sources */,
 				BEF5D2E920DC827B00B0C6D8 /* x_int64.c in Sources */,
 				BE9AAF6620DC60BE00C9BA17 /* bn_mont.c in Sources */,
+				BEE9AF1A20DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEE9A96020DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
 				20148CC1183643E700E68E9C /* BTCErrors.m in Sources */,
 				BEF5D1C320DC727600B0C6D8 /* b_dump.c in Sources */,
+				BEE9AED420DD7AE300AB4A3D /* x_val.c in Sources */,
 				BEE9AE3F20DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				BEE9AE6920DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				20584B2418CD0DA000FDD410 /* BTC256.m in Sources */,
+				BEE9AEDB20DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BEF5D27220DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
 				BEF5D33620DC924400B0C6D8 /* evp_enc.c in Sources */,
 				20148CC2183643E700E68E9C /* BTCAddress.m in Sources */,
+				BEE9AFC420DD806C00AB4A3D /* v3_pcons.c in Sources */,
 				BEE9A8C120DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEF5D17620DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				BEE9A8FB20DCA94E00AB4A3D /* bio_md.c in Sources */,
+				BEE9B04320DD879C00AB4A3D /* ec_pmeth.c in Sources */,
 				BEF5D15220DC698400B0C6D8 /* mem.c in Sources */,
+				BEE9AEBF20DD7A5C00AB4A3D /* x509_ext.c in Sources */,
 				BEF5D2C620DC80F100B0C6D8 /* ec_oct.c in Sources */,
 				BEF5D2F720DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
 				BEF5D24120DC792A00B0C6D8 /* a_dup.c in Sources */,
 				BEE9AE6320DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A93320DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
+				BEE9B02E20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				20148CC4183643E700E68E9C /* BTCBase58.m in Sources */,
+				BEE9AFDA20DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEE9A84E20DCA18B00AB4A3D /* dh_check.c in Sources */,
 				BE9AAF4920DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20148CC6183643E700E68E9C /* NS+BTCBase58.m in Sources */,
@@ -3148,23 +3882,33 @@
 				BEE9A94920DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BE9AAF4220DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BE9AAF3C20DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BEE9AEC620DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				BEE9AE1420DCBC1700AB4A3D /* rsa_asn1.c in Sources */,
 				BEF5D1B520DC71A200B0C6D8 /* asn_pack.c in Sources */,
 				BEF5D1AE20DC713900B0C6D8 /* tasn_fre.c in Sources */,
+				BEE9AF4520DD7E1B00AB4A3D /* v3_conf.c in Sources */,
 				BEF5D37520DC964200B0C6D8 /* x_algor.c in Sources */,
 				BEE9A90220DCA97900AB4A3D /* bss_mem.c in Sources */,
 				BEF5D28720DC7BF700B0C6D8 /* bn_rand.c in Sources */,
 				BEE9A91E20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
+				BEE9AFE120DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEF5D1A020DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				20148CC7183643E700E68E9C /* BTCBigNumber.m in Sources */,
+				BEE9AEA320DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BEF5D17D20DC6F9300B0C6D8 /* a_object.c in Sources */,
+				BEE9AF8420DD7F0000AB4A3D /* v3_ncons.c in Sources */,
 				BE9AAF3420DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BEE9AF9A20DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
+				BEE9AEE220DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEE9A8AB20DCA58C00AB4A3D /* rand_lib.c in Sources */,
 				BEE9A95920DCB82100AB4A3D /* hmac.c in Sources */,
 				BE9AAF2720DC5E7100C9BA17 /* bn_word.c in Sources */,
+				BEE9AE9520DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D14E20DC697E00B0C6D8 /* threads_pthread.c in Sources */,
 				BEE9A85C20DCA1F100AB4A3D /* evp_pbe.c in Sources */,
 				BEF5D30C20DC8FA600B0C6D8 /* p_lib.c in Sources */,
+				BEE9AF6120DD7E8600AB4A3D /* v3_enum.c in Sources */,
+				BEE9AFAF20DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEE9A8D820DCA88000AB4A3D /* pmeth_fn.c in Sources */,
 				BEF5D21820DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
 				BEE9A83020DC9FE100AB4A3D /* tb_dh.c in Sources */,
@@ -3177,9 +3921,12 @@
 				BEF5D1D820DC738700B0C6D8 /* x_bignum.c in Sources */,
 				BEF5D1DF20DC73BF00B0C6D8 /* bn_print.c in Sources */,
 				20148CC9183643E700E68E9C /* BTCKey.m in Sources */,
+				BEE9AE8D20DCC45D00AB4A3D /* a_verify.c in Sources */,
 				BEF5D31320DC902000B0C6D8 /* obj_dat.c in Sources */,
+				BEE9AF5A20DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				209D1E1918D48EA200293483 /* BTCNetwork.m in Sources */,
 				BEE9A82920DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9AF6820DD7EA200AB4A3D /* v3_cpols.c in Sources */,
 				BEE9AE3120DCBD9C00AB4A3D /* x_name.c in Sources */,
 				20B8AB9C189EE88300008138 /* BTCKeychain.m in Sources */,
 				BEF5D1BC20DC722600B0C6D8 /* bio_lib.c in Sources */,
@@ -3188,31 +3935,42 @@
 				BEF5D22D20DC768000B0C6D8 /* ec_key.c in Sources */,
 				BEE9A8BA20DCA73A00AB4A3D /* p12_crpt.c in Sources */,
 				BEE9ADE320DCBA0600AB4A3D /* uid.c in Sources */,
+				BEE9AE9C20DD795800AB4A3D /* x_x509.c in Sources */,
 				BE9AAF1D20DC4B7A00C9BA17 /* bn_ctx.c in Sources */,
+				BEE9B05820DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEE9A87220DCA36E00AB4A3D /* dsa_ossl.c in Sources */,
 				BEF5D36E20DC95DB00B0C6D8 /* stack.c in Sources */,
+				BEE9AEB820DD7A1500AB4A3D /* x_all.c in Sources */,
 				BEF5D25620DC7A4600B0C6D8 /* a_strex.c in Sources */,
 				BEE9A8ED20DCA90500AB4A3D /* drbg_lib.c in Sources */,
+				BEE9AF9220DD7F3400AB4A3D /* v3_ia5.c in Sources */,
 				BEE9A89C20DCA4EE00AB4A3D /* digest.c in Sources */,
 				BEE9A8D120DCA84E00AB4A3D /* pk7_doit.c in Sources */,
+				BEE9AF0520DD7C5500AB4A3D /* v3_utl.c in Sources */,
 				BEE9AE7820DCC27F00AB4A3D /* rsa_none.c in Sources */,
+				BEE9AFBD20DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				BEE9AE2320DCBD1A00AB4A3D /* x_sig.c in Sources */,
 				BEF5D29520DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEE9A86420DCA2C900AB4A3D /* conf_mod.c in Sources */,
 				BEE9AE4620DCBE6B00AB4A3D /* x509_obj.c in Sources */,
 				BEF5D34420DC942100B0C6D8 /* evp_lib.c in Sources */,
+				BEE9B02720DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEF5D2AA20DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
 				BEE9A90920DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEE9A8B220DCA6AB00AB4A3D /* obj_xref.c in Sources */,
+				BEE9AF0C20DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				20148CCB183643E700E68E9C /* BTCProtocolSerialization.m in Sources */,
 				BEF5D31A20DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AF8B20DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A8F420DCA92C00AB4A3D /* bio_enc.c in Sources */,
 				BEE9AE5B20DCC10F00AB4A3D /* rsa_ossl.c in Sources */,
 				BEF5D2CD20DC811200B0C6D8 /* ec_mult.c in Sources */,
+				BEE9AF2120DD7D2800AB4A3D /* x509rset.c in Sources */,
 				BEF5D1FB20DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				BEE9A88E20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9A8A320DCA53100AB4A3D /* p5_pbe.c in Sources */,
 				BEF5D19A20DC709000B0C6D8 /* tasn_new.c in Sources */,
+				BEE9AFD320DD80DE00AB4A3D /* tls1_prf.c in Sources */,
 				BE9AAF2820DC5E7100C9BA17 /* bn_add.c in Sources */,
 				BEE9A91020DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEF5D26420DC7AAB00B0C6D8 /* a_utctm.c in Sources */,
@@ -3220,24 +3978,34 @@
 				BEE9AE1C20DCBCDE00AB4A3D /* x_attrib.c in Sources */,
 				BEF5D24F20DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
 				BEF5D2A320DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
+				BEE9B05120DD886E00AB4A3D /* eng_table.c in Sources */,
 				BEF5D19420DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				20148CCD183643E700E68E9C /* BTCOpcode.m in Sources */,
 				BEF5D16820DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A89520DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
+				BEE9B00B20DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				BEF5D36720DC958700B0C6D8 /* o_time.c in Sources */,
 				BEE9A92520DCAAE400AB4A3D /* o_dir.c in Sources */,
+				BEE9AFA120DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				20CD68E1189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEE9AF1320DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BEF5D2BF20DC80CA00B0C6D8 /* ec_print.c in Sources */,
 				BEE9AE5420DCC0B000AB4A3D /* x509_set.c in Sources */,
+				BEE9B04A20DD884400AB4A3D /* evp_pkey.c in Sources */,
 				BEF5D23A20DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
+				BEE9AECD20DD7AB100AB4A3D /* x509_vpm.c in Sources */,
 				BEF5D16F20DC6EFC00B0C6D8 /* a_bitstr.c in Sources */,
 				BEF5D21020DC756F00B0C6D8 /* bss_sock.c in Sources */,
+				BEE9AFCB20DD808D00AB4A3D /* v3_tlsf.c in Sources */,
+				BEE9AF6F20DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEF5D1D120DC72FC00B0C6D8 /* buffer.c in Sources */,
+				BEE9AF4C20DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
 				BEF5D18420DC6FEA00B0C6D8 /* a_octet.c in Sources */,
 				BEF5D2B820DC808000B0C6D8 /* ec_kmeth.c in Sources */,
 				BE9AAF7A20DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEF5D1ED20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				20148CCE183643E700E68E9C /* BTCScript.m in Sources */,
+				BEE9AF3720DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				20148CD0183643E700E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2DB20DC817B00B0C6D8 /* eng_init.c in Sources */,
 				20A443C41AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
@@ -3248,19 +4016,27 @@
 				BEF5D2B120DC804400B0C6D8 /* ecp_nist.c in Sources */,
 				BEF5D28020DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEF5D33D20DC92D400B0C6D8 /* tb_cipher.c in Sources */,
+				BEE9B01220DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				20148CD1183643E700E68E9C /* BTCTransaction.m in Sources */,
+				BEE9AF7D20DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEE9A88120DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				207B260C188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
 				BEF5D37C20DC968B00B0C6D8 /* lhash.c in Sources */,
 				BEE9AE4D20DCBEAA00AB4A3D /* m_md5.c in Sources */,
+				BEE9B05F20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEF5D20920DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEE9AE7120DCC24B00AB4A3D /* md5_dgst.c in Sources */,
+				BEE9AF2F20DD7D7600AB4A3D /* v3_asid.c in Sources */,
+				BEE9AFB620DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BE9AAF6020DC60BE00C9BA17 /* bn_mpi.c in Sources */,
+				BEE9AFA820DD800000AB4A3D /* v3_admis.c in Sources */,
+				BEE9B01920DD863C00AB4A3D /* dsa_key.c in Sources */,
 				BEF5D2D520DC817B00B0C6D8 /* eng_lib.c in Sources */,
 				BEF5D22520DC75FD00B0C6D8 /* ec_lib.c in Sources */,
 				200AAE4319FA3F020004F908 /* BTCOutpoint.m in Sources */,
 				20C2D80B19E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
 				BEF5D25D20DC7A7600B0C6D8 /* a_time.c in Sources */,
+				BEE9AF5320DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEF5D28E20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BEF5D24820DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				2061D1DD1A2CA771004F1E40 /* BTCHashID.m in Sources */,
@@ -3273,12 +4049,20 @@
 				BEF5D20220DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A87920DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEE9A81120DC9F6B00AB4A3D /* tb_rsa.c in Sources */,
+				BEE9B03C20DD877400AB4A3D /* rsa_x931.c in Sources */,
 				BEE9ADFF20DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
 				BEF5D2E220DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D32F20DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
+				BEE9AE8620DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9A86B20DCA2FF00AB4A3D /* conf_lib.c in Sources */,
 				BEF5D27920DC7B4500B0C6D8 /* asn1_par.c in Sources */,
+				BEE9AEAA20DD79C000AB4A3D /* x509_vfy.c in Sources */,
+				BEE9B02020DD868B00AB4A3D /* v3_genn.c in Sources */,
+				BEE9AF3E20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
 				BEE9AE7F20DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
+				BEE9AEE920DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
+				BEE9AFFD20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9B03520DD874A00AB4A3D /* x_spki.c in Sources */,
 				BEE9A8E620DCA8C900AB4A3D /* bss_null.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3290,51 +4074,69 @@
 				BEE9AE2720DCBD6B00AB4A3D /* x_crl.c in Sources */,
 				BEF5D34820DC945700B0C6D8 /* pmeth_lib.c in Sources */,
 				BEF5D15E20DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
+				BEE9AFEC20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
+				BEE9B00120DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D34F20DC94A400B0C6D8 /* names.c in Sources */,
 				206B015D1835485D00878B8D /* BTCBigNumber.m in Sources */,
+				BEE9AEFB20DD7C2000AB4A3D /* x509cset.c in Sources */,
 				20C2D7FE19E2B2920022CAAC /* BTCMnemonic.m in Sources */,
 				BE9AAF7120DC610E00C9BA17 /* bn_mul.c in Sources */,
+				BEE9AEF420DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEE9A81A20DC9F6B00AB4A3D /* tb_rand.c in Sources */,
 				BEE9A83D20DCA0E400AB4A3D /* dh_lib.c in Sources */,
+				BEE9AEAE20DD79F600AB4A3D /* x509_trs.c in Sources */,
+				BEE9AFE520DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A93E20DCB5E900AB4A3D /* m_sha1.c in Sources */,
 				BEE9AE0A20DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEF5D18820DC702200B0C6D8 /* asn1_lib.c in Sources */,
 				BEE9A81F20DC9F7700AB4A3D /* eng_fat.c in Sources */,
 				BEE9A88420DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
+				BEE9AF2520DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEF5D23020DC768000B0C6D8 /* ec_curve.c in Sources */,
 				BEF5D2FB20DC8E6F00B0C6D8 /* err.c in Sources */,
 				BEE9AE0320DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BEF5D35D20DC953800B0C6D8 /* o_names.c in Sources */,
+				BEE9AEED20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BEE9A84420DCA16600AB4A3D /* dh_key.c in Sources */,
 				BE9AAF6920DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				BEF5D1F120DC748A00B0C6D8 /* o_str.c in Sources */,
 				206B01561835485D00878B8D /* NSData+BTCData.m in Sources */,
 				BEF5D2ED20DC82C000B0C6D8 /* eng_list.c in Sources */,
 				BEF5D1A420DC70CD00B0C6D8 /* a_type.c in Sources */,
+				BEE9AFF320DD81F700AB4A3D /* rsa_oaep.c in Sources */,
+				BEE9AF7320DD7ED100AB4A3D /* v3_pci.c in Sources */,
 				BEE9A8DC20DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				BEE9A94E20DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D35620DC950700B0C6D8 /* cryptlib.c in Sources */,
 				BEF5D2E620DC827B00B0C6D8 /* x_int64.c in Sources */,
 				BE9AAF6320DC60BE00C9BA17 /* bn_mont.c in Sources */,
+				BEE9AF1720DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEE9A95D20DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
 				206B01581835485D00878B8D /* BTCAddress.m in Sources */,
 				BEF5D1C020DC727600B0C6D8 /* b_dump.c in Sources */,
+				BEE9AED120DD7AE300AB4A3D /* x_val.c in Sources */,
 				BEE9AE3C20DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				BEE9AE6620DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				206B01541835485D00878B8D /* BTCData.m in Sources */,
+				BEE9AED820DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BEF5D26F20DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
 				BEF5D33320DC924400B0C6D8 /* evp_enc.c in Sources */,
 				206B01661835485D00878B8D /* BTCScriptMachine.m in Sources */,
+				BEE9AFC120DD806C00AB4A3D /* v3_pcons.c in Sources */,
 				BEE9A8BE20DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEF5D17320DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				BEE9A8F820DCA94E00AB4A3D /* bio_md.c in Sources */,
+				BEE9B04020DD879C00AB4A3D /* ec_pmeth.c in Sources */,
 				BEF5D14F20DC698200B0C6D8 /* mem.c in Sources */,
+				BEE9AEBC20DD7A5C00AB4A3D /* x509_ext.c in Sources */,
 				BEF5D2C320DC80F100B0C6D8 /* ec_oct.c in Sources */,
 				BEF5D2F420DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
 				BEF5D23E20DC792A00B0C6D8 /* a_dup.c in Sources */,
 				BEE9AE6020DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A93020DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
+				BEE9B02B20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				206B01681835485D00878B8D /* BTCTransactionInput.m in Sources */,
+				BEE9AFD720DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEE9A84B20DCA18B00AB4A3D /* dh_check.c in Sources */,
 				BE9AAF4620DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				206B015C1835485D00878B8D /* NS+BTCBase58.m in Sources */,
@@ -3344,23 +4146,33 @@
 				BEE9A94620DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BE9AAF3F20DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BE9AAF3920DC5EE300C9BA17 /* bn_div.c in Sources */,
+				BEE9AEC320DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				BEE9AE1120DCBC1700AB4A3D /* rsa_asn1.c in Sources */,
 				BEF5D1B220DC71A200B0C6D8 /* asn_pack.c in Sources */,
 				BEF5D1AB20DC713900B0C6D8 /* tasn_fre.c in Sources */,
+				BEE9AF4220DD7E1B00AB4A3D /* v3_conf.c in Sources */,
 				BEF5D37220DC964200B0C6D8 /* x_algor.c in Sources */,
 				BEE9A8FF20DCA97900AB4A3D /* bss_mem.c in Sources */,
 				BEF5D28420DC7BF700B0C6D8 /* bn_rand.c in Sources */,
 				BEE9A91B20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
+				BEE9AFDE20DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEF5D19D20DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				206B01571835485D00878B8D /* BTCErrors.m in Sources */,
+				BEE9AEA020DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BEF5D17A20DC6F9300B0C6D8 /* a_object.c in Sources */,
+				BEE9AF8120DD7F0000AB4A3D /* v3_ncons.c in Sources */,
 				BE9AAF3120DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BEE9AF9720DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
+				BEE9AEDF20DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEE9A8A820DCA58C00AB4A3D /* rand_lib.c in Sources */,
 				BEE9A95620DCB82100AB4A3D /* hmac.c in Sources */,
 				BE9AAF2D20DC5E7300C9BA17 /* bn_word.c in Sources */,
+				BEE9AE9220DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D14B20DC697C00B0C6D8 /* threads_pthread.c in Sources */,
 				BEE9A85920DCA1F100AB4A3D /* evp_pbe.c in Sources */,
 				BEF5D30920DC8FA600B0C6D8 /* p_lib.c in Sources */,
+				BEE9AF5E20DD7E8600AB4A3D /* v3_enum.c in Sources */,
+				BEE9AFAC20DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEE9A8D520DCA88000AB4A3D /* pmeth_fn.c in Sources */,
 				BEF5D21520DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
 				BEE9A82D20DC9FE100AB4A3D /* tb_dh.c in Sources */,
@@ -3373,9 +4185,12 @@
 				BEF5D1D520DC738700B0C6D8 /* x_bignum.c in Sources */,
 				BEF5D1DC20DC73BF00B0C6D8 /* bn_print.c in Sources */,
 				206B01691835485D00878B8D /* BTCTransactionOutput.m in Sources */,
+				BEE9AE8A20DCC45D00AB4A3D /* a_verify.c in Sources */,
 				BEF5D31020DC902000B0C6D8 /* obj_dat.c in Sources */,
+				BEE9AF5720DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				209D1E1618D48EA200293483 /* BTCNetwork.m in Sources */,
 				BEE9A82620DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9AF6520DD7EA200AB4A3D /* v3_cpols.c in Sources */,
 				BEE9AE2E20DCBD9C00AB4A3D /* x_name.c in Sources */,
 				20D008BE18CFEAD000079B79 /* BTC256.m in Sources */,
 				BEF5D1B920DC722600B0C6D8 /* bio_lib.c in Sources */,
@@ -3384,31 +4199,42 @@
 				BEF5D22A20DC768000B0C6D8 /* ec_key.c in Sources */,
 				BEE9A8B720DCA73900AB4A3D /* p12_crpt.c in Sources */,
 				BEE9ADE020DCBA0600AB4A3D /* uid.c in Sources */,
+				BEE9AE9920DD795800AB4A3D /* x_x509.c in Sources */,
 				BE9AAF2020DC4B7C00C9BA17 /* bn_ctx.c in Sources */,
+				BEE9B05520DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEE9A86F20DCA36E00AB4A3D /* dsa_ossl.c in Sources */,
 				BEF5D36B20DC95DB00B0C6D8 /* stack.c in Sources */,
+				BEE9AEB520DD7A1500AB4A3D /* x_all.c in Sources */,
 				BEF5D25320DC7A4600B0C6D8 /* a_strex.c in Sources */,
 				BEE9A8EA20DCA90500AB4A3D /* drbg_lib.c in Sources */,
+				BEE9AF8F20DD7F3400AB4A3D /* v3_ia5.c in Sources */,
 				BEE9A89920DCA4EE00AB4A3D /* digest.c in Sources */,
 				BEE9A8CE20DCA84E00AB4A3D /* pk7_doit.c in Sources */,
+				BEE9AF0220DD7C5500AB4A3D /* v3_utl.c in Sources */,
 				BEE9AE7520DCC27F00AB4A3D /* rsa_none.c in Sources */,
+				BEE9AFBA20DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				BEE9AE2020DCBD1A00AB4A3D /* x_sig.c in Sources */,
 				BEF5D29220DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEE9A86120DCA2C900AB4A3D /* conf_mod.c in Sources */,
 				BEE9AE4320DCBE6B00AB4A3D /* x509_obj.c in Sources */,
 				BEF5D34120DC942100B0C6D8 /* evp_lib.c in Sources */,
+				BEE9B02420DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEF5D2A720DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
 				BEE9A90620DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEE9A8AF20DCA6AB00AB4A3D /* obj_xref.c in Sources */,
+				BEE9AF0920DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				206B01671835485D00878B8D /* BTCTransaction.m in Sources */,
 				BEF5D31720DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AF8820DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A8F120DCA92C00AB4A3D /* bio_enc.c in Sources */,
 				BEE9AE5820DCC10F00AB4A3D /* rsa_ossl.c in Sources */,
 				BEF5D2CA20DC811200B0C6D8 /* ec_mult.c in Sources */,
+				BEE9AF1E20DD7D2800AB4A3D /* x509rset.c in Sources */,
 				BEF5D1F820DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				BEE9A88B20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9A8A020DCA53100AB4A3D /* p5_pbe.c in Sources */,
 				BEF5D19720DC709000B0C6D8 /* tasn_new.c in Sources */,
+				BEE9AFD020DD80DE00AB4A3D /* tls1_prf.c in Sources */,
 				BE9AAF2E20DC5E7300C9BA17 /* bn_add.c in Sources */,
 				BEE9A90D20DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEF5D26120DC7AAB00B0C6D8 /* a_utctm.c in Sources */,
@@ -3416,24 +4242,34 @@
 				BEE9AE1920DCBCDE00AB4A3D /* x_attrib.c in Sources */,
 				BEF5D24C20DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
 				BEF5D2A020DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
+				BEE9B04E20DD886E00AB4A3D /* eng_table.c in Sources */,
 				BEF5D19120DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				20B8AB99189EE88300008138 /* BTCKeychain.m in Sources */,
 				BEF5D16520DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A89220DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
+				BEE9B00820DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				BEF5D36420DC958700B0C6D8 /* o_time.c in Sources */,
 				BEE9A92220DCAAE400AB4A3D /* o_dir.c in Sources */,
+				BEE9AF9E20DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				206B01641835485D00878B8D /* BTCScript.m in Sources */,
+				BEE9AF1020DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BEF5D2BC20DC80CA00B0C6D8 /* ec_print.c in Sources */,
 				BEE9AE5120DCC0B000AB4A3D /* x509_set.c in Sources */,
+				BEE9B04720DD884400AB4A3D /* evp_pkey.c in Sources */,
 				BEF5D23720DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
+				BEE9AECA20DD7AB100AB4A3D /* x509_vpm.c in Sources */,
 				BEF5D16C20DC6EFC00B0C6D8 /* a_bitstr.c in Sources */,
 				BEF5D20D20DC756F00B0C6D8 /* bss_sock.c in Sources */,
+				BEE9AFC820DD808D00AB4A3D /* v3_tlsf.c in Sources */,
+				BEE9AF6C20DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEF5D1CE20DC72FC00B0C6D8 /* buffer.c in Sources */,
+				BEE9AF4920DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
 				BEF5D18120DC6FEA00B0C6D8 /* a_octet.c in Sources */,
 				BEF5D2B520DC808000B0C6D8 /* ec_kmeth.c in Sources */,
 				BE9AAF7720DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEF5D1EA20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				20CD68DE189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEE9AF3420DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				206B01631835485D00878B8D /* BTCOpcode.m in Sources */,
 				BEF5D2D820DC817B00B0C6D8 /* eng_init.c in Sources */,
 				20A443C11AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
@@ -3444,19 +4280,27 @@
 				BEF5D2AE20DC804400B0C6D8 /* ecp_nist.c in Sources */,
 				BEF5D27D20DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEF5D33A20DC92D400B0C6D8 /* tb_cipher.c in Sources */,
+				BEE9B00F20DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				206B015A1835485D00878B8D /* BTCBase58.m in Sources */,
+				BEE9AF7A20DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEE9A87E20DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				207B2609188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
 				BEF5D37920DC968B00B0C6D8 /* lhash.c in Sources */,
 				BEE9AE4A20DCBEAA00AB4A3D /* m_md5.c in Sources */,
+				BEE9B05C20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEF5D20620DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEE9AE6E20DCC24B00AB4A3D /* md5_dgst.c in Sources */,
+				BEE9AF2C20DD7D7600AB4A3D /* v3_asid.c in Sources */,
+				BEE9AFB320DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BE9AAF5D20DC60BE00C9BA17 /* bn_mpi.c in Sources */,
+				BEE9AFA520DD800000AB4A3D /* v3_admis.c in Sources */,
+				BEE9B01620DD863C00AB4A3D /* dsa_key.c in Sources */,
 				BEF5D2D220DC817B00B0C6D8 /* eng_lib.c in Sources */,
 				BEF5D22220DC75FD00B0C6D8 /* ec_lib.c in Sources */,
 				200AAE4019FA3F010004F908 /* BTCOutpoint.m in Sources */,
 				20C2D80819E2F2280022CAAC /* BTCMnemonic+Tests.m in Sources */,
 				BEF5D25A20DC7A7600B0C6D8 /* a_time.c in Sources */,
+				BEE9AF5020DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEF5D28B20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BEF5D24520DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				2061D1DA1A2CA771004F1E40 /* BTCHashID.m in Sources */,
@@ -3469,12 +4313,20 @@
 				BEF5D1FF20DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A87620DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEE9A80E20DC9F6B00AB4A3D /* tb_rsa.c in Sources */,
+				BEE9B03920DD877400AB4A3D /* rsa_x931.c in Sources */,
 				BEE9ADFC20DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
 				BEF5D2DF20DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D32C20DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
+				BEE9AE8320DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9A86820DCA2FF00AB4A3D /* conf_lib.c in Sources */,
 				BEF5D27620DC7B4500B0C6D8 /* asn1_par.c in Sources */,
+				BEE9AEA720DD79C000AB4A3D /* x509_vfy.c in Sources */,
+				BEE9B01D20DD868B00AB4A3D /* v3_genn.c in Sources */,
+				BEE9AF3B20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
 				BEE9AE7C20DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
+				BEE9AEE620DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
+				BEE9AFFA20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9B03220DD874A00AB4A3D /* x_spki.c in Sources */,
 				BEE9A8E320DCA8C900AB4A3D /* bss_null.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3485,54 +4337,73 @@
 			files = (
 				BEE9A83420DCA02C00AB4A3D /* dsa_lib.c in Sources */,
 				BEF5D36A20DC95DB00B0C6D8 /* stack.c in Sources */,
+				BEE9AEE520DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
 				BEF5D34720DC945700B0C6D8 /* pmeth_lib.c in Sources */,
 				BEF5D26E20DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
 				2084DD6117B8FF47005AC9E6 /* main.m in Sources */,
 				BEE9AE7B20DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
 				BEF5D22F20DC768000B0C6D8 /* ec_curve.c in Sources */,
+				BEE9B02A20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				BEF5D32420DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
 				BEE9AE6520DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				BEE9A87D20DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				BE9AAF4520DC5F1100C9BA17 /* bn_exp.c in Sources */,
 				20B8AB98189EE88300008138 /* BTCKeychain.m in Sources */,
 				BEF5D2B420DC808000B0C6D8 /* ec_kmeth.c in Sources */,
+				BEE9AF4820DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
 				BEF5D25220DC7A4600B0C6D8 /* a_strex.c in Sources */,
 				BEE9AE3B20DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				2084DD8617B8FF76005AC9E6 /* BTCAddress.m in Sources */,
 				2037AB1517D3BFF900DB248C /* BTCScript+Tests.m in Sources */,
 				BEE9A8A720DCA58C00AB4A3D /* rand_lib.c in Sources */,
+				BEE9B05B20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEE9A80220DC9CAD00AB4A3D /* init.c in Sources */,
 				20B8AB9F189F0CEF00008138 /* BTCKeychain+Tests.m in Sources */,
+				BEE9AFDD20DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEE9A8AE20DCA6AB00AB4A3D /* obj_xref.c in Sources */,
 				BEE9A89F20DCA53100AB4A3D /* p5_pbe.c in Sources */,
 				2084DD8717B8FF76005AC9E6 /* BTCAddress+Tests.m in Sources */,
 				BEF5D17220DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				2084DD8817B8FF76005AC9E6 /* BTCBase58.m in Sources */,
 				BEF5D37120DC964200B0C6D8 /* x_algor.c in Sources */,
+				BEE9AF8020DD7F0000AB4A3D /* v3_ncons.c in Sources */,
 				BEF5D31620DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AF7220DD7ED100AB4A3D /* v3_pci.c in Sources */,
+				BEE9AF3A20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
+				BEE9AFC020DD806C00AB4A3D /* v3_pcons.c in Sources */,
+				BEE9B03F20DD879C00AB4A3D /* ec_pmeth.c in Sources */,
 				BEF5D30F20DC902000B0C6D8 /* obj_dat.c in Sources */,
 				BEE9ADF420DCBB1800AB4A3D /* a_i2d_fp.c in Sources */,
 				2084DD8917B8FF76005AC9E6 /* BTCBigNumber.m in Sources */,
 				BEE9A89120DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
 				2084DD8A17B8FF76005AC9E6 /* BTCBigNumber+Tests.m in Sources */,
 				BEF5D28320DC7BF700B0C6D8 /* bn_rand.c in Sources */,
+				BEE9B00020DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D34020DC942100B0C6D8 /* evp_lib.c in Sources */,
 				BEF5D1FE20DC752300B0C6D8 /* b_sock.c in Sources */,
+				BEE9AF5620DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				BEF5D36320DC958700B0C6D8 /* o_time.c in Sources */,
 				2084DD8B17B8FF76005AC9E6 /* BTCKey.m in Sources */,
+				BEE9AF9D20DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				BEE9AE7420DCC27F00AB4A3D /* rsa_none.c in Sources */,
 				BEE9A8E220DCA8C900AB4A3D /* bss_null.c in Sources */,
+				BEE9AF4120DD7E1B00AB4A3D /* v3_conf.c in Sources */,
+				BEE9B04D20DD886E00AB4A3D /* eng_table.c in Sources */,
 				BEE9AE4920DCBEAA00AB4A3D /* m_md5.c in Sources */,
 				2084DD8C17B8FF76005AC9E6 /* BTCProtocolSerialization.m in Sources */,
 				BEF5D1A320DC70CD00B0C6D8 /* a_type.c in Sources */,
 				BEE9A82520DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9AF2420DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEE9AE0920DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEE9A86720DCA2FF00AB4A3D /* conf_lib.c in Sources */,
 				BEF5D15D20DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
 				BEE9A80920DC9F0800AB4A3D /* eng_fat.c in Sources */,
 				BEF5D23D20DC792A00B0C6D8 /* a_dup.c in Sources */,
+				BEE9B03820DD877400AB4A3D /* rsa_x931.c in Sources */,
 				207B2608188DC47800916AE6 /* BTCBlockchainInfo.m in Sources */,
+				BEE9B04620DD884400AB4A3D /* evp_pkey.c in Sources */,
 				2084DD8D17B8FF76005AC9E6 /* BTCProtocolSerialization+Tests.m in Sources */,
+				BEE9B02320DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEE9AE2D20DCBD9C00AB4A3D /* x_name.c in Sources */,
 				BE9AAF4C20DC601600C9BA17 /* bn_shift.c in Sources */,
 				BEF5D2F320DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
@@ -3543,21 +4414,27 @@
 				BEF5D27C20DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEE9A91A20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
 				2084DD8E17B8FF76005AC9E6 /* BTCScript.m in Sources */,
+				BEE9AF3320DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEF5D25920DC7A7600B0C6D8 /* a_time.c in Sources */,
 				BEF5D30820DC8FA600B0C6D8 /* p_lib.c in Sources */,
 				BEE9A8C520DCA7DA00AB4A3D /* pk7_lib.c in Sources */,
 				BEE9A91320DCA9EF00AB4A3D /* conf_def.c in Sources */,
+				BEE9AF0820DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				20B66C8717BFE4F9007128CE /* BTCErrors.m in Sources */,
 				BEF5D1C620DC72A600B0C6D8 /* b_print.c in Sources */,
 				BEE9AE0220DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BE9AAF3E20DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BEE9AE5020DCC0B000AB4A3D /* x509_set.c in Sources */,
+				BEE9AEB420DD7A1500AB4A3D /* x_all.c in Sources */,
 				2084DD8F17B8FF76005AC9E6 /* BTCTransaction.m in Sources */,
 				BEF5D23620DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
+				BEE9AE9120DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D29F20DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
 				BE9AAF6820DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				2084DD9017B8FF76005AC9E6 /* BTCTransactionInput.m in Sources */,
+				BEE9AFB920DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				2057A9CD17CD555F00353D54 /* BTCKey+Tests.m in Sources */,
+				BEE9AEDE20DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEF5D1F720DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				BEF5D2BB20DC80CA00B0C6D8 /* ec_print.c in Sources */,
 				BEF5D1B820DC722600B0C6D8 /* bio_lib.c in Sources */,
@@ -3574,10 +4451,13 @@
 				BEF5D29820DC7D7200B0C6D8 /* ec2_smpl.c in Sources */,
 				BEE9A88A20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9A84A20DCA18B00AB4A3D /* dh_check.c in Sources */,
+				BEE9AFD620DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEF5D14820DC687300B0C6D8 /* mem.c in Sources */,
 				207646E91A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BEE9AE1820DCBCDE00AB4A3D /* x_attrib.c in Sources */,
+				BEE9B01520DD863C00AB4A3D /* dsa_key.c in Sources */,
 				BEE9A86020DCA2C900AB4A3D /* conf_mod.c in Sources */,
+				BEE9AEF320DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEF5D2FA20DC8E6F00B0C6D8 /* err.c in Sources */,
 				BE9AAF5320DC604F00C9BA17 /* bn_gcd.c in Sources */,
 				BEF5D18720DC702200B0C6D8 /* asn1_lib.c in Sources */,
@@ -3585,20 +4465,25 @@
 				206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */,
 				BEF5D19C20DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				BE9AAF7020DC610E00C9BA17 /* bn_mul.c in Sources */,
+				BEE9AFF220DD81F700AB4A3D /* rsa_oaep.c in Sources */,
 				20E154DA195D0DB400DA40D3 /* BTCBlockchainInfo+Tests.m in Sources */,
 				BE9AAF2220DC5E4A00C9BA17 /* bn_add.c in Sources */,
 				BEF5D35520DC950700B0C6D8 /* cryptlib.c in Sources */,
 				BEE9A8F020DCA92C00AB4A3D /* bio_enc.c in Sources */,
+				BEE9AFA420DD800000AB4A3D /* v3_admis.c in Sources */,
 				BEE9ADED20DCBAE600AB4A3D /* p12_utl.c in Sources */,
 				BEF5D20C20DC756F00B0C6D8 /* bss_sock.c in Sources */,
 				BEE9A81920DC9F6B00AB4A3D /* tb_rand.c in Sources */,
+				BEE9AE9F20DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BE9AAF5C20DC60BE00C9BA17 /* bn_mpi.c in Sources */,
 				BEF5D20520DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEF5D1AA20DC713900B0C6D8 /* tasn_fre.c in Sources */,
 				BEE9A87520DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEF5D1E920DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9A94520DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
+				BEE9AE8220DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9AE6D20DCC24B00AB4A3D /* md5_dgst.c in Sources */,
+				BEE9AFB220DD803D00AB4A3D /* v3_skey.c in Sources */,
 				20A443C01AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEE9AE4220DCBE6B00AB4A3D /* x509_obj.c in Sources */,
 				BEE9ADE620DCBA9600AB4A3D /* p5_pbev2.c in Sources */,
@@ -3606,6 +4491,7 @@
 				BEE9A93620DCB59400AB4A3D /* p5_crpt2.c in Sources */,
 				BEE9AE5F20DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A8CD20DCA84E00AB4A3D /* pk7_doit.c in Sources */,
+				BEE9AE9820DD795800AB4A3D /* x_x509.c in Sources */,
 				BEE9A82C20DC9FE100AB4A3D /* tb_dh.c in Sources */,
 				BEE9A8F720DCA94E00AB4A3D /* bio_md.c in Sources */,
 				BEE9AE1F20DCBD1A00AB4A3D /* x_sig.c in Sources */,
@@ -3613,37 +4499,58 @@
 				BEE9AE3420DCBDE200AB4A3D /* x509name.c in Sources */,
 				BEE9A86E20DCA36E00AB4A3D /* dsa_ossl.c in Sources */,
 				BEF5D21420DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
+				BEE9AFEB20DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
 				BE9AAF3020DC5EBA00C9BA17 /* bn_lib.c in Sources */,
 				20C2D7FD19E2B2920022CAAC /* BTCMnemonic.m in Sources */,
+				BEE9B00E20DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				BEE9A8DB20DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				2084DD9217B8FF76005AC9E6 /* BTCData+Tests.m in Sources */,
 				BEF5D30120DC8F1F00B0C6D8 /* obj_lib.c in Sources */,
+				BEE9AF7920DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEF5D18020DC6FEA00B0C6D8 /* a_octet.c in Sources */,
 				BEF5D17920DC6F9300B0C6D8 /* a_object.c in Sources */,
+				BEE9AFF920DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9AF2B20DD7D7600AB4A3D /* v3_asid.c in Sources */,
 				BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */,
 				BEF5D2AD20DC804400B0C6D8 /* ecp_nist.c in Sources */,
+				BEE9AF1620DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEF5D32B20DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
 				BEF5D2DE20DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D1BF20DC727600B0C6D8 /* b_dump.c in Sources */,
+				BEE9AF0120DD7C5500AB4A3D /* v3_utl.c in Sources */,
+				BEE9AF9620DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
+				BEE9AED720DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BE9AAF7620DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEE9A85820DCA1F100AB4A3D /* evp_pbe.c in Sources */,
+				BEE9AEFA20DD7C2000AB4A3D /* x509cset.c in Sources */,
 				BEF5D2EC20DC82C000B0C6D8 /* eng_list.c in Sources */,
+				BEE9AF8E20DD7F3400AB4A3D /* v3_ia5.c in Sources */,
+				BEE9AFAB20DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEF5D15620DC69B800B0C6D8 /* mem_sec.c in Sources */,
 				BEF5D24B20DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
 				BEF5D28A20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BE9AAF6220DC60BE00C9BA17 /* bn_mont.c in Sources */,
+				BEE9B05420DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEE9A95C20DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
 				BEE9ADDF20DCBA0600AB4A3D /* uid.c in Sources */,
 				BEF5D22120DC75FD00B0C6D8 /* ec_lib.c in Sources */,
+				BEE9B03120DD874A00AB4A3D /* x_spki.c in Sources */,
 				2084DD9317B8FF76005AC9E6 /* BTCData.m in Sources */,
+				BEE9AFCF20DD80DE00AB4A3D /* tls1_prf.c in Sources */,
+				BEE9AE8920DCC45D00AB4A3D /* a_verify.c in Sources */,
 				BEE9A85120DCA1B900AB4A3D /* bn_prime.c in Sources */,
+				BEE9AEC220DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				20D008BF18CFEAD300079B79 /* BTC256.m in Sources */,
 				20E1E01217C73181003B6987 /* NSData+BTCData.m in Sources */,
 				BEE9A8FE20DCA97900AB4A3D /* bss_mem.c in Sources */,
+				BEE9AEEC20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
+				BEE9AFC720DD808D00AB4A3D /* v3_tlsf.c in Sources */,
 				BEF5D1B120DC71A200B0C6D8 /* asn_pack.c in Sources */,
+				BEE9AF6B20DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEF5D24420DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				BEE9A92F20DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
 				BEE9ADFB20DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
+				BEE9AEA620DD79C000AB4A3D /* x509_vfy.c in Sources */,
 				BEF5D2E520DC827B00B0C6D8 /* x_int64.c in Sources */,
 				BEE9A94D20DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D35C20DC953800B0C6D8 /* o_names.c in Sources */,
@@ -3655,6 +4562,8 @@
 				BEF5D2C220DC80F100B0C6D8 /* ec_oct.c in Sources */,
 				BEF5D34E20DC94A400B0C6D8 /* names.c in Sources */,
 				20CD68DD189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEE9B01C20DD868B00AB4A3D /* v3_genn.c in Sources */,
+				BEE9AF8720DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A80520DC9DF600AB4A3D /* dso_lib.c in Sources */,
 				BEE9A8B620DCA73900AB4A3D /* p12_crpt.c in Sources */,
 				BEE9A83C20DCA0E400AB4A3D /* dh_lib.c in Sources */,
@@ -3662,9 +4571,13 @@
 				BEF5D16420DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A88320DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
 				BEF5D16B20DC6EFC00B0C6D8 /* a_bitstr.c in Sources */,
+				BEE9AF5D20DD7E8600AB4A3D /* v3_enum.c in Sources */,
+				BEE9AEC920DD7AB100AB4A3D /* x509_vpm.c in Sources */,
 				2061D1D91A2CA771004F1E40 /* BTCHashID.m in Sources */,
 				BEF5D19620DC709000B0C6D8 /* tasn_new.c in Sources */,
+				BEE9B00720DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				20B8AB92189E7E0100008138 /* BTCCurvePoint+Tests.m in Sources */,
+				BEE9AF4F20DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEF5D1CD20DC72FC00B0C6D8 /* buffer.c in Sources */,
 				2037AB1817D3D1F900DB248C /* BTCBase58+Tests.m in Sources */,
 				20B9646F17BADECE008161BB /* BTCOpcode.m in Sources */,
@@ -3674,20 +4587,27 @@
 				200AAE3F19FA3EFA0004F908 /* BTCOutpoint.m in Sources */,
 				BEE9A8BD20DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEE9A81320DC9F6B00AB4A3D /* tb_dsa.c in Sources */,
+				BEE9AEAD20DD79F600AB4A3D /* x509_trs.c in Sources */,
+				BEE9AFE420DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A90520DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEF5D37820DC968B00B0C6D8 /* lhash.c in Sources */,
 				BEF5D2A620DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
 				BEE9A90C20DCA9C200AB4A3D /* p_verify.c in Sources */,
+				BEE9AED020DD7AE300AB4A3D /* x_val.c in Sources */,
 				BE9AAF2420DC5E6D00C9BA17 /* bn_word.c in Sources */,
 				BEF5D31D20DC914500B0C6D8 /* ameth_lib.c in Sources */,
 				BEF5D29120DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEF5D33920DC92D400B0C6D8 /* tb_cipher.c in Sources */,
+				BEE9AF0F20DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BEF5D21A20DC75D400B0C6D8 /* ecdsa_vrf.c in Sources */,
 				BEE9A95520DCB82100AB4A3D /* hmac.c in Sources */,
 				BEE9A84320DCA16600AB4A3D /* dh_key.c in Sources */,
 				BEF5D22920DC768000B0C6D8 /* ec_key.c in Sources */,
 				BEF5D2C920DC811200B0C6D8 /* ec_mult.c in Sources */,
 				BEE9A92120DCAAE400AB4A3D /* o_dir.c in Sources */,
+				BEE9AEBB20DD7A5C00AB4A3D /* x509_ext.c in Sources */,
+				BEE9AF6420DD7EA200AB4A3D /* v3_cpols.c in Sources */,
+				BEE9AF1D20DD7D2800AB4A3D /* x509rset.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3695,40 +4615,61 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEE9AEC720DD7A8500AB4A3D /* x509_v3.c in Sources */,
 				BEE9A95220DCB79200AB4A3D /* rsa_lib.c in Sources */,
 				BEF5D29620DC7CCB00B0C6D8 /* bn_nist.c in Sources */,
 				BEF5D37620DC964200B0C6D8 /* x_algor.c in Sources */,
+				BEE9B00520DD85C100AB4A3D /* rsa_ameth.c in Sources */,
 				BEF5D1FC20DC74FF00B0C6D8 /* b_addr.c in Sources */,
 				7558460E1B14E4B100E49C87 /* BTCEncryptedBackupTests.swift in Sources */,
+				BEE9AFC520DD806C00AB4A3D /* v3_pcons.c in Sources */,
 				BE9AAF4A20DC5F1100C9BA17 /* bn_exp.c in Sources */,
+				BEE9AEEA20DD7B8B00AB4A3D /* pcy_tree.c in Sources */,
 				BEF5D1D920DC738700B0C6D8 /* x_bignum.c in Sources */,
+				BEE9AEDC20DD7B2A00AB4A3D /* x_exten.c in Sources */,
 				BE9AAF7520DC610E00C9BA17 /* bn_mul.c in Sources */,
 				BEF5D25020DC7A1E00B0C6D8 /* a_gentm.c in Sources */,
+				BEE9AF8C20DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A8A420DCA53100AB4A3D /* p5_pbe.c in Sources */,
+				BEE9B05920DD88B800AB4A3D /* t_x509.c in Sources */,
 				BEF5D34520DC942100B0C6D8 /* evp_lib.c in Sources */,
 				BEE9A86C20DCA2FF00AB4A3D /* conf_lib.c in Sources */,
+				BEE9B06020DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEE9A8C220DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEE9A81E20DC9F6B00AB4A3D /* tb_rand.c in Sources */,
+				BEE9AF4D20DD7E3B00AB4A3D /* v3_bcons.c in Sources */,
+				BEE9AFDB20DD812200AB4A3D /* rsa_chk.c in Sources */,
 				BEF5D33020DC920200B0C6D8 /* tb_pkmeth.c in Sources */,
+				BEE9AF6920DD7EA200AB4A3D /* v3_cpols.c in Sources */,
 				BEE9AE0E20DCBBDB00AB4A3D /* pk7_attr.c in Sources */,
 				BEE9A8BB20DCA73A00AB4A3D /* p12_crpt.c in Sources */,
+				BEE9B04420DD879C00AB4A3D /* ec_pmeth.c in Sources */,
+				BEE9AF0620DD7C5500AB4A3D /* v3_utl.c in Sources */,
+				BEE9B02F20DD871D00AB4A3D /* v3_akeya.c in Sources */,
 				75EB9FF11B39C61500C26E70 /* BTC256Tests.swift in Sources */,
 				BEF5D2A420DC7F9800B0C6D8 /* bn_gf2m.c in Sources */,
 				BEF5D31420DC902000B0C6D8 /* obj_dat.c in Sources */,
 				BEE9A89620DCA4CE00AB4A3D /* p5_crpt.c in Sources */,
+				BEE9AFE920DD819500AB4A3D /* pcy_node.c in Sources */,
 				75BBC6E51B0E721700A61690 /* BTCCurvePointTests.swift in Sources */,
 				BEF5D2AB20DC7FFD00B0C6D8 /* ecp_mont.c in Sources */,
+				BEE9AFF020DD81CE00AB4A3D /* dsa_pmeth.c in Sources */,
 				BE9AAF7B20DC610E00C9BA17 /* bn_recp.c in Sources */,
 				BEF5D2C720DC80F100B0C6D8 /* ec_oct.c in Sources */,
+				BEE9AF1420DD7CCC00AB4A3D /* x509_req.c in Sources */,
 				BE9AAF3D20DC5EE300C9BA17 /* bn_div.c in Sources */,
 				BEF5D21F20DC75D400B0C6D8 /* ecdsa_vrf.c in Sources */,
 				BEF5D35320DC94A400B0C6D8 /* names.c in Sources */,
 				BEE9A94A20DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BEF5D28820DC7BF700B0C6D8 /* bn_rand.c in Sources */,
+				BEE9AF7020DD7EBA00AB4A3D /* v3_bitst.c in Sources */,
 				BEE9A90320DCA97900AB4A3D /* bss_mem.c in Sources */,
 				BE9AAF6720DC60BE00C9BA17 /* bn_mont.c in Sources */,
 				BEF5D2E320DC81D900B0C6D8 /* tb_eckey.c in Sources */,
 				BEF5D31B20DC90EC00B0C6D8 /* cmac.c in Sources */,
+				BEE9AECE20DD7AB100AB4A3D /* x509_vpm.c in Sources */,
+				BEE9AED520DD7AE300AB4A3D /* x_val.c in Sources */,
+				BEE9AFA920DD800000AB4A3D /* v3_admis.c in Sources */,
 				BEF5D20320DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A8AC20DCA58C00AB4A3D /* rand_lib.c in Sources */,
 				BEE9A88F20DCA48D00AB4A3D /* mem_clr.c in Sources */,
@@ -3740,10 +4681,12 @@
 				75A06DA01B17B7FE00ED7E79 /* BTCKeyTests.swift in Sources */,
 				BEF5D32220DC914500B0C6D8 /* ameth_lib.c in Sources */,
 				752834A91B699BEC00CD92E3 /* BTCScriptTests.swift in Sources */,
+				BEE9AF6220DD7E8600AB4A3D /* v3_enum.c in Sources */,
 				758C8C451C08F111000C1796 /* BTCBigNumberTests.swift in Sources */,
 				BEE9ADF920DCBB1800AB4A3D /* a_i2d_fp.c in Sources */,
 				BEF5D16220DC6A9D00B0C6D8 /* ec_asn1.c in Sources */,
 				BE9AAF6120DC60BE00C9BA17 /* bn_mpi.c in Sources */,
+				BEE9AEF820DD7BEA00AB4A3D /* x_req.c in Sources */,
 				BEE9AE2B20DCBD6B00AB4A3D /* x_crl.c in Sources */,
 				75AF30371C152EE3002187AF /* BTCEncryptedMessageTests.swift in Sources */,
 				BEE9AE7920DCC27F00AB4A3D /* rsa_none.c in Sources */,
@@ -3752,31 +4695,45 @@
 				BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */,
 				BEE9A8E020DCA8A200AB4A3D /* m_sigver.c in Sources */,
 				BEE9AE4720DCBE6B00AB4A3D /* x509_obj.c in Sources */,
+				BEE9AFCC20DD808D00AB4A3D /* v3_tlsf.c in Sources */,
+				BEE9AF5420DD7E5300AB4A3D /* v3_alt.c in Sources */,
 				BEE9AE4E20DCBEAA00AB4A3D /* m_md5.c in Sources */,
 				75AF303B1C153009002187AF /* BTCMerkleTreeTests.swift in Sources */,
+				BEE9AFFE20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BEE9AFB720DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BEE9A85620DCA1B900AB4A3D /* bn_prime.c in Sources */,
+				BEE9AF2920DD7D5700AB4A3D /* v3_int.c in Sources */,
 				BEF5D15320DC698D00B0C6D8 /* threads_pthread.c in Sources */,
 				BEF5D23B20DC77F100B0C6D8 /* pk7_asn1.c in Sources */,
 				BEF5D2D620DC817B00B0C6D8 /* eng_lib.c in Sources */,
 				BEE9AE0720DCBBA800AB4A3D /* p12_asn.c in Sources */,
 				BEE9A96120DCB97700AB4A3D /* pbe_scrypt.c in Sources */,
+				BEE9AEF120DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				75B8190A1B04E69A0055F8B1 /* BTCPriceSourceTests.swift in Sources */,
 				BEF5D1C420DC727600B0C6D8 /* b_dump.c in Sources */,
 				BEF5D15420DC698D00B0C6D8 /* mem.c in Sources */,
+				BEE9AE8E20DCC45D00AB4A3D /* a_verify.c in Sources */,
+				BEE9AF3820DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEF5D1F520DC748A00B0C6D8 /* o_str.c in Sources */,
+				BEE9AF5B20DD7E6D00AB4A3D /* v3_info.c in Sources */,
 				BE9AAF4320DC5EE300C9BA17 /* bn_mod.c in Sources */,
 				BEE9AE0020DCBB6C00AB4A3D /* a_d2i_fp.c in Sources */,
+				BEE9AF3F20DD7DF700AB4A3D /* pcy_lib.c in Sources */,
 				BEF5D19520DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				BEF5D1EE20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9A8FC20DCA94E00AB4A3D /* bio_md.c in Sources */,
 				BEF5D1CB20DC72A600B0C6D8 /* b_print.c in Sources */,
+				BEE9AF8520DD7F0000AB4A3D /* v3_ncons.c in Sources */,
+				BEE9B02120DD868B00AB4A3D /* v3_genn.c in Sources */,
 				BEF5D20A20DC754400B0C6D8 /* b_sock2.c in Sources */,
 				BEF5D28120DC7BA000B0C6D8 /* bss_file.c in Sources */,
 				BEF5D24220DC792A00B0C6D8 /* a_dup.c in Sources */,
 				BEE9A90A20DCA9A200AB4A3D /* p_sign.c in Sources */,
 				BEF5D1D220DC72FC00B0C6D8 /* buffer.c in Sources */,
 				BEF5D37D20DC968B00B0C6D8 /* lhash.c in Sources */,
+				BEE9AEC020DD7A5C00AB4A3D /* x509_ext.c in Sources */,
 				BE9AAF5120DC601600C9BA17 /* bn_shift.c in Sources */,
+				BEE9B01320DD861E00AB4A3D /* ecp_oct.c in Sources */,
 				BEE9A91120DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEE9A88820DCA3DD00AB4A3D /* dsa_sign.c in Sources */,
 				BEF5D1A120DC709000B0C6D8 /* tasn_dec.c in Sources */,
@@ -3786,11 +4743,16 @@
 				BEE9A95A20DCB82100AB4A3D /* hmac.c in Sources */,
 				BEE9AE1D20DCBCDE00AB4A3D /* x_attrib.c in Sources */,
 				BEF5D2F120DC82C000B0C6D8 /* eng_list.c in Sources */,
+				BEE9AE8720DCC43400AB4A3D /* a_print.c in Sources */,
+				BEE9AF7E20DD7EE800AB4A3D /* v3_extku.c in Sources */,
 				BEF5D2EA20DC827B00B0C6D8 /* x_int64.c in Sources */,
 				75E565AE1B7927C800CCCFA5 /* BTCTransactionTests.swift in Sources */,
 				BEE9A8F520DCA92C00AB4A3D /* bio_enc.c in Sources */,
+				BEE9AEFF20DD7C2000AB4A3D /* x509cset.c in Sources */,
+				BEE9AFE220DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEF5D35A20DC950700B0C6D8 /* cryptlib.c in Sources */,
 				7549DAD11B0BB1D900F20FF0 /* BTCCurrencyConverterTests.swift in Sources */,
+				BEE9AF9320DD7F3400AB4A3D /* v3_ia5.c in Sources */,
 				BE9AAF6D20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
 				BEF5D17E20DC6F9300B0C6D8 /* a_object.c in Sources */,
 				BEE9A93B20DCB59400AB4A3D /* p5_crpt2.c in Sources */,
@@ -3801,10 +4763,15 @@
 				75BCBB661C08FADD00D5876A /* BTCBase58Tests.swift in Sources */,
 				BEF5D15B20DC69B800B0C6D8 /* mem_sec.c in Sources */,
 				BEF5D2CE20DC811200B0C6D8 /* ec_mult.c in Sources */,
+				BEE9AEE320DD7B6700AB4A3D /* v3_purp.c in Sources */,
 				BEF5D21120DC756F00B0C6D8 /* bss_sock.c in Sources */,
 				BEE9A8D920DCA88000AB4A3D /* pmeth_fn.c in Sources */,
+				BEE9AFA220DD7FE800AB4A3D /* v3_pku.c in Sources */,
 				75B819061B04E65A0055F8B1 /* BTCAddressTests.swift in Sources */,
+				BEE9AF4620DD7E1B00AB4A3D /* v3_conf.c in Sources */,
 				BEF5D1A820DC70CD00B0C6D8 /* a_type.c in Sources */,
+				BEE9AEB920DD7A1500AB4A3D /* x_all.c in Sources */,
+				BEE9AFD420DD80DE00AB4A3D /* tls1_prf.c in Sources */,
 				BEE9AE6420DCC1D000AB4A3D /* rsa_ssl.c in Sources */,
 				BEE9A84F20DCA18B00AB4A3D /* dh_check.c in Sources */,
 				BEE9AE8020DCC2C200AB4A3D /* ecp_smpl.c in Sources */,
@@ -3812,10 +4779,12 @@
 				BEF5D22620DC75FD00B0C6D8 /* ec_lib.c in Sources */,
 				BEE9AE5520DCC0B000AB4A3D /* x509_set.c in Sources */,
 				BEF5D25720DC7A4600B0C6D8 /* a_strex.c in Sources */,
+				BEE9AE9620DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEF5D30D20DC8FA600B0C6D8 /* p_lib.c in Sources */,
 				BEE9ADE420DCBA0600AB4A3D /* uid.c in Sources */,
 				BEE9AE6A20DCC1D000AB4A3D /* rsa_pk1.c in Sources */,
 				BEF5D26520DC7AAB00B0C6D8 /* a_utctm.c in Sources */,
+				BEE9AF1B20DD7CFD00AB4A3D /* x509_att.c in Sources */,
 				BEF5D36120DC953800B0C6D8 /* o_names.c in Sources */,
 				BEF5D22E20DC768000B0C6D8 /* ec_key.c in Sources */,
 				75BD89A41B46269E0073A611 /* BTCDataTests.swift in Sources */,
@@ -3830,21 +4799,28 @@
 				BEE9AE4020DCBE0C00AB4A3D /* x509_cmp.c in Sources */,
 				BEF5D28F20DC7CA600B0C6D8 /* ec_cvt.c in Sources */,
 				BEF5D25E20DC7A7600B0C6D8 /* a_time.c in Sources */,
+				BEE9AF7720DD7ED100AB4A3D /* v3_pci.c in Sources */,
 				BEF5D18C20DC702200B0C6D8 /* asn1_lib.c in Sources */,
 				BEF5D21920DC75D400B0C6D8 /* ecdsa_sign.c in Sources */,
+				BEE9B05220DD886E00AB4A3D /* eng_table.c in Sources */,
+				BEE9AFF720DD81F700AB4A3D /* rsa_oaep.c in Sources */,
 				BEE9A94220DCB5E900AB4A3D /* m_sha1.c in Sources */,
 				BEE9AE3920DCBDE200AB4A3D /* x509name.c in Sources */,
 				BEE9A86520DCA2C900AB4A3D /* conf_mod.c in Sources */,
 				BEE9AE1520DCBC1700AB4A3D /* rsa_asn1.c in Sources */,
+				BEE9AE9D20DD795800AB4A3D /* x_x509.c in Sources */,
 				BEE9AE2420DCBD1A00AB4A3D /* x_sig.c in Sources */,
 				BEF5D34C20DC945700B0C6D8 /* pmeth_lib.c in Sources */,
+				BEE9AEB220DD79F600AB4A3D /* x509_trs.c in Sources */,
 				BE9AAF3520DC5EBA00C9BA17 /* bn_lib.c in Sources */,
+				BEE9B04B20DD884400AB4A3D /* evp_pkey.c in Sources */,
 				BEE9A93420DCB49F00AB4A3D /* p5_scrypt.c in Sources */,
 				754564761B07F9AB008F34DC /* BTCBitcoinURLTests.swift in Sources */,
 				BEE9A8D220DCA84E00AB4A3D /* pk7_doit.c in Sources */,
 				BEF5D17720DC6F4B00B0C6D8 /* a_int.c in Sources */,
 				BEF5D27A20DC7B4500B0C6D8 /* asn1_par.c in Sources */,
 				BEF5D29D20DC7D7200B0C6D8 /* ec2_smpl.c in Sources */,
+				BEE9AF0D20DD7C9400AB4A3D /* v3_addr.c in Sources */,
 				BEE9A88220DCA3DD00AB4A3D /* dsa_vrf.c in Sources */,
 				BEF5D33E20DC92D400B0C6D8 /* tb_cipher.c in Sources */,
 				BEF5D2DC20DC817B00B0C6D8 /* eng_init.c in Sources */,
@@ -3852,12 +4828,17 @@
 				BEE9A87A20DCA3B300AB4A3D /* dsa_asn1.c in Sources */,
 				BEE9A8CA20DCA7DA00AB4A3D /* pk7_lib.c in Sources */,
 				BEE9A84120DCA0E400AB4A3D /* dh_lib.c in Sources */,
+				BEE9B02820DD86B300AB4A3D /* x509_def.c in Sources */,
 				BEE9ADF220DCBAE600AB4A3D /* p12_utl.c in Sources */,
 				BEE9A83120DC9FE100AB4A3D /* tb_dh.c in Sources */,
 				BEE9A91F20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
 				75A1A3721B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift in Sources */,
+				BEE9AF3020DD7D7600AB4A3D /* v3_asid.c in Sources */,
+				BEE9AEAB20DD79C000AB4A3D /* x509_vfy.c in Sources */,
+				BEE9B03620DD874A00AB4A3D /* x_spki.c in Sources */,
 				20FFD8001B1F85F300CCA48D /* BTCPaymentProtocolTests.swift in Sources */,
 				758DDAFE1BD2D83600AEDFFB /* BTCMnemonicTests.swift in Sources */,
+				BEE9AFBE20DD805300AB4A3D /* v3_sxnet.c in Sources */,
 				75B819081B04E68B0055F8B1 /* BTCBlockchainInfoTests.swift in Sources */,
 				BEE9AE7220DCC24B00AB4A3D /* md5_dgst.c in Sources */,
 				BEF5D27320DC7B1B00B0C6D8 /* a_mbstr.c in Sources */,
@@ -3867,7 +4848,9 @@
 				BEF5D1B620DC71A200B0C6D8 /* asn_pack.c in Sources */,
 				BEF5D24920DC796200B0C6D8 /* tasn_prn.c in Sources */,
 				BEE9AE5C20DCC10F00AB4A3D /* rsa_ossl.c in Sources */,
+				BEE9AF9B20DD7F9F00AB4A3D /* ct_x509v3.c in Sources */,
 				BEF5D36820DC958700B0C6D8 /* o_time.c in Sources */,
+				BEE9AEA420DD797D00AB4A3D /* x_pubkey.c in Sources */,
 				BEF5D1E020DC73BF00B0C6D8 /* bn_print.c in Sources */,
 				BEF5D19B20DC709000B0C6D8 /* tasn_new.c in Sources */,
 				BE9AAF2520DC5E7000C9BA17 /* bn_word.c in Sources */,
@@ -3875,12 +4858,17 @@
 				BEE9A81820DC9F6B00AB4A3D /* tb_dsa.c in Sources */,
 				75AF30351C152B1D002187AF /* BTCProtocolSerializationTests.swift in Sources */,
 				BEF5D32920DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
+				BEE9B01A20DD863C00AB4A3D /* dsa_key.c in Sources */,
+				BEE9AFB020DD802400AB4A3D /* v3_pmaps.c in Sources */,
 				BEF5D16920DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
 				BEE9A85D20DCA1F100AB4A3D /* evp_pbe.c in Sources */,
 				BEE9A82A20DC9FD600AB4A3D /* tb_digest.c in Sources */,
+				BEE9B00C20DD85F300AB4A3D /* rsa_crpt.c in Sources */,
 				BEF5D23420DC768000B0C6D8 /* ec_curve.c in Sources */,
 				BEE9A83920DCA02C00AB4A3D /* dsa_lib.c in Sources */,
+				BEE9B03D20DD877400AB4A3D /* rsa_x931.c in Sources */,
 				BEF5D18520DC6FEA00B0C6D8 /* a_octet.c in Sources */,
+				BEE9AF2220DD7D2800AB4A3D /* x509rset.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
