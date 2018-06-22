@@ -1113,7 +1113,7 @@
 		BEF5D30720DC8FA600B0C6D8 /* p_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = p_lib.c; path = src/crypto/evp/p_lib.c; sourceTree = "<group>"; };
 		BEF5D30E20DC902000B0C6D8 /* obj_dat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = obj_dat.c; path = src/crypto/objects/obj_dat.c; sourceTree = "<group>"; };
 		BEF5D31520DC90EC00B0C6D8 /* cmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cmac.c; path = src/crypto/cmac/cmac.c; sourceTree = "<group>"; };
-		BEF5D31C20DC914500B0C6D8 /* ameth_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ameth_lib.c; path = src/crypto/asn1/ameth_lib.c; sourceTree = "<group>"; };
+		BEF5D31C20DC914500B0C6D8 /* ameth_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ameth_lib.c; sourceTree = "<group>"; };
 		BEF5D32320DC91B600B0C6D8 /* tb_asnmth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tb_asnmth.c; path = src/crypto/engine/tb_asnmth.c; sourceTree = "<group>"; };
 		BEF5D32A20DC920200B0C6D8 /* tb_pkmeth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tb_pkmeth.c; path = src/crypto/engine/tb_pkmeth.c; sourceTree = "<group>"; };
 		BEF5D33120DC924400B0C6D8 /* evp_enc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = evp_enc.c; path = src/crypto/evp/evp_enc.c; sourceTree = "<group>"; };
@@ -1125,7 +1125,7 @@
 		BEF5D35B20DC953800B0C6D8 /* o_names.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = o_names.c; path = src/crypto/objects/o_names.c; sourceTree = "<group>"; };
 		BEF5D36220DC958700B0C6D8 /* o_time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = o_time.c; path = src/crypto/o_time.c; sourceTree = "<group>"; };
 		BEF5D36920DC95DB00B0C6D8 /* stack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stack.c; path = src/crypto/stack/stack.c; sourceTree = "<group>"; };
-		BEF5D37020DC964200B0C6D8 /* x_algor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = x_algor.c; path = src/crypto/asn1/x_algor.c; sourceTree = "<group>"; };
+		BEF5D37020DC964200B0C6D8 /* x_algor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_algor.c; sourceTree = "<group>"; };
 		BEF5D37720DC968A00B0C6D8 /* lhash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lhash.c; path = src/crypto/lhash/lhash.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1390,8 +1390,8 @@
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
 			isa = PBXGroup;
 			children = (
+				BEF5D37F20DC97B000B0C6D8 /* asn1 */,
 				BEF5D37720DC968A00B0C6D8 /* lhash.c */,
-				BEF5D37020DC964200B0C6D8 /* x_algor.c */,
 				BEF5D36920DC95DB00B0C6D8 /* stack.c */,
 				BEF5D36220DC958700B0C6D8 /* o_time.c */,
 				BEF5D35B20DC953800B0C6D8 /* o_names.c */,
@@ -1404,7 +1404,6 @@
 				BEF5D33120DC924400B0C6D8 /* evp_enc.c */,
 				BEF5D32A20DC920200B0C6D8 /* tb_pkmeth.c */,
 				BEF5D32320DC91B600B0C6D8 /* tb_asnmth.c */,
-				BEF5D31C20DC914500B0C6D8 /* ameth_lib.c */,
 				BEF5D31520DC90EC00B0C6D8 /* cmac.c */,
 				BEF5D30E20DC902000B0C6D8 /* obj_dat.c */,
 				BEF5D30720DC8FA600B0C6D8 /* p_lib.c */,
@@ -1621,6 +1620,16 @@
 			);
 			name = BN;
 			path = src/crypto/bn;
+			sourceTree = "<group>";
+		};
+		BEF5D37F20DC97B000B0C6D8 /* asn1 */ = {
+			isa = PBXGroup;
+			children = (
+				BEF5D37020DC964200B0C6D8 /* x_algor.c */,
+				BEF5D31C20DC914500B0C6D8 /* ameth_lib.c */,
+			);
+			name = asn1;
+			path = src/crypto/asn1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
