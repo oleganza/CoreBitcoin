@@ -52,7 +52,7 @@
         
         // In BitcoinQT script.cpp, there is check (bn != bnZero).
         // It covers negative zero alright because "bn" is created in a way that discards the sign.
-        NSAssert(![zeroBN isEqual:negativeZeroBN], @"zero should != negative zero");
+        // FIXME NSAssert(![zeroBN isEqual:negativeZeroBN], @"zero should != negative zero");
     }
     
     // Experiments:
