@@ -14,9 +14,7 @@ Pod::Spec.new do |s|
   s.source_files = 'CoreBitcoin', 'openssl'
   s.exclude_files = ['CoreBitcoin/**/*+Tests.{h,m}', 'CoreBitcoin/BTCScriptTestData.h']
   s.requires_arc = true
-  s.xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/openssl/include"', '"${PODS_ROOT}/openssl/src/**"'
-  }
+  s.xcconfig = { 'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/openssl/include"', '"${PODS_ROOT}/openssl/src/**"' }
   s.framework    = 'Foundation'
   s.dependency 'ISO8601DateFormatter'
 end
