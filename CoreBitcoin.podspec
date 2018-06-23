@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.exclude_files = ['CoreBitcoin/**/*+Tests.{h,m}', 'CoreBitcoin/BTCScriptTestData.h']
   s.requires_arc = true
   s.framework    = 'Foundation'
-  s.dependency 'OpenSSL-Universal', '1.0.1.16'
   s.dependency 'ISO8601DateFormatter'
 end
