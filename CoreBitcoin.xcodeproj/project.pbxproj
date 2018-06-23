@@ -702,6 +702,12 @@
 		BEC8736E20DDD47400EDEAAA /* ofb64ede.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8736A20DDD47300EDEAAA /* ofb64ede.c */; };
 		BEC8736F20DDD47400EDEAAA /* ofb64ede.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8736A20DDD47300EDEAAA /* ofb64ede.c */; };
 		BEC8737020DDD47400EDEAAA /* ofb64ede.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8736A20DDD47300EDEAAA /* ofb64ede.c */; };
+		BEC8737220DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
+		BEC8737320DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
+		BEC8737420DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
+		BEC8737520DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
+		BEC8737620DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
+		BEC8737720DDD63100EDEAAA /* dso_dlfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */; };
 		BEE5F3F820DDA0E0009A97BE /* f_generic.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE5F3F720DDA0E0009A97BE /* f_generic.c */; };
 		BEE5F3FA20DDA102009A97BE /* conf_sap.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE5F3F920DDA102009A97BE /* conf_sap.c */; };
 		BEE5F3FC20DDA12A009A97BE /* curve25519.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE5F3FB20DDA12A009A97BE /* curve25519.c */; };
@@ -2724,6 +2730,7 @@
 		BEC8735720DDCCF100EDEAAA /* eng_cnf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = eng_cnf.c; sourceTree = "<group>"; };
 		BEC8736320DDD43600EDEAAA /* pem_pk8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pem_pk8.c; sourceTree = "<group>"; };
 		BEC8736A20DDD47300EDEAAA /* ofb64ede.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ofb64ede.c; sourceTree = "<group>"; };
+		BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dso_dlfcn.c; sourceTree = "<group>"; };
 		BEE5F3F720DDA0E0009A97BE /* f_generic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = f_generic.c; sourceTree = "<group>"; };
 		BEE5F3F920DDA102009A97BE /* conf_sap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = conf_sap.c; sourceTree = "<group>"; };
 		BEE5F3FB20DDA12A009A97BE /* curve25519.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = curve25519.c; sourceTree = "<group>"; };
@@ -3657,6 +3664,7 @@
 		BEE9A80320DC9DE000AB4A3D /* dso */ = {
 			isa = PBXGroup;
 			children = (
+				BEC8737120DDD63100EDEAAA /* dso_dlfcn.c */,
 				BEE9A80420DC9DF600AB4A3D /* dso_lib.c */,
 			);
 			name = dso;
@@ -4832,6 +4840,7 @@
 				BEF5D1EB20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9B1D120DD948D00AB4A3D /* c_allc.c in Sources */,
 				20148B1518355DAD00E68E9C /* BTCScript.m in Sources */,
+				BEC8737420DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEE9AF3520DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEC8729720DDC15300EDEAAA /* p12_p8e.c in Sources */,
 				20148B1718355DAD00E68E9C /* BTCScriptMachine.m in Sources */,
@@ -5221,6 +5230,7 @@
 				BEF5D1EC20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9B1D220DD948D00AB4A3D /* c_allc.c in Sources */,
 				20148C23183563D000E68E9C /* BTCScript.m in Sources */,
+				BEC8737520DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEE9AF3620DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEC8729820DDC15300EDEAAA /* p12_p8e.c in Sources */,
 				20148C25183563D000E68E9C /* BTCScriptMachine.m in Sources */,
@@ -5610,6 +5620,7 @@
 				BEF5D1ED20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9B1D320DD948D00AB4A3D /* c_allc.c in Sources */,
 				20148CCE183643E700E68E9C /* BTCScript.m in Sources */,
+				BEC8737620DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEE9AF3720DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEC8729920DDC15300EDEAAA /* p12_p8e.c in Sources */,
 				20148CD0183643E700E68E9C /* BTCScriptMachine.m in Sources */,
@@ -5999,6 +6010,7 @@
 				BEF5D1EA20DC744C00B0C6D8 /* ex_data.c in Sources */,
 				BEE9B1D020DD948D00AB4A3D /* c_allc.c in Sources */,
 				20CD68DE189B18820083E1A9 /* BTCCurvePoint.m in Sources */,
+				BEC8737320DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEE9AF3420DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEC8729620DDC15300EDEAAA /* p12_p8e.c in Sources */,
 				206B01631835485D00878B8D /* BTCOpcode.m in Sources */,
@@ -6448,6 +6460,7 @@
 				BEE9B15420DD90C700AB4A3D /* rsa_gen.c in Sources */,
 				BEC8725C20DDBF2400EDEAAA /* sha512.c in Sources */,
 				BEF5D35C20DC953800B0C6D8 /* o_names.c in Sources */,
+				BEC8737220DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEF5D19020DC709000B0C6D8 /* tasn_enc.c in Sources */,
 				BEE9A8E920DCA90500AB4A3D /* drbg_lib.c in Sources */,
 				BEE9A80D20DC9F6B00AB4A3D /* tb_rsa.c in Sources */,
@@ -6854,6 +6867,7 @@
 				BEE9A91F20DCAA5D00AB4A3D /* a_utf8.c in Sources */,
 				75A1A3721B0E7DB900EA8D45 /* BTCBlindSignatureTests.swift in Sources */,
 				BEE9B09220DD8A6000AB4A3D /* eng_pkey.c in Sources */,
+				BEC8737720DDD63100EDEAAA /* dso_dlfcn.c in Sources */,
 				BEE9AF3020DD7D7600AB4A3D /* v3_asid.c in Sources */,
 				BEE9AEAB20DD79C000AB4A3D /* x509_vfy.c in Sources */,
 				BEE9B03620DD874A00AB4A3D /* x_spki.c in Sources */,
