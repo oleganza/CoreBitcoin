@@ -20,5 +20,6 @@ Pod::Spec.new do |s|
     'USER_HEADER_SEARCH_PATHS' => '${PODS_ROOT}/CoreBitcoin/openssl/src/**'
   }
   s.framework    = 'Foundation'
+  s.preserve_paths = 'openssl/LICENSE'
   s.dependency 'ISO8601DateFormatter'
 end
