@@ -25,7 +25,7 @@
 #define LPDIR_H
 #if defined OPENSSL_SYS_UNIX || defined DJGPP \
     || (defined __VMS_VER && __VMS_VER >= 70000000)
-# include "LPdir_unix.c"
+# include "LPdir_unix.h"
 #elif defined OPENSSL_SYS_VMS
 # include "LPdir_vms.c"
 #elif defined OPENSSL_SYS_WIN32
