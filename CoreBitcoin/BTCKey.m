@@ -670,8 +670,8 @@ static int     ECDSA_SIG_recover_key_GFp(EC_KEY *eckey, ECDSA_SIG *ecsig, const 
         return nil;
     }
     ECDSA_SIG *sig = ECDSA_SIG_new();
-    BN_bin2bn(&p64[0],  32, sig->r);
-    BN_bin2bn(&p64[32], 32, sig->s);
+    sig->r = BN_bin2bn(&p64[0],  32, sig->r);
+    sig->s = BN_bin2bn(&p64[32], 32, sig->s);
     BOOL result = (1 == ECDSA_SIG_recover_key_GFp(key->_key, sig, (unsigned char*)hash.bytes, (int)hash.length, rec, 0));
     ECDSA_SIG_free(sig);
     
