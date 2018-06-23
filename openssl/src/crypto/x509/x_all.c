@@ -261,6 +261,7 @@ int i2d_RSA_PUBKEY_bio(BIO *bp, RSA *rsa)
 }
 #endif
 
+/*
 #ifndef OPENSSL_NO_DSA
 # ifndef OPENSSL_NO_STDIO
 DSA *d2i_DSAPrivateKey_fp(FILE *fp, DSA **dsa)
@@ -305,6 +306,7 @@ int i2d_DSA_PUBKEY_bio(BIO *bp, DSA *dsa)
 }
 
 #endif
+ */
 
 #ifndef OPENSSL_NO_EC
 # ifndef OPENSSL_NO_STDIO

@@ -91,13 +91,13 @@ static int bind_helper(ENGINE *e)
         || !ENGINE_set_RSA(e, RSA_get_default_method())
 # endif
 # ifndef OPENSSL_NO_DSA
-        || !ENGINE_set_DSA(e, DSA_get_default_method())
+    //    || !ENGINE_set_DSA(e, DSA_get_default_method())
 # endif
 # ifndef OPENSSL_NO_EC
         || !ENGINE_set_EC(e, EC_KEY_OpenSSL())
 # endif
 # ifndef OPENSSL_NO_DH
-        || !ENGINE_set_DH(e, DH_get_default_method())
+    //    || !ENGINE_set_DH(e, DH_get_default_method())
 # endif
         || !ENGINE_set_RAND(e, RAND_OpenSSL())
 # ifdef TEST_ENG_OPENSSL_RC4

@@ -475,7 +475,7 @@ RSA *EVP_PKEY_get1_RSA(EVP_PKEY *pkey)
     return ret;
 }
 #endif
-
+/*
 #ifndef OPENSSL_NO_DSA
 int EVP_PKEY_set1_DSA(EVP_PKEY *pkey, DSA *key)
 {
@@ -502,7 +502,7 @@ DSA *EVP_PKEY_get1_DSA(EVP_PKEY *pkey)
     return ret;
 }
 #endif
-
+*/
 #ifndef OPENSSL_NO_EC
 
 int EVP_PKEY_set1_EC_KEY(EVP_PKEY *pkey, EC_KEY *key)
@@ -530,7 +530,7 @@ EC_KEY *EVP_PKEY_get1_EC_KEY(EVP_PKEY *pkey)
     return ret;
 }
 #endif
-
+/*
 #ifndef OPENSSL_NO_DH
 
 int EVP_PKEY_set1_DH(EVP_PKEY *pkey, DH *key)
@@ -558,6 +558,7 @@ DH *EVP_PKEY_get1_DH(EVP_PKEY *pkey)
     return ret;
 }
 #endif
+ */
 
 int EVP_PKEY_type(int type)
 {

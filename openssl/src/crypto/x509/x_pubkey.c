@@ -254,7 +254,7 @@ int i2d_RSA_PUBKEY(RSA *a, unsigned char **pp)
     return ret;
 }
 #endif
-
+/*
 #ifndef OPENSSL_NO_DSA
 DSA *d2i_DSA_PUBKEY(DSA **a, const unsigned char **pp, long length)
 {
@@ -294,6 +294,7 @@ int i2d_DSA_PUBKEY(DSA *a, unsigned char **pp)
     return ret;
 }
 #endif
+ */
 
 #ifndef OPENSSL_NO_EC
 EC_KEY *d2i_EC_PUBKEY(EC_KEY **a, const unsigned char **pp, long length)
