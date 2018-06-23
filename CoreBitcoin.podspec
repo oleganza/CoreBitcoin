@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.public_header_files = 'openssl/include/openssl/*.h'
   s.requires_arc = true
   s.xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/CoreBitcoin/openssl/include"'
+    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/CoreBitcoin/openssl/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/CoreBitcoin/openssl/src/**"'
   }
   s.framework    = 'Foundation'
