@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name         = "CoreEthereum"
   s.version      = "1.0.0"
-  s.summary      = "CoreBitcoin is an implementation of Bitcoin protocol in Objective-C."
+  s.summary      = "CoreEthereum is a subset of CoreBitcoin in Objective-C."
   s.description  = <<-DESC
-                   CoreBitcoin is a complete toolkit to work with Bitcoin data structures.
+                   CoreEthereum provides helpful functions for deriving and signing with Ethereum keychains.
                    DESC
   s.homepage     = "https://github.com/wjmelements/CoreBitcoin"
   s.license      = 'WTFPL'
@@ -14,7 +14,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/wjmelements/CoreBitcoin.git", :tag => s.version.to_s }
   s.source_files = 'CoreBitcoin', 'openssl/**/*.c'
   s.exclude_files = ['CoreBitcoin/**/*+Tests.{h,m}', 'CoreBitcoin/BTCScriptTestData.h']
-  s.public_header_files = 'openssl/include/openssl/*.h', 'CoreBitcoin/*.h'
+  s.public_header_files = 'CoreBitcoin/*.h', 'openssl/include/openssl/*.h'
+  s.private_header_files = 'openssl/include/internal/*.h'
   s.header_mappings_dir = '.'
   s.requires_arc = true
   s.xcconfig = {
