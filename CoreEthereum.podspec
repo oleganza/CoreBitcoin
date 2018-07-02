@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.9'
   s.source       = { :git => "https://github.com/wjmelements/CoreBitcoin.git", :tag => s.version.to_s }
-  s.source_files = 'CoreBitcoin', 'openssl/**/*.c', 'openssl/include/*.h', 'openssl/include/internal/*.h'
+  s.source_files = 'CoreBitcoin', 'openssl/**/*.c', 'openssl/include/**/*.h'
   s.exclude_files = ['CoreBitcoin/**/*+Tests.{h,m}', 'CoreBitcoin/BTCScriptTestData.h']
   s.public_header_files = 'CoreBitcoin/*.h', 'openssl/include/openssl/*.h'
   s.private_header_files = 'openssl/include/internal/*.h'
