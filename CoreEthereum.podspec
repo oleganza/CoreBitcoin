@@ -18,10 +18,12 @@ Pod::Spec.new do |s|
   s.private_header_files = 'openssl/include/internal/*.h'
   s.header_mappings_dir = '.'
   s.requires_arc = true
-  s.xcconfig = {
+  s.user_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/include" "${PODS_ROOT}/CoreEthereum/openssl/include"',
-    'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
+  }
+  s.pod_target_xcconfig = {
+    'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
   }
   s.framework    = 'Foundation'
   s.preserve_paths = 'openssl/LICENSE', 'openssl/**/*.h'
