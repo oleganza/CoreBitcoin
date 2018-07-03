@@ -19,8 +19,8 @@ Pod::Spec.new do |s|
   s.header_mappings_dir = '.'
   s.requires_arc = true
   s.xcconfig = {
-    'HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/CoreEthereum/openssl/include',
-    'USER_HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/CoreEthereum/openssl/src/**'
+    'HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/openssl/include',
+    'USER_HEADER_SEARCH_PATHS' => '${PODS_TARGET_SRCROOT}/openssl/src/**'
   }
   s.framework    = 'Foundation'
   s.preserve_paths = 'openssl/LICENSE', 'openssl/**/*.h'
