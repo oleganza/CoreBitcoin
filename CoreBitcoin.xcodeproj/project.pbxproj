@@ -2775,7 +2775,6 @@
 		2084DD9617B8FFA2005AC9E6 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2084DD9F17B90174005AC9E6 /* update_openssl.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = update_openssl.sh; sourceTree = SOURCE_ROOT; };
 		209818911839688D00541747 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		209818921839694000541747 /* CoreBitcoin.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = CoreBitcoin.podspec; sourceTree = "<group>"; };
 		209D1E1018D48EA200293483 /* BTCNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCNetwork.h; sourceTree = "<group>"; };
 		209D1E1118D48EA200293483 /* BTCNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCNetwork.m; sourceTree = "<group>"; };
 		20A443B31AC55F52008B3447 /* BTCProtocolBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCProtocolBuffers.h; sourceTree = "<group>"; };
@@ -3584,7 +3583,6 @@
 				20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */,
 				209818911839688D00541747 /* LICENSE.txt */,
 				2039DB0217E2ED7F0051177B /* ScriptStringRepresentation.md */,
-				209818921839694000541747 /* CoreBitcoin.podspec */,
 				20D2802717B8FE00004A462B /* CoreBitcoin */,
 				2084DD9917B8FFB0005AC9E6 /* OpenSSL */,
 				20D09B9D18BA130600794209 /* Utils */,
