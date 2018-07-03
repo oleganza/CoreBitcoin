@@ -20,7 +20,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = {
     'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/include" "${PODS_ROOT}/CoreEthereum/openssl/include"',
-    'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"'
+    'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
+    'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.framework    = 'Foundation'
   s.preserve_paths = 'openssl/LICENSE', 'openssl/**/*.h'
