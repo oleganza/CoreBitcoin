@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.pod_target_xcconfig = {
+    'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/include" "${PODS_ROOT}/CoreEthereum/openssl/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
   }
   s.framework    = 'Foundation'
