@@ -10,7 +10,7 @@
 /* extension creation utilities */
 
 #include <stdio.h>
-#include "internal/ctype.h"
+#include "internal/ossl_type.h"
 #include "internal/cryptlib.h"
 #include <openssl/conf.h>
 #include <openssl/x509.h>

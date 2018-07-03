@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <limits.h>
 
-#include "internal/ctype.h"
+#include "internal/ossl_type.h"
 #include "internal/cryptlib.h"
 #include <openssl/crypto.h>
 #include <openssl/buffer.h>

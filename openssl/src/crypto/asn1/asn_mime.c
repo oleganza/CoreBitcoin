@@ -8,7 +8,7 @@
  */
 
 #include <stdio.h>
-#include "internal/ctype.h"
+#include "internal/ossl_type.h"
 #include "internal/cryptlib.h"
 #include <openssl/rand.h>
 #include <openssl/x509.h>

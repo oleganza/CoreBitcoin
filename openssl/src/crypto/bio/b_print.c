@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "internal/cryptlib.h"
-#include "internal/ctype.h"
+#include "internal/ossl_type.h"
 #include "internal/numbers.h"
 #include <openssl/bio.h>
 
