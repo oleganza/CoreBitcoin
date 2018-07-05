@@ -79,13 +79,13 @@ NSMutableData* BTCHash160(NSData* data); // == RIPEMD160(SHA256(data)) (aka Hash
 #endif
 
 // 160-bit zero string
-NSMutableData* BTCZero160();
+NSMutableData* BTCZero160(void);
 
 // 256-bit zero string
-NSMutableData* BTCZero256();
+NSMutableData* BTCZero256(void);
 
 // Pointer to a static array of zeros (256 bits long).
-const unsigned char* BTCZeroString256();
+const unsigned char* BTCZeroString256(void);
 
 
 // Hashes input with salt using specified number of rounds and the minimum amount of memory (rounded up to a whole number of 256-bit blocks).
