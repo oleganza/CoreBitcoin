@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CoreEthereum"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "CoreEthereum is a subset of CoreBitcoin in Objective-C."
   s.description  = <<-DESC
                    CoreEthereum provides helpful functions for deriving and signing with Ethereum keychains.
