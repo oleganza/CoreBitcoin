@@ -264,7 +264,8 @@ static int asn1_item_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
 static int asn1_template_print_ctx(BIO *out, ASN1_VALUE **fld, int indent,
                             const ASN1_TEMPLATE *tt, const ASN1_PCTX *pctx)
 {
-    int i, flags;
+    unsigned long flags;
+    int i;
     const char *sname, *fname;
     ASN1_VALUE *tfld;
     flags = tt->flags;
