@@ -95,7 +95,7 @@ static int tree_init(X509_POLICY_TREE **ptree, STACK_OF(X509) *certs,
     X509_POLICY_DATA *data = NULL;
     int ret = X509_PCY_TREE_VALID;
     int n = sk_X509_num(certs) - 1; /* RFC5280 paths omit the TA */
-    int explicit_policy = (flags & X509_V_FLAG_EXPLICIT_POLICY) ? 0 : n+1;
+    long explicit_policy = (flags & X509_V_FLAG_EXPLICIT_POLICY) ? 0 : n+1;
     int any_skip = (flags & X509_V_FLAG_INHIBIT_ANY) ? 0 : n+1;
     int map_skip = (flags & X509_V_FLAG_INHIBIT_MAP) ? 0 : n+1;
     int i;
