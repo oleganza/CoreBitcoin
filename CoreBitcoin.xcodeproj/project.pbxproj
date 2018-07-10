@@ -292,6 +292,18 @@
 		75E565AE1B7927C800CCCFA5 /* BTCTransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E565AD1B7927C800CCCFA5 /* BTCTransactionTests.swift */; };
 		75EB9FF11B39C61500C26E70 /* BTC256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EB9FF01B39C61500C26E70 /* BTC256Tests.swift */; };
 		75FB13E61B449661006D8935 /* BTCFancyEncryptedMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */; };
+		BE0BA5E220F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E320F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E420F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E520F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E620F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E720F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */; };
+		BE0BA5E820F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
+		BE0BA5E920F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
+		BE0BA5EA20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
+		BE0BA5EB20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
+		BE0BA5EC20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
+		BE0BA5ED20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */; };
 		BE9AAF1B20DC4B6700C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
 		BE9AAF1C20DC4B7900C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
 		BE9AAF1D20DC4B7A00C9BA17 /* bn_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */; };
@@ -2798,6 +2810,8 @@
 		75E565AD1B7927C800CCCFA5 /* BTCTransactionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCTransactionTests.swift; sourceTree = "<group>"; };
 		75EB9FF01B39C61500C26E70 /* BTC256Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTC256Tests.swift; sourceTree = "<group>"; };
 		75FB13E51B449661006D8935 /* BTCFancyEncryptedMessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCFancyEncryptedMessageTests.swift; sourceTree = "<group>"; };
+		BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = e_aes_cbc_hmac_sha256.c; sourceTree = "<group>"; };
+		BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = e_aes_cbc_hmac_sha1.c; sourceTree = "<group>"; };
 		BE9AAF1920DB409700C9BA17 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BE9AAF1A20DC4B6700C9BA17 /* bn_ctx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_ctx.c; sourceTree = "<group>"; };
 		BE9AAF2120DC5E4A00C9BA17 /* bn_add.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bn_add.c; sourceTree = "<group>"; };
@@ -3734,6 +3748,8 @@
 		BEE9A7FD20DC9B8300AB4A3D /* evp */ = {
 			isa = PBXGroup;
 			children = (
+				BE0BA5E120F5696C0074306B /* e_aes_cbc_hmac_sha1.c */,
+				BE0BA5E020F5696B0074306B /* e_aes_cbc_hmac_sha256.c */,
 				BEC8724620DDBE1900EDEAAA /* bio_b64.c */,
 				BEE9A8EF20DCA92C00AB4A3D /* bio_enc.c */,
 				BEE9A8F620DCA94E00AB4A3D /* bio_md.c */,
@@ -4820,6 +4836,7 @@
 				BEE9B22F20DD992100AB4A3D /* camellia.c in Sources */,
 				207646EB1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BEC8727B20DDC00500EDEAAA /* siphash.c in Sources */,
+				BE0BA5EA20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9B0B220DD8B4200AB4A3D /* t_pkey.c in Sources */,
 				BEF5D32620DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
 				BEE9A91520DCA9EF00AB4A3D /* conf_def.c in Sources */,
@@ -4973,6 +4990,7 @@
 				20148B1718355DAD00E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2D920DC817B00B0C6D8 /* eng_init.c in Sources */,
 				BEC873FF20DDDC3800EDEAAA /* pem_oth.c in Sources */,
+				BE0BA5E420F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				20A443C21AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEC871FA20DDBAC900EDEAAA /* ecdh_ossl.c in Sources */,
 				BEE9ADEF20DCBAE600AB4A3D /* p12_utl.c in Sources */,
@@ -5241,6 +5259,7 @@
 				BEE9B23020DD992100AB4A3D /* camellia.c in Sources */,
 				207646EC1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BEC8727C20DDC00500EDEAAA /* siphash.c in Sources */,
+				BE0BA5EB20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9B0B320DD8B4200AB4A3D /* t_pkey.c in Sources */,
 				BEF5D32720DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
 				BEE9A91620DCA9EF00AB4A3D /* conf_def.c in Sources */,
@@ -5394,6 +5413,7 @@
 				20148C25183563D000E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2DA20DC817B00B0C6D8 /* eng_init.c in Sources */,
 				BEC8740020DDDC3900EDEAAA /* pem_oth.c in Sources */,
+				BE0BA5E520F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				20A443C31AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEC871F920DDBAC800EDEAAA /* ecdh_ossl.c in Sources */,
 				BEE9ADF020DCBAE600AB4A3D /* p12_utl.c in Sources */,
@@ -5662,6 +5682,7 @@
 				BEE9B23120DD992100AB4A3D /* camellia.c in Sources */,
 				207646ED1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BEC8727D20DDC00500EDEAAA /* siphash.c in Sources */,
+				BE0BA5EC20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9B0B420DD8B4200AB4A3D /* t_pkey.c in Sources */,
 				BEF5D32820DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
 				BEE9A91720DCA9EF00AB4A3D /* conf_def.c in Sources */,
@@ -5815,6 +5836,7 @@
 				20148CD0183643E700E68E9C /* BTCScriptMachine.m in Sources */,
 				BEF5D2DB20DC817B00B0C6D8 /* eng_init.c in Sources */,
 				BEC8740120DDDC3900EDEAAA /* pem_oth.c in Sources */,
+				BE0BA5E620F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				20A443C41AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEC871F820DDBAC800EDEAAA /* ecdh_ossl.c in Sources */,
 				BEE9ADF120DCBAE600AB4A3D /* p12_utl.c in Sources */,
@@ -6083,6 +6105,7 @@
 				BEE9B22E20DD992100AB4A3D /* camellia.c in Sources */,
 				207646EA1A0A8A37000F00F2 /* BTCTransactionBuilder.m in Sources */,
 				BEC8727A20DDC00500EDEAAA /* siphash.c in Sources */,
+				BE0BA5E920F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9B0B120DD8B4200AB4A3D /* t_pkey.c in Sources */,
 				BEF5D32520DC91B600B0C6D8 /* tb_asnmth.c in Sources */,
 				BEE9A91420DCA9EF00AB4A3D /* conf_def.c in Sources */,
@@ -6236,6 +6259,7 @@
 				206B01631835485D00878B8D /* BTCOpcode.m in Sources */,
 				BEF5D2D820DC817B00B0C6D8 /* eng_init.c in Sources */,
 				BEC873FE20DDDC3800EDEAAA /* pem_oth.c in Sources */,
+				BE0BA5E320F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				20A443C11AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEC871FB20DDBACA00EDEAAA /* ecdh_ossl.c in Sources */,
 				BEE9ADEE20DCBAE600AB4A3D /* p12_utl.c in Sources */,
@@ -6363,6 +6387,7 @@
 				BEE9B05B20DD88DC00AB4A3D /* tasn_utl.c in Sources */,
 				BEE9A80220DC9CAD00AB4A3D /* init.c in Sources */,
 				20B8AB9F189F0CEF00008138 /* BTCKeychain+Tests.m in Sources */,
+				BE0BA5E220F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				BEE9B06920DD895300AB4A3D /* pmeth_gn.c in Sources */,
 				BEE9AFDD20DD815300AB4A3D /* x509_lu.c in Sources */,
 				BEE9A8AE20DCA6AB00AB4A3D /* obj_xref.c in Sources */,
@@ -6699,6 +6724,7 @@
 				BEE9B01C20DD868B00AB4A3D /* v3_genn.c in Sources */,
 				BEE9AF8720DD7F1900AB4A3D /* v3_akey.c in Sources */,
 				BEE9A80520DC9DF600AB4A3D /* dso_lib.c in Sources */,
+				BE0BA5E820F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9A8B620DCA73900AB4A3D /* p12_crpt.c in Sources */,
 				20B9646C17BACFAA008161BB /* BTCScriptMachine.m in Sources */,
 				BEF5D16420DC6EB400B0C6D8 /* tasn_typ.c in Sources */,
@@ -6888,6 +6914,7 @@
 				BEE9AE4E20DCBEAA00AB4A3D /* m_md5.c in Sources */,
 				75AF303B1C153009002187AF /* BTCMerkleTreeTests.swift in Sources */,
 				BEE9AFFE20DD857D00AB4A3D /* rsa_pmeth.c in Sources */,
+				BE0BA5ED20F5696C0074306B /* e_aes_cbc_hmac_sha1.c in Sources */,
 				BEE9B1B720DD939100AB4A3D /* p12_p8d.c in Sources */,
 				BEE9AFB720DD803D00AB4A3D /* v3_skey.c in Sources */,
 				BEC8741F20DDDC7D00EDEAAA /* loader_file.c in Sources */,
@@ -6907,6 +6934,7 @@
 				BEF5D15420DC698D00B0C6D8 /* mem.c in Sources */,
 				BEE9B2C020DD9CD000AB4A3D /* ct_oct.c in Sources */,
 				BEE9AE8E20DCC45D00AB4A3D /* a_verify.c in Sources */,
+				BE0BA5E720F5696C0074306B /* e_aes_cbc_hmac_sha256.c in Sources */,
 				BEE9AF3820DD7DBD00AB4A3D /* v3_ocsp.c in Sources */,
 				BEF5D1F520DC748A00B0C6D8 /* o_str.c in Sources */,
 				BEE9AF5B20DD7E6D00AB4A3D /* v3_info.c in Sources */,
