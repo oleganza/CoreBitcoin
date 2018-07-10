@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/include" "${PODS_ROOT}/CoreEthereum/openssl/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
+    'OTHER_CFLAGS' => '$(inherited) -DOPENSSL_NO_SEED -DOPENSSL_NO_IDEA -DOPENSSL_NO_RC2 -DOPENSSL_NO_RC4 -DOPENSSL_NO_DES -DOPENSSL_NO_SM4 -DOPENSSL_NO_SM4 -DOPENSSL_NO_BF -DOPENSSL_NO_CHACHA'
   }
   s.framework    = 'Foundation'
   s.preserve_paths = 'openssl/LICENSE', 'openssl/**/*.h'

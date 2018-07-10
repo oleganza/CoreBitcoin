@@ -16,7 +16,6 @@
 
 void openssl_add_all_ciphers_int(void)
 {
-/*
 #ifndef OPENSSL_NO_DES
     EVP_add_cipher(EVP_des_cfb());
     EVP_add_cipher(EVP_des_cfb1());
@@ -263,5 +262,4 @@ void openssl_add_all_ciphers_int(void)
     EVP_add_cipher(EVP_chacha20_poly1305());
 # endif
 #endif
- */
 }
