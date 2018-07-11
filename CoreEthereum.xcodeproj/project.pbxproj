@@ -4512,7 +4512,7 @@
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0460;
-				ORGANIZATIONNAME = "Oleg Andreev";
+				ORGANIZATIONNAME = "William Morriss";
 				TargetAttributes = {
 					757B24141B03F1BF0084A9DE = {
 						CreatedOnToolsVersion = 6.3.1;
