@@ -29,7 +29,6 @@
 		20148B1818355DAD00E68E9C /* BTCTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7C17B8FF76005AC9E6 /* BTCTransaction.m */; };
 		20148B1918355DAD00E68E9C /* BTCTransactionInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD7E17B8FF76005AC9E6 /* BTCTransactionInput.m */; };
 		20148B1A18355DAD00E68E9C /* BTCTransactionOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD8017B8FF76005AC9E6 /* BTCTransactionOutput.m */; };
-		20148C0A1835638200E68E9C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20148C081835638200E68E9C /* InfoPlist.strings */; };
 		20148C13183563D000E68E9C /* BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2084DD8517B8FF76005AC9E6 /* BTCData.m */; };
 		20148C15183563D000E68E9C /* NSData+BTCData.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01117C73181003B6987 /* NSData+BTCData.m */; };
 		20148C16183563D000E68E9C /* BTCErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 20B66C8617BFE4F9007128CE /* BTCErrors.m */; };
@@ -128,7 +127,6 @@
 		2061D1DC1A2CA771004F1E40 /* BTCHashID.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D51A2CA771004F1E40 /* BTCHashID.m */; };
 		2061D1DD1A2CA771004F1E40 /* BTCHashID.m in Sources */ = {isa = PBXBuildFile; fileRef = 2061D1D51A2CA771004F1E40 /* BTCHashID.m */; };
 		206304EA17CBE72200DF3F18 /* NS+BTCBase58.m in Sources */ = {isa = PBXBuildFile; fileRef = 20E1E01417C735EE003B6987 /* NS+BTCBase58.m */; };
-		206B011F183547C200878B8D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 206B011D183547C200878B8D /* InfoPlist.strings */; };
 		206B013D1835484300878B8D /* BTCUnitsAndLimits.h in Headers */ = {isa = PBXBuildFile; fileRef = 2084DD8117B8FF76005AC9E6 /* BTCUnitsAndLimits.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		206B013E1835484300878B8D /* BTCData.h in Headers */ = {isa = PBXBuildFile; fileRef = 2084DD8417B8FF76005AC9E6 /* BTCData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		206B013F1835484300878B8D /* BTCData+Tests.h in Headers */ = {isa = PBXBuildFile; fileRef = 2084DD8217B8FF76005AC9E6 /* BTCData+Tests.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2671,7 +2669,6 @@
 		200FA8D91C07A8B80039029D /* BTCSecretSharingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCSecretSharingTests.swift; sourceTree = "<group>"; };
 		200FA8DB1C0CF8400039029D /* TestsSwiftBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestsSwiftBridgingHeader.h; sourceTree = "<group>"; };
 		20148ADF18355D7200E68E9C /* libCoreBitcoinIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCoreBitcoinIOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		20148AE318355D7200E68E9C /* CoreBitcoinIOSlib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinIOSlib-Prefix.pch"; sourceTree = "<group>"; };
 		20148B2418355E8F00E68E9C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		20148B3718355F0100E68E9C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		20148B3A18355F0100E68E9C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -2679,11 +2676,7 @@
 		20148B3C18355F0100E68E9C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		20148BFD183562C400E68E9C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		20148C031835638200E68E9C /* CoreBitcoinIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreBitcoinIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		20148C071835638200E68E9C /* CoreBitcoinIOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreBitcoinIOS-Info.plist"; sourceTree = "<group>"; };
-		20148C091835638200E68E9C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		20148C0B1835638200E68E9C /* CoreBitcoinIOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinIOS-Prefix.pch"; sourceTree = "<group>"; };
 		20148C9B183643AB00E68E9C /* libCoreBitcoinOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCoreBitcoinOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		20148C9F183643AB00E68E9C /* CoreBitcoinOSXlib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinOSXlib-Prefix.pch"; sourceTree = "<group>"; };
 		20148CA8183643AB00E68E9C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		20203ADD19F66B6E0085C01F /* MEME_GLOSSARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MEME_GLOSSARY.md; sourceTree = "<group>"; };
 		2037AB1317D3BFF900DB248C /* BTCScript+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTCScript+Tests.h"; sourceTree = "<group>"; };
@@ -2700,9 +2693,6 @@
 		2061D1D41A2CA771004F1E40 /* BTCHashID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCHashID.h; sourceTree = "<group>"; };
 		2061D1D51A2CA771004F1E40 /* BTCHashID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCHashID.m; sourceTree = "<group>"; };
 		206B0113183547C200878B8D /* CoreBitcoinOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBitcoinOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		206B011C183547C200878B8D /* CoreBitcoinOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreBitcoinOSX-Info.plist"; sourceTree = "<group>"; };
-		206B011E183547C200878B8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		206B0120183547C200878B8D /* CoreBitcoinOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CoreBitcoinOSX-Prefix.pch"; sourceTree = "<group>"; };
 		207646E41A0A8A37000F00F2 /* BTCTransactionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCTransactionBuilder.h; sourceTree = "<group>"; };
 		207646E51A0A8A37000F00F2 /* BTCTransactionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCTransactionBuilder.m; sourceTree = "<group>"; };
 		207B2602188C440600916AE6 /* BTCSignatureHashType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCSignatureHashType.h; sourceTree = "<group>"; };
@@ -3256,22 +3246,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		20148AE118355D7200E68E9C /* CoreBitcoinIOSlib */ = {
-			isa = PBXGroup;
-			children = (
-				20148AE218355D7200E68E9C /* Supporting Files */,
-			);
-			path = CoreBitcoinIOSlib;
-			sourceTree = "<group>";
-		};
-		20148AE218355D7200E68E9C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				20148AE318355D7200E68E9C /* CoreBitcoinIOSlib-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		20148B3918355F0100E68E9C /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -3280,40 +3254,6 @@
 				20148B3C18355F0100E68E9C /* AppKit.framework */,
 			);
 			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
-		20148C051835638200E68E9C /* CoreBitcoinIOS */ = {
-			isa = PBXGroup;
-			children = (
-				20148C061835638200E68E9C /* Supporting Files */,
-			);
-			path = CoreBitcoinIOS;
-			sourceTree = "<group>";
-		};
-		20148C061835638200E68E9C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				20148C071835638200E68E9C /* CoreBitcoinIOS-Info.plist */,
-				20148C081835638200E68E9C /* InfoPlist.strings */,
-				20148C0B1835638200E68E9C /* CoreBitcoinIOS-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		20148C9D183643AB00E68E9C /* CoreBitcoinOSXlib */ = {
-			isa = PBXGroup;
-			children = (
-				20148C9E183643AB00E68E9C /* Supporting Files */,
-			);
-			path = CoreBitcoinOSXlib;
-			sourceTree = "<group>";
-		};
-		20148C9E183643AB00E68E9C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				20148C9F183643AB00E68E9C /* CoreBitcoinOSXlib-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		205D8B8D1B16017700F9EA4E /* Crypto */ = {
@@ -3426,39 +3366,13 @@
 			name = "Third Party Sources";
 			sourceTree = "<group>";
 		};
-		206B011A183547C200878B8D /* CoreBitcoinOSX */ = {
-			isa = PBXGroup;
-			children = (
-				206B011B183547C200878B8D /* Supporting Files */,
-			);
-			path = CoreBitcoinOSX;
-			sourceTree = "<group>";
-		};
-		206B011B183547C200878B8D /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				206B011C183547C200878B8D /* CoreBitcoinOSX-Info.plist */,
-				206B011D183547C200878B8D /* InfoPlist.strings */,
-				206B0120183547C200878B8D /* CoreBitcoinOSX-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		2084DD5F17B8FF47005AC9E6 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				2084DD6017B8FF47005AC9E6 /* main.m */,
 				2084DD6317B8FF47005AC9E6 /* UnitTests-Prefix.pch */,
-				2084DD6217B8FF47005AC9E6 /* Transactions */,
 			);
 			path = UnitTests;
-			sourceTree = "<group>";
-		};
-		2084DD6217B8FF47005AC9E6 /* Transactions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Transactions;
 			sourceTree = "<group>";
 		};
 		2084DD9917B8FFB0005AC9E6 /* OpenSSL */ = {
@@ -3550,10 +3464,6 @@
 				2084DD9917B8FFB0005AC9E6 /* OpenSSL */,
 				20D09B9D18BA130600794209 /* Utils */,
 				2084DD5F17B8FF47005AC9E6 /* UnitTests */,
-				206B011A183547C200878B8D /* CoreBitcoinOSX */,
-				20148AE118355D7200E68E9C /* CoreBitcoinIOSlib */,
-				20148C051835638200E68E9C /* CoreBitcoinIOS */,
-				20148C9D183643AB00E68E9C /* CoreBitcoinOSXlib */,
 				757B24161B03F1BF0084A9DE /* CoreBitcoinTestsOSX */,
 				20D2802417B8FE00004A462B /* Frameworks */,
 				20D2802317B8FE00004A462B /* Products */,
@@ -4636,7 +4546,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20148C0A1835638200E68E9C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4644,7 +4553,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				206B011F183547C200878B8D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7214,25 +7122,6 @@
 			targetProxy = 757B241C1B03F1BF0084A9DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		20148C081835638200E68E9C /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				20148C091835638200E68E9C /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		206B011D183547C200878B8D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				206B011E183547C200878B8D /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		20148AFE18355D7200E68E9C /* Debug */ = {
