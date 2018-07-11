@@ -37,7 +37,7 @@
     NSAssert([BTCDataFromHex(@"0xdeadBEEF") isEqualToData:[NSData dataWithBytes:"\xde\xad\xBE\xEF" length:4]], @"Init data with hex string");
     
     NSAssert(![BTCDataFromHex(@"0xdeadBEEF") isEqualToData:[NSData dataWithBytes:"\xde\xad\xBE\xFE" length:4]], @"Init data with hex string");
-    
+    NSAssert([[NSData fromHex:@"0a"] isEqualToData:[NSData fromHex:@"0x0a"]], @"Ignore 0x prefix");
     
     // Base58 decoding
     
@@ -49,7 +49,6 @@
     
     NSAssert([[BTCDataFromHex(@"deadBeeF") base58String] isEqualToString:@"6h8cQN"], @"Encodes base58");
     NSAssert([[BTCDataFromHex(@"00c4c5d791fcb4654a1ef5e03fe0ad3d9c598f9827") base58CheckString] isEqualToString:@"1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T"], @"Encodes base58 with checksum");
-    
     
     // Memory-hard KDF
 //    
