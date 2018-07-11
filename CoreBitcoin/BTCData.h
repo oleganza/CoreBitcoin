@@ -24,11 +24,9 @@ NSData* BTCCoinFlipDataWithLength(NSUInteger length);
 
 // Creates data with zero-terminated string in UTF-8 encoding.
 NSData* BTCDataWithUTF8CString(const char* utf8cstring);
-NSData* BTCDataWithUTF8String(const char* utf8string) DEPRECATED_ATTRIBUTE; // will repurpose for NSString later.
 
 // Init with hex string (lower- or uppercase, with optional 0x prefix)
 NSData* BTCDataFromHex(NSString* hex);
-NSData* BTCDataWithHexString(NSString* hexString) DEPRECATED_ATTRIBUTE;
 
 // Init with zero-terminated hex string (lower- or uppercase, with optional 0x prefix)
 NSData* BTCDataWithHexCString(const char* hexString);
@@ -36,10 +34,6 @@ NSData* BTCDataWithHexCString(const char* hexString);
 // Converts data to a hex string
 NSString* BTCHexFromData(NSData* data);
 NSString* BTCUppercaseHexFromData(NSData* data); // more efficient than calling -uppercaseString on a lower-case result.
-
-// Deprecated. Use BTCHexFromData and BTCUppercaseHexFromData instead.
-NSString* BTCHexStringFromData(NSData* data) DEPRECATED_ATTRIBUTE;
-NSString* BTCUppercaseHexStringFromData(NSData* data) DEPRECATED_ATTRIBUTE;
 
 // Returns a copy of data with reversed byte order.
 // This is useful in Bitcoin: things get reversed here and there all the time.

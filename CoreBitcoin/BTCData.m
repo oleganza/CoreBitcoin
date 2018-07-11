@@ -108,17 +108,9 @@ NSData* BTCCoinFlipDataWithLength(NSUInteger length) {
     return data;
 }
 
-NSData* BTCDataWithUTF8String(const char* utf8string) { // deprecated
-    return BTCDataWithUTF8CString(utf8string);
-}
-
 // Creates data with zero-terminated string in UTF-8 encoding.
 NSData* BTCDataWithUTF8CString(const char* utf8string) {
     return [[NSData alloc] initWithBytes:utf8string length:strlen(utf8string)];
-}
-
-NSData* BTCDataWithHexString(NSString* hexString) { // deprecated
-    return BTCDataFromHex(hexString);
 }
 
 // Init with hex string (lower- or uppercase, with optional 0x prefix)
@@ -197,14 +189,6 @@ NSString* BTCHexFromDataWithFormat(NSData* data, const char* format) {
         sprintf(dest + i*2, format, (unsigned int)(src[i]));
     }
     return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
-}
-
-NSString* BTCHexStringFromData(NSData* data) { // deprecated
-    return BTCHexFromDataWithFormat(data, "%02x");
-}
-
-NSString* BTCUppercaseHexStringFromData(NSData* data) { // deprecated
-    return BTCHexFromDataWithFormat(data, "%02X");
 }
 
 NSString* BTCHexFromData(NSData* data) {

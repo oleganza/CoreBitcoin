@@ -33,17 +33,9 @@
     return BTCUppercaseHexFromData(self);
 }
 
-- (NSString*) hexString {
-    return BTCHexFromData(self);
++ (NSData *)fromHex:(NSString *)hex {
+    return BTCDataFromHex(hex);
 }
-
-- (NSString*) hexUppercaseString {
-    return BTCUppercaseHexFromData(self);
-}
-
-
-
-
 
 #pragma mark - Encryption / Decryption
 
