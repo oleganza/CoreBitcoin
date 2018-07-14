@@ -175,28 +175,44 @@ NSData* BTCDataWithHexCString(const char* hexCString) {
     return [[NSData alloc] initWithBytesNoCopy:buf length:len/2];
 }
 
+static char hexValues[16] = {
+    '0', '1', '2', '3',
+    '4', '5', '6', '7',
+    '8', '9', 'a', 'b',
+    'c', 'd', 'e', 'f',
+};
 
-NSString* BTCHexFromDataWithFormat(NSData* data, const char* format) {
-    if (!data) return nil;
-    
-    NSUInteger length = data.length;
-    if (length == 0) return @"";
-    
-    NSMutableData* resultdata = [NSMutableData dataWithLength:length * 2];
-    char *dest = resultdata.mutableBytes;
-    unsigned const char *src = data.bytes;
-    for (int i = 0; i < length; ++i) {
-        sprintf(dest + i*2, format, (unsigned int)(src[i]));
+static char upperHexValues[16] = {
+    '0', '1', '2', '3',
+    '4', '5', '6', '7',
+    '8', '9', 'A', 'B',
+    'C', 'D', 'E', 'F',
+};
+
+static NSString* BTCHexFromDataWithCharset(NSData* data, const char* charset) {
+    size_t inLength = data.length;
+    size_t length = inLength * 2;
+    uint8_t *outString = malloc(length);
+    const unsigned char *bytes = data.bytes;
+    for (uint32_t i = 0; i < inLength; i++) {
+        unsigned char byte = bytes[i];
+        outString[i*2] = charset[(byte & 0xF0) >> 4];
+        outString[i*2+1] = charset[(byte & 0x0F)];
     }
-    return [[NSString alloc] initWithData:resultdata encoding:NSASCIIStringEncoding];
+    return [[NSString alloc]
+        initWithBytesNoCopy:outString
+        length:length
+        encoding:NSUTF8StringEncoding
+        freeWhenDone:YES
+    ];
 }
 
 NSString* BTCHexFromData(NSData* data) {
-    return BTCHexFromDataWithFormat(data, "%02x");
+    return BTCHexFromDataWithCharset(data, hexValues);
 }
 
 NSString* BTCUppercaseHexFromData(NSData* data) {
-    return BTCHexFromDataWithFormat(data, "%02X");
+    return BTCHexFromDataWithCharset(data, upperHexValues);
 }
 
 
