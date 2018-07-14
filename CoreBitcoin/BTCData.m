@@ -210,7 +210,7 @@ static NSString* BTCHexFromDataWithCharset(NSData* data, const char* charset) {
     return [[NSString alloc]
         initWithBytesNoCopy:outString
         length:length
-        encoding:NSUTF8StringEncoding
+        encoding:NSASCIIStringEncoding
         freeWhenDone:YES
     ];
 }
