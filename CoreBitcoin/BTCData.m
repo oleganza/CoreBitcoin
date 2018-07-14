@@ -204,8 +204,8 @@ static NSString* BTCHexFromDataWithCharset(NSData* data, const char* charset) {
     const unsigned char *bytes = data.bytes;
     for (uint32_t i = 0; i < inLength; i++) {
         unsigned char byte = bytes[i];
-        outString[i*2] = charset[(byte & 0xF0) >> 4];
-        outString[i*2+1] = charset[(byte & 0x0F)];
+        outString[i*2] = charset[byte >> 4];
+        outString[i*2+1] = charset[byte & 0x0F];
     }
     return [[NSString alloc]
         initWithBytesNoCopy:outString
