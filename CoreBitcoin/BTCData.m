@@ -183,14 +183,14 @@ NSData* BTCDataWithHexCString(const char* hexCString) {
     return [[NSData alloc] initWithBytesNoCopy:buf length:len/2];
 }
 
-static char hexValues[16] = {
+static const char hexValues[16] = {
     '0', '1', '2', '3',
     '4', '5', '6', '7',
     '8', '9', 'a', 'b',
     'c', 'd', 'e', 'f',
 };
 
-static char upperHexValues[16] = {
+static const char upperHexValues[16] = {
     '0', '1', '2', '3',
     '4', '5', '6', '7',
     '8', '9', 'A', 'B',
