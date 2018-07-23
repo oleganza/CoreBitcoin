@@ -440,8 +440,7 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) {
 //    NSLog(@"TX SUBSCRIPT: %@ (%@)", BTCHexFromData(subscript.data), subscript);
 //    NSLog(@"TX HASH: %@", BTCHexFromData(hash));
 //    NSLog(@"TX PLIST: %@", tx.dictionary);
-    NSLog(@"[CoreBitcoin] hasType（d): %d", hashType);
-    NSLog(@"[CoreBitcoin] hasType（x): %x", hashType);
+    
     
     return hash;
 }
