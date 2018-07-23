@@ -128,6 +128,8 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
 - (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
 
+- (NSData *)signatureWitnessHashForScript:(BTCScript *)redeemScript amount:(BTCAmount)amount inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
+
 // Adds input script
 - (void) addInput:(BTCTransactionInput*)input;
 

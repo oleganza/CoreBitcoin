@@ -32,6 +32,9 @@ typedef NS_ENUM(unsigned char, BTCSignatureHashType)
     SIGHASH_SINGLE       = 3,
     BTCSignatureHashTypeSingle = SIGHASH_SINGLE,
     
+    SIGHASH_FORKID       = 0x40,
+    BCHSignatureHashTypeForkIDAll = SIGHASH_ALL | SIGHASH_FORKID,
+    
     // This mask is used to determine one of the first types independently from ANYONECANPAY option:
     // E.g. if (type & SIGHASH_OUTPUT_MASK == SIGHASH_NONE) { blank all outputs }
     SIGHASH_OUTPUT_MASK  = 0x1F,

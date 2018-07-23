@@ -441,9 +441,68 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) {
 //    NSLog(@"TX HASH: %@", BTCHexFromData(hash));
 //    NSLog(@"TX PLIST: %@", tx.dictionary);
     
+    
     return hash;
 }
 
+- (NSData *)signatureWitnessHashForScript:(BTCScript *)redeemScript amount:(BTCAmount)amount inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut {
+    
+    NSMutableData *fullData = [[NSMutableData alloc] initWithCapacity:256];
+    
+    NSMutableData *prevoutsData = [[NSMutableData alloc] init];
+    for (int i = 0; i < self.inputs.count; i++) {
+        BTCTransactionInput *input = self.inputs[i];
+        [prevoutsData appendData:input.previousHash];
+        uint32_t vindex = OSSwapHostToLittleInt32(input.previousIndex);
+        [prevoutsData appendBytes:&vindex length:sizeof(vindex)];
+    }
+    NSData *hashPrevouts = BTCHash256(prevoutsData);
+    
+    NSMutableData *sequenceData = [[NSMutableData alloc] init];
+    for (int i = 0; i < self.inputs.count; i++) {
+        BTCTransactionInput *input = self.inputs[i];
+        uint32_t sequence = OSSwapHostToLittleInt32(input.sequence);
+        [sequenceData appendBytes:&sequence length:sizeof(sequence)];
+    }
+    NSData *hashSequence = BTCHash256(sequenceData);
+    
+    NSMutableData *outputData = [[NSMutableData alloc] init];
+    for(int i = 0; i < self.outputs.count; i++) {
+        BTCTransactionOutput *output = self.outputs[i];
+        uint64_t value = OSSwapHostToLittleInt64(output.value);
+        [outputData appendBytes:&value length:sizeof(value)];
+        NSData *scriptData = output.script.data;
+        
+        [outputData appendData:[BTCProtocolSerialization dataForVarInt:scriptData.length]];
+        [outputData appendData:scriptData];
+    }
+    NSData *hashOutputs = BTCHash256(outputData);
+    
+    BTCTransactionInput *currentInput = self.inputs[inputIndex];
+    
+    uint32_t version = OSSwapHostToLittleInt32(self.version);
+    [fullData appendBytes:&version length:sizeof(version)];
+    [fullData appendData:hashPrevouts];
+    [fullData appendData:hashSequence];
+    [fullData appendData:currentInput.previousHash];
+    uint32_t currentInputVInext = OSSwapHostToLittleInt32(currentInput.previousIndex);
+    [fullData appendBytes:&currentInputVInext length:sizeof(currentInputVInext)];
+    [fullData appendData:[BTCProtocolSerialization dataForVarInt:redeemScript.data.length]];
+    [fullData appendData:redeemScript.data];
+    uint64_t amountValue = OSSwapHostToLittleInt64(amount);
+    [fullData appendBytes:&amountValue length:sizeof(amountValue)];
+    uint32_t currentInputSequence = OSSwapHostToLittleInt32(currentInput.sequence);
+    [fullData appendBytes:&currentInputSequence length:sizeof(currentInputSequence)];
+    [fullData appendData:hashOutputs];
+    uint32_t lockTime = OSSwapHostToLittleInt32(self.lockTime);
+    [fullData appendBytes:&lockTime length:sizeof(lockTime)];
+    uint32_t hashType32 = OSSwapHostToLittleInt32((uint32_t)hashType);
+    [fullData appendBytes:&hashType32 length:sizeof(hashType32)];
+    
+    NSData* hash = BTCHash256(fullData);
+    return hash;
+    
+}
 
 
 
