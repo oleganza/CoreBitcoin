@@ -22,6 +22,7 @@
 @dynamic decimalString;
 @dynamic signedLittleEndian;
 @dynamic unsignedBigEndian;
+@dynamic rlpUnsignedBigEndian;
 @dynamic littleEndianData; // deprecated
 @dynamic unsignedData; // deprecated
 
@@ -590,12 +591,24 @@
     return data;
 }
 
+- (NSData* )rlpUnsignedBigEndian {
+    int num_bytes = BN_num_bytes(_bignum);
+    NSMutableData* data = [[NSMutableData alloc] initWithLength:num_bytes];
+    int copied_bytes = BN_bn2bin(_bignum, data.mutableBytes);
+    if (copied_bytes != num_bytes) return nil;
+    return data;
+}
+
 - (void) setUnsignedBigEndian:(NSData *)data {
     [self throwIfImmutable];
     if (!data) return;
     if (!BN_bin2bn(data.bytes, (int)data.length, _bignum)) {
         return;
     }
+}
+
+- (void)setRlpUnsignedBigEndian:(NSData *)data {
+    [self setUnsignedBigEndian:data];
 }
 
 // deprecated

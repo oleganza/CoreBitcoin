@@ -21,6 +21,7 @@
 @property(nonatomic, readonly) NSString* decimalString;
 @property(nonatomic, readonly) NSData* signedLittleEndian;
 @property(nonatomic, readonly) NSData* unsignedBigEndian;
+@property(nonatomic, readonly) NSData* rlpUnsignedBigEndian;
 
 // Deprecated. Use `-signedLittleEndian` instead.
 @property(nonatomic, readonly) NSData* littleEndianData DEPRECATED_ATTRIBUTE;
