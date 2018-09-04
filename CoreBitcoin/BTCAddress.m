@@ -16,6 +16,7 @@ enum
     BTCPublicKeyAddressVersionTestnet  = 111,
     BTCPrivateKeyAddressVersionTestnet = 239,
     BTCScriptHashAddressVersionTestnet = 196,
+    LTCPublicKeyAddressVersion         = 48,
 };
 
 @implementation BTCAddress {
@@ -431,4 +432,16 @@ enum
     return YES;
 }
 
+@end
+
+
+@implementation LTCPublicKeyAddress
+
++ (void) load {
+    [BTCAddress registerAddressClass:self version:[self BTCVersionPrefix]];
+}
+
++ (uint8_t) BTCVersionPrefix {
+    return LTCPublicKeyAddressVersion;
+}
 @end

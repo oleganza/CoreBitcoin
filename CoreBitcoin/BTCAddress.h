@@ -106,3 +106,6 @@
 @end
 @interface BTCScriptHashAddressTestnet : BTCScriptHashAddress
 @end
+
+@interface LTCPublicKeyAddress : BTCPublicKeyAddress
+@end
