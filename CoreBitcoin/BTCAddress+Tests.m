@@ -9,7 +9,7 @@
     [self testPrivateKeyAddress];
     [self testPrivateKeyAddressWithCompressedPoint];
     [self testScriptHashKeyAddress];
-    [self testLTCPublicKeyAddress];
+    [self testQTUMPublicKeyAddress];
 }
 
 + (void) testPublicKeyAddress {
@@ -70,6 +70,14 @@
     NSAssert(addr, @"Address should be decoded");
     NSAssert([addr isKindOfClass:[LTCPublicKeyAddress class]], @"Address should be an instance of BTCPublicKeyAddress");
     NSAssert([@"a91c5141dd1a2ab7aead02929c1cc6514ab591f2" isEqualToString:[addr.data hex]], @"Must decode hash160 correctly.");
+    NSAssert([addr isEqual:addr.publicAddress], @"Address should be equal to its publicAddress");
+}
+
++ (void) testQTUMPublicKeyAddress {
+    QTUMPublicKeyAddress* addr = [QTUMPublicKeyAddress addressWithString:@"QXmeNJ1mHmJVjmZCCrZ7DWWUMiWtKXPGBu"];
+    NSAssert(addr, @"Address should be decoded");
+    NSAssert([addr isKindOfClass:[QTUMPublicKeyAddress class]], @"Address should be an instance of BTCPublicKeyAddress");
+    NSAssert([@"7a7d105b98ea62a40ef0cc421a19401ddaa5a22d" isEqualToString:[addr.data hex]], @"Must decode hash160 correctly.");
     NSAssert([addr isEqual:addr.publicAddress], @"Address should be equal to its publicAddress");
 }
 

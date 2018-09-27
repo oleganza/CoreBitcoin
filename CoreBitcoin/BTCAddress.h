@@ -109,3 +109,7 @@
 
 @interface LTCPublicKeyAddress : BTCPublicKeyAddress
 @end
+
+@interface QTUMPublicKeyAddress : BTCPublicKeyAddress
+
+@end
