@@ -15,7 +15,6 @@
 #include <openssl/evp.h>
 #include "internal/evp_int.h"
 #include "internal/conf.h"
-#include "internal/async.h"
 #include "internal/engine.h"
 #include "internal/comp.h"
 #include "internal/err.h"
@@ -251,17 +250,6 @@ DEFINE_RUN_ONCE_STATIC(ossl_init_no_config)
 }
 
 static CRYPTO_ONCE async = CRYPTO_ONCE_STATIC_INIT;
-static int async_inited = 0;
-DEFINE_RUN_ONCE_STATIC(ossl_init_async)
-{
-#ifdef OPENSSL_INIT_DEBUG
-    fprintf(stderr, "OPENSSL_INIT: ossl_init_async: async_init()\n");
-#endif
-    if (!async_init())
-        return 0;
-    async_inited = 1;
-    return 1;
-}
 
 #ifndef OPENSSL_NO_ENGINE
 static CRYPTO_ONCE engine_openssl = CRYPTO_ONCE_STATIC_INIT;
@@ -366,14 +354,6 @@ static void ossl_init_thread_stop(struct thread_local_inits_st *locals)
     /* Can't do much about this */
     if (locals == NULL)
         return;
-
-    if (locals->async) {
-#ifdef OPENSSL_INIT_DEBUG
-        fprintf(stderr, "OPENSSL_INIT: ossl_init_thread_stop: "
-                        "async_delete_thread_state()\n");
-#endif
-        async_delete_thread_state();
-    }
 
     if (locals->err_state) {
 #ifdef OPENSSL_INIT_DEBUG
@@ -484,14 +464,6 @@ void OPENSSL_cleanup(void)
         comp_zlib_cleanup_int();
     }
 #endif
-
-    if (async_inited) {
-# ifdef OPENSSL_INIT_DEBUG
-        fprintf(stderr, "OPENSSL_INIT: OPENSSL_cleanup: "
-                        "async_deinit()\n");
-# endif
-        async_deinit();
-    }
 
     if (load_crypto_strings_inited) {
 #ifdef OPENSSL_INIT_DEBUG
@@ -617,10 +589,6 @@ int OPENSSL_init_crypto(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings)
         if (!ret)
             return 0;
     }
-
-    if ((opts & OPENSSL_INIT_ASYNC)
-            && !RUN_ONCE(&async, ossl_init_async))
-        return 0;
 
 #ifndef OPENSSL_NO_ENGINE
     if ((opts & OPENSSL_INIT_ENGINE_OPENSSL)

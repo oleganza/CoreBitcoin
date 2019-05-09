@@ -1808,18 +1808,6 @@
 		BEE9B10120DD8D9400AB4A3D /* ec2_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B0FD20DD8D9400AB4A3D /* ec2_oct.c */; };
 		BEE9B10220DD8D9400AB4A3D /* ec2_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B0FD20DD8D9400AB4A3D /* ec2_oct.c */; };
 		BEE9B10320DD8D9400AB4A3D /* ec2_oct.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B0FD20DD8D9400AB4A3D /* ec2_oct.c */; };
-		BEE9B10620DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10720DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10820DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10920DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10A20DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10B20DD8DFF00AB4A3D /* async.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10520DD8DFF00AB4A3D /* async.c */; };
-		BEE9B10E20DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
-		BEE9B10F20DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
-		BEE9B11020DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
-		BEE9B11120DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
-		BEE9B11220DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
-		BEE9B11320DD8E9200AB4A3D /* async_posix.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B10D20DD8E9200AB4A3D /* async_posix.c */; };
 		BEE9B11520DD8EB900AB4A3D /* drbg_ctr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B11420DD8EB900AB4A3D /* drbg_ctr.c */; };
 		BEE9B11620DD8EB900AB4A3D /* drbg_ctr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B11420DD8EB900AB4A3D /* drbg_ctr.c */; };
 		BEE9B11720DD8EB900AB4A3D /* drbg_ctr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B11420DD8EB900AB4A3D /* drbg_ctr.c */; };
@@ -1850,12 +1838,6 @@
 		BEE9B13B20DD8F9E00AB4A3D /* ocsp_asn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13720DD8F9E00AB4A3D /* ocsp_asn.c */; };
 		BEE9B13C20DD8F9E00AB4A3D /* ocsp_asn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13720DD8F9E00AB4A3D /* ocsp_asn.c */; };
 		BEE9B13D20DD8F9E00AB4A3D /* ocsp_asn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13720DD8F9E00AB4A3D /* ocsp_asn.c */; };
-		BEE9B13F20DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
-		BEE9B14020DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
-		BEE9B14120DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
-		BEE9B14220DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
-		BEE9B14320DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
-		BEE9B14420DD8FD200AB4A3D /* async_wait.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B13E20DD8FD100AB4A3D /* async_wait.c */; };
 		BEE9B14620DD8FF800AB4A3D /* ct_prn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B14520DD8FF800AB4A3D /* ct_prn.c */; };
 		BEE9B14720DD8FF800AB4A3D /* ct_prn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B14520DD8FF800AB4A3D /* ct_prn.c */; };
 		BEE9B14820DD8FF800AB4A3D /* ct_prn.c in Sources */ = {isa = PBXBuildFile; fileRef = BEE9B14520DD8FF800AB4A3D /* ct_prn.c */; };
@@ -3054,14 +3036,11 @@
 		BEE9B0E820DD8CFC00AB4A3D /* a_strnid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = a_strnid.c; sourceTree = "<group>"; };
 		BEE9B0EF20DD8D4A00AB4A3D /* rsa_pss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_pss.c; sourceTree = "<group>"; };
 		BEE9B0FD20DD8D9400AB4A3D /* ec2_oct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ec2_oct.c; sourceTree = "<group>"; };
-		BEE9B10520DD8DFF00AB4A3D /* async.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
-		BEE9B10D20DD8E9200AB4A3D /* async_posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async_posix.c; sourceTree = "<group>"; };
 		BEE9B11420DD8EB900AB4A3D /* drbg_ctr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drbg_ctr.c; sourceTree = "<group>"; };
 		BEE9B11B20DD8EDD00AB4A3D /* f_string.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = f_string.c; sourceTree = "<group>"; };
 		BEE9B12220DD8F1100AB4A3D /* rsa_saos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_saos.c; sourceTree = "<group>"; };
 		BEE9B13020DD8F7F00AB4A3D /* ocsp_ht.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ocsp_ht.c; sourceTree = "<group>"; };
 		BEE9B13720DD8F9E00AB4A3D /* ocsp_asn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ocsp_asn.c; sourceTree = "<group>"; };
-		BEE9B13E20DD8FD100AB4A3D /* async_wait.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = async_wait.c; sourceTree = "<group>"; };
 		BEE9B14520DD8FF800AB4A3D /* ct_prn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ct_prn.c; sourceTree = "<group>"; };
 		BEE9B14C20DD901600AB4A3D /* ct_log.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ct_log.c; sourceTree = "<group>"; };
 		BEE9B15320DD90C700AB4A3D /* rsa_gen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rsa_gen.c; sourceTree = "<group>"; };
@@ -3968,8 +3947,6 @@
 			isa = PBXGroup;
 			children = (
 				BEE9B10C20DD8E8100AB4A3D /* arch */,
-				BEE9B13E20DD8FD100AB4A3D /* async_wait.c */,
-				BEE9B10520DD8DFF00AB4A3D /* async.c */,
 			);
 			name = async;
 			path = src/crypto/async;
@@ -3978,7 +3955,6 @@
 		BEE9B10C20DD8E8100AB4A3D /* arch */ = {
 			isa = PBXGroup;
 			children = (
-				BEE9B10D20DD8E9200AB4A3D /* async_posix.c */,
 			);
 			path = arch;
 			sourceTree = "<group>";
@@ -4603,7 +4579,6 @@
 				BEE9B2D320DD9DC100AB4A3D /* ui_lib.c in Sources */,
 				BEE9A82020DC9F7800AB4A3D /* eng_fat.c in Sources */,
 				BEE9B17B20DD91F500AB4A3D /* pem_lib.c in Sources */,
-				BEE9B11020DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEC873C220DDDB6100EDEAAA /* conf_sap.c in Sources */,
 				BEC8743020DDDC9D00EDEAAA /* pcy_map.c in Sources */,
 				BEE9B23620DD995000AB4A3D /* cmll_cbc.c in Sources */,
@@ -4616,7 +4591,6 @@
 				BEC8739620DDDAEB00EDEAAA /* i2d_pr.c in Sources */,
 				BEE9AEEE20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BE9AAF6A20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
-				BEE9B10820DD8DFF00AB4A3D /* async.c in Sources */,
 				BEF5D1F220DC748A00B0C6D8 /* o_str.c in Sources */,
 				BEC8721F20DDBD0700EDEAAA /* cms_dd.c in Sources */,
 				BEE9B1D820DD950100AB4A3D /* e_aria.c in Sources */,
@@ -4626,7 +4600,6 @@
 				20148B0718355DAD00E68E9C /* NSData+BTCData.m in Sources */,
 				BEE9B2AF20DD9C5600AB4A3D /* cfb128.c in Sources */,
 				BEF5D2EE20DC82C000B0C6D8 /* eng_list.c in Sources */,
-				BEE9B14120DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9B24B20DD99B300AB4A3D /* cms_asn1.c in Sources */,
 				BEC8722D20DDBD6500EDEAAA /* hm_pmeth.c in Sources */,
 				BEF5D1A520DC70CD00B0C6D8 /* a_type.c in Sources */,
@@ -5026,7 +4999,6 @@
 				BEE9B2D420DD9DC100AB4A3D /* ui_lib.c in Sources */,
 				BEE9A82120DC9F7800AB4A3D /* eng_fat.c in Sources */,
 				BEE9B17C20DD91F500AB4A3D /* pem_lib.c in Sources */,
-				BEE9B11120DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEC873C420DDDB6100EDEAAA /* conf_sap.c in Sources */,
 				BEC8743420DDDC9E00EDEAAA /* pcy_map.c in Sources */,
 				BEE9B23720DD995000AB4A3D /* cmll_cbc.c in Sources */,
@@ -5039,7 +5011,6 @@
 				BEC8739C20DDDAEC00EDEAAA /* i2d_pr.c in Sources */,
 				BEE9AEEF20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BE9AAF6B20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
-				BEE9B10920DD8DFF00AB4A3D /* async.c in Sources */,
 				BEF5D1F320DC748A00B0C6D8 /* o_str.c in Sources */,
 				BEC8722020DDBD0700EDEAAA /* cms_dd.c in Sources */,
 				BEE9B1D920DD950100AB4A3D /* e_aria.c in Sources */,
@@ -5049,7 +5020,6 @@
 				20148C15183563D000E68E9C /* NSData+BTCData.m in Sources */,
 				BEE9B2B020DD9C5600AB4A3D /* cfb128.c in Sources */,
 				BEF5D2EF20DC82C000B0C6D8 /* eng_list.c in Sources */,
-				BEE9B14220DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9B24C20DD99B300AB4A3D /* cms_asn1.c in Sources */,
 				BEC8722E20DDBD6500EDEAAA /* hm_pmeth.c in Sources */,
 				BEF5D1A620DC70CD00B0C6D8 /* a_type.c in Sources */,
@@ -5449,7 +5419,6 @@
 				BEE9B2D520DD9DC100AB4A3D /* ui_lib.c in Sources */,
 				BEE9A82220DC9F7900AB4A3D /* eng_fat.c in Sources */,
 				BEE9B17D20DD91F500AB4A3D /* pem_lib.c in Sources */,
-				BEE9B11220DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEC873C620DDDB6200EDEAAA /* conf_sap.c in Sources */,
 				BEC8743820DDDC9E00EDEAAA /* pcy_map.c in Sources */,
 				BEE9B23820DD995000AB4A3D /* cmll_cbc.c in Sources */,
@@ -5462,7 +5431,6 @@
 				BEC873A220DDDAED00EDEAAA /* i2d_pr.c in Sources */,
 				BEE9AEF020DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BE9AAF6C20DC60BE00C9BA17 /* bn_sqr.c in Sources */,
-				BEE9B10A20DD8DFF00AB4A3D /* async.c in Sources */,
 				BEF5D1F420DC748A00B0C6D8 /* o_str.c in Sources */,
 				BEC8722120DDBD0700EDEAAA /* cms_dd.c in Sources */,
 				BEE9B1DA20DD950100AB4A3D /* e_aria.c in Sources */,
@@ -5472,7 +5440,6 @@
 				20148CC0183643E700E68E9C /* NSData+BTCData.m in Sources */,
 				BEE9B2B120DD9C5600AB4A3D /* cfb128.c in Sources */,
 				BEF5D2F020DC82C000B0C6D8 /* eng_list.c in Sources */,
-				BEE9B14320DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9B24D20DD99B300AB4A3D /* cms_asn1.c in Sources */,
 				BEC8722F20DDBD6500EDEAAA /* hm_pmeth.c in Sources */,
 				BEF5D1A720DC70CD00B0C6D8 /* a_type.c in Sources */,
@@ -5872,7 +5839,6 @@
 				BEE9B2D220DD9DC100AB4A3D /* ui_lib.c in Sources */,
 				BEE9A81F20DC9F7700AB4A3D /* eng_fat.c in Sources */,
 				BEE9B17A20DD91F500AB4A3D /* pem_lib.c in Sources */,
-				BEE9B10F20DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEC873C020DDDB6000EDEAAA /* conf_sap.c in Sources */,
 				BEC8742C20DDDC9D00EDEAAA /* pcy_map.c in Sources */,
 				BEE9B23520DD995000AB4A3D /* cmll_cbc.c in Sources */,
@@ -5885,7 +5851,6 @@
 				BEC8739020DDDAEB00EDEAAA /* i2d_pr.c in Sources */,
 				BEE9AEED20DD7BBB00AB4A3D /* v3_lib.c in Sources */,
 				BE9AAF6920DC60BE00C9BA17 /* bn_sqr.c in Sources */,
-				BEE9B10720DD8DFF00AB4A3D /* async.c in Sources */,
 				BEF5D1F120DC748A00B0C6D8 /* o_str.c in Sources */,
 				BEC8721E20DDBD0700EDEAAA /* cms_dd.c in Sources */,
 				BEE9B1D720DD950100AB4A3D /* e_aria.c in Sources */,
@@ -5895,7 +5860,6 @@
 				206B01561835485D00878B8D /* NSData+BTCData.m in Sources */,
 				BEE9B2AE20DD9C5600AB4A3D /* cfb128.c in Sources */,
 				BEF5D2ED20DC82C000B0C6D8 /* eng_list.c in Sources */,
-				BEE9B14020DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9B24A20DD99B300AB4A3D /* cms_asn1.c in Sources */,
 				BEC8722C20DDBD6500EDEAAA /* hm_pmeth.c in Sources */,
 				BEF5D1A420DC70CD00B0C6D8 /* a_type.c in Sources */,
@@ -6352,7 +6316,6 @@
 				BEE9AE4920DCBEAA00AB4A3D /* m_md5.c in Sources */,
 				2084DD8C17B8FF76005AC9E6 /* BTCProtocolSerialization.m in Sources */,
 				BEC8724720DDBE1900EDEAAA /* bio_b64.c in Sources */,
-				BEE9B10E20DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEC8721D20DDBD0700EDEAAA /* cms_dd.c in Sources */,
 				BEF5D1A320DC70CD00B0C6D8 /* a_type.c in Sources */,
 				BEE9A82520DC9FD600AB4A3D /* tb_digest.c in Sources */,
@@ -6501,7 +6464,6 @@
 				BEE9A94520DCB6CB00AB4A3D /* sha1dgst.c in Sources */,
 				BEE9AE8220DCC43400AB4A3D /* a_print.c in Sources */,
 				BEE9AE6D20DCC24B00AB4A3D /* md5_dgst.c in Sources */,
-				BEE9B13F20DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9AFB220DD803D00AB4A3D /* v3_skey.c in Sources */,
 				20A443C01AC55F52008B3447 /* BTCProtocolBuffers.m in Sources */,
 				BEE9AE4220DCBE6B00AB4A3D /* x509_obj.c in Sources */,
@@ -6657,7 +6619,6 @@
 				BEE9A8BD20DCA78400AB4A3D /* p12_key.c in Sources */,
 				BEE9A81320DC9F6B00AB4A3D /* tb_dsa.c in Sources */,
 				BEE9AEAD20DD79F600AB4A3D /* x509_trs.c in Sources */,
-				BEE9B10620DD8DFF00AB4A3D /* async.c in Sources */,
 				BEE9B24920DD99B300AB4A3D /* cms_asn1.c in Sources */,
 				BEE9AFE420DD819500AB4A3D /* pcy_node.c in Sources */,
 				BEE9A90520DCA9A200AB4A3D /* p_sign.c in Sources */,
@@ -6778,7 +6739,6 @@
 				BEE9AFA920DD800000AB4A3D /* v3_admis.c in Sources */,
 				BEF5D20320DC752300B0C6D8 /* b_sock.c in Sources */,
 				BEE9A8AC20DCA58C00AB4A3D /* rand_lib.c in Sources */,
-				BEE9B11320DD8E9200AB4A3D /* async_posix.c in Sources */,
 				BEE9A88F20DCA48D00AB4A3D /* mem_clr.c in Sources */,
 				BEE9AE3220DCBD9C00AB4A3D /* x_name.c in Sources */,
 				BEF5D33720DC924400B0C6D8 /* evp_enc.c in Sources */,
@@ -6883,7 +6843,6 @@
 				BEE9A91120DCA9C200AB4A3D /* p_verify.c in Sources */,
 				BEF5D1A120DC709000B0C6D8 /* tasn_dec.c in Sources */,
 				BEE9B20E20DD980B00AB4A3D /* c_cfb64.c in Sources */,
-				BEE9B10B20DD8DFF00AB4A3D /* async.c in Sources */,
 				BEF5D2F820DC8E0F00B0C6D8 /* eng_ctrl.c in Sources */,
 				BEF5D1AF20DC713900B0C6D8 /* tasn_fre.c in Sources */,
 				BEE9B08B20DD8A3C00AB4A3D /* cmeth_lib.c in Sources */,
@@ -6958,7 +6917,6 @@
 				BEE9AE5520DCC0B000AB4A3D /* x509_set.c in Sources */,
 				BEE9B23920DD995000AB4A3D /* cmll_cbc.c in Sources */,
 				BEF5D25720DC7A4600B0C6D8 /* a_strex.c in Sources */,
-				BEE9B14420DD8FD200AB4A3D /* async_wait.c in Sources */,
 				BEE9AE9620DD78CF00AB4A3D /* v3_crld.c in Sources */,
 				BEC8729320DDC12000EDEAAA /* p12_sbag.c in Sources */,
 				BEE9B21520DD984B00AB4A3D /* c_skey.c in Sources */,
