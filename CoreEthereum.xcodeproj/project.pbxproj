@@ -7384,6 +7384,7 @@
 					"-DOPENSSL_NO_SM4",
 					"-DOPENSSL_NO_BF",
 					"-DOPENSSL_NO_CHACHA",
+					"-DOPENSSL_NO_ASYNC",
 				);
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = CoreBitcoin/SwiftBridgingHeader.h;

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "CoreEthereum"
-  s.version      = "1.0.5"
+  s.version      = "1.0.6"
   s.summary      = "CoreEthereum is a subset of CoreBitcoin in Objective-C."
   s.description  = <<-DESC
                    CoreEthereum provides helpful functions for deriving and signing with Ethereum keychains.
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/wjmelements/CoreBitcoin"
   s.license      = 'WTFPL'
   s.author       = { "Oleg Andreev" => "oleganza@gmail.com" }
-  s.author       = { "William Morriss" => "william.morriss@consensys.net" }
+  s.author       = { "William Morriss" => "wjmelements@gmail.com" }
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.9'
   s.source       = { :git => "https://github.com/wjmelements/CoreBitcoin.git", :tag => s.version.to_s }
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/include" "${PODS_ROOT}/CoreEthereum/openssl/include"',
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}/openssl/src/**" "${PODS_ROOT}/CoreEthereum/openssl/src/**"',
-    'OTHER_CFLAGS' => '$(inherited) -DOPENSSL_NO_SEED -DOPENSSL_NO_IDEA -DOPENSSL_NO_RC2 -DOPENSSL_NO_RC4 -DOPENSSL_NO_DES -DOPENSSL_NO_SM4 -DOPENSSL_NO_SM4 -DOPENSSL_NO_BF -DOPENSSL_NO_CHACHA'
+    'OTHER_CFLAGS' => '$(inherited) -DOPENSSL_NO_SEED -DOPENSSL_NO_IDEA -DOPENSSL_NO_RC2 -DOPENSSL_NO_RC4 -DOPENSSL_NO_DES -DOPENSSL_NO_SM4 -DOPENSSL_NO_SM4 -DOPENSSL_NO_BF -DOPENSSL_NO_CHACHA -DOPENSSL_NO_ASYNC'
   }
   s.framework    = 'Foundation'
   s.preserve_paths = 'openssl/LICENSE', 'openssl/**/*.h'
