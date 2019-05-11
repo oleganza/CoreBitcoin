@@ -7,7 +7,6 @@ Pod::Spec.new do |s|
                    DESC
   s.homepage     = "https://github.com/wjmelements/EthCore"
   s.license      = 'WTFPL'
-  s.author       = { "Oleg Andreev" => "oleganza@gmail.com" }
   s.author       = { "William Morriss" => "wjmelements@gmail.com" }
   s.ios.deployment_target = '7.0'
   s.osx.deployment_target = '10.9'
