@@ -86,9 +86,9 @@
 			<key>isa</key>
 			<string>PBXGroup</string>
 			<key>name</key>
-			<string>CoreBitcoin</string>
+			<string>EthCore</string>
 			<key>path</key>
-			<string>CoreBitcoin</string>
+			<string>EthCore</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -123,7 +123,7 @@
 			<key>name</key>
 			<string>BTCTransactionInput.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransactionInput.h</string>
+			<string>EthCore/BTCTransactionInput.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -169,7 +169,7 @@
 			<key>name</key>
 			<string>BTCBigNumber.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBigNumber.h</string>
+			<string>EthCore/BTCBigNumber.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -191,7 +191,7 @@
 			<key>name</key>
 			<string>BTCTransactionInput.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransactionInput.m</string>
+			<string>EthCore/BTCTransactionInput.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -677,7 +677,7 @@
 			<key>name</key>
 			<string>BTCKeychain.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCKeychain.h</string>
+			<string>EthCore/BTCKeychain.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -766,7 +766,7 @@
 			<key>name</key>
 			<string>NS+BTCBase58.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/NS+BTCBase58.m</string>
+			<string>EthCore/NS+BTCBase58.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -781,7 +781,7 @@
 			<key>name</key>
 			<string>BTCAddress.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCAddress.h</string>
+			<string>EthCore/BTCAddress.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -856,7 +856,7 @@
 			<key>name</key>
 			<string>NS+BTCBase58.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/NS+BTCBase58.h</string>
+			<string>EthCore/NS+BTCBase58.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -884,7 +884,7 @@
 			<key>name</key>
 			<string>BTCScript.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCScript.m</string>
+			<string>EthCore/BTCScript.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -899,7 +899,7 @@
 			<key>name</key>
 			<string>BTCErrors.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCErrors.h</string>
+			<string>EthCore/BTCErrors.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -986,7 +986,7 @@
 			<key>name</key>
 			<string>NSData+BTCData.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/NSData+BTCData.m</string>
+			<string>EthCore/NSData+BTCData.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1043,7 +1043,7 @@
 			<key>name</key>
 			<string>BTCOpcode.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCOpcode.m</string>
+			<string>EthCore/BTCOpcode.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1065,7 +1065,7 @@
 			<key>name</key>
 			<string>BTCBase58.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBase58.h</string>
+			<string>EthCore/BTCBase58.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1255,9 +1255,9 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>CoreBitcoin.h</string>
+			<string>EthCore.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/CoreBitcoin.h</string>
+			<string>EthCore/EthCore.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1544,7 +1544,7 @@
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>path</key>
-			<string>libPods-CoreBitcoin.a</string>
+			<string>libPods-EthCore.a</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
@@ -1586,7 +1586,7 @@
 			<key>remoteGlobalIDString</key>
 			<string>B438346F2AE4471CB23A7AF0</string>
 			<key>remoteInfo</key>
-			<string>Pods-CoreBitcoin</string>
+			<string>Pods-EthCore</string>
 		</dict>
 		<key>64058AB04A0D435F8DF2C5B8</key>
 		<dict>
@@ -1604,7 +1604,7 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>path</key>
-			<string>Pods-CoreBitcoin-prefix.pch</string>
+			<string>Pods-EthCore-prefix.pch</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1669,7 +1669,7 @@
 			<key>name</key>
 			<string>NSData+BTCData.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/NSData+BTCData.h</string>
+			<string>EthCore/NSData+BTCData.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1730,7 +1730,7 @@
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-CoreBitcoin-prefix.pch</string>
+				<string>Pods-EthCore-prefix.pch</string>
 				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
 				<array>
 					<string>DEBUG=1</string>
@@ -1778,7 +1778,7 @@
 			<key>name</key>
 			<string>BTCCurvePoint.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCCurvePoint.h</string>
+			<string>EthCore/BTCCurvePoint.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1836,7 +1836,7 @@
 			<key>name</key>
 			<string>BTCKey.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCKey.m</string>
+			<string>EthCore/BTCKey.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1931,7 +1931,7 @@
 			<key>name</key>
 			<string>BTCTransaction.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransaction.h</string>
+			<string>EthCore/BTCTransaction.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1989,7 +1989,7 @@
 			<key>name</key>
 			<string>BTCKeychain.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCKeychain.m</string>
+			<string>EthCore/BTCKeychain.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2004,7 +2004,7 @@
 			<key>name</key>
 			<string>BTCBigNumber.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBigNumber.m</string>
+			<string>EthCore/BTCBigNumber.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2043,7 +2043,7 @@
 			<key>lastKnownFileType</key>
 			<string>text.xcconfig</string>
 			<key>path</key>
-			<string>Pods-CoreBitcoin.xcconfig</string>
+			<string>Pods-EthCore.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2058,7 +2058,7 @@
 			<key>name</key>
 			<string>BTCData.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCData.m</string>
+			<string>EthCore/BTCData.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2099,7 +2099,7 @@
 			<key>name</key>
 			<string>BTCErrors.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCErrors.m</string>
+			<string>EthCore/BTCErrors.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2142,7 +2142,7 @@
 			<key>name</key>
 			<string>BTCProtocolSerialization.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCProtocolSerialization.h</string>
+			<string>EthCore/BTCProtocolSerialization.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2309,7 +2309,7 @@
 			<key>name</key>
 			<string>BTCOpcode.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCOpcode.h</string>
+			<string>EthCore/BTCOpcode.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2375,7 +2375,7 @@
 			<key>name</key>
 			<string>BTCSignatureHashType.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCSignatureHashType.h</string>
+			<string>EthCore/BTCSignatureHashType.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2431,7 +2431,7 @@
 				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-CoreBitcoin-prefix.pch</string>
+				<string>Pods-EthCore-prefix.pch</string>
 				<key>GCC_VERSION</key>
 				<string>com.apple.compilers.llvm.clang.1_0</string>
 				<key>INSTALL_PATH</key>
@@ -2496,7 +2496,7 @@
 			<key>lastKnownFileType</key>
 			<string>text.xcconfig</string>
 			<key>path</key>
-			<string>Pods-CoreBitcoin-Private.xcconfig</string>
+			<string>Pods-EthCore-Private.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2622,7 +2622,7 @@
 			<key>name</key>
 			<string>BTCScriptMachine.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCScriptMachine.h</string>
+			<string>EthCore/BTCScriptMachine.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2712,7 +2712,7 @@
 			<key>name</key>
 			<string>BTCTransactionOutput.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransactionOutput.h</string>
+			<string>EthCore/BTCTransactionOutput.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2748,7 +2748,7 @@
 			<key>name</key>
 			<string>BTCBlockchainInfo.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBlockchainInfo.m</string>
+			<string>EthCore/BTCBlockchainInfo.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -2877,9 +2877,9 @@
 			<key>isa</key>
 			<string>PBXNativeTarget</string>
 			<key>name</key>
-			<string>Pods-CoreBitcoin</string>
+			<string>Pods-EthCore</string>
 			<key>productName</key>
-			<string>Pods-CoreBitcoin</string>
+			<string>Pods-EthCore</string>
 			<key>productReference</key>
 			<string>5FD995B74F5E475499BC36CC</string>
 			<key>productType</key>
@@ -3032,7 +3032,7 @@
 			<key>name</key>
 			<string>BTCProtocolSerialization.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCProtocolSerialization.m</string>
+			<string>EthCore/BTCProtocolSerialization.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3054,7 +3054,7 @@
 			<key>name</key>
 			<string>BTCBlockchainInfo.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBlockchainInfo.h</string>
+			<string>EthCore/BTCBlockchainInfo.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3091,7 +3091,7 @@
 			<key>name</key>
 			<string>BTCAddress.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCAddress.m</string>
+			<string>EthCore/BTCAddress.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3282,7 +3282,7 @@
 			<key>name</key>
 			<string>BTCUnitsAndLimits.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCUnitsAndLimits.h</string>
+			<string>EthCore/BTCUnitsAndLimits.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3360,7 +3360,7 @@
 			<key>name</key>
 			<string>BTCCurvePoint.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCCurvePoint.m</string>
+			<string>EthCore/BTCCurvePoint.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3452,7 +3452,7 @@
 			<key>name</key>
 			<string>BTCScriptMachine.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCScriptMachine.m</string>
+			<string>EthCore/BTCScriptMachine.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3608,7 +3608,7 @@
 			<key>name</key>
 			<string>BTCTransactionOutput.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransactionOutput.m</string>
+			<string>EthCore/BTCTransactionOutput.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3726,7 +3726,7 @@
 			<key>name</key>
 			<string>BTCTransaction.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCTransaction.m</string>
+			<string>EthCore/BTCTransaction.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3755,7 +3755,7 @@
 			<key>name</key>
 			<string>BTCKey.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCKey.h</string>
+			<string>EthCore/BTCKey.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3782,7 +3782,7 @@
 			<key>name</key>
 			<string>BTCData.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCData.h</string>
+			<string>EthCore/BTCData.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3797,7 +3797,7 @@
 			<key>name</key>
 			<string>BTCBase58.m</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCBase58.m</string>
+			<string>EthCore/BTCBase58.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -3984,7 +3984,7 @@
 			<key>name</key>
 			<string>BTCScript.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/BTCScript.h</string>
+			<string>EthCore/BTCScript.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -4004,7 +4004,7 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
 			<key>path</key>
-			<string>Pods-CoreBitcoin-dummy.m</string>
+			<string>Pods-EthCore-dummy.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -4024,9 +4024,9 @@
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>name</key>
-			<string>CoreBitcoin+Categories.h</string>
+			<string>EthCore+Categories.h</string>
 			<key>path</key>
-			<string>CoreBitcoin/CoreBitcoin+Categories.h</string>
+			<string>EthCore/EthCore+Categories.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>

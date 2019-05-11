@@ -1,4 +1,4 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
 #import "BTCUnitsAndLimits.h"

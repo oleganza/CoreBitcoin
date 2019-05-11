@@ -1,12 +1,12 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
 #import "BTCData.h"
 
 // This category is for user's convenience only.
 // For documentation look into BTCData.h.
-// If you link CoreBitcoin library without categories enabled, nothing will break.
-// This is also used in unit tests in CoreBitcoin.
+// If you link EthCore library without categories enabled, nothing will break.
+// This is also used in unit tests in EthCore.
 @interface NSData (BTCData)
 
 // Core hash functions

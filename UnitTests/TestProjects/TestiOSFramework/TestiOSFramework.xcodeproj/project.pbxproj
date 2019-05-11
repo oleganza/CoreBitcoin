@@ -22,8 +22,8 @@
 		20D09BF218BA304B00794209 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D09BD118BA304B00794209 /* UIKit.framework */; };
 		20D09BFA18BA304B00794209 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 20D09BF818BA304B00794209 /* InfoPlist.strings */; };
 		20D09BFC18BA304B00794209 /* TestiOSFrameworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 20D09BFB18BA304B00794209 /* TestiOSFrameworkTests.m */; };
-		20D09C0618BA30C500794209 /* CoreBitcoin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D09C0518BA30C500794209 /* CoreBitcoin.framework */; };
-		20D09C0718BA30C500794209 /* CoreBitcoin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D09C0518BA30C500794209 /* CoreBitcoin.framework */; };
+		20D09C0618BA30C500794209 /* EthCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D09C0518BA30C500794209 /* EthCore.framework */; };
+		20D09C0718BA30C500794209 /* EthCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D09C0518BA30C500794209 /* EthCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		20D09BF718BA304B00794209 /* TestiOSFrameworkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestiOSFrameworkTests-Info.plist"; sourceTree = "<group>"; };
 		20D09BF918BA304B00794209 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20D09BFB18BA304B00794209 /* TestiOSFrameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestiOSFrameworkTests.m; sourceTree = "<group>"; };
-		20D09C0518BA30C500794209 /* CoreBitcoin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBitcoin.framework; path = ../../../binaries/iOS/CoreBitcoin.framework; sourceTree = "<group>"; };
+		20D09C0518BA30C500794209 /* EthCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EthCore.framework; path = ../../../binaries/iOS/EthCore.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +67,7 @@
 			files = (
 				20D09BD018BA304B00794209 /* CoreGraphics.framework in Frameworks */,
 				20D09BD218BA304B00794209 /* UIKit.framework in Frameworks */,
-				20D09C0618BA30C500794209 /* CoreBitcoin.framework in Frameworks */,
+				20D09C0618BA30C500794209 /* EthCore.framework in Frameworks */,
 				20D09BCE18BA304B00794209 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +78,7 @@
 			files = (
 				20D09BF018BA304B00794209 /* XCTest.framework in Frameworks */,
 				20D09BF218BA304B00794209 /* UIKit.framework in Frameworks */,
-				20D09C0718BA30C500794209 /* CoreBitcoin.framework in Frameworks */,
+				20D09C0718BA30C500794209 /* EthCore.framework in Frameworks */,
 				20D09BF118BA304B00794209 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,7 +89,7 @@
 		20D09BC118BA304B00794209 = {
 			isa = PBXGroup;
 			children = (
-				20D09C0518BA30C500794209 /* CoreBitcoin.framework */,
+				20D09C0518BA30C500794209 /* EthCore.framework */,
 				20D09BD318BA304B00794209 /* TestiOSFramework */,
 				20D09BF518BA304B00794209 /* TestiOSFrameworkTests */,
 				20D09BCC18BA304B00794209 /* Frameworks */,
@@ -401,7 +401,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/oleganza/Work/BitcoinWallet/CoreBitcoin/binaries/iOS,
+					/Users/oleganza/Work/BitcoinWallet/EthCore/binaries/iOS,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestiOSFramework/TestiOSFramework-Prefix.pch";
@@ -418,7 +418,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/oleganza/Work/BitcoinWallet/CoreBitcoin/binaries/iOS,
+					/Users/oleganza/Work/BitcoinWallet/EthCore/binaries/iOS,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestiOSFramework/TestiOSFramework-Prefix.pch";
@@ -437,7 +437,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/oleganza/Work/BitcoinWallet/CoreBitcoin/binaries/iOS,
+					/Users/oleganza/Work/BitcoinWallet/EthCore/binaries/iOS,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestiOSFramework/TestiOSFramework-Prefix.pch";
@@ -461,7 +461,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					/Users/oleganza/Work/BitcoinWallet/CoreBitcoin/binaries/iOS,
+					/Users/oleganza/Work/BitcoinWallet/EthCore/binaries/iOS,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestiOSFramework/TestiOSFramework-Prefix.pch";

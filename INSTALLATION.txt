@@ -7,7 +7,7 @@ How to build and use as a framework:
 
 2.  run build_libraries.sh
 	This will create the frameworks and static libraries containing everything 
-	you need to include CoreBitcoin in other projects.
+	you need to include EthCore in other projects.
 	
 3.	Drag and drop one of the .framework files into your project. If you have
 	targets for both OSX and iOS in the same project you have to use both frameworks.
@@ -18,4 +18,4 @@ How to build and use as a framework:
 	so when adding the files to the project)
 	
 5.  include the header files where you need them, such as:
-	#import <CoreBitcoin/BTCAddress.h>
+	#import <EthCore/BTCAddress.h>

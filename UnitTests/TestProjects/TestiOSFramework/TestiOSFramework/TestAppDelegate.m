@@ -7,7 +7,7 @@
 //
 
 #import "TestAppDelegate.h"
-#import <CoreBitcoin/CoreBitcoin.h>
+#import <EthCore/EthCore.h>
 
 @implementation TestAppDelegate
 

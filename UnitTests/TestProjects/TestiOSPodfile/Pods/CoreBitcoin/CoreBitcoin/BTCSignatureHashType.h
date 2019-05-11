@@ -1,7 +1,7 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
-#ifndef CoreBitcoin_BTCSignatureHashType_h
-#define CoreBitcoin_BTCSignatureHashType_h
+#ifndef EthCore_BTCSignatureHashType_h
+#define EthCore_BTCSignatureHashType_h
 
 // Hash type determines how OP_CHECKSIG hashes the transaction to create or
 // verify the signature in a transaction input.

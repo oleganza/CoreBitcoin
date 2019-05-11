@@ -1,4 +1,4 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 // See below for declarations of:
 // NSString* BTCNameForOpcode(BTCOpcode opcode);

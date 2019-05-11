@@ -1,7 +1,7 @@
-CoreBitcoin Release Notes
+EthCore Release Notes
 =========================
 
-CoreBitcoin 0.6.7
+EthCore 0.6.7
 -----------------
 
 March 30, 2015.
@@ -10,25 +10,25 @@ March 30, 2015.
 * Implemented [Automatic Encrypted Wallet Backup scheme](https://github.com/oleganza/bitcoin-papers/blob/master/AutomaticEncryptedWalletBackups.md) (`BTCEncryptedBackup`).
 * Fixed crash in BTCBitcoinURL parser on invalid amounts.
 
-CoreBitcoin 0.6.6
+EthCore 0.6.6
 -----------------
 
 March 29, 2015.
 
-* Added support for BIP70 Payment Requests (`BTCPaymentProtocol`). Note: X.509 signatures are [not verified on OS X](https://github.com/oleganza/CoreBitcoin/issues/42) yet.
+* Added support for BIP70 Payment Requests (`BTCPaymentProtocol`). Note: X.509 signatures are [not verified on OS X](https://github.com/oleganza/EthCore/issues/42) yet.
 * Implemented ECIES compatible with [Bitcore-ECIES](https://github.com/bitpay/bitcore-ecies) implementation (`BTCEncryptedMessage`).
 * Merged improved Xcode SDK detection to `update_openssl.sh` by Mark Pfluger (@mpfluger).
 * Added SHA512 function (`BTCSHA512`).
 * Added tail mutation checks to `BTCMerkleTree`.
 
-CoreBitcoin 0.6.5
+EthCore 0.6.5
 -----------------
 
 March 6, 2015.
 
 * Added merkle tree implementation (`BTCMerkleTree`).
 
-CoreBitcoin 0.6.4
+EthCore 0.6.4
 -----------------
 
 March 6, 2015.
@@ -36,7 +36,7 @@ March 6, 2015.
 * Optimized hash functions to efficiently work with memory-mapped `NSData` instances (`BTCSHA1`, `BTCSHA256`, `BTCSHA256Concat` etc).
 
 
-CoreBitcoin 0.6.3
+EthCore 0.6.3
 -----------------
 
 March 3, 2015.
@@ -47,7 +47,7 @@ March 3, 2015.
 * Improved format conversion API of `BTCBigNumber`.
 
 
-CoreBitcoin 0.6.2
+EthCore 0.6.2
 -----------------
 
 January 30, 2015.
@@ -59,7 +59,7 @@ January 30, 2015.
 * Fixed rounding bug in `BTCNumberFormatter`.
 
 
-CoreBitcoin 0.6.0
+EthCore 0.6.0
 -----------------
 
 December 3, 2014.
@@ -68,7 +68,7 @@ December 3, 2014.
 * Streamlined hex-related methods (`BTCHexFromData`, `BTCDataFromHex` etc)
 
 
-CoreBitcoin 0.5.3
+EthCore 0.5.3
 -----------------
 
 December 2, 2014.
@@ -79,7 +79,7 @@ December 2, 2014.
 * Renamed type `BTCSatoshi` to `BTCAmount`.
 
 
-CoreBitcoin 0.5.2
+EthCore 0.5.2
 -----------------
 
 November 21, 2014.
@@ -87,7 +87,7 @@ November 21, 2014.
 * Added WIF API and testnet support to `BTCKey`.
 * Swift interoperability improvements.
 
-CoreBitcoin 0.5.1
+EthCore 0.5.1
 -----------------
 
 November 18, 2014.
@@ -95,7 +95,7 @@ November 18, 2014.
 * Fixed dependencies on UIKit and AppKit.
 
 
-CoreBitcoin 0.5.0
+EthCore 0.5.0
 -----------------
 
 November 18, 2014.
@@ -103,7 +103,7 @@ November 18, 2014.
 * First CocoaPod published.
 
 
-CoreBitcoin 0.1.0
+EthCore 0.1.0
 -----------------
 
 August 11, 2013.

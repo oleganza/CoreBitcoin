@@ -13,57 +13,57 @@ xcodebuild clean
 
 # Build iOS static libraries for simulator and for devices
 
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinIOSlib -configuration Release -sdk iphonesimulator
-mv build/libCoreBitcoinIOS.a build/libCoreBitcoinIOS-simulator.a
+xcodebuild -project EthCore.xcodeproj -target EthCoreIOSlib -configuration Release -sdk iphonesimulator
+mv build/libEthCoreIOS.a build/libEthCoreIOS-simulator.a
 
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinIOSlib -configuration Release -sdk iphoneos
-mv build/libCoreBitcoinIOS.a build/libCoreBitcoinIOS-device.a
+xcodebuild -project EthCore.xcodeproj -target EthCoreIOSlib -configuration Release -sdk iphoneos
+mv build/libEthCoreIOS.a build/libEthCoreIOS-device.a
 
 # Merge simulator and device libs into one
 
-lipo build/libCoreBitcoinIOS-device.a build/libCoreBitcoinIOS-simulator.a -create -output build/libCoreBitcoinIOS.a
-rm build/libCoreBitcoinIOS-simulator.a
-rm build/libCoreBitcoinIOS-device.a
+lipo build/libEthCoreIOS-device.a build/libEthCoreIOS-simulator.a -create -output build/libEthCoreIOS.a
+rm build/libEthCoreIOS-simulator.a
+rm build/libEthCoreIOS-device.a
 
 # Build the iOS frameworks for simulator and for devices
 
-rm -f build/CoreBitcoinIOS*.framework
+rm -f build/EthCoreIOS*.framework
 
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinIOS -configuration Release -sdk iphonesimulator
-mv build/CoreBitcoinIOS.framework build/CoreBitcoinIOS-simulator.framework
+xcodebuild -project EthCore.xcodeproj -target EthCoreIOS -configuration Release -sdk iphonesimulator
+mv build/EthCoreIOS.framework build/EthCoreIOS-simulator.framework
 
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinIOS -configuration Release -sdk iphoneos
+xcodebuild -project EthCore.xcodeproj -target EthCoreIOS -configuration Release -sdk iphoneos
 
 # Merge the libraries inside the frameworks
 
-mv build/CoreBitcoinIOS-simulator.framework/CoreBitcoinIOS build/CoreBitcoinIOS.framework/CoreBitcoinIOS-simulator
-mv build/CoreBitcoinIOS.framework/CoreBitcoinIOS build/CoreBitcoinIOS.framework/CoreBitcoinIOS-device
+mv build/EthCoreIOS-simulator.framework/EthCoreIOS build/EthCoreIOS.framework/EthCoreIOS-simulator
+mv build/EthCoreIOS.framework/EthCoreIOS build/EthCoreIOS.framework/EthCoreIOS-device
 
-lipo build/CoreBitcoinIOS.framework/CoreBitcoinIOS-simulator build/CoreBitcoinIOS.framework/CoreBitcoinIOS-device \
-		-create -output build/CoreBitcoinIOS.framework/CoreBitcoinIOS
+lipo build/EthCoreIOS.framework/EthCoreIOS-simulator build/EthCoreIOS.framework/EthCoreIOS-device \
+		-create -output build/EthCoreIOS.framework/EthCoreIOS
 		
 # Update openssl includes to match framework header search path
 
-./postprocess_openssl_includes_in_framework.rb build/CoreBitcoinIOS.framework
+./postprocess_openssl_includes_in_framework.rb build/EthCoreIOS.framework
 
 # Delete the intermediate files
 		
-rm build/CoreBitcoinIOS.framework/CoreBitcoinIOS-device
-rm build/CoreBitcoinIOS.framework/CoreBitcoinIOS-simulator
-rm -rf build/CoreBitcoinIOS-simulator.framework
+rm build/EthCoreIOS.framework/EthCoreIOS-device
+rm build/EthCoreIOS.framework/EthCoreIOS-simulator
+rm -rf build/EthCoreIOS-simulator.framework
 
 # Build for OS X
 
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinOSXlib -configuration Release
-xcodebuild -project CoreBitcoin.xcodeproj -target CoreBitcoinOSX    -configuration Release
+xcodebuild -project EthCore.xcodeproj -target EthCoreOSXlib -configuration Release
+xcodebuild -project EthCore.xcodeproj -target EthCoreOSX    -configuration Release
 
 # Update openssl includes to match framework header search path
 
-./postprocess_openssl_includes_in_framework.rb build/CoreBitcoinOSX.framework
+./postprocess_openssl_includes_in_framework.rb build/EthCoreOSX.framework
 
 # Clean up
 
-rm -rf build/CoreBitcoin.build
+rm -rf build/EthCore.build
 
 
 # At this point all the libraries and frameworks are built and placed in the ./build 
@@ -87,15 +87,15 @@ mkdir ${BINARIES_TARGETDIR}/OSX
 mkdir ${BINARIES_TARGETDIR}/iOS
 
 # Move and rename the frameworks
-mv build/CoreBitcoinOSX.framework ${BINARIES_TARGETDIR}/OSX/CoreBitcoin.framework
-mv ${BINARIES_TARGETDIR}/OSX/CoreBitcoin.framework/CoreBitcoinOSX ${BINARIES_TARGETDIR}/OSX/CoreBitcoin.framework/CoreBitcoin
+mv build/EthCoreOSX.framework ${BINARIES_TARGETDIR}/OSX/EthCore.framework
+mv ${BINARIES_TARGETDIR}/OSX/EthCore.framework/EthCoreOSX ${BINARIES_TARGETDIR}/OSX/EthCore.framework/EthCore
 
-mv build/CoreBitcoinIOS.framework ${BINARIES_TARGETDIR}/iOS/CoreBitcoin.framework
-mv ${BINARIES_TARGETDIR}/iOS/CoreBitcoin.framework/CoreBitcoinIOS ${BINARIES_TARGETDIR}/iOS/CoreBitcoin.framework/CoreBitcoin
+mv build/EthCoreIOS.framework ${BINARIES_TARGETDIR}/iOS/EthCore.framework
+mv ${BINARIES_TARGETDIR}/iOS/EthCore.framework/EthCoreIOS ${BINARIES_TARGETDIR}/iOS/EthCore.framework/EthCore
 
 # Move and rename the static libraries
-mv build/libCoreBitcoinIOS.a ${BINARIES_TARGETDIR}/iOS/libCoreBitcoin.a
-mv build/libCoreBitcoinOSX.a ${BINARIES_TARGETDIR}/OSX/libCoreBitcoin.a
+mv build/libEthCoreIOS.a ${BINARIES_TARGETDIR}/iOS/libEthCore.a
+mv build/libEthCoreOSX.a ${BINARIES_TARGETDIR}/OSX/libEthCore.a
 
 # Move the headers
 mv build/include ${BINARIES_TARGETDIR}/include

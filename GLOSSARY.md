@@ -70,7 +70,7 @@ As a unit, one Bitcoin (*BTC*, *XBT*) is defined as 100 million *satoshis*, the 
 
 ### Bitcoin Core
 
-New name of *BitcoinQT* since release of version 0.9 on March 19, 2014. Not to confuse with *CoreBitcoin*, an Objective-C implementation published in August 2013. See also *Bitcore*, a JavaScript implementation for Node.js by Bitpay.
+New name of *BitcoinQT* since release of version 0.9 on March 19, 2014. Not to confuse with *EthCore*, an Objective-C implementation published in August 2013. See also *Bitcore*, a JavaScript implementation for Node.js by Bitpay.
 
 
 ### Bitcoinj
@@ -302,12 +302,12 @@ Bitcoin protocol mostly uses two cryptographic hash functions: SHA-256 and RIPEM
 
 ### Hash, Hash256
 
-When not speaking about arbitrary hash functions, *Hash* refers to two rounds of SHA-256. That is, you should compute a SHA-256 hash of your data and then another SHA-256 hash of that hash. It is used in *block header* hashing, *transaction* hashing, making a *merkle tree* of transactions, or computing a checksum of an *address*. Known as BTCHash256() in CoreBitcoin, Hash() in BitcoinQT. It is also available in scripts as OP_HASH256.
+When not speaking about arbitrary hash functions, *Hash* refers to two rounds of SHA-256. That is, you should compute a SHA-256 hash of your data and then another SHA-256 hash of that hash. It is used in *block header* hashing, *transaction* hashing, making a *merkle tree* of transactions, or computing a checksum of an *address*. Known as BTCHash256() in EthCore, Hash() in BitcoinQT. It is also available in scripts as OP_HASH256.
 
 
 ### Hash160
 
-SHA-256 hashed with RIPEMD-160. It is used to produce an *address* because it makes a smaller hash (20 bytes vs 32 bytes) than SHA-256, but still uses SHA-256 internally for security. BTCHash160() in CoreBitcoin, Hash160() in BitcoinQT. It is also available in scripts as OP_HASH160.
+SHA-256 hashed with RIPEMD-160. It is used to produce an *address* because it makes a smaller hash (20 bytes vs 32 bytes) than SHA-256, but still uses SHA-256 internally for security. BTCHash160() in EthCore, Hash160() in BitcoinQT. It is also available in scripts as OP_HASH160.
 
 
 ### To hash

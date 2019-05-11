@@ -6,11 +6,11 @@
 // project.
 
 
-// CoreBitcoin
-#define COCOAPODS_POD_AVAILABLE_CoreBitcoin
-#define COCOAPODS_VERSION_MAJOR_CoreBitcoin 0
-#define COCOAPODS_VERSION_MINOR_CoreBitcoin 1
-#define COCOAPODS_VERSION_PATCH_CoreBitcoin 0
+// EthCore
+#define COCOAPODS_POD_AVAILABLE_EthCore
+#define COCOAPODS_VERSION_MAJOR_EthCore 0
+#define COCOAPODS_VERSION_MINOR_EthCore 1
+#define COCOAPODS_VERSION_PATCH_EthCore 0
 
 // OpenSSL
 #define COCOAPODS_POD_AVAILABLE_OpenSSL

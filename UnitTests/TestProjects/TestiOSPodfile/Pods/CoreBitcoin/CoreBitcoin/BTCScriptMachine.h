@@ -1,4 +1,4 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
 #import <Foundation/Foundation.h>
 
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, BTCScriptVerification) {
 
 // Flags affecting verification. Default is the most liberal verification.
 // One can be stricter to not relay transactions with non-canonical signatures and pubkey (as BitcoinQT does).
-// Defaults in CoreBitcoin: be liberal in what you accept and conservative in what you send.
+// Defaults in EthCore: be liberal in what you accept and conservative in what you send.
 // So we try to create canonical purist transactions but have no problem accepting and working with non-canonical ones.
 @property(nonatomic) BTCScriptVerification verificationFlags;
 

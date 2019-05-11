@@ -24,7 +24,7 @@ DerivedData
 # svn & cvs
 .svn
 CVS
-CoreBitcoin.xcodeproj/project.xcworkspace/xcshareddata/
+EthCore.xcodeproj/project.xcworkspace/xcshareddata/
 openssl.bak
 
 # VIM

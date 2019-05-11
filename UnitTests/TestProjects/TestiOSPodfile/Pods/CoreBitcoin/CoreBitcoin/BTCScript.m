@@ -530,7 +530,7 @@
 }
 
 // Returns YES if the script ends with P2SH check.
-// Not used in CoreBitcoin. Similar code is used in bitcoin-ruby. I don't know if we'll ever need it.
+// Not used in EthCore. Similar code is used in bitcoin-ruby. I don't know if we'll ever need it.
 - (BOOL) endsWithPayToScriptHash
 {
     if (_chunks.count < 3) return NO;

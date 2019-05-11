@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_CoreBitcoin : NSObject
+@interface PodsDummy_Pods_EthCore : NSObject
 @end
-@implementation PodsDummy_Pods_CoreBitcoin
+@implementation PodsDummy_Pods_EthCore
 @end

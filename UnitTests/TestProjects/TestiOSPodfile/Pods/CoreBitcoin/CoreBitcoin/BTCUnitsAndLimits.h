@@ -1,7 +1,7 @@
-// CoreBitcoin by Oleg Andreev <oleganza@gmail.com>, WTFPL.
+// EthCore by Oleg Andreev <oleganza@gmail.com>, WTFPL.
 
-#ifndef CoreBitcoin_BTCUnits_h
-#define CoreBitcoin_BTCUnits_h
+#ifndef EthCore_BTCUnits_h
+#define EthCore_BTCUnits_h
 
 // The smallest unit in Bitcoin is 1 satoshi.
 // Satoshis are 64-bit signed integers.

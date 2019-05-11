@@ -1,5 +1,5 @@
-#include "Pods-CoreBitcoin.xcconfig"
+#include "Pods-EthCore.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/CoreBitcoin" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CoreBitcoin" "${PODS_ROOT}/Headers/OpenSSL"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/EthCore" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/EthCore" "${PODS_ROOT}/Headers/OpenSSL"
 OTHER_LDFLAGS = -ObjC ${PODS_COREBITCOIN_OTHER_LDFLAGS}
 PODS_ROOT = ${SRCROOT}

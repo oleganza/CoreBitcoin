@@ -1,9 +1,9 @@
-CoreBitcoin v0.1
+EthCore v0.1
 ================
 
-CoreBitcoin is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can already encode/decode addresses, apply various hash functions, sign and verify messages, parse and compose transactions, execute scripts, and detect common transaction types. Support for blocks and networking is still in progress.
+EthCore is an implementation of Bitcoin protocol in Objective-C. When it is completed, it will let you create an application that acts as a full Bitcoin node. You can already encode/decode addresses, apply various hash functions, sign and verify messages, parse and compose transactions, execute scripts, and detect common transaction types. Support for blocks and networking is still in progress.
 
-Due to "all or nothing" nature of blockchain, CoreBitcoin must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that CoreBitcoin does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
+Due to "all or nothing" nature of blockchain, EthCore must perfectly match implementation of BitcoinQT ("Satoshi client"), including all its features, oddities and bugs. If you come across things that EthCore does differently from BitcoinQT, this might be a subtle bug in our implementation and should be investigated.
 
 Whenever counterintuitive things happen, I try to provide an accurate documentation to at least explain that we are aware of it (even if we don't always know why it was done that way). If you read the source and lack documentation for some weird code, please add a "WTF?" comment right there and send us a pull request. Or create an issue on Github.
 
@@ -15,9 +15,9 @@ Clone this repo and make sure you can run "UnitTests" target. It is a simple com
 
 If it works well, add this repo as a submodule to your project. Then add all source files, OpenSSL headers, libcrypto.a and libssl.a. 
 
-In your project settings, add `$(SRCROOT)/CoreBitcoin/openssl/include` to "Headers Search Paths" and `$(SRCROOT)/CoreBitcoin/openssl/lib` in "Library Search Paths".
+In your project settings, add `$(SRCROOT)/EthCore/openssl/include` to "Headers Search Paths" and `$(SRCROOT)/EthCore/openssl/lib` in "Library Search Paths".
 
-If this sounds cumbersome, there is a bounty for creating a CoreBitcoin.framework to simplify integration process.
+If this sounds cumbersome, there is a bounty for creating a EthCore.framework to simplify integration process.
 
 
 
@@ -33,8 +33,8 @@ Bounties
 --------
 
 - 0.1 BTC for a CocoaPod. OpenSSL should be bundled automatically (or as a dependency). [@oleganza]
-- [done] 0.5 BTC for building CoreBitcoin.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
-- [done] extra 0.5 BTC for building CoreBitcoin.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
+- [done] 0.5 BTC for building EthCore.a with headers and support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. [@oleganza]
+- [done] extra 0.5 BTC for building EthCore.framework with support for x86_64, armv7, armv7s, armv64. OpenSSL should be bundled inside. It's okay to have one framework for OS X and one for iOS. [@oleganza]
 
 To add your own bounty, add a line here (or edit an existing one), make a pull request and donate to the address below. Your donation will be reserved for that bounty only. I will contact you to check if the implementation is acceptable before paying out.
 
