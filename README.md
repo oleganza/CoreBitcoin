@@ -5,7 +5,7 @@ CoreBitcoin implements Bitcoin protocol in Objective-C and provides many additio
 
 CoreBitcoin deliberately implements as much as possible directly in Objective-C with limited dependency on OpenSSL. This gives everyone an opportunity to learn Bitcoin on a clean codebase and enables all Mac and iOS developers to extend and improve Bitcoin protocol.
 
-Note that "Bitcoin Core" (previously known as BitcoinQT or "Satoshi client") is a completely different project.
+Do not confuse this with "Bitcoin Core" (previously known as BitcoinQT or "Satoshi client") — the CoreBitcoin is stylized after Apple frameworks (like CoreAnimation and CoreFoundation), and was named this way in 2013, while Bitcoin-QT was renamed into Bitcoin Core in 2014.
 
 
 Projects using CoreBitcoin
@@ -34,14 +34,14 @@ See also [Release Notes](ReleaseNotes.md).
 - BIP70 implementation ([BTCPaymentProtocol](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCPaymentProtocol.h)).
 - [Automatic Encrypted Wallet Backup](https://github.com/oleganza/bitcoin-papers/blob/master/AutomaticEncryptedWalletBackups.md) scheme ([BTCEncryptedBackup](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCEncryptedBackup.h)).
 
-Currency Tools
+Currency tools
 --------------
 
 - Bitcoin currency formatter with support for BTC, mBTC, bits ([BTCNumberFormatter](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCNumberFormatter.h)).
 - Currency converter (not linked to any exchange) with support for various methods to calculate exchange rate ([BTCCurrencyConverter](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCCurrencyConverter.h)).
 - Various price sources and abstract interface for adding new ones ([BTCPriceSource](https://github.com/oleganza/CoreBitcoin/blob/master/CoreBitcoin/BTCPriceSource.h) with support for Winkdex, Coindesk, Coinbase, Paymium).
 
-Advanced Features
+Advanced features
 -----------------
 
 - Deterministic [RFC6979](https://tools.ietf.org/html/rfc6979#section-3.2)-compliant ECDSA signatures.
@@ -141,16 +141,6 @@ Twitter: [@oleganza](http://twitter.com/oleganza)
 To publish on CocoaPods:
 
     $ pod trunk push --verbose --use-libraries
-
-
-Donate
-------
-
-Please send your donations here: 1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG.
-
-All funds will be used only for bounties.
-
-You can also donate to a specific bounty. The amount will be reserved for that bounty and listed above. Contact [Oleg](mailto:oleganza@gmail.com) to arrange that.
 
 
 License
