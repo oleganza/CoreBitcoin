@@ -8,6 +8,8 @@
 #import "BTCScript.h"
 #import "BTCErrors.h"
 #import "BTCHashID.h"
+#import "BTCKey.h"
+#import "BTCAddress.h"
 
 NSData* BTCTransactionHashFromID(NSString* txid) {
     return BTCHashFromID(txid);
@@ -335,7 +337,52 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) {
 
 #pragma mark - Signing a transaction
 
+// Attempts to sign the index at position i with key, returns failure / success
+- (BOOL)attemptToSignInputAtIndex:(uint32_t)i withKey:(BTCKey *)key error:(NSError **)errorOut
+{
+    BTCTransactionInput *txin = self.inputs[i];
+    
+    // We stored output script here earlier.
+    BTCScript* outputScript = txin.signatureScript;
+    
+    NSData* cpk = key.compressedPublicKey;
+    NSData* ucpk = key.uncompressedPublicKey;
+    
+    BTCSignatureHashType hashtype = SIGHASH_ALL;
+    
+    NSData* sighash = [self signatureHashForScript:[outputScript copy] inputIndex:i hashType:hashtype error:errorOut];
+    if (!sighash) {
+        return NO;
+    }
+    
+    // Most common case: P2PKH with compressed pubkey (because of BIP32)
+    BTCScript* p2cpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(cpk)]];
+    if ([outputScript.data isEqual:p2cpkhScript.data]) {
+        txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:cpk];
+        return YES;
+    }
+    
+    // Less common case: P2PKH with uncompressed pubkey (when not using BIP32)
+    BTCScript* p2ucpkhScript = [[BTCScript alloc] initWithAddress:[BTCPublicKeyAddress addressWithData:BTCHash160(ucpk)]];
+    if ([outputScript.data isEqual:p2ucpkhScript.data]) {
+        txin.signatureScript = [[[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]] appendData:ucpk];
+        return YES;
+    }
+    
+    BTCScript* p2cpkScript = [[[BTCScript new] appendData:cpk] appendOpcode:OP_CHECKSIG];
+    BTCScript* p2ucpkScript = [[[BTCScript new] appendData:ucpk] appendOpcode:OP_CHECKSIG];
+    
+    if ([outputScript.data isEqual:p2cpkScript] ||
+        [outputScript.data isEqual:p2ucpkScript]) {
+        txin.signatureScript = [[BTCScript new] appendData:[key signatureForHash:sighash hashType:hashtype]];
+        return YES;
+    } else {
+        // Not supported script type.
+        // Try custom signature.
+    }
 
+    return NO;
+}
 
 // Hash for signing a transaction.
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.

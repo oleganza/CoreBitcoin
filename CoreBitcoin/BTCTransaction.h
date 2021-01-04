@@ -11,6 +11,7 @@ static const BTCAmount BTCTransactionDefaultFeeRate = 10000; // 10K satoshis per
 @class BTCScript;
 @class BTCTransactionInput;
 @class BTCTransactionOutput;
+@class BTCKey;
 
 /*!
  * Converts string transaction ID (reversed tx hash in hex format) to transaction hash.
@@ -127,6 +128,9 @@ NSString* BTCTransactionIDFromHash(NSData* txhash) DEPRECATED_ATTRIBUTE;
 // Hash for signing a transaction.
 // You should supply the output script of the previous transaction, desired hash type and input index in this transaction.
 - (NSData*) signatureHashForScript:(BTCScript*)subscript inputIndex:(uint32_t)inputIndex hashType:(BTCSignatureHashType)hashType error:(NSError**)errorOut;
+
+// Attempts to sign the index at position i with key, returns failure / success
+- (BOOL)attemptToSignInputAtIndex:(uint32_t)i withKey:(BTCKey *)key error:(NSError **)errorOut;
 
 // Adds input script
 - (void) addInput:(BTCTransactionInput*)input;

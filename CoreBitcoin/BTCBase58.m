@@ -27,7 +27,7 @@ NSMutableData* BTCDataFromBase58CString(const char* cstring) {
     __block BIGNUM bn;     BN_init(&bn);     BN_zero(&bn);
     __block BIGNUM bnChar; BN_init(&bnChar);
     
-    void(^finish)() = ^{
+    void(^finish)(void) = ^{
         if (pctx) BN_CTX_free(pctx);
         BN_clear_free(&bn58);
         BN_clear_free(&bn);
@@ -134,7 +134,7 @@ char* BTCBase58CStringWithData(NSData* data) {
     __block BIGNUM dv; BN_init(&dv); BN_zero(&dv);
     __block BIGNUM rem; BN_init(&rem); BN_zero(&rem);
     
-    void(^finish)() = ^{
+    void(^finish)(void) = ^{
         if (pctx) BN_CTX_free(pctx);
         BN_clear_free(&bn58);
         BN_clear_free(&bn0);
