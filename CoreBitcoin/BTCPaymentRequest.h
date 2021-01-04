@@ -97,7 +97,7 @@ BOOL BTCPaymentRequestVerifySignature(NSString* __nullable pkiType,
 
 // Array of DER encoded certificates or nil if pkiType does offer certificates.
 // This list is extracted from raw `pkiData`.
-// If set, certificates are cerialized in X509Certificates object and set to pkiData.
+// If set, certificates are serialized in X509Certificates object and set to pkiData.
 @property(nonatomic, readonly, nonnull) NSArray* certificates;
 
 // A date against which the payment request is being validated.
