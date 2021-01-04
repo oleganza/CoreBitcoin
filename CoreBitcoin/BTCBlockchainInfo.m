@@ -9,7 +9,7 @@
 - (NSMutableURLRequest*) requestForUnspentOutputsWithAddresses:(NSArray*)addresses {
     if (addresses.count == 0) return nil;
     
-    NSString* urlstring = [NSString stringWithFormat:@"https://blockchain.info/unspent?active=%@", [[addresses valueForKey:@"base58String"] componentsJoinedByString:@"%7C"]];
+    NSString* urlstring = [NSString stringWithFormat:@"https://blockchain.info/unspent?active=%@", [[addresses valueForKey:@"string"] componentsJoinedByString:@"%7C"]];
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring]];
     request.HTTPMethod = @"GET";
     return request;
