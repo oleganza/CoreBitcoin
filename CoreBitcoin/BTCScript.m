@@ -1119,7 +1119,7 @@
             if (offset + sizeof(dataLength) > length) return nil;
             
             memcpy(&dataLength, bytes + offset + sizeof(opcode), sizeof(dataLength));
-            dataLength = CFSwapInt16LittleToHost(dataLength);
+            dataLength = CFSwapInt32LittleToHost(dataLength);
             
             NSUInteger chunkLength = sizeof(opcode) + sizeof(dataLength) + dataLength;
             
